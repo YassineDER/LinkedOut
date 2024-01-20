@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/securecapita
+    username: root
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+        globally_quoted_identifiers: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+          id:
+            new_generator_mappings: true
+    open-in-view: false
