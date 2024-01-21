@@ -12,6 +12,8 @@ import jakarta.persistence.OneToMany;
 import java.time.OffsetDateTime;
 import java.util.Set;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 
@@ -27,9 +29,11 @@ public class Invoice {
     private Integer invoiceId;
 
     @Column(nullable = false)
+    @NotNull(message = "Invoice date cannot be null")
     private OffsetDateTime date;
 
     @Column(nullable = false, length = 45)
+    @NotEmpty(message = "Invoice number cannot be empty")
     private String number;
 
     @ManyToOne(fetch = FetchType.LAZY)

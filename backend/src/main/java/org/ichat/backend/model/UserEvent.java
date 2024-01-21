@@ -10,6 +10,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.OffsetDateTime;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 
@@ -24,7 +26,8 @@ public class UserEvent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userEventId;
 
-    @Column
+    @Column(columnDefinition = "TIMESTAMP WITH TIME ZONE", nullable = false)
+    @NotNull
     private OffsetDateTime createdDate;
 
     @Column
@@ -34,6 +37,7 @@ public class UserEvent {
     private String ipAddress;
 
     @Column(nullable = false)
+    @NotEmpty
     private String type;
 
     @Column

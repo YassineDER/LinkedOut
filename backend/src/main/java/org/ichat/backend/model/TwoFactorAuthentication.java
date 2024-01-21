@@ -10,6 +10,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.OffsetDateTime;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 
@@ -25,9 +27,11 @@ public class TwoFactorAuthentication {
     private Integer a2faId;
 
     @Column(nullable = false, unique = true, length = 10)
+    @NotEmpty(message = "Code must be valid")
     private String code;
 
     @Column(nullable = false)
+    @NotNull(message = "Expire date must be valid")
     private OffsetDateTime expiresAt;
 
     @ManyToOne(fetch = FetchType.LAZY)

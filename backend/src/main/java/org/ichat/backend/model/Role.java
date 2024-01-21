@@ -9,6 +9,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.Set;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
 
@@ -25,9 +26,11 @@ public class Role {
     private Integer roleId;
 
     @Column(nullable = false, unique = true)
+    @NotEmpty(message = "Role name cannot be empty")
     private String name;
 
     @Column(nullable = false)
+    @NotEmpty(message = "Role permissions cannot be empty")
     private String permissions;
 
     @OneToMany(mappedBy = "role")

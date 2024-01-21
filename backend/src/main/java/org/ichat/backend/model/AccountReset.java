@@ -9,6 +9,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.OffsetDateTime;
+
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,9 +27,11 @@ public class AccountReset {
     private Integer accountResetId;
 
     @Column(nullable = false, unique = true)
+    @NotEmpty
     private String url;
 
     @Column(nullable = false)
+    @NotNull
     private OffsetDateTime expiresAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
