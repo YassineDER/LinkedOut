@@ -1,12 +1,8 @@
 package org.ichat.backend.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+
 import java.util.Set;
 
 import jakarta.validation.constraints.NotEmpty;
@@ -14,16 +10,15 @@ import lombok.*;
 
 
 @Entity
-@Table(name = "\"Role\"")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Role {
+public class Roles {
 
     @Id
-    @Column(nullable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer roleId;
+    private Integer role_id;
 
     @Column(nullable = false, unique = true)
     @NotEmpty(message = "Role name cannot be empty")
@@ -33,7 +28,8 @@ public class Role {
     @NotEmpty(message = "Role permissions cannot be empty")
     private String permissions;
 
-    @OneToMany(mappedBy = "role")
-    private Set<UserRole> roleUserRoles;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "user_roles", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    private Set<User> assigned_users;
 
 }

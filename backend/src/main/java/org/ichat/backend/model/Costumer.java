@@ -1,5 +1,6 @@
 package org.ichat.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,7 +15,8 @@ import lombok.*;
 
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Costumer {
@@ -22,7 +24,7 @@ public class Costumer {
     @Id
     @Column(nullable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer customerId;
+    private Integer customer_id;
 
     @Column(nullable = false)
     @NotEmpty(message = "Full name is required")
@@ -45,6 +47,7 @@ public class Costumer {
     private String address;
 
     @OneToMany(mappedBy = "customer")
-    private Set<Invoice> customerInvoices;
+    @JsonIgnore
+    private Set<Invoice> customer_invoices;
 
 }

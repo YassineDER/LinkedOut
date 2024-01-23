@@ -1,13 +1,7 @@
 package org.ichat.backend.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
+
 import java.time.OffsetDateTime;
 
 import jakarta.validation.constraints.NotEmpty;
@@ -24,18 +18,18 @@ public class AccountReset {
     @Id
     @Column(nullable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer accountResetId;
+    private Integer account_reset_id;
 
     @Column(nullable = false, unique = true)
     @NotEmpty
-    private String url;
+    private String token;
 
     @Column(nullable = false)
     @NotNull
     private OffsetDateTime expiresAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 
 }

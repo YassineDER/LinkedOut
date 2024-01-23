@@ -17,7 +17,6 @@ public class UserModelAssembler implements RepresentationModelAssembler<User, En
 
         return EntityModel.of(user,
                 linkTo(methodOn(UserController.class).one(user.getUser_id())).withSelfRel());
-        // TODO: Add link to enable 2fa, change password...
     }
 
     @Override

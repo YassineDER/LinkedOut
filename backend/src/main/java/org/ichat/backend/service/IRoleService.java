@@ -1,7 +1,8 @@
 package org.ichat.backend.service;
 
-import org.ichat.backend.model.Role;
+import org.ichat.backend.model.Roles;
+import org.ichat.backend.model.User;
 
 public interface IRoleService {
-    Role getRoleByName(String name);
+    Roles getRoleByName(String name);
 }

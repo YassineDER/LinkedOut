@@ -1,11 +1,23 @@
 spring:
-  profiles:
-    active: dev
+#  profiles:
+#    active: dev
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/securecapita
     username: root
     password:
+  mail:
+    host: sandbox.smtp.mailtrap.io
+    port: 2525
+    username: cb741e46f78fdb
+    password: 1b1f80ae697461
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
   jpa:
     generate-ddl: true
     hibernate:
@@ -20,3 +32,6 @@ spring:
           id:
             new_generator_mappings: true
     open-in-view: false
+  sql:
+    init:
+      mode: embedded

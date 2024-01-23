@@ -1,20 +1,18 @@
 package org.ichat.backend.model;
 
-import jakarta.annotation.Nullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.boot.context.properties.bind.DefaultValue;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
@@ -38,8 +36,7 @@ public class User {
     @Column(nullable = false)
     String address;
 
-    @NotEmpty(message = "Phone is required")
-    @Column(nullable = false)
+    @Column
     String phone;
 
     @NotEmpty(message = "Image is required")
@@ -47,29 +44,36 @@ public class User {
     String image_url;
 
     @Column(nullable = false)
-    @NotNull
-    Boolean enabled = true;
+    Boolean enabled = false;
 
     @Column(nullable = false)
-    @NotNull
     Boolean using_mfa = false;
 
     @Column(nullable = false)
-    @NotNull
     private LocalDateTime createdDate = LocalDateTime.now();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private Set<AccountReset> userAccountResets;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+    @JsonIgnore
     private Set<AccountVerification> userAccountVerifications;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private Set<TwoFactorAuthentication> userTwoFactorAuthentications;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private Set<UserEvent> userUserEvents;
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    Set<Events> userEvents;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private Set<UserRole> userUserRoles;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id")
+    )
+    @JsonIgnoreProperties("role_id")
+    Set<Roles> user_roles;
 }

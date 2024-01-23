@@ -1,14 +1,7 @@
 package org.ichat.backend.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
+
 import java.time.OffsetDateTime;
 import java.util.Set;
 
@@ -18,7 +11,8 @@ import lombok.*;
 
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Invoice {
@@ -26,7 +20,7 @@ public class Invoice {
     @Id
     @Column(nullable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer invoiceId;
+    private Integer invoice_id;
 
     @Column(nullable = false)
     @NotNull(message = "Invoice date cannot be null")
@@ -36,11 +30,15 @@ public class Invoice {
     @NotEmpty(message = "Invoice number cannot be empty")
     private String number;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id")
     private Costumer customer;
 
-    @OneToMany(mappedBy = "invoice")
-    private Set<InvoiceManagement> invoiceInvoiceManagements;
+    @ManyToMany
+    @JoinTable(
+            name = "invoice_management",
+            joinColumns = @JoinColumn(name = "invoice_id"),
+            inverseJoinColumns = @JoinColumn(name = "service_id"))
+    private Set<Service> services;
 
 }
