@@ -25,7 +25,7 @@ public class UserService implements IUserService {
     @Override
     public User register(User user) throws AccountException {
         // 1. Check if email is already registered
-        if (userRepo.findByEmail(user.getEmail()) != null)
+        if (userRepo.findByEmail(user.getEmail()).isPresent())
             throw new AccountException("Email is already registered");
 
         // Affect role to user
@@ -75,6 +75,15 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public User login(String email, String password) {
+        User user = userRepo.findByEmail(email).orElseThrow(() -> new AccountException("User maching email not found"));
+        if (!user.getEnabled())
+            accountVerificationService.sendVerificationEmail(user);
+        else throw new AccountException("Login not supported yet");
+        return user;
+    }
+
+    @Override
     public void delete(Long id) {
         userRepo.deleteById(id);
     }
@@ -100,6 +109,5 @@ public class UserService implements IUserService {
 
         return userRepo.save(userToUpdate);
     }
-
 
 }

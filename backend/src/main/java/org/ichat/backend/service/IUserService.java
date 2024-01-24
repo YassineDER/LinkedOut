@@ -15,4 +15,5 @@ public interface IUserService {
 
     User verifyAccount(String token) throws AccountException;
     User cloneUser(User user);
+    User login(String email, String password);
 }

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class AccountExceptionAdvice {
     @ResponseBody
     @ExceptionHandler(AccountException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     String accountNotFoundHandler(AccountException ex) {
         return ex.getMessage();
     }

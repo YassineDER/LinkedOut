@@ -33,6 +33,8 @@ public class AccountVerificationService implements IAccountVerificationService {
         User user = accountVerification.getUser();
         if (user == null)
             throw new AccountException("No user found with the provided token. Please register again.");
+        if (user.getEnabled())
+            throw new AccountException("User account is already verified and enabled");
 
         accountVerification.verifyUser();
         accountVerificationRepository.save(accountVerification);

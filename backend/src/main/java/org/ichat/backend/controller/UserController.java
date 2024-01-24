@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import org.hibernate.Hibernate;
 import org.ichat.backend.model.User;
 import org.ichat.backend.model.assemblers.UserModelAssembler;
+import org.ichat.backend.model.util.UserCredentials;
 import org.ichat.backend.service.implementation.UserService;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
@@ -57,6 +58,12 @@ public class UserController {
         EntityModel<User> entityModel = userModelAssembler.toModel(updatedUser);
         return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(updatedUser);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody UserCredentials credentials) {
+        userService.login(credentials.getEmail(), credentials.getPassword());
+        return ResponseEntity.ok("Verification sent to email to activate account");
     }
 
 }

@@ -29,7 +29,7 @@ public class AccountVerification {
     @NotNull
     private OffsetDateTime expiresAt;
 
-    @ManyToOne(cascade = CascadeType.DETACH)
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 
