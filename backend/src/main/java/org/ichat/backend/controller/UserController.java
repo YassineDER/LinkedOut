@@ -3,7 +3,6 @@ package org.ichat.backend.controller;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.hibernate.Hibernate;
 import org.ichat.backend.model.User;
 import org.ichat.backend.model.assemblers.UserModelAssembler;
 import org.ichat.backend.model.util.UserCredentials;
@@ -12,6 +11,8 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.http.HttpResponse;
 
 @AllArgsConstructor
 @Transactional

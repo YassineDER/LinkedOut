@@ -2,6 +2,7 @@ package org.ichat.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -31,6 +32,15 @@ public class User {
     @Column(nullable = false, unique = true)
     @Email(message = "Email is invalid")
     String email;
+
+    @Column(nullable = false, unique = true)
+    @NotEmpty(message = "Username is invalid")
+    String username;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Column(nullable = false)
+    @NotEmpty(message = "Password is required")
+    String password;
 
     @NotEmpty(message = "Address is required")
     @Column(nullable = false)

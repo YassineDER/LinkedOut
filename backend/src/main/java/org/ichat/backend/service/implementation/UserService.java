@@ -8,6 +8,7 @@ import org.ichat.backend.model.Roles;
 import org.ichat.backend.model.User;
 import org.ichat.backend.repository.UserRepo;
 import org.ichat.backend.service.IUserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,12 +22,15 @@ public class UserService implements IUserService {
     private final UserRepo userRepo;
     private final RoleService roleService;
     private final AccountVerificationService accountVerificationService;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public User register(User user) throws AccountException {
         // 1. Check if email is already registered
         if (userRepo.findByEmail(user.getEmail()).isPresent())
             throw new AccountException("Email is already registered");
+        if (userRepo.findByUsername(user.getUsername()).isPresent())
+            throw new AccountException("Username is already taken");
 
         // Affect role to user
         Roles USER_Roles = roleService.getRoleByName("USER");
@@ -64,6 +68,8 @@ public class UserService implements IUserService {
         user.setFirst_name(userToVerify.getFirst_name());
         user.setLast_name(userToVerify.getLast_name());
         user.setEmail(userToVerify.getEmail());
+        user.setUsername(userToVerify.getUsername());
+        user.setPassword(passwordEncoder.encode(userToVerify.getPassword()));
         user.setAddress(userToVerify.getAddress());
         user.setPhone(null);
         user.setImage_url(userToVerify.getImage_url());

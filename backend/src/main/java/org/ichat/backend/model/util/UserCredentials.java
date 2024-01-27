@@ -12,6 +12,6 @@ import lombok.Setter;
 public class UserCredentials {
     @NotEmpty(message = "email is mandatory")
     String email;
-    @Null
+    @NotEmpty(message = "password is mandatory")
     String password;
 }
