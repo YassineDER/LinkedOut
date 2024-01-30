@@ -7,8 +7,12 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -16,9 +20,9 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User implements UserDetails {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long user_id;
 
     @Column(nullable = false)
@@ -42,8 +46,7 @@ public class User {
     @NotEmpty(message = "Password is required")
     String password;
 
-    @NotEmpty(message = "Address is required")
-    @Column(nullable = false)
+    @Column
     String address;
 
     @Column
@@ -86,4 +89,30 @@ public class User {
     )
     @JsonIgnoreProperties("role_id")
     Set<Roles> user_roles;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return new HashSet<>(user_roles).stream()
+                .map(role -> (GrantedAuthority) role::getName).toList();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
 }

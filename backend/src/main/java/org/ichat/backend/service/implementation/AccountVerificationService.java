@@ -23,10 +23,9 @@ public class AccountVerificationService implements IAccountVerificationService {
     private final JavaMailSender mailSender;
 
     @Override
-    public User verifyToken(String token) {
-        AccountVerification accountVerification = accountVerificationRepository.findByToken(token);
-        if (accountVerification == null)
-            throw new AccountException("No account verification found with the provided token");
+    public void verifyToken(String token) {
+        var accountVerification = accountVerificationRepository.findByToken(token)
+                .orElseThrow(() -> new AccountException("No account verification found with the provided token"));
         if (accountVerification.getExpiresAt().isBefore(OffsetDateTime.now()))
             throw new AccountException("The provided token has expired, please try to login to send a new one");
 
@@ -38,14 +37,16 @@ public class AccountVerificationService implements IAccountVerificationService {
 
         accountVerification.verifyUser();
         accountVerificationRepository.save(accountVerification);
-        return user;
     }
 
     @Override
     public void sendVerificationEmail(User user) {
+        if (user.getEnabled())
+            throw new AccountException("User account is already verified and enabled");
+
         UUID token = UUID.randomUUID();
         String url = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/user/verify/" + token)
+                .path("/api/auth/verify/" + token)
                 .toUriString();
 
         SimpleMailMessage mailMessage = new SimpleMailMessage();

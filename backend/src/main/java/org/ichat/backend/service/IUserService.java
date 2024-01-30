@@ -6,14 +6,12 @@ import org.ichat.backend.model.User;
 import java.util.List;
 
 public interface IUserService {
-    User register(User user) throws AccountException;
     void delete(Long id);
     User update(Long id, User user) throws AccountException;
 
     User findBy(Long id);
+    User findBy(String email);
     List<User> findAll();
 
-    User verifyAccount(String token) throws AccountException;
-    User cloneUser(User user);
-    User login(String email, String password);
+    User add(User user);
 }

@@ -1,6 +1,6 @@
 spring:
-#  profiles:
-#    active: dev
+  profiles:
+    active: dev
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/securecapita
@@ -35,3 +35,4 @@ spring:
   sql:
     init:
       mode: embedded
+

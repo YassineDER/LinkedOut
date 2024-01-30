@@ -7,6 +7,8 @@ import org.ichat.backend.exeception.AccountException;
 import org.ichat.backend.model.Roles;
 import org.ichat.backend.model.User;
 import org.ichat.backend.repository.UserRepo;
+import org.ichat.backend.service.IAccountVerificationService;
+import org.ichat.backend.service.IRoleService;
 import org.ichat.backend.service.IUserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,34 +22,6 @@ import java.util.Set;
 @AllArgsConstructor
 public class UserService implements IUserService {
     private final UserRepo userRepo;
-    private final RoleService roleService;
-    private final AccountVerificationService accountVerificationService;
-    private final PasswordEncoder passwordEncoder;
-
-    @Override
-    public User register(User user) throws AccountException {
-        // 1. Check if email is already registered
-        if (userRepo.findByEmail(user.getEmail()).isPresent())
-            throw new AccountException("Email is already registered");
-        if (userRepo.findByUsername(user.getUsername()).isPresent())
-            throw new AccountException("Username is already taken");
-
-        // Affect role to user
-        Roles USER_Roles = roleService.getRoleByName("USER");
-        user.setUser_roles(Set.of(USER_Roles));
-
-        // Save user to database
-        User insertedUser = userRepo.save(user);
-
-        // Send verification email
-        accountVerificationService.sendVerificationEmail(insertedUser);
-        return insertedUser;
-    }
-
-    @Override
-    public User verifyAccount(String token) throws AccountException {
-        return accountVerificationService.verifyToken(token);
-    }
 
     @Override
     public User findBy(Long id) {
@@ -55,38 +29,24 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public User findBy(String email) {
+        return userRepo.findByEmail(email)
+                .orElseThrow(() -> new AccountException("User not found with given email"));
+    }
+
+    @Override
     public List<User> findAll() {
-        List<User> users = userRepo.findAll();
-        users.forEach(user -> Hibernate.initialize(user.getUser_roles()));
-        return users;
+        return userRepo.findAll();
     }
 
     @Override
-    public User cloneUser(User userToVerify) throws AccountException {
-        User user = new User();
+    public User add(User user) {
+        if (userRepo.findByEmail(user.getEmail()).isPresent())
+            throw new AccountException("The provided email is already registered");
+        if (userRepo.findByUsername(user.getUsername()).isPresent())
+            throw new AccountException("The provided username is already taken");
 
-        user.setFirst_name(userToVerify.getFirst_name());
-        user.setLast_name(userToVerify.getLast_name());
-        user.setEmail(userToVerify.getEmail());
-        user.setUsername(userToVerify.getUsername());
-        user.setPassword(passwordEncoder.encode(userToVerify.getPassword()));
-        user.setAddress(userToVerify.getAddress());
-        user.setPhone(null);
-        user.setImage_url(userToVerify.getImage_url());
-        user.setEnabled(false);
-        user.setUsing_mfa(false);
-        user.setCreatedDate(LocalDateTime.now());
-
-        return user;
-    }
-
-    @Override
-    public User login(String email, String password) {
-        User user = userRepo.findByEmail(email).orElseThrow(() -> new AccountException("User maching email not found"));
-        if (!user.getEnabled())
-            accountVerificationService.sendVerificationEmail(user);
-        else throw new AccountException("Login not supported yet");
-        return user;
+        return userRepo.save(user);
     }
 
     @Override

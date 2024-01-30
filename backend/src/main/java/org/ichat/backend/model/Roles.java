@@ -12,20 +12,24 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
+@RequiredArgsConstructor // constructor with fields that are marked as @NonNull
 @AllArgsConstructor
 @NoArgsConstructor
 public class Roles {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NonNull
     private Integer role_id;
 
     @Column(nullable = false, unique = true)
     @NotEmpty(message = "Role name cannot be empty")
+    @NonNull
     private String name;
 
     @Column(nullable = false)
     @NotEmpty(message = "Role permissions cannot be empty")
+    @NonNull
     private String permissions;
 
     @JsonIgnore

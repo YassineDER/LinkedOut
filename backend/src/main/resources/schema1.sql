@@ -1,9 +1,0 @@
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-
-INSERT INTO `securecapita`.roles
-VALUES (1, 'ADMIN', 'READ,WRITE,DELETE'),
-       (2, 'USER', 'READ'),
-       (3, 'MANAGER', 'READ,WRITE');
-COMMIT;
-

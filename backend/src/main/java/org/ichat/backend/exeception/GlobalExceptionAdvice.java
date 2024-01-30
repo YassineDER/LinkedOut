@@ -16,7 +16,7 @@ public class GlobalExceptionAdvice {
     @ResponseBody
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleGlobalErrors(Exception ex) {
-        log.error(String.valueOf(ex));
+        ex.printStackTrace();
 
         Map<String, Object> body = new HashMap<>();
         body.put("error", "Internal Server Error");

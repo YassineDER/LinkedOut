@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Repository
 public interface AccountVerificationRepository extends JpaRepository<AccountVerification, Integer> {
@@ -15,5 +16,5 @@ public interface AccountVerificationRepository extends JpaRepository<AccountVeri
     @Query("DELETE FROM AccountVerification e WHERE e.expiresAt < :thresholdDate")
     void deleteAllExpiredSince(Date thresholdDate);
 
-    AccountVerification findByToken(String token);
+    Optional<AccountVerification> findByToken(String token);
 }
