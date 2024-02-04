@@ -2,6 +2,7 @@ package org.ichat.backend.service.implementation;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.ichat.backend.exeception.AccountException;
 import org.ichat.backend.repository.UserRepo;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +19,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         var user = userRepo.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Email not found"));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email + "."));
+        if (user.getUser_roles().isEmpty())
+            throw new AccountException("User has no roles.");
 
         return new User(user.getEmail(), user.getPassword(), user.getAuthorities());
     }

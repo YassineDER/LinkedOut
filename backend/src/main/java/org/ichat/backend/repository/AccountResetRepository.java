@@ -8,5 +8,5 @@ import java.time.OffsetDateTime;
 
 @Repository
 public interface AccountResetRepository extends JpaRepository<AccountReset, Integer> {
-    void deleteAllByExpiresAtBefore(OffsetDateTime threshold);
+    void deleteByExpiresAtBefore(OffsetDateTime threshold);
 }

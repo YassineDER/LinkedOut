@@ -19,19 +19,19 @@ public class ScheduledTasks {
     @Scheduled(cron = "0 0 0 * * ?")
     public void deleteExpiredAccountVerification() {
         OffsetDateTime threshold = OffsetDateTime.now().minusHours(24);
-        accountVerificationRepository.deleteAllByExpiresAtBefore(threshold);
+        accountVerificationRepository.deleteByExpiresAtBefore(threshold);
     }
 
     @Scheduled(cron = "0 0 0 * * ?")
     public void deleteExpiredAccountReset() {
         OffsetDateTime threshold = OffsetDateTime.now().minusHours(24);
-        accountResetRepository.deleteAllByExpiresAtBefore(threshold);
+        accountResetRepository.deleteByExpiresAtBefore(threshold);
     }
 
     @Scheduled(cron = "0 0 0 * * ?")
     public void deleteExpiredTwoFactorAuthentication() {
         OffsetDateTime threshold = OffsetDateTime.now().minusHours(12);
-        twoFactorAuthenticationRepository.deleteAllByExpiresAtBefore(threshold);
+        twoFactorAuthenticationRepository.deleteByExpiresAtBefore(threshold);
     }
 
 }

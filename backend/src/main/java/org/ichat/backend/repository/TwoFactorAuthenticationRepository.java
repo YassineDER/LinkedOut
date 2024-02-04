@@ -11,5 +11,5 @@ import java.util.Date;
 
 @Repository
 public interface TwoFactorAuthenticationRepository extends JpaRepository<TwoFactorAuthentication, Integer> {
-    void deleteAllByExpiresAtBefore(OffsetDateTime thresholdDate);
+    void deleteByExpiresAtBefore(OffsetDateTime thresholdDate);
 }

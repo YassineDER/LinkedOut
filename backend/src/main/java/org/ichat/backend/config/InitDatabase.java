@@ -19,9 +19,9 @@ public class InitDatabase {
     public void init() {
         List<Roles> roles = roleRepository.findAll();
         if (roles.isEmpty()) {
-            roleRepository.save(new Roles(1, "USER", "READ"));
-            roleRepository.save(new Roles(2, "ADMIN", "READ,WRITE,DELETE"));
-            roleRepository.save(new Roles(3, "MANAGER", "READ,WRITE"));
+            roleRepository.saveAll( List.of(new Roles(1, "USER", "READ")
+                    ,new Roles(2, "ADMIN", "READ,WRITE,DELETE"),
+                    new Roles(3, "MANAGER", "READ,WRITE")));
         }
     }
 

@@ -1,6 +1,6 @@
 package org.ichat.backend.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import  com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -8,12 +8,14 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -93,7 +95,8 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return new HashSet<>(user_roles).stream()
-                .map(role -> (GrantedAuthority) role::getName).toList();
+                .map(role -> (GrantedAuthority) role::getName)
+                .collect(Collectors.toSet());
     }
 
     @Override

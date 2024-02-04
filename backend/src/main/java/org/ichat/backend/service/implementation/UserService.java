@@ -2,20 +2,13 @@ package org.ichat.backend.service.implementation;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.hibernate.Hibernate;
 import org.ichat.backend.exeception.AccountException;
-import org.ichat.backend.model.Roles;
 import org.ichat.backend.model.User;
 import org.ichat.backend.repository.UserRepo;
-import org.ichat.backend.service.IAccountVerificationService;
-import org.ichat.backend.service.IRoleService;
 import org.ichat.backend.service.IUserService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @Transactional
