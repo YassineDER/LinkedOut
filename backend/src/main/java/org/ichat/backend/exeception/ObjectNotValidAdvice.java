@@ -1,6 +1,6 @@
 package org.ichat.backend.exeception;
 
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @ControllerAdvice
-@Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class ObjectNotValidAdvice {
 
@@ -21,7 +20,6 @@ public class ObjectNotValidAdvice {
     @ResponseBody
     public ResponseEntity<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         String fullMessage = ex.getMessage();
-        log.error(fullMessage);
         Pattern pattern = Pattern.compile("message \\[([^]]+)]");
         Matcher matcher = pattern.matcher(fullMessage);
         if (matcher.find()) {

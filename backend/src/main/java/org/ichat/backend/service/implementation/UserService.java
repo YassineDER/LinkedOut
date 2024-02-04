@@ -25,13 +25,13 @@ public class UserService implements IUserService {
 
     @Override
     public User findBy(Long id) {
-        return userRepo.findById(id).orElseThrow(() -> new AccountException("User not found"));
+        return userRepo.findById(id).orElseThrow(() -> new AccountException("User not found by id"));
     }
 
     @Override
     public User findBy(String email) {
         return userRepo.findByEmail(email)
-                .orElseThrow(() -> new AccountException("User not found with given email"));
+                .orElseThrow(() -> new AccountException("User not found by email"));
     }
 
     @Override

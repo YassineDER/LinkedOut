@@ -6,11 +6,10 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.OffsetDateTime;
 import java.util.Date;
 
 @Repository
 public interface TwoFactorAuthenticationRepository extends JpaRepository<TwoFactorAuthentication, Integer> {
-    @Modifying
-    @Query(value = "DELETE FROM TwoFactorAuthentication mfa WHERE mfa.expiresAt < :thresholdDate")
-    void deleteAllExpiredSince(Date thresholdDate);
+    void deleteAllByExpiresAtBefore(OffsetDateTime thresholdDate);
 }

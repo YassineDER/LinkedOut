@@ -19,7 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.Set;
 
 @Service
@@ -36,31 +35,32 @@ public class AuthService implements IAuthService {
 
     @Override
     public AuthResponse authenticate(String email, String password) {
+        User user = userService.findBy(email);
+        if (!user.isEnabled())
+            throw new AccountException("Account is not verified / disabled");
+
         Authentication auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(email, password));
-        User user = userService.findBy(email);
-        if (!user.isEnabled()) throw new AccountException("Account is not verified / disabled");
 
-        var token = jwtService.generateToken(new HashMap<>(), user);
+        var token = jwtService.generateToken(user);
         SecurityContextHolder.getContext().setAuthentication(auth);
 
         return new AuthResponse(token);
     }
 
     @Override
-    public AuthResponse register(User user) throws AccountException {
+    public String register(User user) throws AccountException {
         Roles USER_Roles = roleService.getRoleByName("USER");
         user.setUser_roles(Set.of(USER_Roles));
         User insertedUser = userService.add(user);
 
         accountVerificationService.sendVerificationEmail(insertedUser);
-        var token = jwtService.generateToken(new HashMap<>(), insertedUser);
-        return new AuthResponse(token);
+        return "User registered successfully. Please verify your email.";
     }
 
     @Override
-    public void verifyAccount(String token) throws AccountException {
-        accountVerificationService.verifyToken(token);
+    public String verifyAccount(String token) throws AccountException {
+        return accountVerificationService.verifyToken(token);
     }
 
     @Override

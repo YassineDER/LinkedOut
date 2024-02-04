@@ -3,6 +3,7 @@ package org.ichat.backend.service.implementation;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.ichat.backend.exeception.AccountException;
+import org.ichat.backend.jwt.IJwtService;
 import org.ichat.backend.model.AccountVerification;
 import org.ichat.backend.model.User;
 import org.ichat.backend.repository.AccountVerificationRepository;
@@ -21,9 +22,10 @@ import java.util.UUID;
 public class AccountVerificationService implements IAccountVerificationService {
     private final AccountVerificationRepository accountVerificationRepository;
     private final JavaMailSender mailSender;
+    private final IJwtService jwtServiceV2;
 
     @Override
-    public void verifyToken(String token) {
+    public String verifyToken(String token) {
         var accountVerification = accountVerificationRepository.findByToken(token)
                 .orElseThrow(() -> new AccountException("No account verification found with the provided token"));
         if (accountVerification.getExpiresAt().isBefore(OffsetDateTime.now()))
@@ -37,6 +39,7 @@ public class AccountVerificationService implements IAccountVerificationService {
 
         accountVerification.verifyUser();
         accountVerificationRepository.save(accountVerification);
+        return jwtServiceV2.generateToken(user);
     }
 
     @Override

@@ -11,12 +11,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ControllerAdvice
-@Slf4j
 public class GlobalExceptionAdvice {
     @ResponseBody
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleGlobalErrors(Exception ex) {
-        ex.printStackTrace();
 
         Map<String, Object> body = new HashMap<>();
         body.put("error", "Internal Server Error");

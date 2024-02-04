@@ -1,6 +1,6 @@
 package org.ichat.backend.exeception;
 
-import lombok.extern.slf4j.Slf4j;
+import io.jsonwebtoken.JwtException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -14,13 +14,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ControllerAdvice
-@Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class AuthenticationExceptionAdvice {
+
     @ResponseBody
     @ExceptionHandler(AccountException.class)
-    String accountErrorHandler(AccountException ex) {
-        return ex.getMessage();
+    ResponseEntity<Object> accountErrorHandler(AccountException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("error", ex.getMessage());
+        body.put("status", HttpStatus.UNAUTHORIZED.value());
+
+        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
     }
 
     @ResponseBody
@@ -28,8 +32,18 @@ public class AuthenticationExceptionAdvice {
     ResponseEntity<Object> badCredentialsErrorHandler(BadCredentialsException ex) {
         Map<String, Object> body = new HashMap<>();
         body.put("error", "Bad credentials");
-        body.put("status", HttpStatus.NOT_FOUND.value());
+        body.put("status", HttpStatus.UNAUTHORIZED.value());
 
-        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ResponseBody
+    @ExceptionHandler(JwtException.class)
+    ResponseEntity<Object> jwtErrorHandler(JwtException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("error", ex.getMessage());
+        body.put("status", HttpStatus.UNAUTHORIZED.value());
+
+        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
     }
 }
