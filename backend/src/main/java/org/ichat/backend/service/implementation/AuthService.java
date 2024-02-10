@@ -7,10 +7,7 @@ import org.ichat.backend.jwt.IJwtService;
 import org.ichat.backend.model.Roles;
 import org.ichat.backend.model.User;
 import org.ichat.backend.model.util.AuthResponse;
-import org.ichat.backend.service.IAccountVerificationService;
-import org.ichat.backend.service.IAuthService;
-import org.ichat.backend.service.IRoleService;
-import org.ichat.backend.service.IUserService;
+import org.ichat.backend.service.*;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,6 +26,7 @@ public class AuthService implements IAuthService {
     private final IUserService userService;
     private final IRoleService roleService;
     private final IAccountVerificationService accountVerificationService;
+    private final IAccountResetService accountResetService;
     private final IJwtService jwtService;
 
     private final PasswordEncoder passwordEncoder;
@@ -71,7 +69,22 @@ public class AuthService implements IAuthService {
     }
 
     @Override
-    public User cloneUser(User userToVerify) throws AccountException {
+    public String resetPassword(String token, String newPassword) {
+        var encoded = passwordEncoder.encode(newPassword);
+        return accountResetService.resetPassword(token, encoded);
+    }
+
+    @Override
+    public String requestPasswordReset(String email) {
+        User user = userService.findBy(email);
+        String resetToken = accountResetService.sendResetEmail(user.getEmail());
+        accountResetService.saveReset(user, resetToken);
+
+        return "Password reset email sent to your email address. Please check your email.";
+    }
+
+    @Override
+    public User cloneUser(User userToVerify) {
         User user = new User();
         user.setFirst_name(userToVerify.getFirst_name());
         user.setLast_name(userToVerify.getLast_name());

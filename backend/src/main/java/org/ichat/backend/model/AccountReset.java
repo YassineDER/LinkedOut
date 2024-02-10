@@ -6,13 +6,17 @@ import java.time.OffsetDateTime;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class AccountReset {
 
     @Id
@@ -28,8 +32,11 @@ public class AccountReset {
     @NotNull
     private OffsetDateTime expiresAt;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 
+    public void resetUserPassword(String encodedPassword) {
+        this.user.setPassword(encodedPassword);
+    }
 }

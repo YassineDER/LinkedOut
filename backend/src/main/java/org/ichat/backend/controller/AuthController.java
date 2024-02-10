@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.model.User;
 import org.ichat.backend.model.util.AuthResponse;
+import org.ichat.backend.model.util.PasswordRequest;
 import org.ichat.backend.model.util.UserCredentials;
 import org.ichat.backend.service.IAuthService;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,6 @@ import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -22,9 +22,10 @@ public class AuthController {
     private final IAuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@Valid @RequestBody User user) {
+    public ResponseEntity<AuthResponse> registerUser(@Valid @RequestBody User user) {
         User clonedUser = authService.cloneUser(user);
-        return ResponseEntity.ok(authService.register(clonedUser));
+        String resp =  authService.register(clonedUser);
+        return ResponseEntity.ok(new AuthResponse(resp));
     }
 
     @PostMapping("/verify/{code}")
@@ -39,6 +40,13 @@ public class AuthController {
         return ResponseEntity.ok(token);
     }
 
+    @PostMapping("/verify/password")
+    public ResponseEntity<AuthResponse> resetPassword(@Valid @RequestBody PasswordRequest req) {
+        String resp = authService.resetPassword(req.getReceived_code(), req.getPassword());
+        return ResponseEntity.ok(new AuthResponse(resp));
+    }
+
+    // To be removed
     @PostAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/status")
     public ResponseEntity<?> authenticatedUser() {
@@ -50,6 +58,15 @@ public class AuthController {
                 "name", auth.getName()
         );
         return ResponseEntity.ok(response);
+    }
+
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<AuthResponse> requestReset(@RequestBody UserCredentials credentials) {
+        if (credentials.getEmail() != null) {
+            String resp = authService.requestPasswordReset(credentials.getEmail());
+            return ResponseEntity.ok(new AuthResponse(resp));
+        } else return ResponseEntity.badRequest().build();
     }
 
 
