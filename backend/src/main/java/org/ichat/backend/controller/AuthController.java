@@ -1,6 +1,6 @@
 package org.ichat.backend.controller;
 
-import jakarta.transaction.Transactional;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.model.User;
@@ -9,7 +9,6 @@ import org.ichat.backend.model.util.UserCredentials;
 import org.ichat.backend.service.IAuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@Transactional(dontRollbackOn = AccountExpiredException.class)
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -54,14 +52,5 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/test")
-    public ResponseEntity<List<String>> test() {
-        return ResponseEntity.ok(List.of("Nique ta mereeeee"));
-    }
-//    @GetMapping("/send-verification/{email}")
-//    public ResponseEntity<String> sendVerificationEmail(@PathVariable String email) {
-//        accountVerificationService.sendVerificationEmail(email);
-//        return ResponseEntity.ok("Verification sent. Please check your email.");
-//    }
 
 }

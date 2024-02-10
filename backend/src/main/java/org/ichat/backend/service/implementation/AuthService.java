@@ -2,13 +2,11 @@ package org.ichat.backend.service.implementation;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.ichat.backend.exeception.AccountException;
 import org.ichat.backend.jwt.IJwtService;
 import org.ichat.backend.model.Roles;
 import org.ichat.backend.model.User;
 import org.ichat.backend.model.util.AuthResponse;
-import org.ichat.backend.model.util.UserCredentials;
 import org.ichat.backend.service.IAccountVerificationService;
 import org.ichat.backend.service.IAuthService;
 import org.ichat.backend.service.IRoleService;
@@ -27,7 +25,6 @@ import java.util.Set;
 @Service
 @Transactional(dontRollbackOn = AccountExpiredException.class)
 @RequiredArgsConstructor
-@Slf4j
 public class AuthService implements IAuthService {
     private final IUserService userService;
     private final IRoleService roleService;

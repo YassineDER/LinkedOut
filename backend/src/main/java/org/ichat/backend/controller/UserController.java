@@ -1,6 +1,5 @@
 package org.ichat.backend.controller;
 
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.ichat.backend.model.User;
@@ -9,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
-@Transactional
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -28,7 +26,7 @@ public class UserController {
 
     @DeleteMapping("/id/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        userService.delete(id);
+        userService.deleteBy(id);
         return ResponseEntity.noContent().build();
     }
 

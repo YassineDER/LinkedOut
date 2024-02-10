@@ -6,7 +6,7 @@ import org.ichat.backend.model.User;
 import java.util.List;
 
 public interface IUserService {
-    void delete(Long id);
+    void deleteBy(Long id);
     User update(Long id, User user) throws AccountException;
 
     User findBy(Long id);

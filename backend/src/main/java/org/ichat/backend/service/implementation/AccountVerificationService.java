@@ -3,7 +3,6 @@ package org.ichat.backend.service.implementation;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.ichat.backend.exeception.AccountException;
 import org.ichat.backend.jwt.IJwtService;
 import org.ichat.backend.model.AccountVerification;
@@ -22,7 +21,6 @@ import java.util.Map;
 import java.util.UUID;
 
 @Service
-@Slf4j
 @Transactional
 @AllArgsConstructor
 public class AccountVerificationService implements IAccountVerificationService {
