@@ -8,7 +8,6 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
@@ -54,6 +53,9 @@ public class User implements UserDetails {
     @Column
     String phone;
 
+    @Column
+    String mfa_secret;
+
     @NotEmpty(message = "Image is required")
     @Column(nullable = false)
     String image_url;
@@ -74,10 +76,6 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
     @JsonIgnore
     private Set<AccountVerification> userAccountVerifications;
-
-    @OneToMany(mappedBy = "user")
-    @JsonIgnore
-    private Set<TwoFactorAuthentication> userTwoFactorAuthentications;
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
@@ -117,5 +115,10 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return enabled;
+    }
+
+    public void activateMFA(String secret) {
+        this.using_mfa = true;
+        this.mfa_secret = secret;
     }
 }

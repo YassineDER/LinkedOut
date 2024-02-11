@@ -1,12 +1,14 @@
 package org.ichat.backend.model.util;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL) // Don't include null fields in response
 public class AuthResponse {
-    private String response;
+    private final String response;
+    private boolean must_verify_mfa;
+    private String qr_image;
 }

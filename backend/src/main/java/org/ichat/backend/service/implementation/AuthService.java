@@ -1,5 +1,6 @@
 package org.ichat.backend.service.implementation;
 
+import dev.samstevens.totp.exceptions.QrGenerationException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exeception.AccountException;
@@ -7,9 +8,11 @@ import org.ichat.backend.jwt.IJwtService;
 import org.ichat.backend.model.Roles;
 import org.ichat.backend.model.User;
 import org.ichat.backend.model.util.AuthResponse;
+import org.ichat.backend.model.util.AccountCredentials;
 import org.ichat.backend.service.*;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,14 +30,15 @@ public class AuthService implements IAuthService {
     private final IRoleService roleService;
     private final IAccountVerificationService accountVerificationService;
     private final IAccountResetService accountResetService;
+    private final ITwoFactorAuthService twoFactorAuthService;
     private final IJwtService jwtService;
 
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
     @Override
-    public AuthResponse authenticate(String email, String password) {
-        User user = userService.findBy(email);
+    public AuthResponse authenticate(AccountCredentials credentials) throws QrGenerationException {
+        User user = userService.findBy(credentials.getEmail());
         if (!user.isEnabled()) {
             var new_verif = accountVerificationService.sendVerificationEmail(user.getEmail());
             accountVerificationService.saveVerification(user, new_verif);
@@ -42,9 +46,17 @@ public class AuthService implements IAuthService {
                     "A new verification email has been sent to your email address, please verify your account.");
         }
 
-        Authentication auth = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(email, password));
+        if (!passwordEncoder.matches(credentials.getPassword(), user.getPassword()))
+            throw new AccountException("Invalid email or password");
 
+        if (user.getUsing_mfa()) {
+            String qrCode = twoFactorAuthService.generateMfaImage(user.getMfa_secret(), user.getEmail());
+            return new AuthResponse("User must login using OTP", true, qrCode);
+        }
+
+        Authentication auth = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        credentials.getEmail(), credentials.getPassword()));
         var token = jwtService.generateToken(user);
         SecurityContextHolder.getContext().setAuthentication(auth);
 
@@ -96,8 +108,24 @@ public class AuthService implements IAuthService {
         user.setImage_url(userToVerify.getImage_url());
         user.setEnabled(false);
         user.setUsing_mfa(false);
+        user.setMfa_secret(null);
         user.setCreatedDate(LocalDateTime.now());
 
         return user;
+    }
+
+    @Override
+    public String verifyMFA(AccountCredentials credentials) {
+        User user = userService.findBy(credentials.getEmail());
+        if (twoFactorAuthService.codeIsValid(user.getMfa_secret(), credentials.getCode())){
+            Authentication auth = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            credentials.getEmail(), credentials.getPassword()));
+            var token = jwtService.generateToken(user);
+            SecurityContextHolder.getContext().setAuthentication(auth);
+
+            return token;
+        }
+        else throw new BadCredentialsException("Invalid code");
     }
 }

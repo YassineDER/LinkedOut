@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IUserService {
     void deleteBy(Long id);
-    User update(Long id, User user) throws AccountException;
+    User update(Long userID_toUpdate, User newUser) throws AccountException;
 
     User findBy(Long id);
     User findBy(String email);

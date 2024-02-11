@@ -1,12 +1,13 @@
 package org.ichat.backend.controller;
 
 
+import dev.samstevens.totp.exceptions.QrGenerationException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.model.User;
 import org.ichat.backend.model.util.AuthResponse;
 import org.ichat.backend.model.util.PasswordRequest;
-import org.ichat.backend.model.util.UserCredentials;
+import org.ichat.backend.model.util.AccountCredentials;
 import org.ichat.backend.service.IAuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
@@ -35,9 +36,17 @@ public class AuthController {
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthResponse> login(@Valid @RequestBody UserCredentials credentials) {
-        AuthResponse token = authService.authenticate(credentials.getEmail(), credentials.getPassword());
-        return ResponseEntity.ok(token);
+    public ResponseEntity<?> login(@Valid @RequestBody AccountCredentials credentials) throws QrGenerationException {
+        AuthResponse authResponse = authService.authenticate(credentials);
+        return ResponseEntity.ok(authResponse);
+    }
+
+    @PostMapping("/verify/mfa")
+    public ResponseEntity<AuthResponse> verifyMFA(@RequestBody AccountCredentials credentials) {
+        if (credentials.getCode() == null)
+            return ResponseEntity.badRequest().build();
+        String resp = authService.verifyMFA(credentials);
+        return ResponseEntity.ok(new AuthResponse(resp));
     }
 
     @PostMapping("/verify/password")
@@ -47,7 +56,7 @@ public class AuthController {
     }
 
     // To be removed
-    @PostAuthorize("hasAuthority('ADMIN')")
+//    @PostAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/status")
     public ResponseEntity<?> authenticatedUser() {
         var auth = SecurityContextHolder.getContext().getAuthentication();
@@ -62,7 +71,7 @@ public class AuthController {
 
 
     @PostMapping("/reset-password")
-    public ResponseEntity<AuthResponse> requestReset(@RequestBody UserCredentials credentials) {
+    public ResponseEntity<AuthResponse> requestReset(@RequestBody AccountCredentials credentials) {
         if (credentials.getEmail() != null) {
             String resp = authService.requestPasswordReset(credentials.getEmail());
             return ResponseEntity.ok(new AuthResponse(resp));

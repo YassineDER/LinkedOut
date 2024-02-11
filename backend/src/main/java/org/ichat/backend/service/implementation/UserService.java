@@ -48,23 +48,25 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User update(Long id, User user) throws AccountException {
-        User userToUpdate = userRepo.findById(id).orElseThrow(() -> new AccountException("User not found"));
+    public User update(Long userID_toUpdate, User newUser) throws AccountException {
+        User userToUpdate = userRepo.findById(userID_toUpdate).orElseThrow(() -> new AccountException("User not found"));
 
-        if (user.getFirst_name() != null)
-            userToUpdate.setFirst_name(user.getFirst_name());
-        if (user.getLast_name() != null)
-            userToUpdate.setLast_name(user.getLast_name());
-        if (user.getEmail() != null)
-            userToUpdate.setEmail(user.getEmail());
-        if (user.getAddress() != null)
-            userToUpdate.setAddress(user.getAddress());
-        if (user.getPhone() != null)
-            userToUpdate.setPhone(user.getPhone());
-        if (user.getImage_url() != null)
-            userToUpdate.setImage_url(user.getImage_url());
-        if (user.getEnabled() != null)
-            userToUpdate.setUsing_mfa(user.getUsing_mfa());
+        if (newUser.getFirst_name() != null)
+            userToUpdate.setFirst_name(newUser.getFirst_name());
+        if (newUser.getLast_name() != null)
+            userToUpdate.setLast_name(newUser.getLast_name());
+        if (newUser.getAddress() != null)
+            userToUpdate.setAddress(newUser.getAddress());
+        if (newUser.getPhone() != null)
+            userToUpdate.setPhone(newUser.getPhone());
+        if (newUser.getImage_url() != null)
+            userToUpdate.setImage_url(newUser.getImage_url());
+        if (newUser.getEnabled() != null)
+            userToUpdate.setUsing_mfa(newUser.getUsing_mfa());
+        if (newUser.getUsing_mfa() != null)
+            userToUpdate.setUsing_mfa(newUser.getUsing_mfa());
+        if (newUser.getMfa_secret() != null)
+            userToUpdate.setMfa_secret(newUser.getMfa_secret());
 
         return userRepo.save(userToUpdate);
     }

@@ -17,10 +17,9 @@ public class GlobalExceptionAdvice {
     public ResponseEntity<Object> handleGlobalErrors(Exception ex) {
 
         Map<String, Object> body = new HashMap<>();
-        body.put("error", "Internal Server Error");
         body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
-        body.put("message", ex.getMessage());
+        body.put("error", ex.getMessage());
 
-        return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+        return ResponseEntity.internalServerError().body(body);
     }
 }

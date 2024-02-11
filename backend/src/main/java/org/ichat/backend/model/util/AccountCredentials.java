@@ -8,10 +8,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserCredentials {
-
+public class AccountCredentials {
     @NotEmpty(message = "email is mandatory")
     String email;
     @NotEmpty(message = "password is mandatory")
     String password;
+    String code;
 }

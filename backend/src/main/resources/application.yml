@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: securecapita
   profiles:
     active: dev
   datasource:
@@ -35,3 +37,11 @@ spring:
   sql:
     init:
       mode: embedded
+totp:
+  secret:
+    length: 128
+  code:
+    length: 6
+  time:
+    period: 30
+    discrepancy: 1

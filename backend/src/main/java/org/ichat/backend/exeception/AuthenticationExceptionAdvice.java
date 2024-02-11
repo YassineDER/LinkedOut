@@ -18,28 +18,8 @@ import java.util.Map;
 public class AuthenticationExceptionAdvice {
 
     @ResponseBody
-    @ExceptionHandler(AccountException.class)
-    ResponseEntity<Object> accountErrorHandler(AccountException ex) {
-        Map<String, Object> body = new HashMap<>();
-        body.put("error", ex.getMessage());
-        body.put("status", HttpStatus.UNAUTHORIZED.value());
-
-        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
-    }
-
-    @ResponseBody
-    @ExceptionHandler(BadCredentialsException.class)
-    ResponseEntity<Object> badCredentialsErrorHandler(BadCredentialsException ex) {
-        Map<String, Object> body = new HashMap<>();
-        body.put("error", "Bad credentials");
-        body.put("status", HttpStatus.UNAUTHORIZED.value());
-
-        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
-    }
-
-    @ResponseBody
-    @ExceptionHandler(JwtException.class)
-    ResponseEntity<Object> jwtErrorHandler(JwtException ex) {
+    @ExceptionHandler({JwtException.class, AccountException.class})
+    ResponseEntity<Object> jwtErrorHandler(Exception ex) {
         Map<String, Object> body = new HashMap<>();
         body.put("error", ex.getMessage());
         body.put("status", HttpStatus.UNAUTHORIZED.value());
