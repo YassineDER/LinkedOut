@@ -69,17 +69,13 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private LocalDateTime createdDate = LocalDateTime.now();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<AccountReset> userAccountResets;
 
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<AccountVerification> userAccountVerifications;
-
-    @OneToMany(mappedBy = "user")
-    @JsonIgnore
-    Set<Events> userEvents;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(

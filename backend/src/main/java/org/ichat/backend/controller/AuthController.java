@@ -1,6 +1,5 @@
 package org.ichat.backend.controller;
 
-
 import dev.samstevens.totp.exceptions.QrGenerationException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
