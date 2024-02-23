@@ -7,6 +7,7 @@ import org.ichat.backend.model.User;
 import org.ichat.backend.model.util.AccountCredentials;
 import org.ichat.backend.service.ITwoFactorAuthService;
 import org.ichat.backend.service.IUserService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ public class UserController {
     private final IUserService userService;
     private final ITwoFactorAuthService twoFactorService;
 
+    @Cacheable("users")
     @GetMapping("/id/{id}")
     public ResponseEntity<?> one(@PathVariable Long id) {
         User user = userService.findBy(id);

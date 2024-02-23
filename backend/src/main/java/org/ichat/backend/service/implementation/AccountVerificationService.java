@@ -3,12 +3,14 @@ package org.ichat.backend.service.implementation;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exeception.AccountException;
 import org.ichat.backend.jwt.IJwtService;
 import org.ichat.backend.model.AccountVerification;
 import org.ichat.backend.model.User;
 import org.ichat.backend.repository.AccountVerificationRepository;
 import org.ichat.backend.service.IAccountVerificationService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -22,12 +24,15 @@ import java.util.UUID;
 
 @Service
 @Transactional
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AccountVerificationService implements IAccountVerificationService {
     private final AccountVerificationRepository accountVerificationRepository;
     private final JavaMailSender mailSender;
     private final IJwtService jwtServiceV2;
     private final TemplateEngine templateEngine;
+
+    @Value("${links.verification}")
+    private String verificationUrl;
 
     @Override
     public String verifyToken(String token) {
@@ -51,7 +56,7 @@ public class AccountVerificationService implements IAccountVerificationService {
     public String sendVerificationEmail(String email) {
         String token = UUID.randomUUID().toString();
         String url = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/api/auth/verify/" + token)
+                .path(verificationUrl + token)
                 .toUriString();
 
         String header = "Verify your email address - Securecapita";

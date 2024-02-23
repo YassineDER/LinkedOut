@@ -8,6 +8,7 @@ import org.ichat.backend.model.AccountReset;
 import org.ichat.backend.model.User;
 import org.ichat.backend.repository.AccountResetRepository;
 import org.ichat.backend.service.IAccountResetService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,9 @@ public class AccountResetService implements IAccountResetService {
     private final JavaMailSender mailSender;
     private final TemplateEngine templateEngine;
 
+    @Value("${links.reset}")
+    private String resetUrl;
+
     @Override
     public String sendResetEmail(String email) {
         String uuid_part = StringUtils.split(UUID.randomUUID().toString(), "-")[0];
@@ -35,7 +39,7 @@ public class AccountResetService implements IAccountResetService {
         String token = UUID.nameUUIDFromBytes(unique.getBytes()).toString();
 
         String url = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/api/auth/verify/password/" + token)
+                .path(resetUrl + token)
                 .toUriString();
 
         String header = "Reset your password - Securecapita";

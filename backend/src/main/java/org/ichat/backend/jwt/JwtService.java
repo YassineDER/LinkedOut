@@ -19,7 +19,7 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtService implements IJwtService {
     private static final String SECRET = System.getenv("JWT_SECRET");
-    private static final Integer EXPIRATION = 2; // days
+    private static final Integer EXPIRATION = 3; // days
 
     @Override
     public String generateToken(User user) {

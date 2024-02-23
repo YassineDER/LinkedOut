@@ -56,8 +56,7 @@ public class User implements UserDetails {
     @Column
     String mfa_secret;
 
-    @NotEmpty(message = "Image is required")
-    @Column(nullable = false)
+    @Column
     String image_url;
 
     @Column(nullable = false)

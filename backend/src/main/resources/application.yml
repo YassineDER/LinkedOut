@@ -1,11 +1,9 @@
 spring:
   application:
     name: securecapita
-  profiles:
-    active: dev
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/securecapita?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/securecapita?allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
     username: root
     password:
   mail:
@@ -33,10 +31,19 @@ spring:
             non_contextual_creation: true
           id:
             new_generator_mappings: true
+        dialect: org.hibernate.dialect.MySQLDialect
     open-in-view: false
   sql:
     init:
       mode: embedded
+  caching:
+    user:
+      images: 10800000
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+# Two-factor authentication configuration
 totp:
   secret:
     length: 128
@@ -45,3 +52,9 @@ totp:
   time:
     period: 30
     discrepancy: 1
+
+# Links configuration for email verification and password reset services
+links:
+  verification: /account/verify/
+  reset: /password/reset/
+
