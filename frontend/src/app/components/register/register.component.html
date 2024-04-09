@@ -1,1 +1,51 @@
-<p>register works!</p>
+<div class="is-flex is-align-items-center" style="height: 90vh;">
+    <div class="container is-max-desktop p-3 box">
+        <h1 class="title is-1 mb-3 has-text-centered">LinkedOut</h1>
+
+        <form [formGroup]="registerFrom" (ngSubmit)="submitRegisterForm()"
+              class="is-flex is-flex-direction-column is-justify-content-center is-align-items-center">
+            <h3 class="mb-6 subtitle is-5">Create an account</h3>
+
+            <div class="columns mb-0">
+                <mat-form-field class="column px-2 py-1" appearance="outline">
+                    <mat-label>Enter your first name</mat-label>
+                    <input formControlName="first_name" tabindex="1" required matInput>
+                </mat-form-field>
+                <mat-form-field class="column px-2 py-1" appearance="outline">
+                    <mat-label>Enter your last name</mat-label>
+                    <input formControlName="last_name" tabindex="2" required matInput>
+                </mat-form-field>
+            </div>
+
+            <div class="columns mb-0">
+                <mat-form-field class="column px-2 py-1" appearance="outline">
+                    <mat-label>Enter a username</mat-label>
+                    <input formControlName="username" tabindex="3" required matInput>
+                </mat-form-field>
+                <mat-form-field class="column px-2 py-1" appearance="outline">
+                    <mat-label>Enter your email address</mat-label>
+                    <input formControlName="email" type="email" tabindex="4" required matInput>
+                </mat-form-field>
+            </div>
+
+            <div class="columns mb-0">
+                <mat-form-field class="column px-2 py-1" appearance="outline">
+                    <mat-label>Enter a password</mat-label>
+                    <input type="password" formControlName="password" tabindex="5" required matInput>
+                </mat-form-field>
+                <mat-form-field class="column px-2 py-1" appearance="outline">
+                    <mat-label>Confirm the password</mat-label>
+                    <input formControlName="confirm_password" tabindex="6" required matInput>
+                </mat-form-field>
+            </div>
+
+            <button tabindex="7" [disabled]="!formIsValid()" class="px-5 button" type="submit" mat-raised-button color="primary">Register</button>
+        </form><br>
+        <mat-divider></mat-divider>
+
+        <div class="links mt-4 has-text-centered">
+            <a tabindex="8" class="is-size-6" routerLink="/login">Back to login</a>
+        </div>
+    </div>
+</div>
+

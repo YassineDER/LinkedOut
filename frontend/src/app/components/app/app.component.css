@@ -1,0 +1,10 @@
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    color: #6c757d;
+    letter-spacing: .4px;
+    z-index: 1000;
+    box-shadow: 0 -2px 5px 0 #0000001f;
+}
+
