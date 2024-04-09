@@ -2,7 +2,6 @@ package org.ichat.backend.service.implementation;
 
 import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exeception.AccountException;
 import org.ichat.backend.jwt.IJwtService;
@@ -28,7 +27,7 @@ import java.util.UUID;
 public class AccountVerificationService implements IAccountVerificationService {
     private final AccountVerificationRepository accountVerificationRepository;
     private final JavaMailSender mailSender;
-    private final IJwtService jwtServiceV2;
+    private final IJwtService jwtService;
     private final TemplateEngine templateEngine;
 
     @Value("${links.verification}")
@@ -49,7 +48,7 @@ public class AccountVerificationService implements IAccountVerificationService {
 
         accountVerification.verifyUser();
         accountVerificationRepository.save(accountVerification);
-        return jwtServiceV2.generateToken(user);
+        return jwtService.generateToken(user);
     }
 
     @Override

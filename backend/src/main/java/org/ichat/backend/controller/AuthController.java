@@ -4,12 +4,11 @@ import dev.samstevens.totp.exceptions.QrGenerationException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.model.User;
-import org.ichat.backend.model.util.AuthResponse;
-import org.ichat.backend.model.util.PasswordRequest;
-import org.ichat.backend.model.util.AccountCredentials;
+import org.ichat.backend.model.util.auth.*;
 import org.ichat.backend.service.IAuthService;
+import org.ichat.backend.service.ICompanyService;
+import org.ichat.backend.service.IJobseekerService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,10 +20,15 @@ import java.util.Map;
 public class AuthController {
     private final IAuthService authService;
 
-    @PostMapping("/register")
-    public ResponseEntity<AuthResponse> registerUser(@Valid @RequestBody User user) {
-        User clonedUser = authService.cloneUser(user);
-        String resp =  authService.register(clonedUser);
+    @PostMapping("/register/jobseeker")
+    public ResponseEntity<AuthResponse> registerJobseeker(@Valid @RequestBody RegisterJobseekerRequest req) {
+        String resp = authService.registerJobseeker(req);
+        return ResponseEntity.ok(new AuthResponse(resp));
+    }
+
+    @PostMapping("/register/company")
+    public ResponseEntity<AuthResponse> registerCompany(@Valid @RequestBody RegisterCompanyRequest req) {
+        String resp = authService.registerCompany(req);
         return ResponseEntity.ok(new AuthResponse(resp));
     }
 
@@ -54,7 +58,6 @@ public class AuthController {
         return ResponseEntity.ok(new AuthResponse(resp));
     }
 
-    // To be removed
 //    @PostAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/status")
     public ResponseEntity<?> authenticatedUser() {
@@ -68,7 +71,6 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
-
     @PostMapping("/reset-password")
     public ResponseEntity<AuthResponse> requestReset(@RequestBody AccountCredentials credentials) {
         if (credentials.getEmail() != null) {
@@ -76,6 +78,4 @@ public class AuthController {
             return ResponseEntity.ok(new AuthResponse(resp));
         } else return ResponseEntity.badRequest().build();
     }
-
-
 }

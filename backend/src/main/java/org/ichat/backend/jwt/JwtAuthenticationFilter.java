@@ -5,7 +5,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.ichat.backend.exeception.AccountException;
 import org.ichat.backend.model.User;
 import org.ichat.backend.service.IUserService;
@@ -20,7 +19,6 @@ import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
-@Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final IJwtService jwtService;
     private final IUserService userService;
@@ -44,7 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (email != null && (auth == null || !auth.isAuthenticated() || auth.getPrincipal() == "anonymousUser")) {
                 User user;
                 try {
-                    user = this.userService.findBy(email);
+                    user = userService.findBy(email);
                 } catch (AccountException e) {
                     throw new AccountException("User not found from provided authorization token");
                 }

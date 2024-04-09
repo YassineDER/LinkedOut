@@ -1,13 +1,15 @@
 package org.ichat.backend.jwt;
 
 
+import io.jsonwebtoken.Claims;
 import org.ichat.backend.model.User;
 
 public interface IJwtService {
-    String generateToken(User user);
-    boolean isTokenValid(String token);
+    void setExpiration(Long expiration);
 
-    boolean isTokenExpired(String token);
+    String generateToken(User user);
 
     String getEmailFromToken(String token);
+
+    Claims getClaimsFromToken(String token);
 }

@@ -1,4 +1,4 @@
-package org.ichat.backend.model.util;
+package org.ichat.backend.model.util.auth;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;

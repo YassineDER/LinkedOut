@@ -1,6 +1,6 @@
 package org.ichat.backend.model;
 
-import  com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -20,19 +20,13 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(discriminatorType = DiscriminatorType.CHAR, name = "user_type")
+@DiscriminatorValue("U")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long user_id;
-
-    @Column(nullable = false)
-    @NotEmpty(message = "First name is required")
-    String first_name;
-
-    @Column(nullable = false)
-    @NotEmpty(message = "Last name is required")
-    String last_name;
 
     @Column(nullable = false, unique = true)
     @Email(message = "Email is invalid")
@@ -46,12 +40,6 @@ public class User implements UserDetails {
     @Column(nullable = false)
     @NotEmpty(message = "Password is required")
     String password;
-
-    @Column
-    String address;
-
-    @Column
-    String phone;
 
     @Column
     String mfa_secret;

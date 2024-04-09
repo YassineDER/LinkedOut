@@ -13,7 +13,6 @@ import lombok.*;
 @Getter
 @Setter
 @RequiredArgsConstructor // constructor with fields that are marked as @NonNull
-@AllArgsConstructor
 @NoArgsConstructor
 public class Roles {
 
@@ -26,11 +25,6 @@ public class Roles {
     @NotEmpty(message = "Role name cannot be empty")
     @NonNull
     private String name;
-
-    @Column(nullable = false)
-    @NotEmpty(message = "Role permissions cannot be empty")
-    @NonNull
-    private String permissions;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "user_roles", cascade = {CascadeType.MERGE, CascadeType.PERSIST})

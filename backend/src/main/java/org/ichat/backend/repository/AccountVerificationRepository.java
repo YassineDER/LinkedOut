@@ -1,9 +1,12 @@
 package org.ichat.backend.repository;
 
 
+import jakarta.transaction.Transactional;
 import org.ichat.backend.model.AccountVerification;
 import org.ichat.backend.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.OffsetDateTime;
@@ -12,10 +15,17 @@ import java.util.Optional;
 @Repository
 public interface AccountVerificationRepository extends JpaRepository<AccountVerification, Integer> {
     // Delete all account verifications that have expired before the provided date
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM AccountVerification a WHERE a.expiresAt < :expiresAt")
     void deleteByExpiresAtBefore(OffsetDateTime expiresAt);
 
     void deleteByUser(User user);
 
-    Optional<AccountVerification> findByToken(String token);
+    @Modifying
+    @Transactional
+    @Query("delete from AccountVerification a where a.token = :token")
+    void deleteByToken(String token);
 
+    Optional<AccountVerification> findByToken(String token);
 }

@@ -31,7 +31,6 @@ spring:
             non_contextual_creation: true
           id:
             new_generator_mappings: true
-        dialect: org.hibernate.dialect.MySQLDialect
     open-in-view: false
   sql:
     init:
@@ -43,6 +42,7 @@ spring:
     multipart:
       max-file-size: 5MB
       max-request-size: 5MB
+
 # Two-factor authentication configuration
 totp:
   secret:
@@ -57,4 +57,6 @@ totp:
 links:
   verification: /account/verify/
   reset: /password/reset/
+admin:
+  secret: 696969
 

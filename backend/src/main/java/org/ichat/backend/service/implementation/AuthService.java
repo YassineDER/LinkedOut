@@ -5,11 +5,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exeception.AccountException;
 import org.ichat.backend.jwt.IJwtService;
-import org.ichat.backend.model.Roles;
-import org.ichat.backend.model.User;
-import org.ichat.backend.model.util.AuthResponse;
-import org.ichat.backend.model.util.AccountCredentials;
+import org.ichat.backend.model.*;
+import org.ichat.backend.model.util.auth.*;
 import org.ichat.backend.service.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -19,14 +18,18 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Set;
 
 @Service
 @Transactional(dontRollbackOn = AccountExpiredException.class)
 @RequiredArgsConstructor
 public class AuthService implements IAuthService {
+    @Value("${admin.secret}")
+    private static String adminSecret;
     private final IUserService userService;
+    private final ICompanyService companyService;
+    private final IJobseekerService jobseekerService;
     private final IRoleService roleService;
     private final IAccountVerificationService accountVerificationService;
     private final IAccountResetService accountResetService;
@@ -64,19 +67,57 @@ public class AuthService implements IAuthService {
     }
 
     @Override
-    public String register(User user) throws AccountException {
-        Roles USER_Roles = roleService.getRoleByName("USER");
-        user.setUser_roles(Set.of(USER_Roles));
-        User insertedUser = userService.add(user);
+    public String registerJobseeker(RegisterJobseekerRequest request) {
+        Roles role = roleService.getRoleByName("JOBSEEKER");
+        Jobseeker jobseeker = new Jobseeker();
+        jobseeker.setFirst_name(request.getFirst_name());
+        jobseeker.setLast_name(request.getLast_name());
+        jobseeker.setEmail(request.getEmail());
+        jobseeker.setUsername(request.getUsername());
+        jobseeker.setPassword(passwordEncoder.encode(request.getPassword()));
+        jobseeker.setUser_roles(Set.of(role));
+        jobseekerService.add(jobseeker);
 
-        String verifToken = accountVerificationService.sendVerificationEmail(insertedUser.getEmail());
-        accountVerificationService.saveVerification(insertedUser, verifToken);
-
+        String verifToken = accountVerificationService.sendVerificationEmail(jobseeker.getEmail());
+        accountVerificationService.saveVerification(jobseeker, verifToken);
         return "User registered successfully. Please verify your email.";
     }
 
     @Override
-    public String verifyAccount(String token) throws AccountException {
+    public String registerCompany(RegisterCompanyRequest request) {
+        Roles USER_Roles = roleService.getRoleByName("COMPANY");
+        Company company = companyService.getCompanyBySIREN(request.getSIREN());
+        company.setUsername(request.getUsername());
+        company.setEmail(request.getEmail());
+        company.setPassword(passwordEncoder.encode(request.getPassword()));
+        company.setUser_roles(Set.of(USER_Roles));
+        companyService.add(company);
+
+        String verifToken = accountVerificationService.sendVerificationEmail(company.getEmail());
+        accountVerificationService.saveVerification(company, verifToken);
+        return "Company registered successfully. Please verify your email.";
+    }
+
+    @Override
+    public String registerAdmin(RegisterAdminRequest request) {
+        if (!Objects.equals(request.getAdmin_secret(), adminSecret))
+            throw new AccountException("Invalid admin secret");
+        Roles USER_Roles = roleService.getRoleByName("ADMIN");
+        Admin admin = new Admin();
+        admin.setFirst_name(request.getFirst_name());
+        admin.setLast_name(request.getLast_name());
+        admin.setEmail(request.getEmail());
+        admin.setUsername(request.getUsername());
+        admin.setPassword(passwordEncoder.encode(request.getPassword()));
+        admin.setUser_roles(Set.of(USER_Roles));
+
+        String verifToken = accountVerificationService.sendVerificationEmail(admin.getEmail());
+        accountVerificationService.saveVerification(admin, verifToken);
+        return "Admin registered successfully. Please verify your email.";
+    }
+
+    @Override
+    public String verifyAccount(String token) {
         return accountVerificationService.verifyToken(token);
     }
 
@@ -93,25 +134,6 @@ public class AuthService implements IAuthService {
         accountResetService.saveReset(user, resetToken);
 
         return "Password reset email sent to your email address. Please check your email.";
-    }
-
-    @Override
-    public User cloneUser(User userToVerify) {
-        User user = new User();
-        user.setFirst_name(userToVerify.getFirst_name());
-        user.setLast_name(userToVerify.getLast_name());
-        user.setEmail(userToVerify.getEmail());
-        user.setUsername(userToVerify.getUsername());
-        user.setPassword(passwordEncoder.encode(userToVerify.getPassword()));
-        user.setAddress(userToVerify.getAddress());
-        user.setPhone(null);
-        user.setImage_url(userToVerify.getImage_url());
-        user.setEnabled(false);
-        user.setUsing_mfa(false);
-        user.setMfa_secret(null);
-        user.setCreatedDate(LocalDateTime.now());
-
-        return user;
     }
 
     @Override

@@ -19,12 +19,17 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtService implements IJwtService {
     private static final String SECRET = System.getenv("JWT_SECRET");
-    private static final Integer EXPIRATION = 3; // days
+    private static Long EXPIRATION = 1000L * 60 * 60 * 24 * 3; // days
+
+    @Override
+    public void setExpiration(Long expiration) {
+        EXPIRATION = expiration;
+    }
 
     @Override
     public String generateToken(User user) {
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + 1000L * 60 * 60 * 24 * EXPIRATION);
+        Date expiryDate = new Date(now.getTime() + EXPIRATION);
 
         return Jwts.builder()
                 .setSubject(user.getEmail())
@@ -34,40 +39,25 @@ public class JwtService implements IJwtService {
                 .compact();
     }
 
-    @Override
-    public boolean isTokenValid(String token) {
-        try {
-            Jwts.parserBuilder().setSigningKey(getSecretKey()).build().parseClaimsJws(token);
-            return true;
-        } catch (Exception e) {
-            throw new AccountException("Invalid token or expired");
-        }
-    }
-
-    @Override
-    public boolean isTokenExpired(String token) {
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(getSecretKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-        Date expiration = claims.getExpiration();
-        return expiration.before(new Date());
-    }
 
     @Override
     public String getEmailFromToken(String token) {
-        if (isTokenExpired(token) || !isTokenValid(token))
-            throw new AccountException("Invalid token or expired");
-
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(getSecretKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+        Claims claims = getClaimsFromToken(token);
         return claims.getSubject();
     }
 
+    @Override
+    public Claims getClaimsFromToken(String token) {
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(getSecretKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (Exception e) {
+            throw new AccountException("Invalid token", e);
+        }
+    }
 
     private Key getSecretKey() {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET));

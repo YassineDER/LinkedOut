@@ -1,0 +1,51 @@
+spring:
+  test:
+    context:
+      failure:
+        threshold: 5
+  datasource:
+    driverClassName: org.h2.Driver
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+  mail:
+    host: sandbox.smtp.mailtrap.io
+    port: 2525
+    username: 1761a535b5e9ea
+    password: 262f7d4dc51961
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+        globally_quoted_identifiers: true
+    open-in-view: false
+  sql:
+    init:
+      mode: embedded
+  caching:
+    user:
+      images: 10800000
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+
+# Two-factor authentication configuration
+totp:
+  secret:
+    length: 128
+  code:
+    length: 6
+  time:
+    period: 30
+    discrepancy: 1

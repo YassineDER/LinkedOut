@@ -1,4 +1,4 @@
-package org.ichat.backend.model.util;
+package org.ichat.backend.model.util.auth;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;

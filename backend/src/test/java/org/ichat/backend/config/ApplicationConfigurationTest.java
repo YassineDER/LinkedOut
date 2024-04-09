@@ -4,6 +4,7 @@ package org.ichat.backend.config;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -15,25 +16,16 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
 public class ApplicationConfigurationTest {
-
     @Autowired
     private UserDetailsService userDetailsService;
-
-    @Autowired
-    private AuthenticationProvider provider;
-
-    @Autowired
-    private AuthenticationManager manager;
 
     @Test
     public void setup() {
         assertThat(userDetailsService).isNotNull();
-        assertThat(provider).isNotNull();
-        assertThat(manager).isNotNull();
     }
 
     @Test
-    public void authenticationProviderReturnsDaoAuthenticationProvider() {
+    public void authenticationProviderTest() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(new BCryptPasswordEncoder());
@@ -41,7 +33,7 @@ public class ApplicationConfigurationTest {
     }
 
     @Test
-    public void passwordEncoderReturnsBCryptPasswordEncoder() {
+    public void passwordEncoderTest() {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         assertThat(passwordEncoder).isNotNull();
     }

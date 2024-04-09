@@ -17,6 +17,7 @@ public class StorageFile {
         this.name = name.toLowerCase();
         String extension = name.toLowerCase().substring(name.lastIndexOf(".") + 1);
         this.mediaType = switch (extension) {
+            case "pdf" -> MediaType.APPLICATION_PDF;
             case "jpg", "jpeg" -> MediaType.IMAGE_JPEG;
             case "png" -> MediaType.IMAGE_PNG;
             case "gif" -> MediaType.IMAGE_GIF;
