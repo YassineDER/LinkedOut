@@ -32,7 +32,7 @@ public class AuthController {
         return ResponseEntity.ok(new AuthResponse(resp));
     }
 
-    @PostMapping("/verify/{code}")
+    @GetMapping("/verify/{code}")
     public ResponseEntity<AuthResponse> verifyAccount(@PathVariable String code) {
         String jwt = authService.verifyAccount(code);
         return ResponseEntity.ok(new AuthResponse(jwt));

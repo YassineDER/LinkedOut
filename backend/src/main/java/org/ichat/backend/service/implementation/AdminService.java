@@ -1,6 +1,6 @@
 package org.ichat.backend.service.implementation;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exeception.AccountException;
 import org.ichat.backend.model.Admin;
@@ -54,18 +54,11 @@ public class AdminService implements IAdminService {
 
     @Override
     public Admin add(Admin admin) {
-        User userFoundWithEmail, userFoundWithUsername;
-        try {
-            userFoundWithEmail = userService.findBy(admin.getEmail());
-            userFoundWithUsername = userService.findBy(admin.getUsername());
-        } catch (AccountException e) {
-            return adminRepo.save(admin);
-        }
+        boolean userExists = adminRepo.findByEmail(admin.getEmail()).isPresent() ||
+                adminRepo.findByUsername(admin.getUsername()).isPresent();
+        if (userExists)
+            throw new AccountException("Admin already exists with given email or username");
 
-        if (userFoundWithEmail != null)
-            throw new AccountException("User already exists with given email");
-        else if (userFoundWithUsername != null)
-            throw new AccountException("User already exists with given username");
-        else throw new AccountException("User already exists with given email and username");
+        return adminRepo.save(admin);
     }
 }

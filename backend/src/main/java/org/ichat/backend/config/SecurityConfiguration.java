@@ -25,8 +25,10 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint((request, response, authException) -> response
-                                        .sendError(401, "Unauthorized: " + authException.getMessage())))
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.sendError(401, "Unauthorized: " + authException.getMessage());
+                            response.setHeader("X-Error", authException.getMessage());
+                        }))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/auth/**")
                         .permitAll().anyRequest()

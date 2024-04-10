@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.ichat.backend.model.Roles;
 import org.ichat.backend.repository.RoleRepository;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -15,6 +17,7 @@ public class InitOnStartup {
 
     @Bean
     public void initDatabase() {
+
         List<Roles> roles = roleRepository.findAll();
         if (roles.isEmpty()) {
             roleRepository.saveAll(List.of(new Roles(1, "JOBSEEKER"),

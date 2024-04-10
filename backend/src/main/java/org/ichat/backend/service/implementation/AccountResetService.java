@@ -29,7 +29,7 @@ public class AccountResetService implements IAccountResetService {
     private final JavaMailSender mailSender;
     private final TemplateEngine templateEngine;
 
-    @Value("${links.reset}")
+    @Value("${links.reset-password-req}")
     private String resetUrl;
 
     @Override

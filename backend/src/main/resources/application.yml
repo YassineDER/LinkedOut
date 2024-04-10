@@ -2,8 +2,8 @@ spring:
   application:
     name: securecapita
   datasource:
-    driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/securecapita?allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+    driverClassName: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/securecapita?createDatabaseIfNotExist=true
     username: root
     password:
   mail:
@@ -55,8 +55,8 @@ totp:
 
 # Links configuration for email verification and password reset services
 links:
-  verification: /account/verify/
-  reset: /password/reset/
+  verification: /api/auth/verify/
+  reset-password-req: /api/auth/verify/password/
 admin:
   secret: 696969
 

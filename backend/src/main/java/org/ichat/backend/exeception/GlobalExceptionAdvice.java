@@ -1,6 +1,8 @@
 package org.ichat.backend.exeception;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +19,7 @@ import java.util.regex.Pattern;
 @ControllerAdvice
 @RequiredArgsConstructor
 public class GlobalExceptionAdvice {
-    private final Environment env;
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionAdvice.class);
 
     @ResponseBody
     @ExceptionHandler({AccountException.class})
@@ -48,7 +50,8 @@ public class GlobalExceptionAdvice {
     @ResponseBody
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleGlobalErrors(Exception ex) {
-        LogIfDev(ex);
+        log.error("A global error occurred", ex);
+
         Map<String, Object> body = new HashMap<>();
         body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
         body.put("error", ex.getMessage());
@@ -58,19 +61,12 @@ public class GlobalExceptionAdvice {
     @ResponseBody
     @ExceptionHandler(StorageException.class)
     public ResponseEntity<Object> handleStorageErrors(StorageException ex) {
-        LogIfDev(ex);
-
         Map<String, Object> body = new HashMap<>();
         body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
         body.put("error", ex.getMessage());
         body.put("cause", ex.getCause().getMessage());
-
         return ResponseEntity.internalServerError().body(body);
     }
 
 
-    private void LogIfDev(Exception ex) {
-        if (env != null && env.getActiveProfiles()[0].equals("dev"))
-            ex.printStackTrace();
-    }
 }

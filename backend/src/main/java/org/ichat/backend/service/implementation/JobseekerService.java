@@ -1,22 +1,20 @@
 package org.ichat.backend.service.implementation;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exeception.AccountException;
 import org.ichat.backend.model.Jobseeker;
 import org.ichat.backend.model.User;
 import org.ichat.backend.repository.JobseekerRepo;
-import org.ichat.backend.repository.UserRepo;
 import org.ichat.backend.service.IJobseekerService;
 import org.ichat.backend.service.IUserService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
+@Transactional
 public class JobseekerService implements IJobseekerService {
     private final JobseekerRepo jobseekerRepo;
     private final IUserService userService;
@@ -62,19 +60,11 @@ public class JobseekerService implements IJobseekerService {
 
     @Override
     public Jobseeker add(Jobseeker jobseeker) {
-        User userFoundFromEmail, userFoundFromUsername;
-        try {
-            userFoundFromEmail = userService.findBy(jobseeker.getEmail());
-            userFoundFromUsername = userService.findByUsername(jobseeker.getUsername());
-        } catch (AccountException e) {
-            return jobseekerRepo.save(jobseeker);
-        }
-
-        if (userFoundFromEmail != null)
-            throw new AccountException("User already exists with given email");
-        else if (userFoundFromUsername != null)
-            throw new AccountException("User already exists with given username");
-        else throw new AccountException("User already exists with given email and username");
+        boolean userExists = jobseekerRepo.findByEmail(jobseeker.getEmail()).isPresent() ||
+                jobseekerRepo.findByUsername(jobseeker.getUsername()).isPresent();
+        if (userExists)
+            throw new AccountException("Jobseeker already exists with given email or username");
+        return jobseekerRepo.save(jobseeker);
     }
 
 }

@@ -27,13 +27,11 @@ public class Jobseeker extends User {
     @NotEmpty(message = "Last name is required")
     String last_name;
 
-    @Column
     String address;
 
-    @Column
+    @Column(nullable = true)
     String phone;
 
-    @Column
     String cv_url;
 
     @OneToMany(mappedBy = "jobseeker")

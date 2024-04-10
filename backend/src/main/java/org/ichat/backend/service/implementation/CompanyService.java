@@ -1,6 +1,6 @@
 package org.ichat.backend.service.implementation;
 
-import jakarta.transaction.Transactional;
+
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.config.ScheduledTasks;
 import org.ichat.backend.exeception.AccountException;
@@ -16,6 +16,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
 
 import java.time.LocalDate;
@@ -68,19 +69,12 @@ public class CompanyService implements ICompanyService {
 
     @Override
     public Company add(Company company) {
-        User userFoundWithEmail, userFoundWithUsername;
-        try {
-            userFoundWithEmail = userService.findBy(company.getEmail());
-            userFoundWithUsername = userService.findBy(company.getUsername());
-        } catch (AccountException e) {
-            return companyRepo.save(company);
-        }
+        boolean exists = companyRepo.findByEmail(company.getEmail()).isPresent() ||
+                companyRepo.findByUsername(company.getUsername()).isPresent();
+        if (exists)
+            throw new AccountException("Company already exists");
 
-        if (userFoundWithEmail != null)
-            throw new AccountException("User already exists with given email");
-        else if (userFoundWithUsername != null)
-            throw new AccountException("User already exists with given username");
-        else throw new AccountException("User already exists with given email and username");
+        return companyRepo.save(company);
     }
 
     @Override

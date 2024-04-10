@@ -26,7 +26,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class AuthService implements IAuthService {
     @Value("${admin.secret}")
-    private static String adminSecret;
+    private String adminSecret;
     private final IUserService userService;
     private final ICompanyService companyService;
     private final IJobseekerService jobseekerService;
