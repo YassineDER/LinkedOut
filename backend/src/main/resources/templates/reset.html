@@ -1,5 +1,4 @@
-<!doctype html>
-<html>
+<!doctype html><html lang="en">
 <head>
 	<meta name="viewport" content="width=device-width"/>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -20,8 +19,8 @@
 
       table {
           border-collapse: separate;
-          mso-table-lspace: 0pt;
-          mso-table-rspace: 0pt;
+          mso-table-lspace: 0;
+          mso-table-rspace: 0;
           width: 100%;
       }
 
@@ -70,19 +69,13 @@
           width: 100%;
       }
 
-      .footer td,
-      .footer p,
-      .footer span,
-      .footer a {
+      .footer td, .footer p, .footer span, .footer a {
           color: #999999;
           font-size: 12px;
           text-align: center;
       }
 
-      h1,
-      h2,
-      h3,
-      h4 {
+      h1, h2, h3, h4 {
           color: #000000;
           font-family: sans-serif;
           font-weight: 400;
@@ -97,18 +90,14 @@
           text-transform: capitalize;
       }
 
-      p,
-      ul,
-      ol {
+      p, ul, ol {
           font-family: sans-serif;
           font-size: 14px;
           font-weight: normal;
           margin: 0 0 15px;
       }
 
-      p li,
-      ul li,
-      ol li {
+      p li, ul li, ol li {
           list-style-position: inside;
           margin-left: 5px;
       }
@@ -186,17 +175,12 @@
               margin-bottom: 10px !important;
           }
 
-          table[class=body] p,
-          table[class=body] ul,
-          table[class=body] ol,
-          table[class=body] td,
-          table[class=body] span,
-          table[class=body] a {
+          table[class=body] p, table[class=body] ul, table[class=body] ol,
+          table[class=body] td, table[class=body] span, table[class=body] a {
               font-size: 16px !important;
           }
 
-          table[class=body] .wrapper,
-          table[class=body] .article {
+          table[class=body] .wrapper, table[class=body] .article {
               padding: 10px !important;
           }
 
@@ -226,7 +210,6 @@
       }
 
       @media all {
-
           .apple-link a {
               color: inherit !important;
               font-family: inherit !important;
@@ -261,27 +244,13 @@
 								<tr>
 									<td>
 										<h1 th:text="${header}"></h1>
-										<h2>You are just one step away</h2><br>
-										<table class="btn btn-primary">
-											<tbody>
-											<tr>
-												<td>
-													Please click the link below <strong>(valid for only 10
-													minutes)</strong>
-													to reset you password
-													<br>
-													<a th:href="${link}">Reset password</a>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<p>If you’re having trouble clicking the button,
-														you can click the link below:</p>
-													<a th:href="${link}" th:text="${link}"></a>
-												</td>
-											</tr>
-											</tbody>
-										</table>
+										<h2> Reset Password</h2>
+										<br>
+										Copy the code bellow to the reset password form
+										<strong>(valid for only 10 minutes)</strong>
+										<br>
+										<h3 th:text="${code}"></h3>
+										<hr>
 										<p>If you received this email by mistake, simply delete it. You won't be
 											subscribed if you don't click the link above.</p>
 									</td>
@@ -294,14 +263,7 @@
 
 				<!-- START FOOTER -->
 				<div class="footer">
-					<table>
-						<tr>
-							<td class="content-block">
-								<span class="apple-link">securecapita.com | 2024</span>
-								<br> Don't like these emails? <a href="#">Unsubscribe</a>.
-							</td>
-						</tr>
-					</table>
+					<span class="apple-link">securecapita.com | 2024</span>
 				</div>
 			</div>
 		</td>

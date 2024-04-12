@@ -11,6 +11,8 @@ spring:
     port: 2525
     username: 1761a535b5e9ea
     password: 262f7d4dc51961
+    timeout: 25
+    from: no-reply@securecapita.com
     properties:
       mail:
         smtp:
@@ -46,17 +48,13 @@ spring:
 # Two-factor authentication configuration
 totp:
   secret:
-    length: 128
-  code:
-    length: 6
+    length: 64
   time:
     period: 30
-    discrepancy: 1
 
 # Links configuration for email verification and password reset services
 links:
   verification: /api/auth/verify/
-  reset-password-req: /api/auth/verify/password/
 admin:
   secret: 696969
 

@@ -1,19 +1,14 @@
 package org.ichat.backend.controller;
 
-import org.hamcrest.Matchers;
-import org.ichat.backend.model.Jobseeker;
-import org.ichat.backend.model.User;
-import org.ichat.backend.repository.JobseekerRepo;
-import org.ichat.backend.repository.UserRepo;
+import org.ichat.backend.model.tables.Jobseeker;
+import org.ichat.backend.model.tables.User;
 import org.ichat.backend.service.ITwoFactorAuthService;
 import org.ichat.backend.service.IUserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

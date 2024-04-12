@@ -6,6 +6,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AccountExpiredException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,7 +25,8 @@ public class GlobalExceptionAdvice {
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionAdvice.class);
 
     @ResponseBody
-    @ExceptionHandler({AccountException.class})
+    @ExceptionHandler({AccountException.class, AccountExpiredException.class,
+            BadCredentialsException.class, AccessDeniedException.class})
     ResponseEntity<Object> accountErrorHandler(Exception ex) {
         Map<String, Object> body = new HashMap<>();
         body.put("error", ex.getMessage());
@@ -31,8 +35,8 @@ public class GlobalExceptionAdvice {
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
-//    @ExceptionHandler(MethodArgumentNotValidException.class)
-//    @ResponseBody
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseBody
     public ResponseEntity<Object> handleObjectNotValidException(MethodArgumentNotValidException ex) {
         Pattern pattern = Pattern.compile("message \\[([^]]+)]");
         Matcher matcher = pattern.matcher(ex.getMessage());

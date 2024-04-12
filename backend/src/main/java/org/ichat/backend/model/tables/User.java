@@ -1,4 +1,4 @@
-package org.ichat.backend.model;
+package org.ichat.backend.model.tables;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -103,5 +103,10 @@ public class User implements UserDetails {
     public void activateMFA(String secret) {
         this.using_mfa = true;
         this.mfa_secret = secret;
+    }
+
+    public void deactivateMFA() {
+        this.using_mfa = false;
+        this.mfa_secret = null;
     }
 }

@@ -1,9 +1,8 @@
 package org.ichat.backend.jwt;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import org.ichat.backend.exeception.AccountException;
-import org.ichat.backend.model.User;
+import org.ichat.backend.model.tables.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

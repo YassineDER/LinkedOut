@@ -2,8 +2,9 @@ package org.ichat.backend.service.implementation;
 
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exeception.AccountException;
-import org.ichat.backend.model.Jobseeker;
-import org.ichat.backend.model.User;
+import org.ichat.backend.model.tables.Jobseeker;
+import org.ichat.backend.model.tables.Skill;
+import org.ichat.backend.model.util.patchers.JobseekerPatch;
 import org.ichat.backend.repository.JobseekerRepo;
 import org.ichat.backend.service.IJobseekerService;
 import org.ichat.backend.service.IUserService;
@@ -11,13 +12,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class JobseekerService implements IJobseekerService {
     private final JobseekerRepo jobseekerRepo;
-    private final IUserService userService;
 
     @Override
     public List<Jobseeker> findAll() {
@@ -37,23 +38,21 @@ public class JobseekerService implements IJobseekerService {
     }
 
     @Override
-    public void deleteBy(Long userID) {
-        jobseekerRepo.deleteById(userID);
-    }
-
-    @Override
-    public Jobseeker update(Long oldUserID, Jobseeker newJobseeker) throws AccountException {
-        Jobseeker jobseekerToUpdate = (Jobseeker) userService.update(oldUserID, newJobseeker);
+    public Jobseeker update(Long userId, JobseekerPatch newJobseeker) throws AccountException {
+        Jobseeker jobseekerToUpdate = findBy(userId);
 
         if (newJobseeker.getFirst_name() != null)
             jobseekerToUpdate.setFirst_name(newJobseeker.getFirst_name());
         if (newJobseeker.getLast_name() != null)
             jobseekerToUpdate.setLast_name(newJobseeker.getLast_name());
-        jobseekerToUpdate.setAddress(newJobseeker.getAddress());
-        jobseekerToUpdate.setPhone(newJobseeker.getPhone());
+        if (newJobseeker.getAddress() != null)
+            jobseekerToUpdate.setAddress(newJobseeker.getAddress());
+        if (newJobseeker.getPhone() != null)
+            jobseekerToUpdate.setPhone(newJobseeker.getPhone());
         if (newJobseeker.getCv_url() != null)
             jobseekerToUpdate.setCv_url(newJobseeker.getCv_url());
-        jobseekerToUpdate.setSkills(newJobseeker.getSkills());
+        if (newJobseeker.getImage_url() != null)
+            jobseekerToUpdate.setImage_url(newJobseeker.getImage_url());
 
         return jobseekerRepo.save(jobseekerToUpdate);
     }
@@ -67,5 +66,12 @@ public class JobseekerService implements IJobseekerService {
         return jobseekerRepo.save(jobseeker);
     }
 
+    @Override
+    public Set<Skill> addAquiredSkills(Long jobseeker_id, Set<Skill> skills) {
+        Jobseeker jobseeker = findBy(jobseeker_id);
+        jobseeker.setSkills(skills);
+        jobseekerRepo.save(jobseeker);
+        return jobseeker.getSkills();
+    }
 }
 

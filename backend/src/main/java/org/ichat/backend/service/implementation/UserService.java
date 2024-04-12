@@ -3,7 +3,7 @@ package org.ichat.backend.service.implementation;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exeception.AccountException;
-import org.ichat.backend.model.User;
+import org.ichat.backend.model.tables.User;
 import org.ichat.backend.repository.UserRepo;
 import org.ichat.backend.service.IUserService;
 import org.springframework.stereotype.Service;
@@ -31,7 +31,6 @@ public class UserService implements IUserService {
         return userRepo.findByUsername(username).orElseThrow(() -> new AccountException("User not found by username"));
     }
 
-
     @Override
     public List<User> findAll() {
         return userRepo.findAll();
@@ -43,15 +42,11 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User update(Long userID_toUpdate, User newUser) throws AccountException {
-        User userToUpdate = userRepo.findById(userID_toUpdate).orElseThrow(() -> new AccountException("User not found"));
-        userToUpdate.setImage_url(newUser.getImage_url());
-        userToUpdate.setEnabled(newUser.getEnabled());
-        userToUpdate.setUsing_mfa(newUser.getUsing_mfa());
+    public User update(Long userId, User newUser) {
+        User userToUpdate = findBy(userId);
         userToUpdate.setUsing_mfa(newUser.getUsing_mfa());
         userToUpdate.setMfa_secret(newUser.getMfa_secret());
-
-        return userToUpdate;
+        userToUpdate.setImage_url(newUser.getImage_url());
+        return userRepo.save(userToUpdate);
     }
-
 }

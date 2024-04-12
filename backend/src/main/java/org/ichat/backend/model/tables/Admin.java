@@ -1,4 +1,4 @@
-package org.ichat.backend.model;
+package org.ichat.backend.model.tables;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;

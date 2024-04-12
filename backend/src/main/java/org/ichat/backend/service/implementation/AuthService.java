@@ -1,11 +1,10 @@
 package org.ichat.backend.service.implementation;
 
-import dev.samstevens.totp.exceptions.QrGenerationException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exeception.AccountException;
 import org.ichat.backend.jwt.IJwtService;
-import org.ichat.backend.model.*;
+import org.ichat.backend.model.tables.*;
 import org.ichat.backend.model.util.auth.*;
 import org.ichat.backend.service.*;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,7 +39,7 @@ public class AuthService implements IAuthService {
     private final AuthenticationManager authenticationManager;
 
     @Override
-    public AuthResponse authenticate(AccountCredentials credentials) throws QrGenerationException {
+    public AuthResponse authenticate(AccountCredentials credentials) {
         User user = userService.findBy(credentials.getEmail());
         if (!user.isEnabled()) {
             var new_verif = accountVerificationService.sendVerificationEmail(user.getEmail());
@@ -52,9 +51,18 @@ public class AuthService implements IAuthService {
         if (!passwordEncoder.matches(credentials.getPassword(), user.getPassword()))
             throw new AccountException("Invalid email or password");
 
-        if (user.getUsing_mfa()) {
-            String qrCode = twoFactorAuthService.generateMfaImage(user.getMfa_secret(), user.getEmail());
-            return new AuthResponse("User must login using OTP", true, qrCode);
+        if (user.getUsing_mfa()){
+            if (credentials.getCode() != null) {
+                try {
+                    verifyMFA(credentials);
+                    Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                    SecurityContextHolder.getContext().setAuthentication(auth);
+                    var token = jwtService.generateToken(user);
+                    return new AuthResponse(token);
+                } catch (AccountException e) {
+                    throw new BadCredentialsException("Invalid MFA code");
+                }
+            } else throw new AccountException("MFA code is required for this user");
         }
 
         Authentication auth = authenticationManager.authenticate(
@@ -64,6 +72,13 @@ public class AuthService implements IAuthService {
         SecurityContextHolder.getContext().setAuthentication(auth);
 
         return new AuthResponse(token);
+    }
+
+    @Override
+    public void verifyMFA(AccountCredentials credentials) {
+        User user = userService.findBy(credentials.getEmail());
+        if (!twoFactorAuthService.codeIsValid(user.getMfa_secret(), credentials.getCode()))
+            throw new AccountException("Invalid MFA code");
     }
 
     @Override
@@ -86,7 +101,7 @@ public class AuthService implements IAuthService {
     @Override
     public String registerCompany(RegisterCompanyRequest request) {
         Roles USER_Roles = roleService.getRoleByName("COMPANY");
-        Company company = companyService.getCompanyBySIREN(request.getSIREN());
+        Company company = companyService.getCompanyBySIREN(request.getSiren());
         company.setUsername(request.getUsername());
         company.setEmail(request.getEmail());
         company.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -117,7 +132,7 @@ public class AuthService implements IAuthService {
     }
 
     @Override
-    public String verifyAccount(String token) {
+    public String validateAccount(String token) {
         return accountVerificationService.verifyToken(token);
     }
 
@@ -133,21 +148,11 @@ public class AuthService implements IAuthService {
         String resetToken = accountResetService.sendResetEmail(user.getEmail());
         accountResetService.saveReset(user, resetToken);
 
-        return "Password reset email sent to your email address. Please check your email.";
+        return "Password reset request has been sent to your email address. Please check your email.";
     }
 
     @Override
-    public String verifyMFA(AccountCredentials credentials) {
-        User user = userService.findBy(credentials.getEmail());
-        if (twoFactorAuthService.codeIsValid(user.getMfa_secret(), credentials.getCode())){
-            Authentication auth = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            credentials.getEmail(), credentials.getPassword()));
-            var token = jwtService.generateToken(user);
-            SecurityContextHolder.getContext().setAuthentication(auth);
-
-            return token;
-        }
-        else throw new BadCredentialsException("Invalid code");
+    public User getAuthenticatedUser() {
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

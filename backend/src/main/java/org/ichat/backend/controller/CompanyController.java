@@ -2,9 +2,11 @@ package org.ichat.backend.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.ichat.backend.model.Company;
+import org.ichat.backend.model.tables.Company;
+import org.ichat.backend.model.util.patchers.CompanyPatch;
 import org.ichat.backend.service.ICompanyService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,8 +21,9 @@ public class CompanyController {
         return ResponseEntity.ok(user);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'COMPANY')")
     @PutMapping("/id/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody Company user) {
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid CompanyPatch user) {
         Company updatedUser = companyService.update(id, user);
         return ResponseEntity.ok(updatedUser);
     }

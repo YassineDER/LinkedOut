@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exeception.AccountException;
-import org.ichat.backend.model.User;
+import org.ichat.backend.model.tables.User;
 import org.ichat.backend.service.IUserService;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -47,10 +47,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     throw new AccountException("User not found from provided authorization token");
                 }
 
+                if (!user.getEnabled())
+                    throw new AccountException("User account is disabled");
+
                 var authenticationToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            } else throw new AccountException("Not authenticated");
+            }
+            else throw new AccountException("Not authenticated");
         } catch (Exception e) {
             response.setHeader("X-Error", e.getMessage());
         }

@@ -1,12 +1,12 @@
-package org.ichat.backend.model;
+package org.ichat.backend.model.tables;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,6 +17,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @DiscriminatorValue("J")
 public class Jobseeker extends User {
     @Column(nullable = false)
@@ -29,7 +30,6 @@ public class Jobseeker extends User {
 
     String address;
 
-    @Column(nullable = true)
     String phone;
 
     String cv_url;

@@ -2,7 +2,7 @@ package org.ichat.backend.jwt;
 
 
 import io.jsonwebtoken.Claims;
-import org.ichat.backend.model.User;
+import org.ichat.backend.model.tables.User;
 
 public interface IJwtService {
     void setExpiration(Long expiration);

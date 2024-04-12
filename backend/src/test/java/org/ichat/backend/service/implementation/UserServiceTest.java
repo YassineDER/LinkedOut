@@ -1,7 +1,7 @@
 package org.ichat.backend.service.implementation;
 
 import org.ichat.backend.exeception.AccountException;
-import org.ichat.backend.model.User;
+import org.ichat.backend.model.tables.User;
 import org.ichat.backend.repository.UserRepo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

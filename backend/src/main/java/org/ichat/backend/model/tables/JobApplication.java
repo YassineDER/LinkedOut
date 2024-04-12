@@ -1,6 +1,5 @@
-package org.ichat.backend.model;
+package org.ichat.backend.model.tables;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import lombok.Getter;

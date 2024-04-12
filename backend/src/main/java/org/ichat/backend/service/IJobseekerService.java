@@ -1,17 +1,20 @@
 package org.ichat.backend.service;
 
 import org.ichat.backend.exeception.AccountException;
-import org.ichat.backend.model.Jobseeker;
-import org.ichat.backend.model.User;
+import org.ichat.backend.model.tables.Jobseeker;
+import org.ichat.backend.model.tables.Skill;
+import org.ichat.backend.model.util.patchers.JobseekerPatch;
 
 import java.util.List;
+import java.util.Set;
 
 public interface IJobseekerService{
     List<Jobseeker> findAll();
     Jobseeker findBy(String email);
     Jobseeker findBy(Long jobseeker_id);
 
-    void deleteBy(Long userID);
-    Jobseeker update(Long oldUserID, Jobseeker newUser) throws AccountException;
+    Jobseeker update(Long oldUserID, JobseekerPatch newUser) throws AccountException;
     Jobseeker add(Jobseeker jobseeker);
+
+    Set<Skill> addAquiredSkills(Long jobseeker_id, Set<Skill> skills);
 }

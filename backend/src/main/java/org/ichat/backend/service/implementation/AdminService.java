@@ -1,10 +1,10 @@
 package org.ichat.backend.service.implementation;
 
+import org.ichat.backend.model.util.patchers.AdminPatch;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exeception.AccountException;
-import org.ichat.backend.model.Admin;
-import org.ichat.backend.model.User;
+import org.ichat.backend.model.tables.Admin;
 import org.ichat.backend.repository.AdminRepo;
 import org.ichat.backend.service.IAdminService;
 import org.ichat.backend.service.IUserService;
@@ -37,7 +37,7 @@ public class AdminService implements IAdminService {
     }
 
     @Override
-    public Admin update(Long oldUserID, Admin newAdmin) throws AccountException {
+    public Admin update(Long oldUserID, AdminPatch newAdmin) throws AccountException {
         Admin adminToUpdate = (Admin) userService.findBy(oldUserID);
 
         if (adminToUpdate.getFirst_name() != null)

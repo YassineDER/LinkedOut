@@ -1,37 +1,27 @@
 package org.ichat.backend.service.implementation;
 
-import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exeception.AccountException;
 import org.ichat.backend.jwt.IJwtService;
-import org.ichat.backend.model.AccountVerification;
-import org.ichat.backend.model.User;
+import org.ichat.backend.model.tables.AccountVerification;
+import org.ichat.backend.model.tables.User;
+import org.ichat.backend.model.util.MailType;
 import org.ichat.backend.repository.AccountVerificationRepository;
 import org.ichat.backend.service.IAccountVerificationService;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import org.ichat.backend.service.IMailService;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
 
 import java.time.OffsetDateTime;
-import java.util.Map;
-import java.util.UUID;
+import java.util.Random;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class AccountVerificationService implements IAccountVerificationService {
     private final AccountVerificationRepository accountVerificationRepository;
-    private final JavaMailSender mailSender;
+    private final IMailService mailService;
     private final IJwtService jwtService;
-    private final TemplateEngine templateEngine;
-
-    @Value("${links.verification}")
-    private String verificationUrl;
 
     @Override
     public String verifyToken(String token) {
@@ -53,33 +43,11 @@ public class AccountVerificationService implements IAccountVerificationService {
 
     @Override
     public String sendVerificationEmail(String email) {
-        String token = UUID.randomUUID().toString();
-        String url = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(verificationUrl + token)
-                .toUriString();
+        int number = new Random().nextInt(999999);
+        String code = String.format("%06d", number);
 
-        String header = "Verify your email address - Securecapita";
-        Context context = new Context();
-        context.setVariables(Map.of(
-                "header", header,
-                "title", "Verify your email address",
-                "link", url));
-
-        try {
-            MimeMessage mimeMessage = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "utf-8");
-            helper.setTo(email);
-            helper.setSubject(header);
-            helper.setFrom("no-reply@securecapita.com");
-            
-            String mailContent = templateEngine.process("email", context);
-            helper.setText(mailContent, true);
-            mailSender.send(mimeMessage);
-        } catch (Exception e) {
-            throw new AccountException("Failed to send verification email: " + e.getMessage());
-        }
-
-        return token;
+        mailService.sendMail(email, "Verify your account", code, MailType.VERIFY_ACCOUNT);
+        return code;
     }
 
     @Override

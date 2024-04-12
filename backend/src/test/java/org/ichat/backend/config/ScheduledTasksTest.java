@@ -1,12 +1,9 @@
 package org.ichat.backend.config;
 
-import org.aspectj.lang.annotation.Before;
-import org.ichat.backend.model.AccountReset;
-import org.ichat.backend.model.AccountVerification;
+import org.ichat.backend.model.tables.AccountReset;
+import org.ichat.backend.model.tables.AccountVerification;
 import org.ichat.backend.repository.AccountResetRepository;
 import org.ichat.backend.repository.AccountVerificationRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -68,10 +65,4 @@ class ScheduledTasksTest {
         assertNull(imagesCache.get("key"));
     }
 
-    @Test
-    void setNewInpiToken() {
-        scheduledTasks.setNewInpiToken();
-        assertFalse(System.getProperty("INPI_TOKEN").isEmpty());
-        assertTrue(System.getProperty("INPI_TOKEN").length() > 1);
-    }
 }

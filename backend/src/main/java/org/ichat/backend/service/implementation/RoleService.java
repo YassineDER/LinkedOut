@@ -3,7 +3,7 @@ package org.ichat.backend.service.implementation;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.ichat.backend.exeception.AccountException;
-import org.ichat.backend.model.Roles;
+import org.ichat.backend.model.tables.Roles;
 import org.ichat.backend.repository.RoleRepository;
 import org.ichat.backend.service.IRoleService;
 import org.springframework.stereotype.Service;

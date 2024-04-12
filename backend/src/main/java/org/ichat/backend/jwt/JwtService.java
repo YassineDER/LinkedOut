@@ -8,7 +8,7 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exeception.AccountException;
-import org.ichat.backend.model.User;
+import org.ichat.backend.model.tables.User;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;

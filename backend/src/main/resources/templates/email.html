@@ -261,28 +261,13 @@
                                     <td>
                                         <h1 th:text="${header}"></h1>
                                         <h2>You are just one step away</h2><br>
-                                        <table class="btn btn-primary">
-                                            <tbody>
-                                            <tr>
-                                                <td>
-                                                    Please click the link below <strong>(valid for only 30
-                                                    minutes)</strong>
-                                                    to verify your email address:
-                                                    <br>
-                                                    <a th:href="${link}">Verify Email</a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <p>If you’re having trouble clicking the button,
-                                                        you can click the link below:</p>
-                                                    <a th:href="${link}" th:text="${link}"></a>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                        <p>If you received this email by mistake, simply delete it. You won't be
-                                            subscribed if you don't click the confirmation link above.</p>
+                                        <br>
+                                        Please copy and paste the following code in the verification page to verify your email address.
+                                        <strong>(valid for only 30 minutes)</strong>
+                                        <br>
+                                        <h3 th:text="${code}"></h3>
+                                        <br>
+                                        <p>If you received this email by mistake, simply delete it. </p>
                                     </td>
                                 </tr>
                             </table>
@@ -294,14 +279,7 @@
 
                     <!-- START FOOTER -->
                 <div class="footer">
-                    <table>
-                        <tr>
-                            <td class="content-block">
-                                <span class="apple-link">securecapita.com | 2024</span>
-                                <br> Don't like these emails? <a href="#">Unsubscribe</a>.
-                            </td>
-                        </tr>
-                    </table>
+                    <span class="apple-link">securecapita.com | 2024</span>
                 </div>
             </div>
         </td>

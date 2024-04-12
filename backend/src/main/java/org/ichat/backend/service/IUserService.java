@@ -1,7 +1,6 @@
 package org.ichat.backend.service;
 
-import org.ichat.backend.exeception.AccountException;
-import org.ichat.backend.model.User;
+import org.ichat.backend.model.tables.User;
 
 import java.util.List;
 
@@ -11,5 +10,6 @@ public interface IUserService {
     User findBy(String email);
     User findByUsername(String username);
     List<User> findAll();
-    User update(Long userID_toUpdate, User newUser) throws AccountException;
+
+    User update(Long userId, User newUser);
 }

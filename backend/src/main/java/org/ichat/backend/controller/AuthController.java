@@ -3,13 +3,12 @@ package org.ichat.backend.controller;
 import dev.samstevens.totp.exceptions.QrGenerationException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.ichat.backend.model.User;
+import org.ichat.backend.exeception.AccountException;
 import org.ichat.backend.model.util.auth.*;
 import org.ichat.backend.service.IAuthService;
-import org.ichat.backend.service.ICompanyService;
-import org.ichat.backend.service.IJobseekerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -33,8 +32,8 @@ public class AuthController {
     }
 
     @GetMapping("/verify/{code}")
-    public ResponseEntity<AuthResponse> verifyAccount(@PathVariable String code) {
-        String jwt = authService.verifyAccount(code);
+    public ResponseEntity<AuthResponse> validateAccount(@PathVariable String code) {
+        String jwt = authService.validateAccount(code);
         return ResponseEntity.ok(new AuthResponse(jwt));
     }
 
@@ -44,12 +43,20 @@ public class AuthController {
         return ResponseEntity.ok(authResponse);
     }
 
-    @PostMapping("/verify/mfa")
-    public ResponseEntity<AuthResponse> verifyMFA(@RequestBody AccountCredentials credentials) {
-        if (credentials.getCode() == null)
-            return ResponseEntity.badRequest().build();
-        String resp = authService.verifyMFA(credentials);
-        return ResponseEntity.ok(new AuthResponse(resp));
+    @PostMapping("/reset-password")
+    @Transactional
+    public ResponseEntity<AuthResponse> requestReset(@RequestBody AccountCredentials credentials) {
+        if (credentials.getEmail() != null) {
+            if (authService.getAuthenticatedUser().getUsing_mfa()) {
+                if (credentials.getCode() == null)
+                    throw new AccountException("MFA code is required for this user");
+                authService.verifyMFA(credentials);
+            }
+
+            String resp = authService.requestPasswordReset(credentials.getEmail());
+            return ResponseEntity.ok(new AuthResponse(resp));
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     @PostMapping("/verify/password")
@@ -58,7 +65,6 @@ public class AuthController {
         return ResponseEntity.ok(new AuthResponse(resp));
     }
 
-//    @PostAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/status")
     public ResponseEntity<?> authenticatedUser() {
         var auth = SecurityContextHolder.getContext().getAuthentication();
@@ -71,11 +77,4 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/reset-password")
-    public ResponseEntity<AuthResponse> requestReset(@RequestBody AccountCredentials credentials) {
-        if (credentials.getEmail() != null) {
-            String resp = authService.requestPasswordReset(credentials.getEmail());
-            return ResponseEntity.ok(new AuthResponse(resp));
-        } else return ResponseEntity.badRequest().build();
-    }
 }

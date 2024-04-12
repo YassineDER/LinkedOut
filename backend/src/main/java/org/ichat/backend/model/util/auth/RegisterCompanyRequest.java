@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegisterCompanyRequest {
-    @NotEmpty(message = "SIREN is required")
+    @NotEmpty(message = "SIREN is mandatory")
     @Size(min = 9, max = 9, message = "SIREN must be 9 characters")
-    String SIREN;
+    private String siren;
     @NotEmpty(message = "email is mandatory")
     private String email;
     @NotEmpty(message = "username is mandatory")

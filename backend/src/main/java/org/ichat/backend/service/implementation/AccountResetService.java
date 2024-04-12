@@ -1,69 +1,33 @@
 package org.ichat.backend.service.implementation;
 
-import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exeception.AccountException;
-import org.ichat.backend.model.AccountReset;
-import org.ichat.backend.model.User;
+import org.ichat.backend.model.tables.AccountReset;
+import org.ichat.backend.model.tables.User;
+import org.ichat.backend.model.util.MailType;
 import org.ichat.backend.repository.AccountResetRepository;
 import org.ichat.backend.service.IAccountResetService;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import org.ichat.backend.service.IMailService;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
 
 import java.time.OffsetDateTime;
-import java.util.Map;
-import java.util.UUID;
+import java.util.Random;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class AccountResetService implements IAccountResetService {
     private final AccountResetRepository accountResetRepository;
-    private final JavaMailSender mailSender;
-    private final TemplateEngine templateEngine;
-
-    @Value("${links.reset-password-req}")
-    private String resetUrl;
+    private final IMailService mailService;
 
     @Override
     public String sendResetEmail(String email) {
-        String uuid_part = StringUtils.split(UUID.randomUUID().toString(), "-")[0];
-        String unique = email + ":" + uuid_part;
-        String token = UUID.nameUUIDFromBytes(unique.getBytes()).toString();
+        int number = new Random().nextInt(999999);
+        String code = String.format("%06d", number);
 
-        String url = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(resetUrl + token)
-                .toUriString();
-
-        String header = "Reset your password - Securecapita";
-        Context context = new Context();
-        context.setVariables(Map.of(
-                "header", header,
-                "title", "Reset your password",
-                "link", url));
-
-        try {
-            MimeMessage mimeMessage = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "utf-8");
-            helper.setTo(email);
-            helper.setSubject(header);
-            helper.setFrom("no-reply@securecapita.com");
-
-            String mailContent = templateEngine.process("reset", context);
-            helper.setText(mailContent, true);
-            mailSender.send(mimeMessage);
-        } catch (Exception e) {
-            throw new AccountException("Failed to send reset email. " + e.getMessage());
-        }
-
-        return token;
+        mailService.sendMail(email, "Password Reset Request", code, MailType.RESET_PASSWORD);
+        return code;
     }
 
     @Override
