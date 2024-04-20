@@ -3,25 +3,29 @@
         <h1 class="title is-1 has-text-centered">LinkedOut</h1>
 
         <form [formGroup]="loginFrom" (ngSubmit)="submitLoginform()"
-              class="is-flex is-flex-direction-column is-justify-content-center is-align-items-center">
-            <h3 class="mb-5 subtitle is-5">Account login</h3>
+              class="flex flex-col justify-center items-center">
+            <h3 class="mb-5 text-lg">Account login</h3>
 
-            <mat-form-field appearance="outline">
-                <mat-label>Enter your email address</mat-label>
-                <input formControlName="email" tabindex="1" required matInput>
-            </mat-form-field>
+            <div class="form-control w-full max-w-xs">
+                <label class="label">
+                    <span class="label-text">Enter your email address</span>
+                </label>
+                <input type="email" formControlName="email" tabindex="1" required class="input input-bordered w-full max-w-xs">
+            </div>
 
-            <mat-form-field>
-                <mat-label>Enter your password</mat-label>
-                <input formControlName="password" tabindex="2" required matInput [type]="hidePwd ? 'password' : 'text'">
-                <button tabindex="6" mat-icon-button matSuffix (click)="hidePwd = !hidePwd">
-                    <mat-icon>{{hidePwd ? 'visibility_off' : 'visibility'}}</mat-icon>
+            <div class="form-control w-full max-w-xs">
+                <label class="label">
+                    <span class="label-text">Enter your password</span>
+                </label>
+                <input [type]="hidePwd ? 'password' : 'text'" formControlName="password" tabindex="2" required class="input input-bordered w-full max-w-xs">
+                <button tabindex="6" class="btn btn-square" (click)="hidePwd = !hidePwd">
+                    <i class="text-xl">{{hidePwd ? 'visibility_off' : 'visibility'}}</i>
                 </button>
-            </mat-form-field>
+            </div>
 
-            <button tabindex="3" [disabled]="loginFrom.invalid" class="px-5" type="submit" mat-raised-button color="primary">Login</button>
-        </form><br>
-        <mat-divider class="mx-6"></mat-divider>
+            <button tabindex="3" [disabled]="loginFrom.invalid" class="px-5 btn btn-primary" type="submit">Login</button>
+        </form>
+        <br>
 
         <div class="links mt-4 is-flex is-justify-content-space-around is-align-items-center">
             <a tabindex="4" class="is-size-6" routerLink="/register">Register</a>
