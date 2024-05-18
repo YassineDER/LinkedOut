@@ -17,7 +17,6 @@ import org.thymeleaf.TemplateEngine;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +31,7 @@ public class MailService implements IMailService {
 
     @Override
     @Async
-    public void sendMail(String to, String header, String code, MailType type) {
+    public void sendMail(String to, String header, String code, MailType type) throws Exception {
         Context context = new Context();
         context.setVariables(Map.of(
                 "header", header,
@@ -53,18 +52,11 @@ public class MailService implements IMailService {
             String mailContent = templateEngine.process(templateFile, context);
             helper.setText(mailContent, true);
 
-            CompletableFuture.runAsync(() -> {
-                try {
-                    mailSender.send(mimeMessage);
-                } catch (MailException e) {
-                    throw new RuntimeException("Failed to send reset email. " + e.getMessage());
-                }
-            }).get(MAIL_TIMEOUT, TimeUnit.SECONDS);
+            CompletableFuture.runAsync(() -> mailSender.send(mimeMessage))
+                    .get(MAIL_TIMEOUT, TimeUnit.SECONDS);
 
-        } catch (TimeoutException e) {
+        } catch (MailException e) {
             throw new AccountException("Failed to send reset email. The operation timed out.");
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to send reset email. " + e.getMessage());
         }
     }
 }

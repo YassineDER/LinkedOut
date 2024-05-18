@@ -1,40 +1,61 @@
 package org.ichat.backend.config;
 
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-@SpringBootTest
+
 public class ApplicationConfigurationTest {
-    @Autowired
+    @Mock
     private UserDetailsService userDetailsService;
 
-    @Test
-    public void setup() {
-        assertThat(userDetailsService).isNotNull();
+    @Mock
+    private AuthenticationManager manager;
+
+    ApplicationConfiguration configuration;
+
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+        configuration = new ApplicationConfiguration(userDetailsService);
     }
 
     @Test
     public void authenticationProviderTest() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService);
-        provider.setPasswordEncoder(new BCryptPasswordEncoder());
+        AuthenticationProvider provider = configuration.authenticationProvider();
         assertThat(provider).isNotNull();
     }
 
     @Test
+    void authenticationManagerBeanTest() throws Exception {
+        // Given
+        AuthenticationConfiguration authenticationConfiguration = mock(AuthenticationConfiguration.class);
+        when(authenticationConfiguration.getAuthenticationManager()).thenReturn(manager);
+        // When
+        AuthenticationManager authmanager = configuration.authenticationManager(authenticationConfiguration);
+        // Then
+        assertThat(authmanager).isNotNull();
+    }
+
+    @Test
     public void passwordEncoderTest() {
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        assertThat(passwordEncoder).isNotNull();
+        // When
+        PasswordEncoder encoder = configuration.passwordEncoder();
+        // Then
+        assertThat(encoder).isInstanceOf(BCryptPasswordEncoder.class);
+        assertThat(encoder).isNotNull();
     }
 }

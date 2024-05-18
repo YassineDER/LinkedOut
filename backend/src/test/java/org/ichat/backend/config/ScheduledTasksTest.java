@@ -4,19 +4,24 @@ import org.ichat.backend.model.tables.AccountReset;
 import org.ichat.backend.model.tables.AccountVerification;
 import org.ichat.backend.repository.AccountResetRepository;
 import org.ichat.backend.repository.AccountVerificationRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.test.context.TestPropertySource;
 
+import java.time.Clock;
+import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
-@TestPropertySource(locations = "classpath:application-test.yml")
 class ScheduledTasksTest {
     @Autowired
     private AccountVerificationRepository accountVerificationRepository;
@@ -27,29 +32,34 @@ class ScheduledTasksTest {
     @Autowired
     private CacheConfig cacheConfig;
 
+    @BeforeEach
+    void setUp() {
+        accountVerificationRepository.deleteAll();
+        accountResetRepository.deleteAll();
+    }
 
     @Test
     void deleteExpiredAccountVerification() {
-        OffsetDateTime oldDate = OffsetDateTime.now().minusDays(2);
+        OffsetDateTime oldDate = OffsetDateTime.now().minusHours(24);
         AccountVerification oldToken = new AccountVerification();
         oldToken.setToken("oldToken");
         oldToken.setExpiresAt(oldDate);
-        if (accountVerificationRepository.findByToken("oldToken").isPresent())
-            accountVerificationRepository.deleteByToken("oldToken");
+
         accountVerificationRepository.save(oldToken);
+        assertTrue(accountVerificationRepository.findByToken("oldToken").isPresent());
         scheduledTasks.deleteExpiredAccountVerification();
         assertFalse(accountVerificationRepository.findByToken("oldToken").isPresent());
     }
 
     @Test
     void deleteExpiredAccountReset() {
-        OffsetDateTime oldDate = OffsetDateTime.now().minusDays(2);
+        OffsetDateTime oldDate = OffsetDateTime.now().minusHours(24);
         AccountReset oldToken = new AccountReset();
         oldToken.setToken("oldToken");
         oldToken.setExpiresAt(oldDate);
-        if (accountResetRepository.findByToken("oldToken").isPresent())
-            accountResetRepository.deleteByToken("oldToken");
+
         accountResetRepository.save(oldToken);
+        assertTrue(accountResetRepository.findByToken("oldToken").isPresent());
         scheduledTasks.deleteExpiredAccountReset();
         assertFalse(accountResetRepository.findByToken("oldToken").isPresent());
     }

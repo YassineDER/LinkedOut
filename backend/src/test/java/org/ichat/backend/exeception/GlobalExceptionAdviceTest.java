@@ -25,11 +25,11 @@ class GlobalExceptionAdviceTest {
     @Mock
     private Environment env;
 
-    @BeforeEach
+//    @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
         when(env.getActiveProfiles()).thenReturn(new String[]{"test"});
-        advice = new GlobalExceptionAdvice(env);
+//        advice = new GlobalExceptionAdvice(env);
     }
 
     @Test

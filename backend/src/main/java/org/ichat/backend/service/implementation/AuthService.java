@@ -51,7 +51,7 @@ public class AuthService implements IAuthService {
         if (!passwordEncoder.matches(credentials.getPassword(), user.getPassword()))
             throw new AccountException("Invalid email or password");
 
-        if (user.getUsing_mfa()){
+        if (Boolean.TRUE.equals(user.getUsing_mfa())){
             if (credentials.getCode() != null) {
                 try {
                     verifyMFA(credentials);

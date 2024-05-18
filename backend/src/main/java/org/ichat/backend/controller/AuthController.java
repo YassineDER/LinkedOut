@@ -38,7 +38,7 @@ public class AuthController {
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<?> login(@Valid @RequestBody AccountCredentials credentials) throws QrGenerationException {
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody AccountCredentials credentials) throws QrGenerationException {
         AuthResponse authResponse = authService.authenticate(credentials);
         return ResponseEntity.ok(authResponse);
     }
@@ -47,7 +47,7 @@ public class AuthController {
     @Transactional
     public ResponseEntity<AuthResponse> requestReset(@RequestBody AccountCredentials credentials) {
         if (credentials.getEmail() != null) {
-            if (authService.getAuthenticatedUser().getUsing_mfa()) {
+            if (Boolean.TRUE.equals(authService.getAuthenticatedUser().getUsing_mfa())) {
                 if (credentials.getCode() == null)
                     throw new AccountException("MFA code is required for this user");
                 authService.verifyMFA(credentials);
@@ -66,7 +66,7 @@ public class AuthController {
     }
 
     @GetMapping("/status")
-    public ResponseEntity<?> authenticatedUser() {
+    public ResponseEntity<Map<String,Object>> authenticatedUser() {
         var auth = SecurityContextHolder.getContext().getAuthentication();
         var response = Map.of(
                 "authenticated", auth.isAuthenticated(),

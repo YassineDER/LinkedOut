@@ -78,9 +78,4 @@ public class StorageService implements IStorageService {
         return image;
     }
 
-    @Override
-    public void deleteAll() {
-
-    }
-
 }

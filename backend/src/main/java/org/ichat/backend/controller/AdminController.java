@@ -18,13 +18,13 @@ public class AdminController {
     private final IAdminService adminService;
 
     @GetMapping("/id/{id}")
-    public ResponseEntity<?> one(@PathVariable Long id) {
+    public ResponseEntity<Admin> one(@PathVariable Long id) {
         Admin admin = adminService.findBy(id);
         return ResponseEntity.ok(admin);
     }
 
     @PutMapping("/id/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody AdminPatch admin) {
+    public ResponseEntity<Admin> update(@PathVariable Long id, @Valid @RequestBody AdminPatch admin) {
         Admin updatedAdmin = adminService.update(id, admin);
         return ResponseEntity.ok(updatedAdmin);
     }

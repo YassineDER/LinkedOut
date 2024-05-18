@@ -7,8 +7,8 @@ import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
 class CacheConfigTest {
+
     @Test
     void cacheManagerTest() {
         CacheManager cacheManager = new CacheConfig().cacheManager();

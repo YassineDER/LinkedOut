@@ -5,7 +5,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.ichat.backend.exeception.AccountException;
 import org.ichat.backend.model.tables.User;
 import org.ichat.backend.service.IUserService;
 import org.springframework.lang.NonNull;
@@ -27,8 +26,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
-        String authorizationHeader = request.getHeader("Authorization");
 
+        String authorizationHeader = request.getHeader("Authorization");
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
@@ -40,23 +39,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             var auth = SecurityContextHolder.getContext().getAuthentication();
 
             if (email != null && (auth == null || !auth.isAuthenticated() || auth.getPrincipal() == "anonymousUser")) {
-                User user;
-                try {
-                    user = userService.findBy(email);
-                } catch (AccountException e) {
-                    throw new AccountException("User not found from provided authorization token");
-                }
-
-                if (!user.getEnabled())
-                    throw new AccountException("User account is disabled");
-
+                User user = userService.findBy(email);
                 var authenticationToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
-            else throw new AccountException("Not authenticated");
         } catch (Exception e) {
-            response.setHeader("X-Error", e.getMessage());
+            response.setStatus(401);
+            response.getWriter().write(e.getMessage());
+            return;
         }
 
         filterChain.doFilter(request, response);

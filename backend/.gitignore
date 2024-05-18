@@ -6,6 +6,7 @@ target/
 logs
 uploads
 
+*.db
 ### STS ###
 .apt_generated
 .classpath

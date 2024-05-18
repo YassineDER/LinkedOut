@@ -1,5 +1,6 @@
 package org.ichat.backend.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,23 +18,36 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 
 @SpringBootTest
+@Slf4j
 class SecurityConfigurationTest {
     @Autowired
     private WebApplicationContext context;
 
     @Test
-    @WithMockUser(authorities = "ROLE_USER")
-    public void testAuthorizedRequest() throws Exception {
+    @WithMockUser(authorities = "ADMIN")
+    void testAuthorizedRequest() throws Exception {
         MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .apply(springSecurity())
                 .build();
+
         mockMvc.perform(MockMvcRequestBuilders.get("/api/auth/status"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
+    @Test
+    void testErrorRequest() throws Exception {
+        MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(context)
+                .apply(springSecurity())
+                .build();
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/auth/status"))
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized())
+                .andDo(result -> log.info(result.getResponse().getContentAsString()));
+    }
+
 
     @Test
-    public void testUnauthorizedRequest() throws Exception {
+    void testUnauthorizedRequest() throws Exception {
         MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .apply(springSecurity())
                 .build();

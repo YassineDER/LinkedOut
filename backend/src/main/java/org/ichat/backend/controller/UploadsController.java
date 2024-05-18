@@ -28,7 +28,6 @@ public class UploadsController {
         return ResponseEntity.ok()
                 .contentType(file.getMediaType())
                 .body(file.getData());
-//        return ResponseEntity.ok(file);
     }
 
 

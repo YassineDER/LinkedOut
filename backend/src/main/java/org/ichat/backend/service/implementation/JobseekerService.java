@@ -7,7 +7,6 @@ import org.ichat.backend.model.tables.Skill;
 import org.ichat.backend.model.util.patchers.JobseekerPatch;
 import org.ichat.backend.repository.JobseekerRepo;
 import org.ichat.backend.service.IJobseekerService;
-import org.ichat.backend.service.IUserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,8 +31,8 @@ public class JobseekerService implements IJobseekerService {
     }
 
     @Override
-    public Jobseeker findBy(Long jobseeker_id) {
-        return jobseekerRepo.findById(jobseeker_id)
+    public Jobseeker findBy(Long jobseekerId) {
+        return jobseekerRepo.findById(jobseekerId)
                 .orElseThrow(() -> new AccountException("Jobseeker not found by id"));
     }
 

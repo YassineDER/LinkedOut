@@ -22,6 +22,7 @@ public class AccountVerificationService implements IAccountVerificationService {
     private final AccountVerificationRepository accountVerificationRepository;
     private final IMailService mailService;
     private final IJwtService jwtService;
+    private final Random random = new Random();
 
     @Override
     public String verifyToken(String token) {
@@ -33,7 +34,7 @@ public class AccountVerificationService implements IAccountVerificationService {
         User user = accountVerification.getUser();
         if (user == null)
             throw new AccountException("No user found with the provided token. Please register again.");
-        if (user.getEnabled())
+        if (Boolean.TRUE.equals(user.getEnabled()))
             throw new AccountException("User account is already verified and enabled");
 
         accountVerification.verifyUser();
@@ -43,7 +44,7 @@ public class AccountVerificationService implements IAccountVerificationService {
 
     @Override
     public String sendVerificationEmail(String email) {
-        int number = new Random().nextInt(999999);
+        int number = random.nextInt(999999);
         String code = String.format("%06d", number);
 
         mailService.sendMail(email, "Verify your account", code, MailType.VERIFY_ACCOUNT);

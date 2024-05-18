@@ -16,14 +16,14 @@ public class CompanyController {
     private final ICompanyService companyService;
 
     @GetMapping("/id/{id}")
-    public ResponseEntity<?> one(@PathVariable Long id) {
+    public ResponseEntity<Company> one(@PathVariable Long id) {
         Company user = companyService.findBy(id);
         return ResponseEntity.ok(user);
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'COMPANY')")
     @PutMapping("/id/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid CompanyPatch user) {
+    public ResponseEntity<Company> update(@PathVariable Long id, @RequestBody @Valid CompanyPatch user) {
         Company updatedUser = companyService.update(id, user);
         return ResponseEntity.ok(updatedUser);
     }

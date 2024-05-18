@@ -19,17 +19,17 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtService implements IJwtService {
     private static final String SECRET = System.getenv("JWT_SECRET");
-    private static Long EXPIRATION = 1000L * 60 * 60 * 24 * 3; // days
+    private Long expiration = 1000L * 60 * 60 * 24 * 3; // days
 
     @Override
     public void setExpiration(Long expiration) {
-        EXPIRATION = expiration;
+        this.expiration = expiration;
     }
 
     @Override
     public String generateToken(User user) {
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + EXPIRATION);
+        Date expiryDate = new Date(now.getTime() + expiration);
 
         return Jwts.builder()
                 .setSubject(user.getEmail())

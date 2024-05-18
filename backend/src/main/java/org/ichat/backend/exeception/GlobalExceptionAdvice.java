@@ -3,7 +3,6 @@ package org.ichat.backend.exeception;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -22,6 +21,9 @@ import java.util.regex.Pattern;
 @ControllerAdvice
 @RequiredArgsConstructor
 public class GlobalExceptionAdvice {
+    private static final String ERROR = "error";
+    private static final String STATUS = "status";
+    private static final String CAUSE = "cause";
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionAdvice.class);
 
     @ResponseBody
@@ -29,8 +31,8 @@ public class GlobalExceptionAdvice {
             BadCredentialsException.class, AccessDeniedException.class})
     ResponseEntity<Object> accountErrorHandler(Exception ex) {
         Map<String, Object> body = new HashMap<>();
-        body.put("error", ex.getMessage());
-        body.put("status", HttpStatus.BAD_REQUEST.value());
+        body.put(ERROR, ex.getMessage());
+        body.put(STATUS, HttpStatus.BAD_REQUEST.value());
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
@@ -57,8 +59,8 @@ public class GlobalExceptionAdvice {
         log.error("A global error occurred", ex);
 
         Map<String, Object> body = new HashMap<>();
-        body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
-        body.put("error", ex.getMessage());
+        body.put(STATUS, HttpStatus.INTERNAL_SERVER_ERROR.value());
+        body.put(ERROR, ex.getMessage());
         return ResponseEntity.internalServerError().body(body);
     }
 
@@ -66,9 +68,9 @@ public class GlobalExceptionAdvice {
     @ExceptionHandler(StorageException.class)
     public ResponseEntity<Object> handleStorageErrors(StorageException ex) {
         Map<String, Object> body = new HashMap<>();
-        body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
-        body.put("error", ex.getMessage());
-        body.put("cause", ex.getCause().getMessage());
+        body.put(STATUS, HttpStatus.INTERNAL_SERVER_ERROR.value());
+        body.put(ERROR, ex.getMessage());
+        body.put(CAUSE, ex.getCause().getMessage());
         return ResponseEntity.internalServerError().body(body);
     }
 

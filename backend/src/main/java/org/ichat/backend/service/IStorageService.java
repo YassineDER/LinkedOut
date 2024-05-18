@@ -9,9 +9,5 @@ public interface IStorageService {
     void init() throws IOException;
 
     StorageFile store(MultipartFile file) throws IOException;
-
     StorageFile getImage(String filename) throws IOException;
-
-    void deleteAll();
-
 }

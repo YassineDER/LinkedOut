@@ -20,10 +20,11 @@ import java.util.Random;
 public class AccountResetService implements IAccountResetService {
     private final AccountResetRepository accountResetRepository;
     private final IMailService mailService;
+    private final Random random = new Random();
 
     @Override
     public String sendResetEmail(String email) {
-        int number = new Random().nextInt(999999);
+        int number = random.nextInt(999999);
         String code = String.format("%06d", number);
 
         mailService.sendMail(email, "Password Reset Request", code, MailType.RESET_PASSWORD);

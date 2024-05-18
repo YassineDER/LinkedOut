@@ -4,8 +4,8 @@ import lombok.Getter;
 
 @Getter
 public enum MailType {
-    RESET_PASSWORD("Reset your password - Securecapita"),
-    VERIFY_ACCOUNT("Verify your account - Securecapita");
+    RESET_PASSWORD("Reset your password - LinkedOut"),
+    VERIFY_ACCOUNT("Verify your account - LinkedOut");
 
     private final String label;
 
