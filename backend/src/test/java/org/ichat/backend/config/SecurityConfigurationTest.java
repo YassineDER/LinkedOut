@@ -4,10 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -24,30 +21,30 @@ class SecurityConfigurationTest {
     private WebApplicationContext context;
 
     @Test
-    @WithMockUser(authorities = "ADMIN")
+    @WithMockUser(authorities = "ADMIN", username = "admin")
     void testAuthorizedRequest() throws Exception {
         MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .apply(springSecurity())
                 .build();
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/auth/status"))
+                .andDo(result -> log.info(result.getResponse().getContentAsString()))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
+    @WithMockUser(authorities = "ADMIN")
     void testErrorRequest() throws Exception {
         MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(context)
-                .apply(springSecurity())
-                .build();
+                .apply(springSecurity())                .build();
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/auth/status"))
-                .andExpect(MockMvcResultMatchers.status().isUnauthorized())
-                .andDo(result -> log.info(result.getResponse().getContentAsString()));
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/jobseeker/id/0"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
 
     @Test
-    void testUnauthorizedRequest() throws Exception {
+    void testNoAuthRequest() throws Exception {
         MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .apply(springSecurity())
                 .build();

@@ -31,7 +31,7 @@ public class MailService implements IMailService {
 
     @Override
     @Async
-    public void sendMail(String to, String header, String code, MailType type) throws Exception {
+    public void sendMail(String to, String header, String code, MailType type) {
         Context context = new Context();
         context.setVariables(Map.of(
                 "header", header,
@@ -57,6 +57,8 @@ public class MailService implements IMailService {
 
         } catch (MailException e) {
             throw new AccountException("Failed to send reset email. The operation timed out.");
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to send reset email. " + e.getMessage());
         }
     }
 }

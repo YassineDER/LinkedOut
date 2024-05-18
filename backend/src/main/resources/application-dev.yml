@@ -2,10 +2,10 @@ spring:
   application:
     name: LinkedOut
   datasource:
-    driverClassName: org.sqlite.JDBC
-    url: jdbc:sqlite:securecapita.db
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/securecapita
     username: postgres
-    password: messi203
+    password: postgres
   mail:
     host: sandbox.smtp.mailtrap.io
     port: 2525
@@ -34,7 +34,6 @@ spring:
           id:
             new_generator_mappings: true
     open-in-view: false
-    database-platform: org.hibernate.community.dialect.SQLiteDialect
   sql:
     init:
       mode: embedded

@@ -1,10 +1,13 @@
 package org.ichat.backend.jwt;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.ichat.backend.exeception.AccountException;
 import org.ichat.backend.model.tables.User;
 import org.ichat.backend.service.IUserService;
 import org.springframework.lang.NonNull;
@@ -26,8 +29,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
-
         String authorizationHeader = request.getHeader("Authorization");
+
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
@@ -44,9 +47,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
+            else throw new AccountException("Not authenticated");
         } catch (Exception e) {
-            response.setStatus(401);
-            response.getWriter().write(e.getMessage());
+            if (request.getRequestURI().startsWith("/api/auth/") && e.getMessage().equals("Invalid token"))
+                filterChain.doFilter(request, response);
+
+            else {
+                response.getWriter().write(e.getMessage());
+                response.setStatus(500);
+            }
+
             return;
         }
 

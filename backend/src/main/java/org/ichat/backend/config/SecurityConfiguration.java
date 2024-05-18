@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @RequiredArgsConstructor
@@ -26,13 +27,12 @@ public class SecurityConfiguration {
     @Profile("!prod")
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-//                .exceptionHandling(exception -> exception
-//                        .authenticationEntryPoint((request, response, authException) ->
-//                                response.sendError(401, authException.getMessage())))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/auth/**")
-                        .permitAll().anyRequest()
-                        .authenticated())
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/jobseeker/**").hasAnyRole("JOBSEEKER", "ADMIN")
+                        .requestMatchers("/api/company/**").hasAnyRole("COMPANY", "ADMIN")
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .anyRequest().authenticated())
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -47,13 +47,12 @@ public class SecurityConfiguration {
     @Bean
     @Profile("prod")
     public SecurityFilterChain securityFilterChainProd(HttpSecurity http) throws Exception {
-        http.exceptionHandling(exception -> exception
-                        .authenticationEntryPoint((request, response, authException) ->
-                                response.sendError(503, "internal server error")))
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/auth/**")
-                        .permitAll().anyRequest()
-                        .authenticated())
+        http.authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/jobseeker/**").hasAnyRole("JOBSEEKER", "ADMIN")
+                        .requestMatchers("/api/company/**").hasAnyRole("COMPANY", "ADMIN")
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .anyRequest().authenticated())
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

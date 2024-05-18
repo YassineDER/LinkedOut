@@ -1,5 +1,6 @@
 package org.ichat.backend.exeception;
 
+import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +25,6 @@ public class GlobalExceptionAdvice {
     private static final String ERROR = "error";
     private static final String STATUS = "status";
     private static final String CAUSE = "cause";
-    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionAdvice.class);
 
     @ResponseBody
     @ExceptionHandler({AccountException.class, AccountExpiredException.class,
@@ -56,8 +56,6 @@ public class GlobalExceptionAdvice {
     @ResponseBody
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleGlobalErrors(Exception ex) {
-        log.error("A global error occurred", ex);
-
         Map<String, Object> body = new HashMap<>();
         body.put(STATUS, HttpStatus.INTERNAL_SERVER_ERROR.value());
         body.put(ERROR, ex.getMessage());

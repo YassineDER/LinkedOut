@@ -1,8 +1,6 @@
 package org.ichat.backend.jwt;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.transaction.Transactional;
@@ -54,7 +52,7 @@ public class JwtService implements IJwtService {
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
-        } catch (Exception e) {
+        } catch (ExpiredJwtException e) {
             throw new AccountException("Invalid token", e);
         }
     }
