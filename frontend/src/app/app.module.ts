@@ -6,10 +6,12 @@ import {LoginComponent} from "./components/login/login.component";
 import {ProfileComponent} from "./components/profile/profile.component";
 import {RegisterComponent} from "./components/register/register.component";
 import {ResetPasswordComponent} from "./components/reset-password/reset-password.component";
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {BrowserAnimationsModule, provideAnimations} from "@angular/platform-browser/animations";
 import { ConfirmationComponent } from './components/confirmation/confirmation.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './components/home/home.component';
+import { AlertComponent } from './components/alert/alert.component';
+
 
 @NgModule({
     declarations: [
@@ -20,6 +22,7 @@ import { HomeComponent } from './components/home/home.component';
         ResetPasswordComponent,
         ConfirmationComponent,
         HomeComponent,
+        AlertComponent,
     ],
     imports: [
         BrowserModule,
@@ -28,7 +31,9 @@ import { HomeComponent } from './components/home/home.component';
         ReactiveFormsModule
     ],
     bootstrap: [AppComponent],
-    providers: []
+    providers: [
+        provideAnimations(),
+    ]
 })
 export class AppModule {
 }

@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {SnackBarService} from '../../service/snack-bar.service';
+import {AlertService} from '../../service/alert.service';
 
 @Component({
     selector: 'app-reset-password',
@@ -10,7 +10,7 @@ import {SnackBarService} from '../../service/snack-bar.service';
 export class ResetPasswordComponent {
     resetForm: FormGroup;
 
-    constructor(private fb: FormBuilder, private snack: SnackBarService) {
+    constructor(private fb: FormBuilder, private snack: AlertService) {
         this.resetForm = this.fb.group({
             password: ['', [Validators.required, Validators.minLength(6)]],
             confirm_password: ['', [Validators.required, Validators.minLength(6)]]

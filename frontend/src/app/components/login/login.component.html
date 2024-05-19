@@ -1,34 +1,17 @@
-<div class="is-flex is-align-items-center" style="height: 90vh;">
-    <div class="container is-max-desktop box">
-        <h1 class="title is-1 has-text-centered">LinkedOut</h1>
-
-        <form [formGroup]="loginFrom" (ngSubmit)="submitLoginform()"
-              class="flex flex-col justify-center items-center">
-            <h3 class="mb-5 text-lg">Account login</h3>
-
-            <div class="form-control w-full max-w-xs">
-                <label class="label">
-                    <span class="label-text">Enter your email address</span>
-                </label>
-                <input type="email" formControlName="email" tabindex="1" required class="input input-bordered w-full max-w-xs">
-            </div>
-
-            <div class="form-control w-full max-w-xs">
-                <label class="label">
-                    <span class="label-text">Enter your password</span>
-                </label>
-                <input [type]="hidePwd ? 'password' : 'text'" formControlName="password" tabindex="2" required class="input input-bordered w-full max-w-xs">
-                <button tabindex="6" class="btn btn-square" (click)="hidePwd = !hidePwd">
-                    <i class="text-xl">{{hidePwd ? 'visibility_off' : 'visibility'}}</i>
-                </button>
-            </div>
-
-            <button tabindex="3" [disabled]="loginFrom.invalid" class="px-5 btn btn-primary" type="submit">Login</button>
-        </form>
+<div class="bg-slate-100 flex items-center justify-center h-screen">
+    <div class="bg-white z-10 p-14 rounded-lg shadow-md w-1/3 mx-auto my-auto">
+        <h2 class="text-2xl font-semibold mb-1">Back to your digital life</h2>
+        <p class="text-gray-500 mb-6">Choose one of the option to go</p>
         <br>
-
-        <div class="links mt-4 is-flex is-justify-content-space-around is-align-items-center">
-            <a tabindex="4" class="is-size-6" routerLink="/register">Register</a>
+        <div class="space-y-4">
+          <input type="email" class="input input-bordered w-full" placeholder="get@ziontutorial.com" />
+          <input type="password" class="input input-bordered w-full" placeholder="Password" />
         </div>
-    </div>
+    
+        <button class="btn btn-primary w-full my-5">Log in</button>
+
+        <h5 class="font-bold text-center">
+            Nouveau sur LinkedIn ? <a routerLink="/register" class="text-blue-500">S’inscrire</a>
+        </h5>
+      </div>
 </div>
