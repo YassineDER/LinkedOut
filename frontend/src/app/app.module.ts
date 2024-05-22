@@ -14,6 +14,9 @@ import { AlertComponent } from './components/alert/alert.component';
 import { NgOtpInputModule } from 'ng-otp-input';
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaFormsModule, RecaptchaV3Module } from 'ng-recaptcha';
 import { environment } from '../environments/environment.development';
+import { HttpClientModule } from '@angular/common/http';
+import { OffersComponent } from './components/offers/offers.component';
+import {NgOptimizedImage} from "@angular/common";
 
 
 @NgModule({
@@ -26,6 +29,7 @@ import { environment } from '../environments/environment.development';
         ConfirmationComponent,
         HomeComponent,
         AlertComponent,
+        OffersComponent,
     ],
     imports: [
         BrowserModule,
@@ -35,6 +39,8 @@ import { environment } from '../environments/environment.development';
         NgOtpInputModule,
         RecaptchaV3Module,
         RecaptchaFormsModule,
+        HttpClientModule,
+        NgOptimizedImage,
     ],
     bootstrap: [AppComponent],
     providers: [

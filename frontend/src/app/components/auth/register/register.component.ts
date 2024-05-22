@@ -1,39 +1,78 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {Component} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AlertService} from '../../../service/alert.service';
+import {AlertType} from "../../../models/AlertType";
+import {ReCaptchaV3Service} from 'ng-recaptcha';
+import {environment} from "../../../../environments/environment";
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrl: './register.component.css'
+    selector: 'app-register',
+    templateUrl: './register.component.html',
+    styleUrl: './register.component.css'
 })
 export class RegisterComponent {
-  hide = true;
-  registerFrom: FormGroup;
-  usernames = ["user1", "user2", "user3", "user4", "user6", "user7"];
+    passVisible = false;
+    isDev = false;
+    registerFrom: FormGroup;
+    email = new FormControl('', [Validators.required, Validators.email]);
+    username = new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]);
+    password = new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]);
+    first_name = new FormControl('', [Validators.required]);
+    last_name = new FormControl('', [Validators.required]);
+    captcha = new FormControl(null, [Validators.required]);
 
-  constructor(private fb: FormBuilder) {
-    this.registerFrom = this.fb.group({
-      first_name: ['', [Validators.required]],
-      last_name: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
-      username: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(30)]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
-      confirm_password: ['', [Validators.required, Validators.minLength(8)]],
-    });
-  }
+    constructor(private fb: FormBuilder, private alert: AlertService,
+                private recaptchaV3: ReCaptchaV3Service) {
+        this.registerFrom = this.fb.group({
+            email: this.email,
+            username: this.username,
+            password: this.password,
+            first_name: this.first_name,
+            last_name: this.last_name,
+            captcha: this.captcha
+        });
 
+        this.isDev = !environment.production;
+    }
 
-  formIsValid() {
-    const username = this.registerFrom.value.username;
-  
-    return this.registerFrom.valid
-      && this.registerFrom.value.password === this.registerFrom.value.confirm_password
-      && !this.usernames.includes(username);
-  }
+    executeRecaptchaV3() {
+        let token;
+        this.recaptchaV3.execute('Register')
+            .subscribe({
+                next: (tk) => {
+                    if (tk) token = tk;
+                },
+                error: (error) => {
+                    this.alert.showAlert('Erreur lors de la validation du captcha: ' + error, AlertType.ERROR);
+                }
+            });
 
-  
-  submitRegisterForm() {
-    console.log(this.registerFrom.value);
-  }
+        this.registerFrom.controls['captcha'].setValue(token);
+        return token;
+    }
+
+    preFillForm() {
+        this.registerFrom.setValue({
+            captcha: new FormControl(this.executeRecaptchaV3()).value,
+            email: new FormControl('bcha2825@hotmail.fr').value,
+            username: new FormControl('YassineDER').value,
+            password: new FormControl('123456').value,
+            first_name: new FormControl('Yassine').value,
+            last_name: new FormControl('DERGAOUI').value }
+        );
+    }
+
+    submitRegisterForm(event: Event) {
+        event.preventDefault();
+        this.executeRecaptchaV3();
+        for (let i in this.registerFrom.controls) {
+            if (this.registerFrom.controls[i].errors) {
+                this.registerFrom.controls[i].markAsTouched();
+                return this.alert.showAlert('Le champ ' + i + ' est invalide', AlertType.ERROR);
+            }
+        }
+
+        console.log(this.registerFrom.value);
+    }
 
 }
