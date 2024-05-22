@@ -2,6 +2,7 @@ package org.ichat.backend.exeception;
 
 import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -21,18 +22,24 @@ import java.util.regex.Pattern;
 
 @ControllerAdvice
 @RequiredArgsConstructor
+@Slf4j
 public class GlobalExceptionAdvice {
     private static final String ERROR = "error";
     private static final String STATUS = "status";
     private static final String CAUSE = "cause";
+    private static final String TYPE = "type";
+    private static final String CLASS = "class";
 
     @ResponseBody
     @ExceptionHandler({AccountException.class, AccountExpiredException.class,
             BadCredentialsException.class, AccessDeniedException.class})
     ResponseEntity<Object> accountErrorHandler(Exception ex) {
         Map<String, Object> body = new HashMap<>();
+        body.put(TYPE, "Account");
+        body.put(CLASS, ex.getClass().getName());
         body.put(ERROR, ex.getMessage());
         body.put(STATUS, HttpStatus.BAD_REQUEST.value());
+        body.put(CAUSE, ex.getCause() == null ? "Unknown" : ex.getCause().getMessage());
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
@@ -56,9 +63,14 @@ public class GlobalExceptionAdvice {
     @ResponseBody
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleGlobalErrors(Exception ex) {
+        log.error(ex.getMessage());
         Map<String, Object> body = new HashMap<>();
+        body.put(TYPE, "Global");
+        body.put(CLASS, ex.getClass().getName());
         body.put(STATUS, HttpStatus.INTERNAL_SERVER_ERROR.value());
         body.put(ERROR, ex.getMessage());
+        body.put(CAUSE, ex.getCause() == null ? "Unknown" : ex.getCause().getMessage());
+
         return ResponseEntity.internalServerError().body(body);
     }
 
@@ -66,11 +78,12 @@ public class GlobalExceptionAdvice {
     @ExceptionHandler(StorageException.class)
     public ResponseEntity<Object> handleStorageErrors(StorageException ex) {
         Map<String, Object> body = new HashMap<>();
+        body.put(TYPE, "Storage");
         body.put(STATUS, HttpStatus.INTERNAL_SERVER_ERROR.value());
         body.put(ERROR, ex.getMessage());
-        body.put(CAUSE, ex.getCause().getMessage());
+        body.put(CAUSE, ex.getCause() == null ? "Unknown" : ex.getCause().getMessage());
+
         return ResponseEntity.internalServerError().body(body);
     }
-
 
 }

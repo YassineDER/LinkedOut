@@ -53,7 +53,7 @@ public class AuthController {
                 authService.verifyMFA(credentials);
             }
 
-            String resp = authService.requestPasswordReset(credentials.getEmail());
+            String resp = authService.requestPasswordReset(credentials);
             return ResponseEntity.ok(new AuthResponse(resp));
         }
         return ResponseEntity.badRequest().build();
@@ -75,6 +75,12 @@ public class AuthController {
                 "name", auth.getName()
         );
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/verify/captcha")
+    public ResponseEntity<RecaptchaResponse> verifyCaptcha(@RequestBody String captcha) {
+        RecaptchaResponse resp = authService.captchaIsValid(captcha);
+        return ResponseEntity.ok(resp);
     }
 
 }

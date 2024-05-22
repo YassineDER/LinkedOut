@@ -52,7 +52,7 @@ public class JwtService implements IJwtService {
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
-        } catch (ExpiredJwtException e) {
+        } catch (Exception e) {
             throw new AccountException("Invalid token", e);
         }
     }

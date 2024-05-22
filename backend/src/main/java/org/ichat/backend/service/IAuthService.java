@@ -17,7 +17,9 @@ public interface IAuthService {
     String validateAccount(String token);
 
     String resetPassword(String token, String newPassword);
-    String requestPasswordReset(String email);
+    String requestPasswordReset(AccountCredentials credentials);
 
     User getAuthenticatedUser();
+
+    RecaptchaResponse captchaIsValid(String captcha);
 }

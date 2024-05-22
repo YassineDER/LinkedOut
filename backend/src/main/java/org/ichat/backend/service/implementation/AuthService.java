@@ -7,6 +7,8 @@ import org.ichat.backend.jwt.IJwtService;
 import org.ichat.backend.model.tables.*;
 import org.ichat.backend.model.util.auth.*;
 import org.ichat.backend.service.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,8 +26,10 @@ import java.util.Set;
 @Transactional(dontRollbackOn = AccountExpiredException.class)
 @RequiredArgsConstructor
 public class AuthService implements IAuthService {
+    private static final Logger log = LoggerFactory.getLogger(AuthService.class);
     @Value("${admin.secret}")
     private String adminSecret;
+
     private final IUserService userService;
     private final ICompanyService companyService;
     private final IJobseekerService jobseekerService;
@@ -34,12 +38,14 @@ public class AuthService implements IAuthService {
     private final IAccountResetService accountResetService;
     private final ITwoFactorAuthService twoFactorAuthService;
     private final IJwtService jwtService;
+    private final ICaptchaService captchaService;
 
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
     @Override
     public AuthResponse authenticate(AccountCredentials credentials) {
+        captchaIsValid(credentials.getCaptcha());
         User user = userService.findBy(credentials.getEmail());
         if (!user.isEnabled()) {
             var new_verif = accountVerificationService.sendVerificationEmail(user.getEmail());
@@ -76,6 +82,7 @@ public class AuthService implements IAuthService {
 
     @Override
     public void verifyMFA(AccountCredentials credentials) {
+        captchaIsValid(credentials.getCaptcha());
         User user = userService.findBy(credentials.getEmail());
         if (!twoFactorAuthService.codeIsValid(user.getMfa_secret(), credentials.getCode()))
             throw new AccountException("Invalid MFA code");
@@ -83,6 +90,7 @@ public class AuthService implements IAuthService {
 
     @Override
     public String registerJobseeker(RegisterJobseekerRequest request) {
+        captchaIsValid(request.getCaptcha());
         Roles role = roleService.getRoleByName("JOBSEEKER");
         Jobseeker jobseeker = new Jobseeker();
         jobseeker.setFirst_name(request.getFirst_name());
@@ -100,6 +108,7 @@ public class AuthService implements IAuthService {
 
     @Override
     public String registerCompany(RegisterCompanyRequest request) {
+        captchaIsValid(request.getCaptcha());
         Roles USER_Roles = roleService.getRoleByName("COMPANY");
         Company company = companyService.getCompanyBySIREN(request.getSiren());
         company.setUsername(request.getUsername());
@@ -115,8 +124,10 @@ public class AuthService implements IAuthService {
 
     @Override
     public String registerAdmin(RegisterAdminRequest request) {
+        captchaIsValid(request.getCaptcha());
         if (!Objects.equals(request.getAdmin_secret(), adminSecret))
             throw new AccountException("Invalid admin secret");
+
         Roles USER_Roles = roleService.getRoleByName("ADMIN");
         Admin admin = new Admin();
         admin.setFirst_name(request.getFirst_name());
@@ -143,8 +154,9 @@ public class AuthService implements IAuthService {
     }
 
     @Override
-    public String requestPasswordReset(String email) {
-        User user = userService.findBy(email);
+    public String requestPasswordReset(AccountCredentials credentials) {
+        captchaIsValid(credentials.getCaptcha());
+        User user = userService.findBy(credentials.getEmail());
         String resetToken = accountResetService.sendResetEmail(user.getEmail());
         accountResetService.saveReset(user, resetToken);
 
@@ -154,5 +166,14 @@ public class AuthService implements IAuthService {
     @Override
     public User getAuthenticatedUser() {
         return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+
+    @Override
+    public RecaptchaResponse captchaIsValid(String captcha) {
+        RecaptchaResponse response = captchaService.verifyCaptcha(captcha);
+        if (!response.isSuccess() || response.getScore() < 0.5)
+            throw new AccountException("Invalid captcha");
+
+        return response;
     }
 }
