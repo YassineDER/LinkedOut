@@ -2,7 +2,11 @@
 module.exports = {
     content: ["./src/**/*.{html,ts,js}"],
     theme: {
-        extend: {},
+        extend: {
+            fontFamily: {
+                sans: ["Inter", "system-ui", "sans-serif"],
+            },
+        },
     },
     plugins: [
         require('@tailwindcss/typography'),

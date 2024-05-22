@@ -5,50 +5,46 @@ import { AlertType } from '../../models/AlertType';
 
 @Component({
   selector: 'app-alert',
+  
   template: `
-  @if (alertMessage) {
-    <div (mouseenter)="pauseTimer()" (mouseleave)="resumeTimer()"
-      [ngClass]="{'alert-success': alertType === SERVERITY.SUCCESS,
-       'alert-warning': alertType === SERVERITY.WARNING,
-       'alert-error': alertType === SERVERITY.ERROR}"
-    @fadeInOut role="alert" 
-    class="alert py-2 w-full flex items-center justify-between">
-      <i class="bi bi-info-circle"></i>
-      <span>{{ alertMessage }}</span>
-      <button class="btn btn-sm" (click)="closeAlert()">OK</button>
-    </div>
-  }`,
+  <div *ngFor="let alert of alerts | keyvalue; let i = index"
+     [ngClass]="{
+       'alert-success': alert.value.type === SERVERITY.SUCCESS,
+       'alert-warning': alert.value.type === SERVERITY.WARNING,
+       'alert-error': alert.value.type === SERVERITY.ERROR
+     }"
+     @fadeIn role="alert" 
+     class="alert py-2 my-2 w-full flex items-center justify-between">
+  <i class="bi bi-info-circle"></i>
+  <span>{{ alert.value.message }}</span>
+  <button class="btn btn-sm" (click)="closeAlert(alert.key)">OK</button>
+</div>`,
+
   animations: [
-    trigger('fadeInOut', [
+    trigger('fadeIn', [
       transition(':enter', [
         style({ opacity: 0 }),
         animate('300ms', style({ opacity: 1 }))
-      ]),
-      transition(':leave', [
-        animate('300ms', style({ opacity: 0 }))
       ])
     ])
   ]
 })
 export class AlertComponent {
-  alertMessage: string | null = null;
-  alertType = AlertType.DEFAULT;
+  alerts: Map<number, { message: string, type: AlertType }> = new Map();
   public SERVERITY = AlertType;
 
   constructor(private alertService: AlertService) {
-    this.alertService.alert$.subscribe((msg) => this.alertMessage = msg);
-    this.alertService.alertType$.subscribe((type) => this.alertType = type);
+    this.alertService.alert$.subscribe(alert => {
+      if (alert) {
+        this.alerts.set(this.alerts.size, { message: alert.message, type: alert.type });
+        setTimeout(() => this.closeAlert(this.alerts.size - 1), 5000);
+        if (this.alerts.size > 5) 
+          this.alerts.delete(0);
+      }
+    });
   }
 
-  closeAlert() {
-    this.alertMessage = null;
-  }
-
-  pauseTimer() {
-    this.alertService.pauseTimer();
-  }
-
-  resumeTimer() {
-    this.alertService.resumeTimer();
+  closeAlert(index: number) {
+    this.alerts.delete(index);
   }
 }

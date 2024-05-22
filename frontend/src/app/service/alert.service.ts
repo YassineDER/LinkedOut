@@ -6,29 +6,12 @@ import { AlertType } from '../models/AlertType';
   providedIn: 'root'
 })
 export class AlertService {
-  private alertSubject = new BehaviorSubject<string | null>(null);
+  private alertSubject = new BehaviorSubject<{ message: string, type: AlertType } | null>(null);
   alert$ = this.alertSubject.asObservable();
 
-  private alertTypeSubject = new BehaviorSubject<AlertType>(AlertType.DEFAULT);
-  alertType$ = this.alertTypeSubject.asObservable();
-
-  private alertTimer: any = null;
-
-  showAlert(message: string, type = AlertType.DEFAULT) {
-    this.alertSubject.next(message);
-    this.alertTypeSubject.next(type);
-    this.alertTimer = setTimeout(() => {
-      this.alertSubject.next(null);
-      this.alertTypeSubject.next(AlertType.DEFAULT);
-    }, 3000);
+  showAlert(message: string, type: AlertType = AlertType.DEFAULT) {
+    this.alertSubject.next({ message, type });
   }
 
-  pauseTimer() {
-    clearTimeout(this.alertTimer);
-  }
-
-  resumeTimer() {
-    this.alertTimer = setTimeout(() => this.alertSubject.next(null), 3000);
-  }
 
 }

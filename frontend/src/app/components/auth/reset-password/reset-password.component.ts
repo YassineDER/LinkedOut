@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { AlertService } from '../../../service/alert.service';
-import { Location } from '@angular/common';
-import { AlertType } from '../../../models/AlertType';
-import { ReCaptchaV3Service } from 'ng-recaptcha';
+import {Component} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AlertService} from '../../../service/alert.service';
+import {Location} from '@angular/common';
+import {AlertType} from '../../../models/AlertType';
+import {ReCaptchaV3Service} from 'ng-recaptcha';
 
 @Component({
     selector: 'app-reset-password',
@@ -23,32 +23,33 @@ export class ResetPasswordComponent {
         disableAutoFocus: false,
     }
 
-    constructor(private fb: FormBuilder, private location: Location, 
-        private alert: AlertService, private recaptcha: ReCaptchaV3Service) {
+    constructor(private fb: FormBuilder, private location: Location,
+                private alert: AlertService, private recaptchaV3: ReCaptchaV3Service) {
         this.resetForm = this.fb.group({
-            email: this.email,
-            code: this.otp,
+            email: this.email, code: this.otp, recaptcha: this.recaptcha
         });
     }
 
     public executeRecaptchaV3() {
-        this.recaptcha.execute('myAction').subscribe(
-          (token) => {
-            this.addTokenLog('Recaptcha v3 token', token);
-          },
-          (error) => {
-            this.log.push(`Recaptcha v3 error: see console`);
-            console.log(`Recaptcha v3 error:`, error);
-          }
-        );
-      }
+        this.recaptchaV3.execute('PasswordResetRequest')
+            .subscribe({
+                next: (token) => {
+                    if (token)
+                        this.resetForm.controls['recaptcha'].setValue(token);
+                },
+                error: (error) => {
+                    this.alert.showAlert('Erreur lors de la validation du captcha: ' + error, AlertType.ERROR);
+                }
+            });
+    }
 
     submitResetForm(event: Event) {
         event.preventDefault();
-        for(let i in this.resetForm.controls) {
+        this.executeRecaptchaV3();
+        for (let i in this.resetForm.controls) {
             if (this.resetForm.controls[i].errors) {
                 this.resetForm.controls[i].markAsTouched();
-                return this.alert.showAlert('Les champs sont invalides', AlertType.ERROR);
+                return this.alert.showAlert('Le champ ' + i + ' est invalide', AlertType.ERROR);
             }
         }
 
