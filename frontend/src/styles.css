@@ -2,7 +2,12 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+@font-face {
+    font-family: 'Inter';
+    src: url('/assets/fonts/Inter.ttf') format('truetype');
+    font-weight: 100 900;
+    font-display: swap;
+}
 
 html, body {
     height: 100vh;
