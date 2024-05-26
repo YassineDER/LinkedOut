@@ -1,1 +1,34 @@
-<p>confirmation works!</p>
+<div class="bg-slate-100 flex flex-col items-center h-screen">
+  <a class="w-1/12 mr-auto ml-4 mt-4" routerLink="/"><img src="assets/images/slogan.png" alt="logo"/></a>
+
+  <form [formGroup]="confirmationForm" (ngSubmit)="submitConfirmationForm($event)"
+        class="bg-white px-12 m-auto py-8 rounded-lg shadow-lg w-2/5">
+    <h2 class="text-3xl font-bold mb-2">{{ verification }} </h2><br>
+
+    <div class="space-y-4 mb-2">
+      <p class="text-gray-500 mb-6">
+        Veuillez entrer le code de vérification que nous vous avons envoyé par mail.
+      </p>
+      <div class="my-5 text-center">
+        <ng-otp-input [formCtrl]="code" [config]="otp_config"/>
+      </div>
+
+      @if (verification === VerificationType.PASSWORD_RESET) {
+        <p class="text-gray-500 mb-6">
+          Le nouveau mot de passe doit contenir au moins 8 caractères.
+        </p>
+
+        <input type="password" [formControl]="pwd" class="input input-bordered w-full"
+               [ngClass]="(pwd.touched || pwd.dirty) && pwd.invalid ? 'input-error' : 'input-primary'"
+               placeholder="Nouveau mot de passe"/>
+        <input type="password" [formControl]="confirmPwd" class="input input-bordered w-full"
+               [ngClass]="(confirmPwd.touched || confirmPwd.dirty) && confirmPwd.invalid ? 'input-error' : 'input-primary'"
+               [appMatchPassword]="pwd" placeholder="Confirmer le mot de passe"/>
+      }
+    </div>
+    <br>
+
+    <button type="submit" class="btn btn-primary text-white text-lg w-full">Envoyer</button>
+
+  </form>
+</div>

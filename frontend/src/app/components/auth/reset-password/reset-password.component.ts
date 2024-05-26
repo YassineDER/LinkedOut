@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AlertService} from '../../../service/alert.service';
 import {Location} from '@angular/common';
-import {AlertType} from '../../../models/AlertType';
+import {AlertType} from '../../../shared/utils/AlertType';
 import {ReCaptchaV3Service} from 'ng-recaptcha';
 
 @Component({
@@ -38,7 +38,7 @@ export class ResetPasswordComponent {
                         this.resetForm.controls['recaptcha'].setValue(token);
                 },
                 error: (error) => {
-                    this.alert.showAlert('Erreur lors de la validation du captcha: ' + error, AlertType.ERROR);
+                    this.alert.show('Erreur lors de la validation du captcha: ' + error, AlertType.ERROR);
                 }
             });
     }
@@ -49,7 +49,7 @@ export class ResetPasswordComponent {
         for (let i in this.resetForm.controls) {
             if (this.resetForm.controls[i].errors) {
                 this.resetForm.controls[i].markAsTouched();
-                return this.alert.showAlert('Le champ ' + i + ' est invalide', AlertType.ERROR);
+                return this.alert.show('Le champ ' + i + ' est invalide', AlertType.ERROR);
             }
         }
 

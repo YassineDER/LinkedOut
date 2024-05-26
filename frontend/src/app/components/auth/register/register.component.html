@@ -40,9 +40,9 @@
             <div class="join w-full">
               <input [formControl]="username" [ngClass]="(username.touched || username.dirty) && username.invalid ? 'input-error' : 'input-primary'"
                      class="input input-bordered join-item w-full text-sm" placeholder="Pseudo (6 à 20 caractères)"/>
-              <label [ngClass]="(password.touched || password.dirty) && password.invalid ? 'input-error' : 'input-primary'"
+              <label [ngClass]="(pwd.touched || pwd.dirty) && pwd.invalid ? 'input-error' : 'input-primary'"
                      class="input input-bordered flex join-item w-full">
-                <input [formControl]="password" class="grow text-sm" [type]="passVisible ? 'password' : 'text'"
+                <input [formControl]="pwd" class="grow text-sm" [type]="passVisible ? 'password' : 'text'"
                        placeholder="Mot de passe (8 à 20 caractères)"/>
                 <button type="button" (click)="passVisible = !passVisible">
                   <i class="bi bi-eye"></i></button>

@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AlertService} from '../../../service/alert.service';
-import {AlertType} from "../../../models/AlertType";
+import {AlertType} from "../../../shared/utils/AlertType";
 import {ReCaptchaV3Service} from 'ng-recaptcha';
 import {environment} from "../../../../environments/environment";
 
@@ -16,7 +16,7 @@ export class RegisterComponent {
     registerFrom: FormGroup;
     email = new FormControl('', [Validators.required, Validators.email]);
     username = new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]);
-    password = new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]);
+    pwd = new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]);
     first_name = new FormControl('', [Validators.required]);
     last_name = new FormControl('', [Validators.required]);
     captcha = new FormControl(null, [Validators.required]);
@@ -26,7 +26,7 @@ export class RegisterComponent {
         this.registerFrom = this.fb.group({
             email: this.email,
             username: this.username,
-            password: this.password,
+            password: this.pwd,
             first_name: this.first_name,
             last_name: this.last_name,
             captcha: this.captcha
@@ -43,7 +43,7 @@ export class RegisterComponent {
                     if (tk) token = tk;
                 },
                 error: (error) => {
-                    this.alert.showAlert('Erreur lors de la validation du captcha: ' + error, AlertType.ERROR);
+                    this.alert.show('Erreur lors de la validation du captcha: ' + error, AlertType.ERROR);
                 }
             });
 
@@ -68,7 +68,7 @@ export class RegisterComponent {
         for (let i in this.registerFrom.controls) {
             if (this.registerFrom.controls[i].errors) {
                 this.registerFrom.controls[i].markAsTouched();
-                return this.alert.showAlert('Le champ ' + i + ' est invalide', AlertType.ERROR);
+                return this.alert.show('Le champ ' + i + ' est invalide', AlertType.ERROR);
             }
         }
 

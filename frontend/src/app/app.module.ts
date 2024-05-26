@@ -17,6 +17,7 @@ import { environment } from '../environments/environment.development';
 import { HttpClientModule } from '@angular/common/http';
 import { OffersComponent } from './components/offers/offers.component';
 import {NgOptimizedImage} from "@angular/common";
+import {MatchPasswordDirective} from "./shared/matching-password.directive";
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import {NgOptimizedImage} from "@angular/common";
         HomeComponent,
         AlertComponent,
         OffersComponent,
+        MatchPasswordDirective
     ],
     imports: [
         BrowserModule,

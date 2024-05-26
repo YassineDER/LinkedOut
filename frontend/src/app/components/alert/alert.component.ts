@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { AlertService } from '../../service/alert.service';
 import { trigger, style, animate, transition, } from '@angular/animations';
-import { AlertType } from '../../models/AlertType';
+import { AlertType } from '../../shared/utils/AlertType';
 
 @Component({
   selector: 'app-alert',
-  
+
   template: `
   <div *ngFor="let alert of alerts | keyvalue; let i = index"
      [ngClass]="{
@@ -13,7 +13,7 @@ import { AlertType } from '../../models/AlertType';
        'alert-warning': alert.value.type === SERVERITY.WARNING,
        'alert-error': alert.value.type === SERVERITY.ERROR
      }"
-     @fadeIn role="alert" 
+     @fadeIn role="alert"
      class="alert py-2 my-2 w-full flex items-center justify-between">
   <i class="bi bi-info-circle"></i>
   <span>{{ alert.value.message }}</span>
@@ -38,7 +38,7 @@ export class AlertComponent {
       if (alert) {
         this.alerts.set(this.alerts.size, { message: alert.message, type: alert.type });
         setTimeout(() => this.closeAlert(this.alerts.size - 1), 5000);
-        if (this.alerts.size > 5) 
+        if (this.alerts.size > 5)
           this.alerts.delete(0);
       }
     });
