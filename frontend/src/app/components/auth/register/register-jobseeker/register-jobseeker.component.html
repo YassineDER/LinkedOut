@@ -1,0 +1,76 @@
+<div class="bg-slate-100 flex flex-col items-center h-screen">
+
+  <div class="flex flex-row w-full justify-center items-center">
+
+    <!-- Part 2: Form -->
+    <div class="w-1/2 h-screen">
+      <form (ngSubmit)="submitRegisterForm($event)" [formGroup]="registerJobseeker"
+            class="bg-white px-16 flex flex-col pt-8 rounded-lg shadow-lg w-full h-full">
+        <!-- Logo -->
+        <a class="w-1/2 mx-auto" routerLink="/">
+          <img alt="logo" class="w-full" height="248" ngSrc="assets/images/slogan.png" priority width="851"/>
+        </a>
+
+        <div class="my-5">
+          <h2 class="text-3xl font-bold my-2">Créer un compte </h2>
+          <p class="text-gray-500 mb-3">Tirez le meilleur parti de votre vie professionnelle
+            @if (isDev) {
+              <a class="text-blue-500 text-center" (click)="preFillJobseeker()" style="cursor: pointer">(Pré-remplir)</a>
+            }
+          </p>
+
+          <div class="space-y-3 mb-2 ">
+            <!-- First name and last name -->
+            <div class="join w-full">
+              <input [formControl]="first_name"
+                     [ngClass]="(first_name.touched || first_name.dirty) && first_name.invalid ? 'input-error' : 'input-primary'"
+                     class="input input-bordered join-item w-full text-sm" placeholder="Prénom"/>
+              <input [formControl]="last_name"
+                     [ngClass]="(last_name.touched || last_name.dirty) && last_name.invalid ? 'input-error' : 'input-primary'"
+                     class="input input-bordered join-item w-full text-sm" placeholder="Nom"/>
+            </div>
+
+            <!-- Email -->
+            <input [formControl]="email" class="input input-bordered w-full text-sm"
+                   [ngClass]="(email.touched || email.dirty) && email.invalid ? 'input-error' : 'input-primary'"
+                   placeholder="Adresse email" type="email"/>
+
+            <!-- Username (jobseeker only) and password -->
+            <div class="join w-full">
+              <input [formControl]="username" class="input input-bordered join-item w-full text-sm"
+                     [ngClass]="(username.touched || username.dirty) && username.invalid ? 'input-error' : 'input-primary'"
+                     placeholder="Pseudo (6 à 20 caractères)"/>
+              <label [ngClass]="(pwd.touched || pwd.dirty) && pwd.invalid ? 'input-error' : 'input-primary'"
+                     class="input input-bordered flex join-item w-full">
+                <input [formControl]="pwd" [type]="passVisible ? 'password' : 'text'" class="grow text-sm"
+                       placeholder="Mot de passe (8 à 20 caractères)"/>
+                <button (click)="passVisible = !passVisible" type="button">
+                  <i class="bi bi-eye"></i></button>
+              </label>
+
+            </div>
+          </div>
+
+          <button class="btn btn-primary text-white text-lg w-full my-1" type="submit">S'inscrire</button>
+
+          <p class="text-gray-500 font-bold my-3">Vous avez déjà un compte ?
+            <a class="text-blue-500" routerLink="/login">Connectez-vous</a>
+          </p>
+
+          <div class="text-gray-500 font-bold flex mb-2 flex-row space-x-3">
+            Vous êtes une entreprise ou un recruteur ?
+            <a class="text-blue-500 mx-1" routerLink="/register/company">Inscrivez-vous ici</a>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- Part 1: Image -->
+    <div class="w-1/2 h-screen">
+      <img alt="image" class="object-cover w-full h-full" height="2876" ngSrc="assets/images/cover-login.jpg"
+           priority width="1920"/>
+    </div>
+  </div>
+</div>
+

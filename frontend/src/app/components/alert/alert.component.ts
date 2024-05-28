@@ -2,32 +2,39 @@ import { Component } from '@angular/core';
 import { AlertService } from '../../service/alert.service';
 import { trigger, style, animate, transition, } from '@angular/animations';
 import { AlertType } from '../../shared/utils/AlertType';
+import {KeyValuePipe, NgClass, NgForOf} from "@angular/common";
 
 @Component({
-  selector: 'app-alert',
+    selector: 'app-alert',
+    standalone: true,
 
-  template: `
-  <div *ngFor="let alert of alerts | keyvalue; let i = index"
-     [ngClass]="{
+    template: `
+        <div *ngFor="let alert of alerts | keyvalue; let i = index"
+             [ngClass]="{
        'alert-success': alert.value.type === SERVERITY.SUCCESS,
        'alert-warning': alert.value.type === SERVERITY.WARNING,
        'alert-error': alert.value.type === SERVERITY.ERROR
      }"
-     @fadeIn role="alert"
-     class="alert py-2 my-2 w-full flex items-center justify-between">
-  <i class="bi bi-info-circle"></i>
-  <span>{{ alert.value.message }}</span>
-  <button class="btn btn-sm" (click)="closeAlert(alert.key)">OK</button>
-</div>`,
+             @fadeIn role="alert"
+             class="alert py-2 my-2 w-full flex items-center justify-between">
+            <i class="bi bi-info-circle"></i>
+            <span>{{ alert.value.message }}</span>
+            <button class="btn btn-sm" (click)="closeAlert(alert.key)">OK</button>
+        </div>`,
+    imports: [
+        NgClass,
+        NgForOf,
+        KeyValuePipe
+    ],
 
-  animations: [
-    trigger('fadeIn', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate('300ms', style({ opacity: 1 }))
-      ])
-    ])
-  ]
+    animations: [
+        trigger('fadeIn', [
+            transition(':enter', [
+                style({opacity: 0}),
+                animate('300ms', style({opacity: 1}))
+            ])
+        ])
+    ]
 })
 export class AlertComponent {
   alerts: Map<number, { message: string, type: AlertType }> = new Map();
