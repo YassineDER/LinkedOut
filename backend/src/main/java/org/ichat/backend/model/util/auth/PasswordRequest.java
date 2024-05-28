@@ -13,4 +13,6 @@ public class PasswordRequest {
     String received_code;
     @NotEmpty(message = "The new password is missing")
     String password;
+    @NotEmpty(message = "The new password confirmation is missing")
+    String password_confirmation;
 }

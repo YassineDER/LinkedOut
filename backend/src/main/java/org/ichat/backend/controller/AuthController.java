@@ -61,6 +61,8 @@ public class AuthController {
 
     @PostMapping("/verify/password")
     public ResponseEntity<AuthResponse> resetPassword(@Valid @RequestBody PasswordRequest req) {
+        if (!req.getPassword().equals(req.getPassword_confirmation()))
+            throw new AccountException("Passwords do not match");
         String resp = authService.resetPassword(req.getReceived_code(), req.getPassword());
         return ResponseEntity.ok(new AuthResponse(resp));
     }

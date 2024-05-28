@@ -246,13 +246,14 @@
 										<h1 th:text="${header}"></h1>
 										<h2> Reset Password</h2>
 										<br>
-										Copy the code bellow to the reset password form
+										You are receiving this email because we received a password reset request for your account.
+										<br>
+										Paste the following code into the password reset page to reset your password:
 										<strong>(valid for only 10 minutes)</strong>
 										<br>
-										<h3 th:text="${code}"></h3>
+										<h2 th:text="${code}"></h2>
 										<hr>
-										<p>If you received this email by mistake, simply delete it. You won't be
-											subscribed if you don't click the link above.</p>
+										<p>If you received this email by mistake, it means someone is trying to reset your password. Simply ignore it. </p>
 									</td>
 								</tr>
 							</table>

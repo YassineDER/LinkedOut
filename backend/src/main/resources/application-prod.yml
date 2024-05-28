@@ -11,7 +11,7 @@ spring:
     port: 587
     username: ${MAIL_USER}
     password: ${MAIL_PASS}
-    timeout: 25
+    timeout: 15
     from: no-reply@linkedout.com
     properties:
       mail:

@@ -36,6 +36,7 @@ public class MailService implements IMailService {
         context.setVariables(Map.of(
                 "header", header,
                 "title", type.getLabel(),
+                "email", to,
                 "code", code));
 
         try {

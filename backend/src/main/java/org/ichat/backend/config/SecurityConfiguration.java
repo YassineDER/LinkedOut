@@ -13,13 +13,14 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
 @EnableMethodSecurity
-public class SecurityConfiguration {
+public class SecurityConfiguration implements WebMvcConfigurer {
     private final JwtAuthenticationFilter jwtFilter;
     private final AuthenticationProvider authProvider;
 
@@ -61,4 +62,14 @@ public class SecurityConfiguration {
 
         return http.build();
     }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:4200")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS")
+                .allowedHeaders("*")
+                .allowCredentials(true);
+    }
+
 }
