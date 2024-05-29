@@ -8,6 +8,7 @@ uploads
 start
 
 *.db
+*.sql
 ### STS ###
 .apt_generated
 .classpath
