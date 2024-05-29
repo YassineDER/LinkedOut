@@ -47,15 +47,16 @@ public class AuthService implements IAuthService {
     public AuthResponse authenticate(AccountCredentials credentials) {
         captchaIsValid(credentials.getCaptcha());
         User user = userService.findBy(credentials.getEmail());
-        if (!user.isEnabled()) {
-            var new_verif = accountVerificationService.sendVerificationEmail(user.getEmail());
-            accountVerificationService.saveVerification(user, new_verif);
-            throw new AccountExpiredException("Account is disabled because it's not verified. " +
-                    "A new verification email has been sent to your email address, please verify your account.");
-        }
 
         if (!passwordEncoder.matches(credentials.getPassword(), user.getPassword()))
             throw new AccountException("Invalid email or password");
+
+        if (!user.isEnabled()) {
+            var new_verif = accountVerificationService.sendVerificationEmail(user.getEmail());
+            accountVerificationService.saveVerification(user, new_verif);
+            throw new AccountExpiredException("Account is not verified yet. " +
+                    "A new verification email has been sent to your email address, please verify your account.");
+        }
 
         if (Boolean.TRUE.equals(user.getUsing_mfa())){
             if (credentials.getCode() != null) {

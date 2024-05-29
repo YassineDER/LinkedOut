@@ -16,6 +16,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.UUID;
+
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
@@ -25,9 +27,15 @@ public class SecurityConfiguration implements WebMvcConfigurer {
     private final AuthenticationProvider authProvider;
 
     @Bean
+    public AnonymousAuthFilter customAnonymousAuthFilter() {
+        return new AnonymousAuthFilter(UUID.randomUUID().toString());
+    }
+
+    @Bean
     @Profile("!prod")
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
+                .anonymous(anonymous -> anonymous.authenticationFilter(customAnonymousAuthFilter()))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/jobseeker/**").hasAnyRole("JOBSEEKER", "ADMIN")
@@ -48,7 +56,8 @@ public class SecurityConfiguration implements WebMvcConfigurer {
     @Bean
     @Profile("prod")
     public SecurityFilterChain securityFilterChainProd(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(authorize -> authorize
+        http.anonymous(anonymous -> anonymous.authenticationFilter(customAnonymousAuthFilter()))
+                .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/jobseeker/**").hasAnyRole("JOBSEEKER", "ADMIN")
                         .requestMatchers("/api/company/**").hasAnyRole("COMPANY", "ADMIN")
