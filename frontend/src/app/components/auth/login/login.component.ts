@@ -1,32 +1,38 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { StorageService } from '../../../service/storage.service';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from "../../../service/auth.service";
+import {AlertService} from "../../../service/alert.service";
 
 @Component({
-	selector: 'app-login',
-	templateUrl: './login.component.html',
-	styleUrl: './login.component.css'
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.css'
 })
-export class LoginComponent implements OnInit {
-	passVisible = false;
-	loginFrom: FormGroup;
+export class LoginComponent {
+    passVisible = false;
+    loginForm: FormGroup;
+    email = new FormControl('', [Validators.required, Validators.email]);
+    password = new FormControl('', [Validators.required]);
 
-	constructor(private fb: FormBuilder, private auth: AuthService){
-		this.loginFrom = this.fb.group({
-			email: ['', [Validators.required, Validators.email] ],
-			password: ['', [Validators.required] ]
-		});
-	}
+    constructor(private fb: FormBuilder, private auth: AuthService, private alert: AlertService) {
+        this.loginForm = this.fb.group({
+            email: this.email,
+            password: this.password,
+            code: [''],
+            captcha: [null, [Validators.required]]
+        });
+    }
 
 
-	ngOnInit() {
-
-	}
-
-
-	submitLoginform(){
-		console.log(this.loginFrom.value)
-	}
+    submitLogin() {
+        this.auth.executeRecaptchaV3("Login")
+            .then(token => {
+                this.loginForm.controls['captcha'].setValue(token);
+                if (this.alert.checkFormValidity(this.loginForm)) {
+                    this.auth.login(this.loginForm.value);
+                    this.loginForm.reset();
+                }
+            });
+    }
 
 }

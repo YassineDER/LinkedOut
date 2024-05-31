@@ -4,6 +4,7 @@ import {AlertService} from '../../../../service/alert.service';
 import {AlertType} from "../../../../shared/utils/AlertType";
 import {environment} from "../../../../../environments/environment";
 import {AuthService} from "../../../../service/auth.service";
+import {Role} from "../../../../models/role";
 
 @Component({
     selector: 'app-register',
@@ -46,16 +47,15 @@ export class RegisterCompanyComponent {
     submitRegisterForm(event: Event) {
         event.preventDefault();
         this.auth.executeRecaptchaV3("RegisterCompany")
-            .then(token => this.registerCompany.controls['captcha'].setValue(token));
+            .then(token => {
+                this.registerCompany.controls['captcha'].setValue(token)
+                if (this.alert.checkFormValidity(this.registerCompany)) {
+                    this.auth.registerCompany(this.registerCompany.value);
+                    this.registerCompany.reset();
+                }
+            });
 
-        for (let i in this.registerCompany.controls) {
-            if (this.registerCompany.controls[i].errors) {
-                this.registerCompany.controls[i].markAsTouched();
-                return this.alert.show('Le champ ' + i + ' est invalide', AlertType.ERROR);
-            }
-        }
 
-        console.log('Form submitted: ', this.registerCompany.value);
     }
 
 

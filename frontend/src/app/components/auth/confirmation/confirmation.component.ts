@@ -1,16 +1,17 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {AlertService} from "../../../service/alert.service";
 import {AlertType} from "../../../shared/utils/AlertType";
 import {VerificationType} from "../../../shared/utils/VerificationType";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
+import {AuthService} from "../../../service/auth.service";
 
 @Component({
   selector: 'app-confirmation',
   templateUrl: './confirmation.component.html',
   styleUrl: './confirmation.component.css'
 })
-export class ConfirmationComponent implements OnInit{
+export class ConfirmationComponent{
     protected readonly VerificationType = VerificationType;
     verification :VerificationType | undefined;
 
@@ -26,10 +27,12 @@ export class ConfirmationComponent implements OnInit{
     }
 
 
-    constructor(private fb: FormBuilder, private alert: AlertService,
-                private router: Router, route: ActivatedRoute) {
-        this.confirmationForm = this.fb.group({
-            password: this.pwd, confirmPassword: this.confirmPwd, code: this.code
+    constructor(fb: FormBuilder, private alert: AlertService,
+                private auth: AuthService, route: ActivatedRoute) {
+        this.confirmationForm = fb.group({
+            password: this.pwd,
+            password_confirmation: this.confirmPwd,
+            received_code: this.code
         });
 
         route.data.subscribe(data => {
@@ -41,38 +44,14 @@ export class ConfirmationComponent implements OnInit{
         });
     }
 
-    ngOnInit() {
 
-    }
-
-
-    submitConfirmationForm(event: Event) {
-        event.preventDefault();
-        for (let i in this.confirmationForm.controls) {
-            if (this.confirmationForm.controls[i].errors) {
-                this.confirmationForm.controls[i].markAsTouched();
-                console.log(this.confirmationForm.controls[i].errors)
-                return this.alert.show('Le champ ' + i + ' est invalide', AlertType.ERROR);
-            }
-        }
-
-        if (this.verification === VerificationType.EMAIL_VERIFICATION)
-            this.verifyEmail();
-        else if (this.verification === VerificationType.PASSWORD_RESET)
-            this.resetPassword();
-
-    }
-
-    resetPassword() {
-        this.router.navigate(['/login']).then(() => {
-            this.alert.show('Mot de passe réinitialisé avec succès', AlertType.SUCCESS);
-        });
-    }
-
-    verifyEmail() {
-        this.router.navigate(['/login']).then(() => {
-            this.alert.show('Email vérifié avec succès', AlertType.SUCCESS);
-        });
+    submitConfirmationForm() {
+        const code = this.confirmationForm.value.received_code ?? null;
+        if (this.verification === VerificationType.EMAIL_VERIFICATION && code !== null)
+            return this.auth.verifyEmail(code);
+        if (this.alert.checkFormValidity(this.confirmationForm))
+            if (this.verification === VerificationType.PASSWORD_RESET)
+                this.auth.resetPassword(this.confirmationForm.value)
     }
 
 }

@@ -4,6 +4,7 @@ import {AlertService} from "../../../../service/alert.service";
 import {environment} from "../../../../../environments/environment";
 import {AuthService} from "../../../../service/auth.service";
 import {AlertType} from "../../../../shared/utils/AlertType";
+import {Role} from "../../../../models/role";
 
 @Component({
     selector: 'app-register-jobseeker',
@@ -50,15 +51,14 @@ export class RegisterJobseekerComponent {
     submitRegisterForm(event: Event) {
         event.preventDefault();
         this.auth.executeRecaptchaV3("RegisterJobseeker")
-            .then(token => this.registerJobseeker.controls['captcha'].setValue(token));
-
-        for (let i in this.registerJobseeker.controls) {
-            if (this.registerJobseeker.controls[i].errors) {
-                this.registerJobseeker.controls[i].markAsTouched();
-                return this.alert.show('Le champ ' + i + ' est invalide', AlertType.ERROR);
-            }
-        }
-
-        console.log('Form submitted: ', this.registerJobseeker.value);
+            .then(token => {
+                this.registerJobseeker.controls['captcha'].setValue(token);
+                if (this.alert.checkFormValidity(this.registerJobseeker)) {
+                    this.auth.registerJobseeker(this.registerJobseeker.value);
+                    this.registerJobseeker.reset();
+                }
+            });
     }
+
+
 }

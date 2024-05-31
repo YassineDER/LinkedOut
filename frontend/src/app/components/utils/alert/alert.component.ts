@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { AlertService } from '../../service/alert.service';
+import { AlertService } from '../../../service/alert.service';
 import { trigger, style, animate, transition, } from '@angular/animations';
-import { AlertType } from '../../shared/utils/AlertType';
+import { AlertType } from '../../../shared/utils/AlertType';
 import {KeyValuePipe, NgClass, NgForOf} from "@angular/common";
 
 @Component({

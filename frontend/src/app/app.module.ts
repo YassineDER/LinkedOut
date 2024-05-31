@@ -17,7 +17,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {OffersComponent} from './components/offers/offers.component';
 import {NgOptimizedImage} from "@angular/common";
 import {MatchPasswordDirective} from "./shared/directives/matching-password.directive";
-import {AlertComponent} from "./components/alert/alert.component";
+import {AlertComponent} from "./components/utils/alert/alert.component";
 import {RegisterJobseekerComponent} from "./components/auth/register/register-jobseeker/register-jobseeker.component";
 
 
