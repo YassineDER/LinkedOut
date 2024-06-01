@@ -1,3 +1,8 @@
 spring:
   profiles:
     active: @spring.profiles.active@
+management:
+  endpoints:
+    shutdown:
+      enabled: true
+      sensitive: false

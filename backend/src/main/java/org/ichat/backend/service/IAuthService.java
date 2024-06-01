@@ -22,4 +22,6 @@ public interface IAuthService {
     User getAuthenticatedUser();
 
     RecaptchaResponse captchaIsValid(String captcha);
+
+    boolean userUsingMFA(String email);
 }

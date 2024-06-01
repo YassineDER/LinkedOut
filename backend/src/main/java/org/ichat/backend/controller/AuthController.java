@@ -46,17 +46,14 @@ public class AuthController {
     @PostMapping("/reset-password")
     @Transactional
     public ResponseEntity<AuthResponse> requestReset(@RequestBody AccountCredentials credentials) {
-        if (credentials.getEmail() != null) {
-            if (Boolean.TRUE.equals(authService.getAuthenticatedUser().getUsing_mfa())) {
-                if (credentials.getCode() == null)
-                    throw new AccountException("MFA code is required for this user");
-                authService.verifyMFA(credentials);
-            }
-
-            String resp = authService.requestPasswordReset(credentials);
-            return ResponseEntity.ok(new AuthResponse(resp));
+        if (Boolean.TRUE.equals(authService.userUsingMFA(credentials.getEmail()))) {
+            if (credentials.getCode() == null)
+                throw new AccountException("MFA code is required for this user");
+            authService.verifyMFA(credentials);
         }
-        return ResponseEntity.badRequest().build();
+
+        String resp = authService.requestPasswordReset(credentials);
+        return ResponseEntity.ok(new AuthResponse(resp));
     }
 
     @PostMapping("/verify/password")
@@ -83,6 +80,16 @@ public class AuthController {
     public ResponseEntity<RecaptchaResponse> verifyCaptcha(@RequestBody String captcha) {
         RecaptchaResponse resp = authService.captchaIsValid(captcha);
         return ResponseEntity.ok(resp);
+    }
+
+    @GetMapping("/sleep")
+    public ResponseEntity<String> sleep(){
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.ok("Slept for 5 seconds");
     }
 
 }

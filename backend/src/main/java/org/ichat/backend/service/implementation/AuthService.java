@@ -177,4 +177,9 @@ public class AuthService implements IAuthService {
 
         return response;
     }
+
+    @Override
+    public boolean userUsingMFA(String email) {
+        return userService.findBy(email).getUsing_mfa();
+    }
 }
