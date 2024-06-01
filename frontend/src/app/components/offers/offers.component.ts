@@ -11,6 +11,7 @@ export class OffersComponent {
     constructor(private auth: AuthService) {}
 
     disconnect() {
-        this.auth.logout().then(() => window.location.reload());
+        this.auth.logout();
+        location.reload();
     }
 }

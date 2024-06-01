@@ -5,7 +5,7 @@ import {AppRoutingModule} from "./app.routes";
 import {LoginComponent} from "./components/auth/login/login.component";
 import {ProfileComponent} from "./components/profile/profile.component";
 import {RegisterCompanyComponent} from "./components/auth/register/register-company/register-company.component";
-import {ResetPasswordComponent} from "./components/auth/reset-password/reset-password.component";
+import {ResetPasswordRequestComponent} from "./components/auth/reset-password/reset-password-request.component";
 import {BrowserAnimationsModule, provideAnimations} from "@angular/platform-browser/animations";
 import {ConfirmationComponent} from './components/auth/confirmation/confirmation.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -28,7 +28,7 @@ import {RegisterJobseekerComponent} from "./components/auth/register/register-jo
         ProfileComponent,
         RegisterCompanyComponent,
         RegisterJobseekerComponent,
-        ResetPasswordComponent,
+        ResetPasswordRequestComponent,
         ConfirmationComponent,
         HomeComponent,
         OffersComponent,

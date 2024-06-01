@@ -3,18 +3,18 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {UtilsService} from '../../../service/utils.service';
 import {Location} from '@angular/common';
 import {AuthService} from "../../../service/auth.service";
+import {AlertType} from "../../../shared/utils/AlertType";
 
 @Component({
     selector: 'app-reset-password',
-    templateUrl: './reset-password.component.html',
-    styleUrl: './reset-password.component.css'
+    templateUrl: './reset-password-request.component.html',
+    styleUrl: './reset-password-request.component.css'
 })
-export class ResetPasswordComponent {
+export class ResetPasswordRequestComponent {
     resetForm: FormGroup;
     usingMFA = true;
     otp = new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(6)]);
     email = new FormControl('', [Validators.required, Validators.email]);
-    captcha = new FormControl(null, [Validators.required]);
 
     otp_config = {
         allowNumbersOnly: true,
@@ -25,19 +25,17 @@ export class ResetPasswordComponent {
     constructor(private fb: FormBuilder, private location: Location,
                 private utils: UtilsService, private auth: AuthService) {
         this.resetForm = this.fb.group({
-            email: this.email, code: this.otp, recaptcha: this.captcha
+            email: this.email, code: this.otp
         });
     }
 
-    submitResetForm() {
-        this.auth.executeRecaptchaV3('ResetPassword')
-            .then(async token => {
-                this.resetForm.controls['captcha'].setValue(token);
-                if (this.utils.checkFormValidity(this.resetForm)) {
-                    await this.auth.resetPassword(this.resetForm.value);
-                    this.resetForm.reset();
-                }
-            });
+    async submitResetRequestForm() {
+        if (this.utils.checkFormValidity(this.resetForm)) {
+            await this.auth.requestPasswordReset(this.resetForm.value)
+                .then((res) => this.utils.alert(res, AlertType.SUCCESS))
+                .catch((error) => this.utils.alert(error.error.error, AlertType.ERROR));
+            this.resetForm.reset();
+        }
     }
 
 

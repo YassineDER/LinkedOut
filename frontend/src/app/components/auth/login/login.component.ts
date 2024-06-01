@@ -2,6 +2,8 @@ import {Component} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from "../../../service/auth.service";
 import {UtilsService} from "../../../service/utils.service";
+import {AlertType} from "../../../shared/utils/AlertType";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-login',
@@ -14,7 +16,7 @@ export class LoginComponent {
     email = new FormControl('', [Validators.required, Validators.email]);
     password = new FormControl('', [Validators.required]);
 
-    constructor(private fb: FormBuilder, private auth: AuthService, private utils: UtilsService) {
+    constructor(private fb: FormBuilder, private auth: AuthService, private utils: UtilsService, private router: Router) {
         this.loginForm = this.fb.group({
             email: this.email,
             password: this.password,
@@ -24,15 +26,34 @@ export class LoginComponent {
     }
 
 
-    submitLogin() {
-        this.auth.executeRecaptchaV3("Login")
-            .then(async token => {
-                this.loginForm.controls['captcha'].setValue(token);
-                if (this.utils.checkFormValidity(this.loginForm)) {
-                    await this.auth.login(this.loginForm.value);
-                    this.loginForm.reset();
-                }
-            });
+    async submitLogin() {
+        const captcha_token = await this.auth.executeRecaptchaV3("Login");
+        this.loginForm.controls['captcha'].setValue(captcha_token);
+
+        if (this.utils.checkFormValidity(this.loginForm)) {
+            await this.auth.login(this.loginForm.value)
+                .then((token) => {
+                    localStorage.setItem('token', token);
+                    this.router.navigate(['/offers']);
+                })
+                .catch((error) => this.handleLoginError(error));
+
+            this.resetForm();
+        }
+    }
+
+
+    private handleLoginError(error: any) {
+        const msg: string = error.error.error;
+        if (msg.startsWith("Account is not verified yet"))
+            this.router.navigate(['/account/verify'])
+                .then(() => this.utils.alert(msg, AlertType.ERROR));
+        else this.utils.alert(msg, AlertType.ERROR)
+    }
+
+
+    private resetForm() {
+        this.loginForm.controls['password'].reset();
     }
 
 }
