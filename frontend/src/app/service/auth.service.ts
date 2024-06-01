@@ -2,10 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {ReCaptchaV3Service} from "ng-recaptcha";
-import {UtilsService} from "./utils.service";
 import {Jobseeker} from "../models/jobseeker";
-import {Router} from "@angular/router";
-import {AlertType} from "../shared/utils/AlertType";
 import {LoginCredentials} from "../shared/auth/login-credentials";
 import {User} from "../models/user";
 
@@ -17,8 +14,7 @@ export class AuthService {
     private user: User | undefined;
     url = environment.hostUrl + '/api/auth';
 
-    constructor(private client: HttpClient, private utils: UtilsService,
-                private recaptchaV3: ReCaptchaV3Service, private router: Router) {
+    constructor(private client: HttpClient, private recaptchaV3: ReCaptchaV3Service) {
     }
 
     async isAuthenticated(): Promise<boolean> {
@@ -63,7 +59,7 @@ export class AuthService {
     }
 
     registerCompany(userObject: any) {
-
+        // TODO
     }
 
     registerAdmin(userObject: any) {
@@ -71,18 +67,14 @@ export class AuthService {
     }
 
 
-    async verifyEmail(code: number) {
-        this.client.get(this.url + '/verify/' + code)
-            .subscribe({
-                next: (res: any) => {
-                    if (typeof res.response === 'string') {
-                        localStorage.setItem('token', res.response)
-                        this.router.navigate(['/offers']).then(() =>
-                            this.utils.alert('Adresse mail vérifiée.', AlertType.SUCCESS));
-                    } else console.error(res);
-                },
-                error: (err) => this.utils.alert(err.error.error, AlertType.ERROR)
-            });
+    verifyEmail(code: number): Promise<string> {
+        return new Promise((resolve, reject) => {
+            this.client.get(this.url + '/verify/' + code)
+                .subscribe({
+                    next: (res: any) => resolve(res.response),
+                    error: (err) => reject(err)
+                });
+        });
     }
 
 

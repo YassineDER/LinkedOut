@@ -3,7 +3,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {UtilsService} from "../../../service/utils.service";
 import {AlertType} from "../../../shared/utils/AlertType";
 import {VerificationType} from "../../../shared/utils/VerificationType";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../../../service/auth.service";
 
 @Component({
@@ -27,7 +27,7 @@ export class ConfirmationComponent{
     }
 
 
-    constructor(fb: FormBuilder, private utils: UtilsService,
+    constructor(fb: FormBuilder, private utils: UtilsService, private router: Router,
                 private auth: AuthService, route: ActivatedRoute) {
         this.confirmationForm = fb.group({
             password: this.pwd,
@@ -45,12 +45,21 @@ export class ConfirmationComponent{
     }
 
 
-    submitConfirmationForm() {
+    async submitConfirmationForm() {
         const code = this.confirmationForm.value.received_code ?? null;
-        if (this.verification === VerificationType.EMAIL_VERIFICATION && code !== null)
-            this.auth.verifyEmail(code);
-        else if (this.verification === VerificationType.PASSWORD_RESET && this.utils.checkFormValidity(this.confirmationForm))
-            this.auth.resetPassword(this.confirmationForm.value)
+
+        if (this.verification === VerificationType.EMAIL_VERIFICATION && code !== null) {
+            await this.auth.verifyEmail(code)
+                .then(() => this.router.navigate(['/login'])
+                    .then(() => this.utils.alert('Email vérifié. Vous pouvez maintenant vous connecter', AlertType.SUCCESS)))
+                    .catch((err) => this.utils.alert(err.error.error, AlertType.ERROR));
+        }
+
+        else if (this.verification === VerificationType.PASSWORD_RESET && this.utils.checkFormValidity(this.confirmationForm)) {
+            await this.auth.resetPassword(this.confirmationForm.value).then(() => this.router.navigate(['/login'])
+                .then(() => this.utils.alert('Mot de passe réinitialisé. Vous pouvez maintenant vous connecter', AlertType.SUCCESS)))
+                .catch((err) => this.utils.alert(err.error.error, AlertType.ERROR));
+        }
     }
 
 }
