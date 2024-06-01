@@ -13,7 +13,7 @@ import {RegisterJobseekerComponent} from "./components/auth/register/register-jo
 import {AlreadyAuthGuard} from "./guards/already-auth.guard";
 
 const routes: Routes = [
-    {path: 'login', component: LoginComponent, canActivate: [AlreadyAuthGuard], data: {animation: 'LoginPage'}},
+    {path: 'login', component: LoginComponent, data: {animation: 'LoginPage'}},
     {path: 'register', children: [
             {path: '', redirectTo: 'jobseeker', pathMatch: 'full'},
             {path: 'register/company', component: RegisterCompanyComponent, data: {animation: 'RegisterCompanyPage'}},
@@ -23,12 +23,8 @@ const routes: Routes = [
     {path: 'password/reset', component: ConfirmationComponent, data: {animation: 'ResetPasswordPage'}},
     {path: 'account/verify', component: ConfirmationComponent, data: {animation: 'EmailVerificationPage'}},
     {path: '', component: HomeComponent, data: {animation: 'HomePage'}},
-    {
-        path: 'offers', canActivate: [AuthGuard], component: OffersComponent, data: {animation: 'OffersPage'},
-        children: [
-            {path: 'profile', component: ProfileComponent},
-        ]
-    },
+    {path: 'offers', canActivate: [AuthGuard], component: OffersComponent, data: {animation: 'OffersPage'}},
+    {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard], data: {animation: 'ProfilePage'}},
 
     {path: '**', component: NotFoundComponent}
 ];

@@ -1,12 +1,20 @@
 import {CanActivateFn, Router} from '@angular/router';
 import {inject} from "@angular/core";
 import {AuthService} from "../service/auth.service";
-import {AlertService} from "../service/alert.service";
+import {UtilsService} from "../service/utils.service";
+import {AlertType} from "../shared/utils/AlertType";
 
-export const AuthGuard: CanActivateFn = (route, state) => {
+export const AuthGuard: CanActivateFn = async (route, state) => {
     const auth = inject(AuthService)
     const router = inject(Router)
-    const alert = inject(AlertService)
+    const utils = inject(UtilsService)
 
-    return auth.isAuthenticated;
+    const isLoggedIn = await auth.isAuthenticated();
+
+    if (!isLoggedIn) {
+        router.navigate(['/login'])
+            .then(() => utils.alert('You must be logged in to access this page', AlertType.ERROR))
+    }
+
+    return isLoggedIn;
 };

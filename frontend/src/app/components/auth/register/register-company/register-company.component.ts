@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {AlertService} from '../../../../service/alert.service';
+import {UtilsService} from '../../../../service/utils.service';
 import {AlertType} from "../../../../shared/utils/AlertType";
 import {environment} from "../../../../../environments/environment";
 import {AuthService} from "../../../../service/auth.service";
@@ -21,7 +21,7 @@ export class RegisterCompanyComponent {
     captcha = new FormControl(null, [Validators.required]);
     siren = new FormControl('', [Validators.required, Validators.minLength(9), Validators.maxLength(9)]);
 
-    constructor(private fb: FormBuilder, private alert: AlertService, private auth: AuthService) {
+    constructor(private fb: FormBuilder, private alert: UtilsService, private auth: AuthService) {
 
         this.registerCompany = this.fb.group({
             email: this.email,

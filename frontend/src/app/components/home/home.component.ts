@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertService } from '../../service/alert.service';
+import { UtilsService } from '../../service/utils.service';
 import { AlertType } from '../../shared/utils/AlertType';
 import { NgOptimizedImage } from '@angular/common'
 
@@ -9,10 +9,10 @@ import { NgOptimizedImage } from '@angular/common'
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-  constructor(private alertService: AlertService) { }
+  constructor(private alertService: UtilsService) { }
 
   googleLogin() {
-    this.alertService.show('Google login is not available at the moment', AlertType.ERROR);
+    this.alertService.alert('Google login is not available at the moment', AlertType.ERROR);
   }
 
 }

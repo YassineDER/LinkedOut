@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {AlertService} from "../../../service/alert.service";
+import {UtilsService} from "../../../service/utils.service";
 import {AlertType} from "../../../shared/utils/AlertType";
 import {VerificationType} from "../../../shared/utils/VerificationType";
 import {ActivatedRoute} from "@angular/router";
@@ -27,7 +27,7 @@ export class ConfirmationComponent{
     }
 
 
-    constructor(fb: FormBuilder, private alert: AlertService,
+    constructor(fb: FormBuilder, private utils: UtilsService,
                 private auth: AuthService, route: ActivatedRoute) {
         this.confirmationForm = fb.group({
             password: this.pwd,
@@ -40,7 +40,7 @@ export class ConfirmationComponent{
                 this.verification = VerificationType.PASSWORD_RESET;
             else if (data['animation'] === 'EmailVerificationPage')
                 this.verification = VerificationType.EMAIL_VERIFICATION;
-            else this.alert.show('Page de confirmation inconnue', AlertType.ERROR);
+            else this.utils.alert('Page de confirmation inconnue', AlertType.ERROR);
         });
     }
 
@@ -48,10 +48,9 @@ export class ConfirmationComponent{
     submitConfirmationForm() {
         const code = this.confirmationForm.value.received_code ?? null;
         if (this.verification === VerificationType.EMAIL_VERIFICATION && code !== null)
-            return this.auth.verifyEmail(code);
-        if (this.alert.checkFormValidity(this.confirmationForm))
-            if (this.verification === VerificationType.PASSWORD_RESET)
-                this.auth.resetPassword(this.confirmationForm.value)
+            this.auth.verifyEmail(code);
+        else if (this.verification === VerificationType.PASSWORD_RESET && this.utils.checkFormValidity(this.confirmationForm))
+            this.auth.resetPassword(this.confirmationForm.value)
     }
 
 }

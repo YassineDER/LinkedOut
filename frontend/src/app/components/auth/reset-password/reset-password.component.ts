@@ -1,9 +1,8 @@
 import {Component} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {AlertService} from '../../../service/alert.service';
+import {UtilsService} from '../../../service/utils.service';
 import {Location} from '@angular/common';
-import {AlertType} from '../../../shared/utils/AlertType';
-import {ReCaptchaV3Service} from 'ng-recaptcha';
+import {AuthService} from "../../../service/auth.service";
 
 @Component({
     selector: 'app-reset-password',
@@ -15,7 +14,7 @@ export class ResetPasswordComponent {
     usingMFA = true;
     otp = new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(6)]);
     email = new FormControl('', [Validators.required, Validators.email]);
-    recaptcha = new FormControl(null, [Validators.required]);
+    captcha = new FormControl(null, [Validators.required]);
 
     otp_config = {
         allowNumbersOnly: true,
@@ -24,36 +23,21 @@ export class ResetPasswordComponent {
     }
 
     constructor(private fb: FormBuilder, private location: Location,
-                private alert: AlertService, private recaptchaV3: ReCaptchaV3Service) {
+                private utils: UtilsService, private auth: AuthService) {
         this.resetForm = this.fb.group({
-            email: this.email, code: this.otp, recaptcha: this.recaptcha
+            email: this.email, code: this.otp, recaptcha: this.captcha
         });
     }
 
-    public executeRecaptchaV3() {
-        this.recaptchaV3.execute('PasswordResetRequest')
-            .subscribe({
-                next: (token) => {
-                    if (token)
-                        this.resetForm.controls['recaptcha'].setValue(token);
-                },
-                error: (error) => {
-                    this.alert.show('Erreur lors de la validation du captcha: ' + error, AlertType.ERROR);
+    submitResetForm() {
+        this.auth.executeRecaptchaV3('ResetPassword')
+            .then(async token => {
+                this.resetForm.controls['captcha'].setValue(token);
+                if (this.utils.checkFormValidity(this.resetForm)) {
+                    await this.auth.resetPassword(this.resetForm.value);
+                    this.resetForm.reset();
                 }
             });
-    }
-
-    submitResetForm(event: Event) {
-        event.preventDefault();
-        this.executeRecaptchaV3();
-        for (let i in this.resetForm.controls) {
-            if (this.resetForm.controls[i].errors) {
-                this.resetForm.controls[i].markAsTouched();
-                return this.alert.show('Le champ ' + i + ' est invalide', AlertType.ERROR);
-            }
-        }
-
-        console.log(this.resetForm.value);
     }
 
 

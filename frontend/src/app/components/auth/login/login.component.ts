@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from "../../../service/auth.service";
-import {AlertService} from "../../../service/alert.service";
+import {UtilsService} from "../../../service/utils.service";
 
 @Component({
     selector: 'app-login',
@@ -14,7 +14,7 @@ export class LoginComponent {
     email = new FormControl('', [Validators.required, Validators.email]);
     password = new FormControl('', [Validators.required]);
 
-    constructor(private fb: FormBuilder, private auth: AuthService, private alert: AlertService) {
+    constructor(private fb: FormBuilder, private auth: AuthService, private utils: UtilsService) {
         this.loginForm = this.fb.group({
             email: this.email,
             password: this.password,
@@ -26,10 +26,10 @@ export class LoginComponent {
 
     submitLogin() {
         this.auth.executeRecaptchaV3("Login")
-            .then(token => {
+            .then(async token => {
                 this.loginForm.controls['captcha'].setValue(token);
-                if (this.alert.checkFormValidity(this.loginForm)) {
-                    this.auth.login(this.loginForm.value);
+                if (this.utils.checkFormValidity(this.loginForm)) {
+                    await this.auth.login(this.loginForm.value);
                     this.loginForm.reset();
                 }
             });

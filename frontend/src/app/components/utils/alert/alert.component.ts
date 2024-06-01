@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertService } from '../../../service/alert.service';
+import { UtilsService } from '../../../service/utils.service';
 import { trigger, style, animate, transition, } from '@angular/animations';
 import { AlertType } from '../../../shared/utils/AlertType';
 import {KeyValuePipe, NgClass, NgForOf} from "@angular/common";
@@ -40,7 +40,7 @@ export class AlertComponent {
   alerts: Map<number, { message: string, type: AlertType }> = new Map();
   public SERVERITY = AlertType;
 
-  constructor(private alertService: AlertService) {
+  constructor(private alertService: UtilsService) {
     this.alertService.alert$.subscribe(alert => {
       if (alert) {
         this.alerts.set(this.alerts.size, { message: alert.message, type: alert.type });

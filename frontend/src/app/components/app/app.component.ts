@@ -23,7 +23,5 @@ export class AppComponent implements OnInit {
    }
 
     private renitialize() {
-        this.auth.checkAuthStatus();
-        console.log('Auth status:', this.auth.isAuthenticated);
     }
 }

@@ -1,10 +1,8 @@
 import {Component} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {AlertService} from "../../../../service/alert.service";
+import {UtilsService} from "../../../../service/utils.service";
 import {environment} from "../../../../../environments/environment";
 import {AuthService} from "../../../../service/auth.service";
-import {AlertType} from "../../../../shared/utils/AlertType";
-import {Role} from "../../../../models/role";
 
 @Component({
     selector: 'app-register-jobseeker',
@@ -23,7 +21,7 @@ export class RegisterJobseekerComponent {
     last_name = new FormControl('', [Validators.required]);
     captcha = new FormControl(null, [Validators.required]);
 
-    constructor(private fb: FormBuilder, private alert: AlertService,
+    constructor(private fb: FormBuilder, private alert: UtilsService,
                 private auth: AuthService) {
         this.registerJobseeker = this.fb.group({
             email: this.email,
@@ -48,13 +46,12 @@ export class RegisterJobseekerComponent {
         });
     }
 
-    submitRegisterForm(event: Event) {
-        event.preventDefault();
+    submitRegisterForm() {
         this.auth.executeRecaptchaV3("RegisterJobseeker")
-            .then(token => {
+            .then(async token => {
                 this.registerJobseeker.controls['captcha'].setValue(token);
                 if (this.alert.checkFormValidity(this.registerJobseeker)) {
-                    this.auth.registerJobseeker(this.registerJobseeker.value);
+                    await this.auth.registerJobseeker(this.registerJobseeker.value);
                     this.registerJobseeker.reset();
                 }
             });
