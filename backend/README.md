@@ -1,8 +1,3 @@
-# Compiling from source
- 
-```bash
-mvn clean install
-```
 # Requirements
 
 - Requires Java 19 or higher.
@@ -15,5 +10,5 @@ mvn clean install
 # Building the jar file
 
 ```bash
-mvn clean package 
+mvn clean package -DskipTests
 ```

@@ -1,0 +1,6 @@
+.idea
+db.json
+
+*.log
+*.iml
+.vscode
