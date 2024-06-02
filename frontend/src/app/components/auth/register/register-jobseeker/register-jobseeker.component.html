@@ -42,7 +42,7 @@
                      placeholder="Pseudo (6 à 20 caractères)"/>
               <label [ngClass]="(pwd.touched || pwd.dirty) && pwd.invalid ? 'input-error' : 'input-primary'"
                      class="input input-bordered flex join-item w-full">
-                <input [formControl]="pwd" [type]="passVisible ? 'password' : 'text'" class="grow text-sm"
+                <input [formControl]="pwd" [type]="passVisible ? 'text' : 'password'" class="grow text-sm"
                        placeholder="Mot de passe (8 à 20 caractères)"/>
                 <button (click)="passVisible = !passVisible" type="button">
                   <i class="bi bi-eye"></i></button>

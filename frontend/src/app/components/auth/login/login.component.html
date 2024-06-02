@@ -10,7 +10,7 @@
         <div class="space-y-4 mb-2">
           <input [formControl]="email" name="email" type="email" class="input input-bordered input-primary w-full" placeholder="Email" />
           <label class="input input-bordered input-primary flex items-center gap-2">
-            <input [formControl]="password" [type]="passVisible ? 'password' : 'text'" name="password" class="grow" placeholder="Mot de passe" />
+            <input [formControl]="password" [type]="passVisible ? 'text' : 'password'" name="password" class="grow" placeholder="Mot de passe" />
             <button type="button" (click)="passVisible = !passVisible">
               <i class="bi bi-eye"></i></button>
           </label>

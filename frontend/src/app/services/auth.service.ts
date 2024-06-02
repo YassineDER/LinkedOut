@@ -14,7 +14,7 @@ export class AuthService {
     private user: User | undefined;
     url = environment.hostUrl + '/api/auth';
 
-    constructor(private client: HttpClient, private recaptchaV3: ReCaptchaV3Service) {
+    constructor(private http: HttpClient, private recaptchaV3: ReCaptchaV3Service) {
     }
 
     async isAuthenticated(): Promise<boolean> {
@@ -24,11 +24,8 @@ export class AuthService {
 
     login(credentials: LoginCredentials): Promise<string> {
         return new Promise((resolve, reject) => {
-            this.client.post<LoginCredentials>(this.url + '/authenticate', credentials)
-                .subscribe({
-                    next: (res: any) => resolve(res.response),
-                    error: (error) => reject(error)
-                });
+            this.http.post<LoginCredentials>(this.url + '/authenticate', credentials)
+                .subscribe(this.handleResponse(resolve, reject))
         });
     }
 
@@ -41,20 +38,19 @@ export class AuthService {
                 }))
     }
 
-
-    logout() {
-        localStorage.removeItem('token');
-        this._isAuthenticated = false;
+    logout(): Promise<void> {
+        return new Promise((resolve, reject) => {
+            localStorage.removeItem('token');
+            this._isAuthenticated = false;
+            this.user = undefined;
+            resolve();
+        });
     }
-
 
     registerJobseeker(userObject: any): Promise<string>  {
         return new Promise((resolve, reject) => {
-            this.client.post<Jobseeker>(this.url + '/register/jobseeker', userObject)
-                .subscribe({
-                    next: (res: any) => resolve(res.response),
-                    error: (err) => reject(err)
-                });
+            this.http.post<Jobseeker>(this.url + '/register/jobseeker', userObject)
+                .subscribe(this.handleResponse(resolve, reject))
         });
     }
 
@@ -69,39 +65,35 @@ export class AuthService {
 
     verifyEmail(code: number): Promise<string> {
         return new Promise((resolve, reject) => {
-            this.client.get(this.url + '/verify/' + code)
-                .subscribe({
-                    next: (res: any) => resolve(res.response),
-                    error: (err) => reject(err)
-                });
+            this.http.get(this.url + '/verify/' + code)
+                .subscribe(this.handleResponse(resolve, reject))
         });
     }
 
 
     resetPassword(objectRequest: any): Promise<string> {
         return new Promise((resolve, reject) => {
-            this.client.post(this.url + '/verify/password', objectRequest)
-                .subscribe({
-                    next: (res: any) => resolve(res.response),
-                    error: (err) => reject(err)
-                });
+            this.http.post(this.url + '/verify/password', objectRequest)
+                .subscribe(this.handleResponse(resolve, reject))
         });
     }
 
     requestPasswordReset(objectRequest: any): Promise<string> {
         return new Promise((resolve, reject) => {
-            this.client.post(this.url + '/reset-password', objectRequest)
-                .subscribe({
-                    next: (success: any) => resolve(success),
-                    error: (err) => reject(err)
-                });
+            this.http.post(this.url + '/reset-password', objectRequest)
+                .subscribe(this.handleResponse(resolve, reject))
         });
+    }
+
+    async getUser(): Promise<User> {
+        return await this.checkAuthStatus().then((res) => this.user = res.principal)
+            .catch(() => this.user = undefined);
     }
 
     private checkAuthStatus(): Promise<any> {
         const token = localStorage.getItem('token');
         return new Promise((resolve, reject) => {
-            this.client.get(this.url + '/status', {headers: {Authorization: 'Bearer ' + token}})
+            this.http.get(this.url + '/status', {headers: {Authorization: 'Bearer ' + token}})
                 .subscribe({
                     next: (res: any) => resolve(res),
                     error: (err) => {
@@ -112,8 +104,20 @@ export class AuthService {
         });
     }
 
-    async getUser(): Promise<User> {
-        return await this.checkAuthStatus().then((res) => this.user = res.principal)
-            .catch(() => this.user = undefined);
+    private handleResponse(resolve: (value: any) => void, reject: (reason: any) => void) {
+        return {
+            next: (res: any) => resolve(res.response),
+            error: (err: any) => reject(err)
+        }
+    }
+
+    simulateLongRequest() :Promise<string>{
+        return new Promise((resolve, reject) => {
+            this.http.get(this.url + '/sleep', {responseType: 'text'})
+                .subscribe({
+                    next: (res: any) => resolve(res as string),
+                    error: (err) => reject(err)
+                });
+        });
     }
 }

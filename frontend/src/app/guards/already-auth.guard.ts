@@ -1,13 +1,10 @@
 import {CanActivateFn, Router} from '@angular/router';
 import {inject} from "@angular/core";
-import {AuthService} from "../service/auth.service";
-import {UtilsService} from "../service/utils.service";
-import {AlertType} from "../shared/utils/AlertType";
+import {AuthService} from "../services/auth.service";
 
 export const AlreadyAuthGuard: CanActivateFn = async (route, state) => {
     const auth = inject(AuthService)
     const router = inject(Router)
-
 
     const isLoggedIn = await auth.isAuthenticated();
     if (isLoggedIn) {

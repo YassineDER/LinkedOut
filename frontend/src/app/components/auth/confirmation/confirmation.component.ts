@@ -1,10 +1,10 @@
 import {Component} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {UtilsService} from "../../../service/utils.service";
+import {UtilsService} from "../../../services/utils.service";
 import {AlertType} from "../../../shared/utils/AlertType";
 import {VerificationType} from "../../../shared/utils/VerificationType";
 import {ActivatedRoute, Router} from "@angular/router";
-import {AuthService} from "../../../service/auth.service";
+import {AuthService} from "../../../services/auth.service";
 
 @Component({
   selector: 'app-confirmation',

@@ -16,8 +16,8 @@ const routes: Routes = [
     {path: 'login', component: LoginComponent, canActivate: [AlreadyAuthGuard], data: {animation: 'LoginPage'}},
     {path: 'register', canActivate: [AlreadyAuthGuard], children: [
             {path: '', redirectTo: 'jobseeker', pathMatch: 'full'},
-            {path: 'register/company', component: RegisterCompanyComponent, data: {animation: 'RegisterCompanyPage'}},
-            {path: 'register/jobseeker', component: RegisterJobseekerComponent, data: {animation: 'RegisterJobseekerPage'}},
+            {path: 'company', component: RegisterCompanyComponent, data: {animation: 'RegisterCompanyPage'}},
+            {path: 'jobseeker', component: RegisterJobseekerComponent, data: {animation: 'RegisterJobseekerPage'}},
         ]},
     {path: 'request-password-reset', canActivate: [AlreadyAuthGuard], component: ResetPasswordRequestComponent, data: {animation: 'ResetPasswordRequestPage'}},
     {path: 'password/reset', canActivate: [AlreadyAuthGuard], component: ConfirmationComponent, data: {animation: 'ResetPasswordPage'}},

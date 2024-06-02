@@ -19,6 +19,9 @@ import {NgOptimizedImage} from "@angular/common";
 import {MatchPasswordDirective} from "./shared/directives/matching-password.directive";
 import {AlertComponent} from "./components/utils/alert/alert.component";
 import {RegisterJobseekerComponent} from "./components/auth/register/register-jobseeker/register-jobseeker.component";
+import {LoadingBarHttpClientModule} from "@ngx-loading-bar/http-client";
+import {LoadingBarRouterModule} from "@ngx-loading-bar/router";
+import {LoadingBarModule} from "@ngx-loading-bar/core";
 
 
 @NgModule({
@@ -46,6 +49,9 @@ import {RegisterJobseekerComponent} from "./components/auth/register/register-jo
         NgOptimizedImage,
         AlertComponent,
         FormsModule,
+        LoadingBarHttpClientModule,
+        LoadingBarRouterModule,
+        LoadingBarModule
     ],
     bootstrap: [AppComponent],
     providers: [

@@ -6,7 +6,7 @@
 
 <div class="flex flex-col items-center">
   <p class="text-center text-lg text-gray-600 mb-6">
-    You are now connected to the server.
+    You are now connected as <span class="font-semibold">{{ user?.username }}</span>
   </p>
   <button class="bg-amber-600 text-white px-4 py-2 rounded-md" (click)="disconnect()">
     Disconnect

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { UtilsService } from '../../../service/utils.service';
+import { UtilsService } from '../../../services/utils.service';
 import { trigger, style, animate, transition, } from '@angular/animations';
 import { AlertType } from '../../../shared/utils/AlertType';
 import {KeyValuePipe, NgClass, NgForOf} from "@angular/common";

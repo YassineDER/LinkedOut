@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {NavigationEnd, Router, RouterOutlet} from '@angular/router';
 import { fadeAnimation } from '../../animations';
-import {AuthService} from "../../service/auth.service";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
    selector: 'app-root',
@@ -10,18 +10,13 @@ import {AuthService} from "../../service/auth.service";
    animations: [fadeAnimation]
 })
 export class AppComponent implements OnInit {
-    constructor(private router: Router, private auth: AuthService) {}
+    constructor() {}
 
     ngOnInit() {
-        this.router.events.subscribe((event) => {
-            if (event instanceof NavigationEnd) this.renitialize();
-        });
+
     }
 
     prepareRoute(outlet: RouterOutlet) {
       return outlet && outlet.activatedRouteData && outlet.activatedRouteData['animation'];
    }
-
-    private renitialize() {
-    }
 }
