@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { UtilsService } from '../../../services/utils.service';
 import { trigger, style, animate, transition, } from '@angular/animations';
 import { AlertType } from '../../../shared/utils/AlertType';
 import {KeyValuePipe, NgClass, NgForOf} from "@angular/common";
+import {UtilsService} from "../../../services/utils.service";
 
 @Component({
     selector: 'app-alert',
@@ -40,8 +40,8 @@ export class AlertComponent {
   alerts: Map<number, { message: string, type: AlertType }> = new Map();
   public SERVERITY = AlertType;
 
-  constructor(private alertService: UtilsService) {
-    this.alertService.alert$.subscribe(alert => {
+  constructor(private utils: UtilsService) {
+    this.utils.alert$.subscribe(alert => {
       if (alert) {
         this.alerts.set(this.alerts.size, { message: alert.message, type: alert.type });
         setTimeout(() => this.closeAlert(this.alerts.size - 1), 5000);

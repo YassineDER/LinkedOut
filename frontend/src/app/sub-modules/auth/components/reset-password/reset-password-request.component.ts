@@ -1,10 +1,11 @@
 import {Component} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {UtilsService} from '../../../services/utils.service';
 import {Location} from '@angular/common';
-import {AuthService} from "../../../services/auth.service";
-import {AlertType} from "../../../shared/utils/AlertType";
 import {Router} from "@angular/router";
+import {UtilsService} from "../../../../services/utils.service";
+import {AuthService} from "../../services/auth.service";
+import {FormsService} from "../../services/forms.service";
+import {AlertType} from "../../../../shared/utils/AlertType";
 
 @Component({
     selector: 'app-reset-password',
@@ -25,7 +26,7 @@ export class ResetPasswordRequestComponent {
     }
 
     constructor(private fb: FormBuilder, private location: Location, private router: Router,
-                private utils: UtilsService, private auth: AuthService) {
+                private utils: UtilsService, private auth: AuthService, private formsSrv: FormsService) {
         this.resetForm = this.fb.group({
             email: this.email, captcha: this.captcha
         });
@@ -38,7 +39,7 @@ export class ResetPasswordRequestComponent {
         if (this.usingMFA)
             this.resetForm.addControl('code', this.otp);
 
-        if (this.utils.checkFormValidity(this.resetForm)) {
+        if (this.formsSrv.checkFormValidity(this.resetForm)) {
             await this.auth.requestPasswordReset(this.resetForm.value)
                 .then((res) => this.router.navigate(['/password/reset'])
                     .then(() => this.utils.alert(res, AlertType.SUCCESS)))

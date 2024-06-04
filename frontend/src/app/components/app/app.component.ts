@@ -1,7 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {NavigationEnd, Router, RouterOutlet} from '@angular/router';
+import {Component} from '@angular/core';
+import {RouterOutlet} from '@angular/router';
 import { fadeAnimation } from '../../animations';
-import {AuthService} from "../../services/auth.service";
 
 @Component({
    selector: 'app-root',
@@ -9,12 +8,8 @@ import {AuthService} from "../../services/auth.service";
    styleUrl: './app.component.css',
    animations: [fadeAnimation]
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
     constructor() {}
-
-    ngOnInit() {
-
-    }
 
     prepareRoute(outlet: RouterOutlet) {
       return outlet && outlet.activatedRouteData && outlet.activatedRouteData['animation'];

@@ -1,10 +1,11 @@
 import {Component} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {UtilsService} from "../../../services/utils.service";
-import {AlertType} from "../../../shared/utils/AlertType";
-import {VerificationType} from "../../../shared/utils/VerificationType";
+import {FormsService} from "../../services/forms.service";
+import {AlertType} from "../../../../shared/utils/AlertType";
+import {VerificationType} from "../../utils/VerificationType";
 import {ActivatedRoute, Router} from "@angular/router";
-import {AuthService} from "../../../services/auth.service";
+import {AuthService} from "../../services/auth.service";
+import {UtilsService} from "../../../../services/utils.service";
 
 @Component({
   selector: 'app-confirmation',
@@ -27,7 +28,7 @@ export class ConfirmationComponent{
     }
 
 
-    constructor(fb: FormBuilder, private utils: UtilsService, private router: Router,
+    constructor(fb: FormBuilder, private utils: UtilsService, private formsSrv: FormsService, private router: Router,
                 private auth: AuthService, route: ActivatedRoute) {
         this.confirmationForm = fb.group({
             password: this.pwd,
@@ -55,7 +56,7 @@ export class ConfirmationComponent{
                     .catch((err) => this.utils.alert(err.error.error, AlertType.ERROR));
         }
 
-        else if (this.verification === VerificationType.PASSWORD_RESET && this.utils.checkFormValidity(this.confirmationForm)) {
+        else if (this.verification === VerificationType.PASSWORD_RESET && this.formsSrv.checkFormValidity(this.confirmationForm)) {
             await this.auth.resetPassword(this.confirmationForm.value).then(() => this.router.navigate(['/login'])
                 .then(() => this.utils.alert('Mot de passe réinitialisé. Vous pouvez maintenant vous connecter', AlertType.SUCCESS)))
                 .catch((err) => this.utils.alert(err.error.error, AlertType.ERROR));

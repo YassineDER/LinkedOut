@@ -1,9 +1,10 @@
 import {Component} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {AuthService} from "../../../services/auth.service";
-import {UtilsService} from "../../../services/utils.service";
-import {AlertType} from "../../../shared/utils/AlertType";
 import {Router} from "@angular/router";
+import {AuthService} from "../../services/auth.service";
+import {UtilsService} from "../../../../services/utils.service";
+import {AlertType} from "../../../../shared/utils/AlertType";
+import {FormsService} from "../../services/forms.service";
 
 @Component({
     selector: 'app-login',
@@ -16,7 +17,8 @@ export class LoginComponent {
     email = new FormControl('', [Validators.required, Validators.email]);
     password = new FormControl('', [Validators.required]);
 
-    constructor(private fb: FormBuilder, private auth: AuthService, private utils: UtilsService, private router: Router) {
+    constructor(private fb: FormBuilder, private auth: AuthService, private formsSrv:FormsService,
+                private utils: UtilsService, private router: Router) {
         this.loginForm = this.fb.group({
             email: this.email,
             password: this.password,
@@ -31,7 +33,7 @@ export class LoginComponent {
         const captcha_token = await this.auth.executeRecaptchaV3("Login");
         this.loginForm.controls['captcha'].setValue(captcha_token);
 
-        if (this.utils.checkFormValidity(this.loginForm)) {
+        if (this.formsSrv.checkFormValidity(this.loginForm)) {
             await this.auth.login(this.loginForm.value)
                 .then((token) => {
                     localStorage.setItem('token', token);

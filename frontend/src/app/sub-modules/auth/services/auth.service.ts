@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {environment} from "../../environments/environment";
+import {environment} from "../../../../environments/environment";
 import {ReCaptchaV3Service} from "ng-recaptcha";
-import {LoginCredentials} from "../shared/auth/login-credentials";
-import {User} from "../models/user";
-import {Role} from "../models/role";
+import {LoginCredentials} from "../utils/login-credentials";
+import {User} from "../../../models/user";
+import {Role} from "../../../models/role";
 
 @Injectable({
     providedIn: 'root'

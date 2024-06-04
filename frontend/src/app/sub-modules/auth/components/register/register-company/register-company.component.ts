@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {UtilsService} from '../../../../services/utils.service';
-import {environment} from "../../../../../environments/environment";
-import {Role} from "../../../../models/role";
+import {environment} from "../../../../../../environments/environment";
+import {FormsService} from "../../../services/forms.service";
+import {Role} from "../../../../../models/role";
 
 @Component({
     selector: 'app-register',
@@ -19,7 +19,7 @@ export class RegisterCompanyComponent {
     captcha = new FormControl(null, [Validators.required]);
     siren = new FormControl('', [Validators.required, Validators.minLength(9), Validators.maxLength(9)]);
 
-    constructor(private fb: FormBuilder, private utils: UtilsService) {
+    constructor(private fb: FormBuilder, private formSrv: FormsService) {
 
         this.registerCompanyForm = this.fb.group({
             email: this.email,
@@ -44,7 +44,7 @@ export class RegisterCompanyComponent {
 
 
     async submitRegistration() {
-        await this.utils.submitRegisterForm(this.registerCompanyForm, Role.COMPANY)
+        await this.formSrv.submitRegisterForm(this.registerCompanyForm, Role.COMPANY)
     }
 
 }
