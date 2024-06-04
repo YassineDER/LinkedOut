@@ -13,20 +13,22 @@ import {RegisterJobseekerComponent} from "./components/auth/register/register-jo
 import {AlreadyAuthGuard} from "./guards/already-auth.guard";
 
 const routes: Routes = [
-    {path: 'login', component: LoginComponent, canActivate: [AlreadyAuthGuard], data: {animation: 'LoginPage'}},
-    {path: 'register', canActivate: [AlreadyAuthGuard], children: [
+    // Authentification routes
+    {path: 'login', component: LoginComponent, canActivate: [AlreadyAuthGuard], title:'Se connecter - LinkedOut', data: {animation: 'LoginPage'}},
+    {path: 'register', canActivate: [AlreadyAuthGuard], title: 'S\'inscrire - LinkedOut', children: [
             {path: '', redirectTo: 'jobseeker', pathMatch: 'full'},
             {path: 'company', component: RegisterCompanyComponent, data: {animation: 'RegisterCompanyPage'}},
             {path: 'jobseeker', component: RegisterJobseekerComponent, data: {animation: 'RegisterJobseekerPage'}},
         ]},
-    {path: 'request-password-reset', canActivate: [AlreadyAuthGuard], component: ResetPasswordRequestComponent, data: {animation: 'ResetPasswordRequestPage'}},
-    {path: 'password/reset', canActivate: [AlreadyAuthGuard], component: ConfirmationComponent, data: {animation: 'ResetPasswordPage'}},
-    {path: 'account/verify', canActivate: [AlreadyAuthGuard], component: ConfirmationComponent, data: {animation: 'EmailVerificationPage'}},
-    {path: '', component: HomeComponent, data: {animation: 'HomePage'}},
-    {path: 'offers', canActivate: [AuthGuard], component: OffersComponent, data: {animation: 'OffersPage'}},
-    {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard], data: {animation: 'ProfilePage'}},
-
-    {path: '**', component: NotFoundComponent}
+    {path: 'request-password-reset', canActivate: [AlreadyAuthGuard], component: ResetPasswordRequestComponent, data: {animation: 'ResetPasswordRequestPage'}, title: 'Mot de passe oublié - LinkedOut'},
+    {path: 'password/reset', canActivate: [AlreadyAuthGuard], component: ConfirmationComponent, data: {animation: 'ResetPasswordPage'}, title: 'Réinitialisation du mot de passe - LinkedOut'},
+    {path: 'account/verify', canActivate: [AlreadyAuthGuard], component: ConfirmationComponent, data: {animation: 'EmailVerificationPage'}, title: 'Vérification de l\'adresse email - LinkedOut'},
+    // Application routes
+    {path: '', component: HomeComponent, data: {animation: 'HomePage'}, title: 'LinkedOut'},
+    {path: 'offers', canActivate: [AuthGuard], component: OffersComponent, data: {animation: 'OffersPage'}, title: 'Offres - LinkedOut'},
+    {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard], data: {animation: 'ProfilePage'}, title: 'Mon profil - LinkedOut'},
+    // 404
+    {path: '**', component: NotFoundComponent, data: {animation: 'NotFoundPage'}, title: 'Page non trouvée - LinkedOut'}
 ];
 
 @NgModule({

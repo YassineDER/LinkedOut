@@ -13,6 +13,6 @@ export const AuthGuard: CanActivateFn = async (route, state) => {
     if (!isLoggedIn)
         router.navigate(['/login'])
             .then(() => utils.alert('You must be logged in to access this page', AlertType.ERROR))
-
+    console.log("called")
     return isLoggedIn;
 };

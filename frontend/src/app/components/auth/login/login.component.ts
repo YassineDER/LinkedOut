@@ -42,7 +42,6 @@ export class LoginComponent {
         }
     }
 
-
     private handleLoginError(error: any) {
         const msg: string = error.error.error;
         if (msg.startsWith("Account is not verified yet"))
@@ -50,7 +49,6 @@ export class LoginComponent {
                 .then(() => this.utils.alert(msg, AlertType.ERROR));
         else this.utils.alert(msg, AlertType.ERROR)
     }
-
 
     private resetForm() {
         this.loginForm.controls['password'].reset();

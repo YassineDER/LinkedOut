@@ -13,7 +13,7 @@ import {HomeComponent} from './components/home/home.component';
 import {NgOtpInputModule} from 'ng-otp-input';
 import {RECAPTCHA_V3_SITE_KEY, RecaptchaFormsModule, RecaptchaV3Module} from 'ng-recaptcha';
 import {environment} from '../environments/environment.development';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule, provideHttpClient, withInterceptors} from '@angular/common/http';
 import {OffersComponent} from './components/offers/offers.component';
 import {NgOptimizedImage} from "@angular/common";
 import {MatchPasswordDirective} from "./shared/directives/matching-password.directive";
@@ -22,6 +22,7 @@ import {RegisterJobseekerComponent} from "./components/auth/register/register-jo
 import {LoadingBarHttpClientModule} from "@ngx-loading-bar/http-client";
 import {LoadingBarRouterModule} from "@ngx-loading-bar/router";
 import {LoadingBarModule} from "@ngx-loading-bar/core";
+import {requestsInterceptor} from "./shared/interceptors/requests.interceptor";
 
 
 @NgModule({
@@ -60,6 +61,7 @@ import {LoadingBarModule} from "@ngx-loading-bar/core";
             useValue: environment.RECAPTCHA_V3_SITE_KEY
         },
         provideAnimations(),
+        provideHttpClient(withInterceptors([requestsInterceptor]))
     ]
 })
 export class AppModule {

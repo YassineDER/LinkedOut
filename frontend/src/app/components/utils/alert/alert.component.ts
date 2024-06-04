@@ -7,23 +7,23 @@ import {KeyValuePipe, NgClass, NgForOf} from "@angular/common";
 @Component({
     selector: 'app-alert',
     standalone: true,
-
     template: `
-        <div *ngFor="let alert of alerts | keyvalue; let i = index"
-             [ngClass]="{
-       'alert-success': alert.value.type === SERVERITY.SUCCESS,
-       'alert-warning': alert.value.type === SERVERITY.WARNING,
-       'alert-error': alert.value.type === SERVERITY.ERROR
-     }"
-             @fadeIn role="alert"
-             class="alert py-2 my-2 w-full flex items-center justify-between">
-            <i class="bi bi-info-circle"></i>
-            <span>{{ alert.value.message }}</span>
-            <button class="btn btn-sm" (click)="closeAlert(alert.key)">OK</button>
-        </div>`,
+        @for (alert of alerts | keyvalue; track alert){
+            <div [ngClass]="{
+         'alert-success': alert.value.type === SERVERITY.SUCCESS,
+            'alert-warning': alert.value.type === SERVERITY.WARNING,
+            'alert-error': alert.value.type === SERVERITY.ERROR
+            }"
+            @fadeIn role="alert"
+            class="alert py-2 my-2 w-full flex items-center justify-between">
+                <i class="bi bi-info
+                -circle"></i>
+                <span>{{ alert.value.message }}</span>
+                <button class="btn btn-sm" (click)="closeAlert(alert.key)">OK</button>
+            </div>
+        }`,
     imports: [
         NgClass,
-        NgForOf,
         KeyValuePipe
     ],
 
@@ -54,4 +54,6 @@ export class AlertComponent {
   closeAlert(index: number) {
     this.alerts.delete(index);
   }
+
+    protected readonly alert = alert;
 }

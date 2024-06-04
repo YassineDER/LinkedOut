@@ -91,9 +91,8 @@ export class AuthService {
     }
 
     private checkAuthStatus(): Promise<any> {
-        const token = localStorage.getItem('token');
         return new Promise((resolve, reject) => {
-            this.http.get(this.url + '/status', {headers: {Authorization: 'Bearer ' + token}})
+            this.http.get(this.url + '/status')
                 .subscribe({
                     next: (res: any) => resolve(res),
                     error: (err) => {
