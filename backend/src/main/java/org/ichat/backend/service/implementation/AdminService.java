@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exeception.AccountException;
 import org.ichat.backend.model.tables.Admin;
-import org.ichat.backend.repository.AdminRepo;
+import org.ichat.backend.repository.AdminRepository;
 import org.ichat.backend.service.IAdminService;
 import org.ichat.backend.service.IUserService;
 import org.springframework.stereotype.Service;
@@ -16,23 +16,23 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 public class AdminService implements IAdminService {
-    private final AdminRepo adminRepo;
+    private final AdminRepository adminRepository;
     private final IUserService userService;
 
     @Override
     public List<Admin> findAll() {
-        return adminRepo.findAll();
+        return adminRepository.findAll();
     }
 
     @Override
     public Admin findBy(String email) {
-        return adminRepo.findByEmail(email)
+        return adminRepository.findByEmail(email)
                 .orElseThrow(() -> new AccountException("Admin not found with given email"));
     }
 
     @Override
     public Admin findBy(Long admin_id) {
-        return adminRepo.findById(admin_id)
+        return adminRepository.findById(admin_id)
                 .orElseThrow(() -> new AccountException("Admin not found with given id"));
     }
 
@@ -49,16 +49,16 @@ public class AdminService implements IAdminService {
         if (adminToUpdate.getTitle() != null)
             adminToUpdate.setTitle(newAdmin.getTitle());
 
-        return adminRepo.save(adminToUpdate);
+        return adminRepository.save(adminToUpdate);
     }
 
     @Override
     public Admin add(Admin admin) {
-        boolean userExists = adminRepo.findByEmail(admin.getEmail()).isPresent() ||
-                adminRepo.findByUsername(admin.getUsername()).isPresent();
+        boolean userExists = adminRepository.findByEmail(admin.getEmail()).isPresent() ||
+                adminRepository.findByUsername(admin.getUsername()).isPresent();
         if (userExists)
             throw new AccountException("Admin already exists with given email or username");
 
-        return adminRepo.save(admin);
+        return adminRepository.save(admin);
     }
 }

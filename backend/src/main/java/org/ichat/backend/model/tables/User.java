@@ -100,6 +100,7 @@ public class User implements UserDetails {
         return enabled;
     }
 
+
     public void activateMFA(String secret) {
         this.using_mfa = true;
         this.mfa_secret = secret;
