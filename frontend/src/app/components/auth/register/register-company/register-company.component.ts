@@ -1,9 +1,7 @@
 import {Component} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {UtilsService} from '../../../../services/utils.service';
-import {AlertType} from "../../../../shared/utils/AlertType";
 import {environment} from "../../../../../environments/environment";
-import {AuthService} from "../../../../services/auth.service";
 import {Role} from "../../../../models/role";
 
 @Component({
@@ -14,16 +12,16 @@ import {Role} from "../../../../models/role";
 export class RegisterCompanyComponent {
     passVisible = false;
     isDev = false;
-    registerCompany: FormGroup;
+    registerCompanyForm: FormGroup;
 
     email = new FormControl('', [Validators.required, Validators.email]);
     pwd = new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]);
     captcha = new FormControl(null, [Validators.required]);
     siren = new FormControl('', [Validators.required, Validators.minLength(9), Validators.maxLength(9)]);
 
-    constructor(private fb: FormBuilder, private alert: UtilsService, private auth: AuthService) {
+    constructor(private fb: FormBuilder, private utils: UtilsService) {
 
-        this.registerCompany = this.fb.group({
+        this.registerCompanyForm = this.fb.group({
             email: this.email,
             username: this.email.value!.split('@')[0],
             password: this.pwd,
@@ -35,7 +33,7 @@ export class RegisterCompanyComponent {
     }
 
     preFillRecruiter() {
-        this.registerCompany.setValue({
+        this.registerCompanyForm.setValue({
             captcha: new FormControl(null).value,
             email: new FormControl('univ-nantes@example.com').value,
             username: new FormControl('univ-nantes').value,
@@ -44,19 +42,9 @@ export class RegisterCompanyComponent {
         });
     }
 
-    submitRegisterForm(event: Event) {
-        event.preventDefault();
-        this.auth.executeRecaptchaV3("RegisterCompany")
-            .then(token => {
-                this.registerCompany.controls['captcha'].setValue(token)
-                if (this.alert.checkFormValidity(this.registerCompany)) {
-                    this.auth.registerCompany(this.registerCompany.value);
-                    this.registerCompany.reset();
-                }
-            });
 
-
+    async submitRegistration() {
+        await this.utils.submitRegisterForm(this.registerCompanyForm, Role.COMPANY)
     }
-
 
 }

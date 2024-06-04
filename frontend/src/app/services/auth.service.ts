@@ -2,9 +2,9 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {ReCaptchaV3Service} from "ng-recaptcha";
-import {Jobseeker} from "../models/jobseeker";
 import {LoginCredentials} from "../shared/auth/login-credentials";
 import {User} from "../models/user";
+import {Role} from "../models/role";
 
 @Injectable({
     providedIn: 'root'
@@ -47,22 +47,23 @@ export class AuthService {
         });
     }
 
-    registerJobseeker(userObject: any): Promise<string>  {
+
+    /**
+     * Register a user with the given object and role.
+     * @param userObject The object containing the user information
+     * @param entity The role of the user
+     */
+    register(userObject: any, entity: Role): Promise<string> {
         return new Promise((resolve, reject) => {
-            this.http.post<Jobseeker>(this.url + '/register/jobseeker', userObject)
+            this.http.post(this.url + '/register/' + entity.toString(), userObject)
                 .subscribe(this.handleResponse(resolve, reject))
         });
     }
 
-    registerCompany(userObject: any) {
-        // TODO
-    }
-
-    registerAdmin(userObject: any) {
-        // TODO: Implement this functionnality in backend
-    }
-
-
+    /**
+     * Verify the email of the user with the given code.
+     * @param code The code received by email
+     */
     verifyEmail(code: number): Promise<string> {
         return new Promise((resolve, reject) => {
             this.http.get(this.url + '/verify/' + code)
@@ -70,7 +71,11 @@ export class AuthService {
         });
     }
 
-
+    /**
+     * Reset the password of the user with the given object.
+     * @param objectRequest The object containing the password, its confirmation and the code received by email.
+     * @return A promise containing the response of the server (success or error message)
+     */
     resetPassword(objectRequest: any): Promise<string> {
         return new Promise((resolve, reject) => {
             this.http.post(this.url + '/verify/password', objectRequest)

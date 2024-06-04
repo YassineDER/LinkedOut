@@ -2,9 +2,7 @@ import {Component} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {UtilsService} from "../../../../services/utils.service";
 import {environment} from "../../../../../environments/environment";
-import {AuthService} from "../../../../services/auth.service";
-import {AlertType} from "../../../../shared/utils/AlertType";
-import {Router} from "@angular/router";
+import {Role} from "../../../../models/role";
 
 @Component({
     selector: 'app-register-jobseeker',
@@ -23,8 +21,7 @@ export class RegisterJobseekerComponent {
     last_name = new FormControl('', [Validators.required]);
     captcha = new FormControl(null, [Validators.required]);
 
-    constructor(private fb: FormBuilder, private utils: UtilsService,
-                private auth: AuthService, private router: Router) {
+    constructor(private fb: FormBuilder, private utils: UtilsService) {
         this.registerJobseeker = this.fb.group({
             email: this.email,
             username: this.username,
@@ -48,18 +45,8 @@ export class RegisterJobseekerComponent {
         });
     }
 
-    async submitRegisterForm() {
-        const captcha = await this.auth.executeRecaptchaV3('RegisterJobseeker')
-        this.registerJobseeker.controls['captcha'].setValue(captcha);
-
-        if (this.utils.checkFormValidity(this.registerJobseeker)) {
-            await this.auth.registerJobseeker(this.registerJobseeker.value)
-                .then((res) => this.router.navigate(['/account/verify'])
-                        .then(() => this.utils.alert(res, AlertType.SUCCESS)))
-                .catch((err) => this.utils.alert(err.error.error, AlertType.ERROR));
-
-            this.registerJobseeker.reset();
-        }
+    async submitRegistration() {
+        await this.utils.submitRegisterForm(this.registerJobseeker, Role.JOBSEEKER);
     }
 
 }

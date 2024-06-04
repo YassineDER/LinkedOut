@@ -23,6 +23,7 @@ export class LoginComponent {
             code: [''],
             captcha: [null, [Validators.required]]
         });
+        console.log("Login component created");
     }
 
 
