@@ -2,7 +2,7 @@ package org.ichat.backend.config;
 
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.model.tables.Admin;
-import org.ichat.backend.model.tables.Roles;
+import org.ichat.backend.model.tables.indentity.Roles;
 import org.ichat.backend.repository.AdminRepository;
 import org.ichat.backend.repository.RoleRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -58,6 +58,8 @@ public class InitOnStartup {
                 }
                 admin.setPassword(encoder.encode(password));
                 adminRepo.save(admin);
+                
+                System.out.println("An admin has been created successfully.");
             }
         };
     }

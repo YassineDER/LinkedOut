@@ -1,6 +1,6 @@
 package org.ichat.backend.repository;
 
-import org.ichat.backend.model.tables.Roles;
+import org.ichat.backend.model.tables.indentity.Roles;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -2,8 +2,8 @@ package org.ichat.backend.controller;
 
 import org.ichat.backend.model.tables.Jobseeker;
 import org.ichat.backend.model.tables.User;
-import org.ichat.backend.service.ITwoFactorAuthService;
-import org.ichat.backend.service.IUserService;
+import org.ichat.backend.service.account.ITwoFactorAuthService;
+import org.ichat.backend.service.account.IUserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

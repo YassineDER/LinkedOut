@@ -7,7 +7,7 @@ import org.ichat.backend.exeception.AccountException;
 import org.ichat.backend.model.tables.Admin;
 import org.ichat.backend.repository.AdminRepository;
 import org.ichat.backend.service.IAdminService;
-import org.ichat.backend.service.IUserService;
+import org.ichat.backend.service.account.IUserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

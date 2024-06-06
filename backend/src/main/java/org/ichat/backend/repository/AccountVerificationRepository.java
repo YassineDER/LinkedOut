@@ -2,7 +2,7 @@ package org.ichat.backend.repository;
 
 
 import jakarta.transaction.Transactional;
-import org.ichat.backend.model.tables.AccountVerification;
+import org.ichat.backend.model.tables.indentity.AccountVerification;
 import org.ichat.backend.model.tables.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

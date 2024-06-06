@@ -2,7 +2,7 @@ package org.ichat.backend.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.model.util.StorageFile;
-import org.ichat.backend.service.IStorageService;
+import org.ichat.backend.service.shared.IStorageService;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.MediaType;

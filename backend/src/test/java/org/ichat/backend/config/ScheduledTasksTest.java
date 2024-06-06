@@ -1,25 +1,19 @@
 package org.ichat.backend.config;
 
-import org.ichat.backend.model.tables.AccountReset;
-import org.ichat.backend.model.tables.AccountVerification;
+import org.ichat.backend.model.tables.indentity.AccountReset;
+import org.ichat.backend.model.tables.indentity.AccountVerification;
 import org.ichat.backend.repository.AccountResetRepository;
 import org.ichat.backend.repository.AccountVerificationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
-import org.springframework.test.context.TestPropertySource;
 
-import java.time.Clock;
-import java.time.Instant;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class ScheduledTasksTest {

@@ -1,9 +1,10 @@
 package org.ichat.backend.service.implementation;
 
 import org.ichat.backend.exeception.AccountException;
-import org.ichat.backend.model.tables.AccountReset;
+import org.ichat.backend.model.tables.indentity.AccountReset;
 import org.ichat.backend.model.tables.User;
 import org.ichat.backend.repository.AccountResetRepository;
+import org.ichat.backend.service.account.implementation.AccountResetService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

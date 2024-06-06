@@ -1,10 +1,7 @@
 package org.ichat.backend.exeception;
 
-import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -14,7 +11,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -33,7 +29,7 @@ public class GlobalExceptionAdvice {
     @ResponseBody
     @ExceptionHandler({AccountException.class, AccountExpiredException.class,
             BadCredentialsException.class, AccessDeniedException.class})
-    ResponseEntity<Object> accountErrorHandler(Exception ex) {
+    public ResponseEntity<Object> accountErrorHandler(Exception ex) {
         Map<String, Object> body = new HashMap<>();
         body.put(TYPE, "Account");
         body.put(CLASS, ex.getClass().getName());
@@ -44,8 +40,8 @@ public class GlobalExceptionAdvice {
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleObjectNotValidException(MethodArgumentNotValidException ex) {
         Pattern pattern = Pattern.compile("message \\[([^]]+)]");
         Matcher matcher = pattern.matcher(ex.getMessage());
@@ -63,7 +59,7 @@ public class GlobalExceptionAdvice {
     @ResponseBody
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleGlobalErrors(Exception ex) {
-//        ex.printStackTrace();
+        log.error("Global error", ex);
         Map<String, Object> body = new HashMap<>();
         body.put(TYPE, "Global");
         body.put(CLASS, ex.getClass().getName());

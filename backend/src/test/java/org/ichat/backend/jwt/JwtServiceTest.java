@@ -3,6 +3,8 @@ package org.ichat.backend.jwt;
 import io.jsonwebtoken.Claims;
 import org.ichat.backend.exeception.AccountException;
 import org.ichat.backend.model.tables.User;
+import org.ichat.backend.service.account.IJwtService;
+import org.ichat.backend.service.account.implementation.JwtService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

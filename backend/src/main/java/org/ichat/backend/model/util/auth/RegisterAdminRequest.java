@@ -23,4 +23,5 @@ public class RegisterAdminRequest {
     private String admin_secret;
     @NotEmpty(message = "Captcha is mandatory")
     private String captcha;
+    boolean debug = false;
 }

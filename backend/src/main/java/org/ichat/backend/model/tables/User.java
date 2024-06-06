@@ -7,6 +7,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
+import org.ichat.backend.model.tables.indentity.AccountReset;
+import org.ichat.backend.model.tables.indentity.AccountVerification;
+import org.ichat.backend.model.tables.indentity.Roles;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

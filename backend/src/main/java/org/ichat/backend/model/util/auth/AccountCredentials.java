@@ -16,4 +16,5 @@ public class AccountCredentials {
     String code;
     @NotEmpty(message = "captcha is mandatory")
     String captcha;
+    boolean debug = false;
 }
