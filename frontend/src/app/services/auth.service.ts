@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {ReCaptchaV3Service} from "ng-recaptcha";
-import {LoginCredentials} from "../sub-modules/auth/utils/login-credentials";
+import {LoginCredentials} from "../modules/auth/utils/login-credentials";
 import {User} from "../models/user";
 import {Role} from "../models/role";
 
@@ -14,7 +14,7 @@ export class AuthService {
     private user: User | undefined;
     url = environment.hostUrl + '/api/auth';
 
-    constructor(private http: HttpClient, private recaptchaV3: ReCaptchaV3Service) {
+    constructor(private http: HttpClient) {
     }
 
     async isAuthenticated(): Promise<boolean> {
@@ -27,15 +27,6 @@ export class AuthService {
             this.http.post<LoginCredentials>(this.url + '/authenticate', credentials)
                 .subscribe(this.handleResponse(resolve, reject))
         });
-    }
-
-    executeRecaptchaV3(action: string): Promise<string> {
-        return new Promise((resolve, reject) =>
-            this.recaptchaV3.execute(action)
-                .subscribe({
-                    next: (token) => resolve(token),
-                    error: (error) => reject(error)
-                }))
     }
 
     logout(): Promise<void> {

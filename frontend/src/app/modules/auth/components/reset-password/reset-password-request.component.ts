@@ -4,7 +4,7 @@ import {Location} from '@angular/common';
 import {Router} from "@angular/router";
 import {UtilsService} from "../../../../services/utils.service";
 import {AuthService} from "../../../../services/auth.service";
-import {FormsService} from "../../services/forms.service";
+import {FormsService} from "../../../../services/forms.service";
 import {AlertType} from "../../../../shared/utils/AlertType";
 
 @Component({
@@ -34,7 +34,7 @@ export class ResetPasswordRequestComponent {
     }
 
     async submitResetRequestForm() {
-        const captcha = await this.auth.executeRecaptchaV3('ResetPassword');
+        const captcha = await this.utils.executeRecaptchaV3('ResetPassword');
         this.resetForm.controls['captcha'].setValue(captcha);
         if (this.usingMFA)
             this.resetForm.addControl('code', this.otp);

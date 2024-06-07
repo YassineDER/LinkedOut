@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {FormsService} from "../../services/forms.service";
+import {FormsService} from "../../../../services/forms.service";
 import {AlertType} from "../../../../shared/utils/AlertType";
 import {VerificationType} from "../../utils/VerificationType";
 import {ActivatedRoute, Router} from "@angular/router";

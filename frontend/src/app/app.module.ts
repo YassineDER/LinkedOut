@@ -13,8 +13,9 @@ import {LoadingBarHttpClientModule} from "@ngx-loading-bar/http-client";
 import {LoadingBarRouterModule} from "@ngx-loading-bar/router";
 import {LoadingBarModule} from "@ngx-loading-bar/core";
 import {requestsInterceptor} from "./shared/interceptors/requests.interceptor";
-import {AuthModule} from "./sub-modules/auth/auth.module";
+import {AuthModule} from "./modules/auth/auth.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {CoreModule} from "./modules/core/core.module";
 
 @NgModule({
     declarations: [
@@ -24,26 +25,16 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
         OffersComponent,
     ],
     imports: [
-        // nested modules first
-        AuthModule,
+        // nested modules before routing
+        CoreModule,
 
+        // system app modules
         BrowserModule,
-        ReactiveFormsModule,
         BrowserAnimationsModule,
-        NgOptimizedImage,
-        AlertComponent,
-        HttpClientModule,
-        FormsModule,
-        LoadingBarHttpClientModule,
-        LoadingBarRouterModule,
-        LoadingBarModule,
         AppRoutingModule,
     ],
     bootstrap: [AppComponent],
-    providers: [
-        provideAnimations(),
-        provideHttpClient(withInterceptors([requestsInterceptor]))
-    ]
+    providers: []
 })
 export class AppModule {
 }

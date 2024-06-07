@@ -20,18 +20,27 @@
           <h1 class="text-4xl font-bold my-2">Engagez-vous avec des candidats de qualité </h1>
           <p class="text-gray-500 mb-3">
             @if (isDev) {
-              <a class="text-blue-500 text-center" (click)="preFillRecruiter()" style="cursor: pointer">(Pré-remplir)</a>
+              <a class="text-blue-500 text-center" (click)="preFillRecruiter()"
+                 style="cursor: pointer">(Pré-remplir)</a>
             }
           </p>
 
           <div class="space-y-3 mb-2 ">
             <!-- Company siren -->
-              <input [formControl]="siren" class="input input-bordered w-full text-sm" placeholder="SIREN"
-                     [ngClass]="(siren.touched || siren.dirty) && siren.invalid ? 'input-error' : 'input-primary'"/>
+            <div class="join w-full">
+              <label [ngClass]="(siren.touched || siren.dirty) && siren.invalid ? 'input-error' : 'input-primary'"
+                     class="input input-bordered flex join-item w-full">
+                <input [formControl]="siren" class="grow text-sm" placeholder="SIREN"/>
+                <div class="tooltip tooltip-left flex items-center"
+                     data-tip="Le SIREN permet de vérifier l'existence de votre entreprise, ainsi que receuillir ses informations automatiquement">
+                  <i class="bi bi-question-circle"></i>
+                </div>
+              </label>
+            </div>
 
             <!-- Email -->
-            <input [formControl]="email" class="input input-bordered w-full text-sm"
-                   [ngClass]="(email.touched || email.dirty) && email.invalid ? 'input-error' : 'input-primary'"
+            <input [formControl]="email" [ngClass]="(email.touched || email.dirty) && email.invalid ? 'input-error' : 'input-primary'"
+                   class="input input-bordered w-full text-sm"
                    placeholder="Adresse email" type="email"/>
 
             <!-- Username (jobseeker only) and password -->
@@ -43,20 +52,20 @@
                 <button (click)="passVisible = !passVisible" type="button">
                   <i class="bi bi-eye"></i></button>
               </label>
-
             </div>
           </div>
 
           <button class="btn btn-primary text-white text-lg w-full my-1" type="submit">S'inscrire</button>
 
-          <p class="text-gray-500 font-bold my-3">Vous avez déjà un compte ? <a class="text-blue-500" routerLink="/login">Connectez-vous</a>
+          <p class="text-gray-500 my-3">Vous avez déjà un compte ?
+            <a class="text-blue-500" routerLink="/login">Connectez-vous</a>
           </p>
 
           <div class="text-gray-500 font-bold flex mb-2 flex-row space-x-3">
-            Vous êtes demandeur d'emploi ? <a class="text-blue-500 mx-1" routerLink="/register/jobseeker">Inscrivez-vous ici</a>
+            Vous êtes demandeur d'emploi ?
+            <a class="text-blue-500 mx-1" routerLink="/register/jobseeker">Inscrivez-vous ici</a>
           </div>
         </div>
-
 
       </form>
 

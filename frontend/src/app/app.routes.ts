@@ -11,6 +11,7 @@ const routes: Routes = [
     {path: '', component: HomeComponent, data: {animation: 'HomePage'}, title: 'LinkedOut'},
     {path: 'offers', canActivate: [AuthGuard], component: OffersComponent, data: {animation: 'OffersPage'}, title: 'Offres - LinkedOut'},
     {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard], data: {animation: 'ProfilePage'}, title: 'Mon profil - LinkedOut'},
+    // Lazy loaded modules
 
     // 404
     {path: '**', component: NotFoundComponent, data: {animation: 'NotFoundPage'}, title: 'Page non trouvée - LinkedOut'}

@@ -3,7 +3,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {UtilsService} from "../../../../../services/utils.service";
 import {environment} from "../../../../../../environments/environment";
 import {Role} from "../../../../../models/role";
-import {FormsService} from "../../../services/forms.service";
+import {FormsService} from "../../../../../services/forms.service";
 
 @Component({
     selector: 'app-register-jobseeker',

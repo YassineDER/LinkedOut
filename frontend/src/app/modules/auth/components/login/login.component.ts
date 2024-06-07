@@ -4,12 +4,12 @@ import {Router} from "@angular/router";
 import {AuthService} from "../../../../services/auth.service";
 import {UtilsService} from "../../../../services/utils.service";
 import {AlertType} from "../../../../shared/utils/AlertType";
-import {FormsService} from "../../services/forms.service";
+import {FormsService} from "../../../../services/forms.service";
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
-    styleUrl: './login.component.css'
+    styleUrl: './login.component.css',
 })
 export class LoginComponent {
     passVisible = false;
@@ -25,12 +25,11 @@ export class LoginComponent {
             code: [''],
             captcha: [null, [Validators.required]]
         });
-        console.log("Login component created");
     }
 
 
     async submitLogin() {
-        const captcha_token = await this.auth.executeRecaptchaV3("Login");
+        const captcha_token = await this.utils.executeRecaptchaV3("Login");
         this.loginForm.controls['captcha'].setValue(captcha_token);
 
         if (this.formsSrv.checkFormValidity(this.loginForm)) {

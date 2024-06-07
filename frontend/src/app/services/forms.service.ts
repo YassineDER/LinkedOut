@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import {AlertType} from '../../../shared/utils/AlertType';
+import {AlertType} from '../shared/utils/AlertType';
 import {FormGroup} from "@angular/forms";
-import {AuthService} from "../../../services/auth.service";
-import {Role} from "../../../models/role";
+import {AuthService} from "./auth.service";
+import {Role} from "../models/role";
 import {Router} from "@angular/router";
-import {UtilsService} from "../../../services/utils.service";
+import {UtilsService} from "./utils.service";
 
 @Injectable({
     providedIn: 'root'
@@ -31,7 +31,7 @@ export class FormsService {
 
 
     async submitRegisterForm(form: FormGroup, role: Role) {
-        const captcha = await this.auth.executeRecaptchaV3('Register_' + role.toString())
+        const captcha = await this.utils.executeRecaptchaV3('Register_' + role.toString())
         form.controls['captcha'].setValue(captcha);
 
         if (this.checkFormValidity(form)) {

@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {AlertType} from '../../shared/utils/AlertType';
-import {AuthService} from "../../sub-modules/auth/services/auth.service";
+import {AuthService} from "../../services/auth.service";
 import {UtilsService} from "../../services/utils.service";
 
 @Component({

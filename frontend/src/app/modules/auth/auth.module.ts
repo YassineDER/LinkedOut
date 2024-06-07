@@ -13,6 +13,7 @@ import {LoginComponent} from "./components/login/login.component";
 import {MatchPasswordDirective} from "./utils/directives/matching-password.directive";
 import {environment} from "../../../environments/environment.development";
 import {AuthRoutingModule} from "./auth.routes";
+import {AuthService} from "../../services/auth.service";
 
 @NgModule({
     declarations: [
@@ -30,9 +31,11 @@ import {AuthRoutingModule} from "./auth.routes";
         RecaptchaV3Module,
         RecaptchaFormsModule,
         HttpClientModule,
-        AlertComponent,
         FormsModule,
+        NgOptimizedImage,
         AuthRoutingModule,
+    ],
+    exports: [
         NgOptimizedImage,
     ],
     providers: [

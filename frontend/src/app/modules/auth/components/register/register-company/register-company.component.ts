@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {environment} from "../../../../../../environments/environment";
-import {FormsService} from "../../../services/forms.service";
+import {FormsService} from "../../../../../services/forms.service";
 import {Role} from "../../../../../models/role";
 
 @Component({
