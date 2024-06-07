@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
@@ -18,6 +20,8 @@ public class Comment {
     @NotEmpty(message = "Comment is required")
     @Column(nullable = false)
     String comment;
+
+    LocalDateTime created_at = LocalDateTime.now();
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "post_id", referencedColumnName = "post_id")

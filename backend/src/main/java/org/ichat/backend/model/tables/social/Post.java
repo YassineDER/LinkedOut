@@ -26,11 +26,11 @@ public class Post {
 
     String image_url;
 
-    LocalDateTime createdDate = LocalDateTime.now();
+    LocalDateTime created = LocalDateTime.now();
 
     int likes = 0;
 
-    @JsonIncludeProperties({"user_id", "image_url", "username"})
+    @JsonIncludeProperties({"user_id", "image_url", "username", "company_name", "first_name", "last_name", "title"})
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     User user;
@@ -45,10 +45,6 @@ public class Post {
 
     public void unlike() {
         this.likes--;
-    }
-
-    public void addComment(Comment comment) {
-        this.comments.add(comment);
     }
 
 }

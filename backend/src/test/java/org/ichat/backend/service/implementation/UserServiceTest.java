@@ -2,7 +2,7 @@ package org.ichat.backend.service.implementation;
 
 import org.ichat.backend.exeception.AccountException;
 import org.ichat.backend.model.tables.User;
-import org.ichat.backend.repository.UserRepo;
+import org.ichat.backend.repository.UserRepository;
 import org.ichat.backend.service.account.implementation.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ class UserServiceTest {
     @InjectMocks
     private UserService userService;
     @Mock
-    private UserRepo userRepo;
+    private UserRepository userRepository;
 
     @BeforeEach
     void setUp() {
@@ -32,39 +32,39 @@ class UserServiceTest {
 
     @Test
     void shouldFindUserById() {
-        when(userRepo.findById(anyLong())).thenReturn(Optional.of(new User()));
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(new User()));
         assertNotNull(userService.findBy(1L));
         assertInstanceOf(User.class, userService.findBy(1L));
     }
 
     @Test
     void shouldNotFindUserById() {
-        when(userRepo.findById(anyLong())).thenReturn(Optional.empty());
+        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
         assertThrows(AccountException.class, () -> userService.findBy(1L));
     }
 
     @Test
     void shouldFindUserByEmail() {
-        when(userRepo.findByEmail(anyString())).thenReturn(Optional.of(new User()));
+        when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(new User()));
         assertNotNull(userService.findBy("test@test.com"));
         assertInstanceOf(User.class, userService.findBy("test@test.com"));
     }
 
     @Test
     void shouldNotFindUserByEmail() {
-        when(userRepo.findByEmail(anyString())).thenReturn(Optional.empty());
+        when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
         assertThrows(AccountException.class, () -> userService.findBy("test@test.com"));
     }
 
     @Test
     void shouldFindUserByUsername() {
-        when(userRepo.findByUsername(anyString())).thenReturn(Optional.of(new User()));
+        when(userRepository.findByUsername(anyString())).thenReturn(Optional.of(new User()));
         assertNotNull(userService.findByUsername("username"));
     }
 
     @Test
     void shouldNotFindUserByUsername() {
-        when(userRepo.findByUsername(anyString())).thenReturn(Optional.empty());
+        when(userRepository.findByUsername(anyString())).thenReturn(Optional.empty());
         assertThrows(AccountException.class, () -> userService.findByUsername("username"));
     }
 
@@ -72,10 +72,10 @@ class UserServiceTest {
     void shouldDeleteUserById() {
         User user = new User();
         user.setUser_id(1L);
-        when(userRepo.findById(1L)).thenReturn(Optional.of(user));
-        doNothing().when(userRepo).deleteById(1L);
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        doNothing().when(userRepository).deleteById(1L);
         userService.deleteBy(1L);
-        verify(userRepo, times(1)).deleteById(1L);
+        verify(userRepository, times(1)).deleteById(1L);
     }
 
     @Test
@@ -86,8 +86,8 @@ class UserServiceTest {
         user.setUsing_mfa(true);
         user.setMfa_secret("secret");
 
-        when(userRepo.findById(anyLong())).thenReturn(Optional.of(new User()));
-        when(userRepo.save(any(User.class))).thenReturn(user);
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(new User()));
+        when(userRepository.save(any(User.class))).thenReturn(user);
 
         User updatedUser = userService.update(1L, user);
 
@@ -99,7 +99,7 @@ class UserServiceTest {
 
     @Test
     void shouldNotUpdateUserWhenNotFound() {
-        when(userRepo.findById(anyLong())).thenReturn(Optional.empty());
+        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
         assertThrows(AccountException.class, () -> userService.update(1L, new User()));
     }
 }

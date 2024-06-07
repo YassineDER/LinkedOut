@@ -10,6 +10,7 @@ import lombok.*;
 import org.ichat.backend.model.tables.indentity.AccountReset;
 import org.ichat.backend.model.tables.indentity.AccountVerification;
 import org.ichat.backend.model.tables.indentity.Roles;
+import org.ichat.backend.model.tables.social.Post;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -58,6 +59,10 @@ public class User implements UserDetails {
 
     @Column(nullable = false)
     private LocalDateTime createdDate = LocalDateTime.now();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<Post> userPosts;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore

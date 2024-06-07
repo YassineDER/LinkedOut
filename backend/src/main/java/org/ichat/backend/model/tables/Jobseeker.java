@@ -34,6 +34,8 @@ public class Jobseeker extends User {
 
     String cv_url;
 
+    String title;
+
     @OneToMany(mappedBy = "jobseeker")
     @JsonIgnore
     private Set<JobApplication> jobApplications;

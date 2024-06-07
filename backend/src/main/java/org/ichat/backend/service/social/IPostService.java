@@ -1,0 +1,25 @@
+package org.ichat.backend.service.social;
+
+import org.ichat.backend.model.tables.social.Comment;
+import org.ichat.backend.model.tables.social.Post;
+import org.ichat.backend.model.util.social.PostRequest;
+import org.ichat.backend.model.util.social.Reaction;
+
+import java.util.List;
+
+public interface IPostService {
+    Post createPost(PostRequest req);
+    List<Post> getLatestPosts();
+    List<Post> getPostsByUser(Long userId);
+
+    /**
+     * Get post by id
+     * @param postId id of the post
+     * @return Post object, null if not found
+     */
+    Post getPostById(Long postId);
+
+    void reactToPost(Long postId, Reaction reaction);
+    void deletePost(Long postId);
+    List<Comment> getComments(Long postId);
+}
