@@ -1,5 +1,6 @@
 package org.ichat.backend.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.model.assemblers.PostModelAssembler;
 import org.ichat.backend.model.tables.social.Post;
@@ -21,11 +22,11 @@ public class SocialController {
     private final PostModelAssembler assembler;
 
     @PostMapping("/post")
-    public ResponseEntity<?> createPost(@RequestBody PostRequest req) {
-        var post = postService.createPost(req);
+    public ResponseEntity<Post> createPost(@Valid @RequestBody PostRequest req) {
+        Post post = postService.createPost(req);
         EntityModel<Post> postModel = assembler.toModel(post);
         return ResponseEntity.created(postModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                .body(postModel);
+                .body(postModel.getContent());
     }
 
 }

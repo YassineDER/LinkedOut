@@ -4,6 +4,7 @@ import dev.samstevens.totp.exceptions.QrGenerationException;
 import org.ichat.backend.model.tables.User;
 import org.ichat.backend.model.util.auth.*;
 
+
 public interface IAuthService {
     String registerJobseeker(RegisterJobseekerRequest request);
     String registerCompany(RegisterCompanyRequest request);

@@ -38,13 +38,13 @@ public class PostService implements IPostService {
     @Override
     public List<Post> getLatestPosts() {
         // TODO: All latest posts, pagination and sorting included
-        return null;
+        return List.of();
     }
 
     @Override
     public List<Post> getPostsByUser(Long userId) {
         // TODO: All posts by a user, pagination and sorting included
-        return null;
+        return List.of();
     }
 
     @Override

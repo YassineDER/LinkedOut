@@ -60,18 +60,18 @@ public class SecurityConfiguration implements WebMvcConfigurer {
     }
 
 
-
     @Bean
     @Profile("prod")
     public SecurityFilterChain securityFilterChainProd(HttpSecurity http) throws Exception {
         http.anonymous(anonymous -> anonymous.authenticationFilter(customAnonymousAuthFilter()))
+                .exceptionHandling(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/jobseeker/**").hasAnyRole("JOBSEEKER", "ADMIN")
                         .requestMatchers("/api/company/**").hasAnyRole("COMPANY", "ADMIN")
                         .requestMatchers("/api/auth/**").permitAll()
                         .anyRequest().authenticated())
-                .httpBasic(AbstractHttpConfigurer::disable)
+                .httpBasic(basic -> basic.authenticationEntryPoint(entryPoint))
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authProvider)

@@ -13,7 +13,6 @@ public class PostModelAssembler implements RepresentationModelAssembler<Post, En
 
     @Override
     public @NonNull EntityModel<Post> toModel(@NonNull Post entity) {
-        return EntityModel.of(entity,
-                linkTo(methodOn(SocialController.class).createPost()).withSelfRel());
+        return EntityModel.of(entity, linkTo(methodOn(SocialController.class)).withSelfRel());
     }
 }
