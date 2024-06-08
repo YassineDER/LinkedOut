@@ -6,19 +6,16 @@ import {LoadingBarRouterModule} from "@ngx-loading-bar/router";
 import {LoadingBarModule} from "@ngx-loading-bar/core";
 import {provideAnimations} from "@angular/platform-browser/animations";
 import {requestsInterceptor} from "../../shared/interceptors/requests.interceptor";
-import {UtilsService} from "../../services/utils.service";
-import {AuthService} from "../../services/auth.service";
-import {FormsService} from "../../services/forms.service";
 import {AuthModule} from "../auth/auth.module";
-import {AlertComponent} from "../../components/utils/alert/alert.component";
+import {AlertComponent} from "./components/alert/alert.component";
+import {NavbarComponent} from "./components/navbar/navbar.component";
 
 
 @NgModule({
-    declarations: [],
+    declarations: [AlertComponent],
     imports: [
         CommonModule,
         AuthModule,
-        AlertComponent,
     ],
     exports: [
         HttpClientModule,

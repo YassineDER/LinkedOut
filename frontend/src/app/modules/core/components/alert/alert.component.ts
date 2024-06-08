@@ -1,12 +1,11 @@
 import {Component} from '@angular/core';
 import {trigger, style, animate, transition,} from '@angular/animations';
-import {AlertType} from '../../../shared/utils/AlertType';
+import {AlertType} from '../../../../shared/utils/AlertType';
 import {KeyValuePipe, NgClass} from "@angular/common";
-import {UtilsService} from "../../../services/utils.service";
+import {UtilsService} from "../../../../services/utils.service";
 
 @Component({
     selector: 'app-alert',
-    standalone: true,
     template: `
         @for (alert of alerts | keyvalue; track alert) {
             <div [ngClass]="{
@@ -22,10 +21,6 @@ import {UtilsService} from "../../../services/utils.service";
                 <button class="btn btn-sm" (click)="closeAlert(alert.key)">OK</button>
             </div>
         }`,
-    imports: [
-        NgClass,
-        KeyValuePipe
-    ],
 
     animations: [
         trigger('fadeIn', [
