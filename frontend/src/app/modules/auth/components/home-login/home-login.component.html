@@ -11,7 +11,7 @@
                 Continue with Google
             </button>
 
-            <a routerLink="/login" class="w-full btn btn-outline mb-6">S’identifier avec une adresse e-mail</a>
+            <a [routerLink]="Path.LOGIN.toString()" class="w-full btn btn-outline mb-6">S’identifier avec une adresse e-mail</a>
 
             <p class="text-sm text-center text-gray-600 mb-6">
                 En s’inscrivant ou en se connectant, vous acceptez les
@@ -20,7 +20,7 @@
             </p>
 
             <h5 class="font-bold text-center">
-                Nouveau sur LinkedIn ? <a routerLink="/register" class="text-blue-500">S’inscrire</a>
+                Nouveau sur LinkedIn ? <a [routerLink]="Path.REGISTER.toString()" class="text-blue-500">S’inscrire</a>
             </h5>
         </div>
     </div>

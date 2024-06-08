@@ -1,16 +1,18 @@
 import {Injectable} from '@angular/core';
-import {AlertType} from '../shared/utils/AlertType';
+import {AlertType} from '../modules/shared/utils/alert-type';
 import {FormGroup} from "@angular/forms";
 import {AuthService} from "./auth.service";
 import {Role} from "../models/role";
 import {Router} from "@angular/router";
 import {UtilsService} from "./utils.service";
+import {ReCaptchaV3Service} from "ng-recaptcha";
 
 @Injectable({
     providedIn: 'root'
 })
 export class FormsService {
-    constructor(private auth: AuthService, private router: Router, private utils: UtilsService) {}
+    constructor(private auth: AuthService, private router: Router,
+                private utils: UtilsService) {}
 
     /**
      * Check if a form is valid and mark all invalid fields as touched
@@ -31,7 +33,7 @@ export class FormsService {
 
 
     async submitRegisterForm(form: FormGroup, role: Role) {
-        const captcha = await this.utils.executeRecaptchaV3('Register_' + role.toString())
+        const captcha = await this.auth.executeRecaptchaV3('Register_' + role.toString())
         form.controls['captcha'].setValue(captcha);
 
         if (this.checkFormValidity(form)) {

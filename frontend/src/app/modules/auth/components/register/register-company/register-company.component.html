@@ -12,7 +12,7 @@
       <form (ngSubmit)="submitRegistration()" [formGroup]="registerCompanyForm"
             class="bg-white px-16 flex flex-col pt-8 rounded-lg shadow-lg w-full h-full">
         <!-- Logo -->
-        <a class="w-1/2 mx-auto" routerLink="/">
+        <a class="w-1/2 mx-auto" [routerLink]="Path.HOME.toString()">
           <img alt="logo" class="w-full" height="248" ngSrc="assets/images/slogan.png" priority width="851"/>
         </a>
 
@@ -58,12 +58,12 @@
           <button class="btn btn-primary text-white text-lg w-full my-1" type="submit">S'inscrire</button>
 
           <p class="text-gray-500 my-3">Vous avez déjà un compte ?
-            <a class="text-blue-500" routerLink="/login">Connectez-vous</a>
+            <a class="text-blue-500" [routerLink]="Path.LOGIN.toString()">Connectez-vous</a>
           </p>
 
           <div class="text-gray-500 font-bold flex mb-2 flex-row space-x-3">
             Vous êtes demandeur d'emploi ?
-            <a class="text-blue-500 mx-1" routerLink="/register/jobseeker">Inscrivez-vous ici</a>
+            <a class="text-blue-500 mx-1" [routerLink]="Path.REGISTER_JOBSEEKER.toString()">Inscrivez-vous ici</a>
           </div>
         </div>
 

@@ -1,5 +1,5 @@
 <div class="bg-slate-100 flex flex-col items-center h-screen">
-  <a class="w-1/12 mr-auto ml-4 mt-4" routerLink="/"><img priority ngSrc="assets/images/slogan.png" alt="logo" height="248"
+  <a class="w-1/12 mr-auto ml-4 mt-4" [routerLink]="Path.HOME.toString()"><img priority ngSrc="assets/images/slogan.png" alt="logo" height="248"
 																													width="851"/></a>
 
   <form [formGroup]="confirmationForm" (ngSubmit)="submitConfirmationForm()"

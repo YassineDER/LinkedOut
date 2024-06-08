@@ -1,11 +1,4 @@
 spring:
-  application:
-    name: LinkedOut
-  datasource:
-    driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/securecapita
-    username: ${DB_USER}
-    password: ${DB_PASS}
   mail:
     host: sandbox.smtp.mailtrap.io
     port: 2525
@@ -20,38 +13,5 @@ spring:
           starttls:
             enable: true
             required: true
-  jpa:
-    generate-ddl: true
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        format_sql: true
-        globally_quoted_identifiers: true
-        jdbc:
-          lob:
-            non_contextual_creation: true
-          id:
-            new_generator_mappings: true
-    open-in-view: false
-  sql:
-    init:
-      mode: embedded
-  caching:
-    user:
-      images: 10800000
-  servlet:
-    multipart:
-      max-file-size: 5MB
-      max-request-size: 5MB
 
-# Two-factor authentication configuration
-totp:
-  secret:
-    length: 64
-  time:
-    period: 30
-
-admin:
-  secret: 696969
 

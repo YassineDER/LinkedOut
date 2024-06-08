@@ -5,16 +5,17 @@ import {ReCaptchaV3Service} from "ng-recaptcha";
 import {LoginCredentials} from "../modules/auth/utils/login-credentials";
 import {User} from "../models/user";
 import {Role} from "../models/role";
+import {BehaviorSubject, Observable} from "rxjs";
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
     private _isAuthenticated: boolean | undefined;
-    private user: User | undefined;
+    private userSubject = new BehaviorSubject<User | null>(null);
     url = environment.hostUrl + '/api/auth';
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private recaptchaV3: ReCaptchaV3Service) {
     }
 
     async isAuthenticated(): Promise<boolean> {
@@ -33,16 +34,16 @@ export class AuthService {
         return new Promise((resolve, reject) => {
             localStorage.removeItem('token');
             this._isAuthenticated = false;
-            this.user = undefined;
+            this.userSubject.next(null);
             resolve();
         });
     }
 
 
     /**
-     * Register a user with the given object and role.
-     * @param userObject The object containing the user information
-     * @param entity The role of the user
+     * Register a userSubject with the given object and role.
+     * @param userObject The object containing the userSubject information
+     * @param entity The role of the userSubject
      */
     register(userObject: any, entity: Role): Promise<string> {
         return new Promise((resolve, reject) => {
@@ -52,7 +53,7 @@ export class AuthService {
     }
 
     /**
-     * Verify the email of the user with the given code.
+     * Verify the email of the userSubject with the given code.
      * @param code The code received by email
      */
     verifyEmail(code: number): Promise<string> {
@@ -63,7 +64,7 @@ export class AuthService {
     }
 
     /**
-     * Reset the password of the user with the given object.
+     * Reset the password of the userSubject with the given object.
      * @param objectRequest The object containing the password, its confirmation and the code received by email.
      * @return A promise containing the response of the server (success or error message)
      */
@@ -81,9 +82,10 @@ export class AuthService {
         });
     }
 
-    async getUser(): Promise<User> {
-        return await this.checkAuthStatus().then((res) => this.user = res.principal)
-            .catch(() => this.user = undefined);
+    getUser(): Observable<User | null> {
+        this.checkAuthStatus().then((res) => this.userSubject.next(res.principal))
+            .catch(() => this.userSubject.next(null));
+        return this.userSubject.asObservable();
     }
 
     private checkAuthStatus(): Promise<any> {
@@ -105,6 +107,16 @@ export class AuthService {
             error: (err: any) => reject(err)
         }
     }
+
+    executeRecaptchaV3(action: string): Promise<string> {
+        return new Promise((resolve, reject) =>
+            this.recaptchaV3.execute(action)
+                .subscribe({
+                    next: (token) => resolve(token),
+                    error: (error) => reject(error)
+                }))
+    }
+
 
     simulateLongRequest() :Promise<string>{
         return new Promise((resolve, reject) => {

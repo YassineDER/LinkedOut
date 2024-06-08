@@ -3,8 +3,9 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from "@angular/router";
 import {AuthService} from "../../../../services/auth.service";
 import {UtilsService} from "../../../../services/utils.service";
-import {AlertType} from "../../../../shared/utils/AlertType";
+import {AlertType} from "../../../shared/utils/alert-type";
 import {FormsService} from "../../../../services/forms.service";
+import {Path} from "../../../shared/utils/path";
 
 @Component({
     selector: 'app-login',
@@ -29,14 +30,14 @@ export class LoginComponent {
 
 
     async submitLogin() {
-        const captcha_token = await this.utils.executeRecaptchaV3("Login");
+        const captcha_token = await this.auth.executeRecaptchaV3("Login");
         this.loginForm.controls['captcha'].setValue(captcha_token);
 
         if (this.formsSrv.checkFormValidity(this.loginForm)) {
             await this.auth.login(this.loginForm.value)
                 .then((token) => {
                     localStorage.setItem('token', token);
-                    this.router.navigate(['/offers']);
+                    this.router.navigate([Path.HOME.toString()]);
                 })
                 .catch((error) => this.handleLoginError(error));
 
@@ -47,7 +48,7 @@ export class LoginComponent {
     private handleLoginError(error: any) {
         const msg: string = error.error.error;
         if (msg.startsWith("Account is not verified yet"))
-            this.router.navigate(['/email/verify'])
+            this.router.navigate([Path.VERIFY_EMAIL.toString()])
                 .then(() => this.utils.alert(msg, AlertType.ERROR));
         else this.utils.alert(msg, AlertType.ERROR)
     }
@@ -56,4 +57,5 @@ export class LoginComponent {
         this.loginForm.controls['password'].reset();
     }
 
+    protected readonly Path = Path;
 }

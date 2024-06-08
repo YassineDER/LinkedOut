@@ -1,11 +1,12 @@
 import {Component} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {FormsService} from "../../../../services/forms.service";
-import {AlertType} from "../../../../shared/utils/AlertType";
-import {VerificationType} from "../../utils/VerificationType";
+import {AlertType} from "../../../shared/utils/alert-type";
+import {VerificationType} from "../../utils/verification-type";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../../../../services/auth.service";
 import {UtilsService} from "../../../../services/utils.service";
+import {Path} from "../../../shared/utils/path";
 
 @Component({
   selector: 'app-confirmation',
@@ -51,16 +52,17 @@ export class ConfirmationComponent{
 
         if (this.verification === VerificationType.EMAIL_VERIFICATION && code !== null) {
             await this.auth.verifyEmail(code)
-                .then(() => this.router.navigate(['/login'])
+                .then(() => this.router.navigate([Path.LOGIN.toString()])
                     .then(() => this.utils.alert('Email vérifié. Vous pouvez maintenant vous connecter', AlertType.SUCCESS)))
                     .catch((err) => this.utils.alert(err.error.error, AlertType.ERROR));
         }
 
         else if (this.verification === VerificationType.PASSWORD_RESET && this.formsSrv.checkFormValidity(this.confirmationForm)) {
-            await this.auth.resetPassword(this.confirmationForm.value).then(() => this.router.navigate(['/login'])
+            await this.auth.resetPassword(this.confirmationForm.value).then(() => this.router.navigate([Path.LOGIN.toString()])
                 .then(() => this.utils.alert('Mot de passe réinitialisé. Vous pouvez maintenant vous connecter', AlertType.SUCCESS)))
                 .catch((err) => this.utils.alert(err.error.error, AlertType.ERROR));
         }
     }
 
+    protected readonly Path = Path;
 }

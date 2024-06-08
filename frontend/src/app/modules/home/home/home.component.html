@@ -1,0 +1,6 @@
+<ng-container *ngIf="user$ | async as user">
+  <app-nav [user]="user"></app-nav>
+  <h1>Welcome to your professional community</h1>
+  <h3>{{user.username}}</h3>
+  <app-footer></app-footer>
+</ng-container>

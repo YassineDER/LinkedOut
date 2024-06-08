@@ -1,5 +1,6 @@
 package org.ichat.backend.config;
 
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.model.tables.Admin;
 import org.ichat.backend.model.tables.indentity.Roles;
@@ -22,6 +23,7 @@ public class InitOnStartup {
     private final PasswordEncoder encoder;
 
     @Bean
+    @PostConstruct
     public void createRoles() {
         List<Roles> roles = roleRepository.findAll();
         if (roles.isEmpty())
@@ -58,7 +60,7 @@ public class InitOnStartup {
                 }
                 admin.setPassword(encoder.encode(password));
                 adminRepo.save(admin);
-                
+
                 System.out.println("An admin has been created successfully.");
             }
         };

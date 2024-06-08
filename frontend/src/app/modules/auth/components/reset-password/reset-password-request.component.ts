@@ -5,7 +5,8 @@ import {Router} from "@angular/router";
 import {UtilsService} from "../../../../services/utils.service";
 import {AuthService} from "../../../../services/auth.service";
 import {FormsService} from "../../../../services/forms.service";
-import {AlertType} from "../../../../shared/utils/AlertType";
+import {AlertType} from "../../../shared/utils/alert-type";
+import {Path} from "../../../shared/utils/path";
 
 @Component({
     selector: 'app-reset-password',
@@ -34,14 +35,14 @@ export class ResetPasswordRequestComponent {
     }
 
     async submitResetRequestForm() {
-        const captcha = await this.utils.executeRecaptchaV3('ResetPassword');
+        const captcha = await this.auth.executeRecaptchaV3('ResetPassword');
         this.resetForm.controls['captcha'].setValue(captcha);
         if (this.usingMFA)
             this.resetForm.addControl('code', this.otp);
 
         if (this.formsSrv.checkFormValidity(this.resetForm)) {
             await this.auth.requestPasswordReset(this.resetForm.value)
-                .then((res) => this.router.navigate(['/password/reset'])
+                .then((res) => this.router.navigate([Path.RESET_PASSWORD.toString()])
                     .then(() => this.utils.alert(res, AlertType.SUCCESS)))
                 .catch((error) => this.handleResetRequestError(error));
             this.resetForm.reset();
@@ -59,4 +60,5 @@ export class ResetPasswordRequestComponent {
         this.location.back();
     }
 
+    protected readonly Path = Path;
 }

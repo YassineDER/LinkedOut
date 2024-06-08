@@ -3,6 +3,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {environment} from "../../../../../../environments/environment";
 import {FormsService} from "../../../../../services/forms.service";
 import {Role} from "../../../../../models/role";
+import {Path} from "../../../../shared/utils/path";
 
 @Component({
     selector: 'app-register',
@@ -47,4 +48,5 @@ export class RegisterCompanyComponent {
         await this.formSrv.submitRegisterForm(this.registerCompanyForm, Role.COMPANY)
     }
 
+    protected readonly Path = Path;
 }
