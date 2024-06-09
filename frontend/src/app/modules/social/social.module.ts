@@ -14,5 +14,5 @@ import {AuthModule} from "../auth/auth.module";
         SocialRoutingModule
     ]
 })
-export class FeedModule {
+export class SocialModule {
 }

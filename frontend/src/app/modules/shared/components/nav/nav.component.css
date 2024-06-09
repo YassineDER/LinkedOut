@@ -1,0 +1,13 @@
+#profile .btn {
+    text-align: left !important;
+    justify-content: left !important;
+}
+
+#search{
+    transition: width 0.4s ease-in-out !important;
+    width: 50% !important;
+}
+
+#search:focus {
+    width: 100% !important;
+}

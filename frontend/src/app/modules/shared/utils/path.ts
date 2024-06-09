@@ -10,7 +10,15 @@ export enum Path {
     REQUEST_PASSWORD_RESET = RESET_PASSWORD + '/request',
     VERIFY_EMAIL = HOME_LOGIN + '/email/verify',
     //Social
-    FEED = '/feed',
-
+    SOCIAL = '/social',
+    FEED = SOCIAL + '/feed',
+    MESSAGES = SOCIAL + '/messages',
+    NETWORK = SOCIAL + '/network',
+    NOTIFICATIONS = SOCIAL + '/notifications',
+    // Jobs
+    JOBS = '/jobs',
+    //Profile
+    SETTINGS = '/settings',
+    PROFILE = SETTINGS + '/profile',
 
 }

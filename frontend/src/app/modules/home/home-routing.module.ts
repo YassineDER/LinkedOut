@@ -6,14 +6,14 @@ import {AuthGuard} from "../auth/guards/auth.guard";
 const routes: Routes = [
     {
         path: '', component: HomeComponent, children: [
-            {path: '', redirectTo: 'feed', pathMatch: 'full'},
+            {path: '', redirectTo: 'social', pathMatch: 'full'},
             {
-                path: 'profile',
-                loadChildren: () => import('../profile/profile.module').then(m => m.ProfileModule)
+                path: 'settings',
+                loadChildren: () => import('../settings/settings.module').then(m => m.SettingsModule)
             },
             {
-                path: 'feed',
-                loadChildren: () => import('../feed/feed.module').then(m => m.FeedModule),
+                path: 'social',
+                loadChildren: () => import('../social/social.module').then(m => m.SocialModule),
             }
         ]
     }

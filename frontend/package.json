@@ -1,10 +1,10 @@
 {
   "name": "frontend",
-  "version": "0.1",
+  "version": "0.2",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --configuration development",
-    "build": "ng build",
+    "start": "ng s",
+    "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "deploy": "./deploy"

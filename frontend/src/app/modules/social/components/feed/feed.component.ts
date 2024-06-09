@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-feed',
+  selector: 'app-social',
   templateUrl: './feed.component.html',
   styleUrl: './feed.component.css'
 })

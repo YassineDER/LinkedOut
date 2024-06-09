@@ -1,5 +1,8 @@
+/**
+ * Roles for the users. Matches the roles in the database and the backend.
+ */
 export enum Role {
-    COMPANY = 'company',
-    JOBSEEKER = 'jobseeker',
-    ADMIN = 'admin'
+    COMPANY = 'COMPANY',
+    JOBSEEKER = 'JOBSEEKER',
+    ADMIN = 'ADMIN'
 }

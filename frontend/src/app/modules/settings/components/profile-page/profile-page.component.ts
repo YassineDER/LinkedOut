@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-profile-page',
+  selector: 'app-settings-page',
   templateUrl: './profile-page.component.html',
   styleUrl: './profile-page.component.css'
 })

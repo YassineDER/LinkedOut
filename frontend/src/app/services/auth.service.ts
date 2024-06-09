@@ -3,16 +3,18 @@ import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {ReCaptchaV3Service} from "ng-recaptcha";
 import {LoginCredentials} from "../modules/auth/utils/login-credentials";
-import {User} from "../models/user";
 import {Role} from "../models/role";
 import {BehaviorSubject, Observable} from "rxjs";
+import {Jobseeker} from "../models/jobseeker";
+import {Company} from "../models/company";
+import {Admin} from "../models/admin";
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
     private _isAuthenticated: boolean | undefined;
-    private userSubject = new BehaviorSubject<User | null>(null);
+    private userSubject = new BehaviorSubject<Jobseeker | Company | Admin | null>(null);
     url = environment.hostUrl + '/api/auth';
 
     constructor(private http: HttpClient, private recaptchaV3: ReCaptchaV3Service) {
@@ -47,7 +49,7 @@ export class AuthService {
      */
     register(userObject: any, entity: Role): Promise<string> {
         return new Promise((resolve, reject) => {
-            this.http.post(this.url + '/register/' + entity.toString(), userObject)
+            this.http.post(this.url + '/register/' + entity.toLowerCase(), userObject)
                 .subscribe(this.handleResponse(resolve, reject))
         });
     }
@@ -82,10 +84,23 @@ export class AuthService {
         });
     }
 
-    getUser(): Observable<User | null> {
-        this.checkAuthStatus().then((res) => this.userSubject.next(res.principal))
+    getUser(): Observable<Jobseeker | Company | Admin | null> {
+        this.checkAuthStatus().then((res) => this.userSubject.next(this.mapUser(res.principal)))
             .catch(() => this.userSubject.next(null));
         return this.userSubject.asObservable();
+    }
+
+    private mapUser(user: any): Jobseeker | Company | Admin {
+        switch (user.authorities[0].authority) {
+            case Role.JOBSEEKER.toString():
+                return user as Jobseeker;
+            case Role.COMPANY.toString():
+                return user as Company;
+            case Role.ADMIN.toString():
+                return user as Admin;
+            default:
+                throw new Error('Invalid role');
+        }
     }
 
     private checkAuthStatus(): Promise<any> {

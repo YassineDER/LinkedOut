@@ -11,6 +11,7 @@ import { fadeAnimation } from '../../animations';
 export class AppComponent {
     constructor() {}
 
+    // Prepare route for animation transition
     prepareRoute(outlet: RouterOutlet) {
       return outlet && outlet.activatedRouteData && outlet.activatedRouteData['animation'];
    }
