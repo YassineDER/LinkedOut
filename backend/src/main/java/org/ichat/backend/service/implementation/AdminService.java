@@ -46,8 +46,8 @@ public class AdminService implements IAdminService {
             adminToUpdate.setLast_name(newAdmin.getLast_name());
         if (adminToUpdate.getPhone() != null)
             adminToUpdate.setPhone(newAdmin.getPhone());
-        if (adminToUpdate.getTitle() != null)
-            adminToUpdate.setTitle(newAdmin.getTitle());
+        if (adminToUpdate.getAdmin_title() != null)
+            adminToUpdate.setAdmin_title(newAdmin.getTitle());
 
         return adminRepository.save(adminToUpdate);
     }
