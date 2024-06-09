@@ -6,6 +6,7 @@ import {Role} from "../models/role";
 import {Router} from "@angular/router";
 import {UtilsService} from "./utils.service";
 import {ReCaptchaV3Service} from "ng-recaptcha";
+import {Path} from "../modules/shared/utils/path";
 
 @Injectable({
     providedIn: 'root'
@@ -38,7 +39,7 @@ export class FormsService {
 
         if (this.checkFormValidity(form)) {
             await this.auth.register(form.value, role)
-                .then((res) =>  this.router.navigate(['/account/verify'])
+                .then((res) =>  this.router.navigate([Path.VERIFY_EMAIL.toString()])
                     .then(() => this.utils.alert(res, AlertType.SUCCESS)))
                 .catch((err) => this.utils.alert(err.error.error, AlertType.ERROR));
         }

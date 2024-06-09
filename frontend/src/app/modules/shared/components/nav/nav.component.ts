@@ -2,6 +2,7 @@ import {Component, Input} from '@angular/core';
 import {AuthService} from "../../../../services/auth.service";
 import {Router} from "@angular/router";
 import {User} from "../../../../models/user";
+import {Path} from "../../utils/path";
 
 @Component({
     selector: 'app-nav',
@@ -17,6 +18,6 @@ export class NavComponent{
 
     async disconnect() {
         await this.auth.logout()
-            .then(() => this.router.navigate(['/auth']));
+            .then(() => this.router.navigate([Path.HOME_LOGIN.toString()]))
     }
 }
