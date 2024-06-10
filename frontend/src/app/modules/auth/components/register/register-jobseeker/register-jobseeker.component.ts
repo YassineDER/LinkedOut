@@ -38,7 +38,7 @@ export class RegisterJobseekerComponent {
     preFillJobseeker() {
         this.registerJobseeker.setValue({
             captcha: new FormControl(null).value,
-            email: new FormControl('bcha2825@hotmail.fr').value,
+            email: new FormControl('jobseeker@example.com').value,
             username: new FormControl('YassineDER').value,
             password: new FormControl('12345678').value,
             first_name: new FormControl('Yassine').value,
