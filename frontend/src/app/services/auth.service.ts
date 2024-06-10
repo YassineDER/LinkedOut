@@ -5,24 +5,23 @@ import {ReCaptchaV3Service} from "ng-recaptcha";
 import {LoginCredentials} from "../modules/auth/utils/login-credentials";
 import {Role} from "../models/role";
 import {BehaviorSubject, Observable} from "rxjs";
-import {Jobseeker} from "../models/jobseeker";
-import {Company} from "../models/company";
-import {Admin} from "../models/admin";
+import {User} from "../models/user";
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
-    private _isAuthenticated: boolean | undefined;
-    private userSubject = new BehaviorSubject<Jobseeker | Company | Admin | null>(null);
+    private userSubject = new BehaviorSubject<User | null>(null);
     url = environment.hostUrl + '/api/auth';
 
     constructor(private http: HttpClient, private recaptchaV3: ReCaptchaV3Service) {
     }
 
-    async isAuthenticated(): Promise<boolean> {
-        return await this.checkAuthStatus().then((res) => this._isAuthenticated = res.authenticated)
-            .catch(() => this._isAuthenticated = false);
+
+    getUser(): Observable<User | null> {
+        this.checkAuthStatus().then((res) => this.userSubject.next(res.principal))
+            .catch(() => this.userSubject.next(null));
+        return this.userSubject.asObservable();
     }
 
     login(credentials: LoginCredentials): Promise<string> {
@@ -35,7 +34,6 @@ export class AuthService {
     logout(): Promise<void> {
         return new Promise((resolve, reject) => {
             localStorage.removeItem('token');
-            this._isAuthenticated = false;
             this.userSubject.next(null);
             resolve();
         });
@@ -84,25 +82,6 @@ export class AuthService {
         });
     }
 
-    getUser(): Observable<Jobseeker | Company | Admin | null> {
-        this.checkAuthStatus().then((res) => this.userSubject.next(this.mapUser(res.principal)))
-            .catch(() => this.userSubject.next(null));
-        return this.userSubject.asObservable();
-    }
-
-    private mapUser(user: any): Jobseeker | Company | Admin {
-        switch (user.authorities[0].authority) {
-            case Role.JOBSEEKER.toString():
-                return user as Jobseeker;
-            case Role.COMPANY.toString():
-                return user as Company;
-            case Role.ADMIN.toString():
-                return user as Admin;
-            default:
-                throw new Error('Invalid role');
-        }
-    }
-
     private checkAuthStatus(): Promise<any> {
         return new Promise((resolve, reject) => {
             this.http.get(this.url + '/status')
@@ -142,4 +121,5 @@ export class AuthService {
                 });
         });
     }
+
 }

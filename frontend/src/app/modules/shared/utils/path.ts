@@ -17,8 +17,9 @@ export enum Path {
     NOTIFICATIONS = SOCIAL + '/notifications',
     // Jobs
     JOBS = '/jobs',
+    //Preferences
+    PREFERENCES = '/preferences',
     //Profile
-    SETTINGS = '/settings',
-    PROFILE = SETTINGS + '/profile',
+    PROFILE = '/out',
 
 }

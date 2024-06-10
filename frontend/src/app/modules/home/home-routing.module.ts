@@ -8,12 +8,16 @@ const routes: Routes = [
         path: '', component: HomeComponent, children: [
             {path: '', redirectTo: 'social', pathMatch: 'full'},
             {
-                path: 'settings',
-                loadChildren: () => import('../settings/settings.module').then(m => m.SettingsModule)
+                path: 'preferences',
+                loadChildren: () => import('../preferences/preferences.module').then(m => m.PreferencesModule)
             },
             {
                 path: 'social',
                 loadChildren: () => import('../social/social.module').then(m => m.SocialModule),
+            },
+            {
+                path: 'out',
+                loadChildren: () => import('../profile/profile.module').then(m => m.ProfileModule),
             }
         ]
     }

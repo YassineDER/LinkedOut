@@ -3,11 +3,11 @@
     justify-content: left !important;
 }
 
-#search{
+#search input{
     transition: width 0.4s ease-in-out !important;
-    width: 50% !important;
+    width: 30% !important;
 }
 
-#search:focus {
-    width: 100% !important;
+#search input:focus {
+    width: 50% !important;
 }

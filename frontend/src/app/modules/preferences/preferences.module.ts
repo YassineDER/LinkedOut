@@ -1,19 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { SettingsRoutingModule } from './settings-routing.module';
-import { ProfilePageComponent } from './components/profile-page/profile-page.component';
+import { PreferencesRoutingModule } from './preferences-routing.module';
+import { MyProfileComponent } from '../profile/components/my-profile/my-profile.component';
 import { SettingsComponent } from './components/settings/settings.component';
 
 
 @NgModule({
   declarations: [
-    ProfilePageComponent,
     SettingsComponent
   ],
   imports: [
     CommonModule,
-    SettingsRoutingModule
+    PreferencesRoutingModule
   ]
 })
-export class SettingsModule { }
+export class PreferencesModule { }

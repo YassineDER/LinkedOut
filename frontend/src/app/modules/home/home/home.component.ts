@@ -13,11 +13,10 @@ import {Admin} from "../../../models/admin";
   styleUrl: './home.component.css'
 })
 export class HomeComponent{
-    user$: Observable<Jobseeker | Company | Admin | null>;
+    user$: Observable<User | null>;
 
     constructor(private auth: AuthService, private router: Router) {
         this.user$ = this.auth.getUser();
-        console.log(this.user$);
     }
 
 }

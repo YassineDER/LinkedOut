@@ -21,7 +21,7 @@ export class NavComponent{
 
 
     isJobseeker(user: User): user is Jobseeker {
-        return (user as Jobseeker).title !== undefined && (user as Jobseeker).cv_url !== null;
+        return (user as Jobseeker).title !== undefined && (user as Jobseeker).title !== null;
     }
 
     isCompany(user: User): user is Company {
