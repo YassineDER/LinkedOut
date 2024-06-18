@@ -1,5 +1,11 @@
-<ng-container *ngIf="user$ | async as user">
-  <app-nav [user]="user"></app-nav>
-  <router-outlet />
-  <app-footer></app-footer>
+<ng-container *ngIf="{ user: user$ | async } as auth">
+  <ng-container *ngIf="auth.user?.[0] as user">
+    <app-nav [user]="user" />
+
+    <div [@fadeInUpAnimation]="prepareOutlet(outlet)">
+      <router-outlet #outlet="outlet" />
+    </div>
+
+    <app-footer />
+  </ng-container>
 </ng-container>

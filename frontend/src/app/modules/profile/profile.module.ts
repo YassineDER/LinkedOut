@@ -1,16 +1,21 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 
-import { ProfileRoutingModule } from './profile-routing.module';
-import {MyProfileComponent} from "./components/my-profile/my-profile.component";
-import { UserProfileComponent } from './components/user-profile/user-profile.component';
-
+import {ProfileRoutingModule} from './profile-routing.module';
+import {ProfileComponent} from "./components/profile/profile.component";
+import {UserService} from "../home/services/user.service";
+import {AboutComponent} from "../shared/components/about-profile/about.component";
+import {OverviewComponent} from "../shared/components/overview-profile/overview.component";
 
 @NgModule({
-  declarations: [MyProfileComponent, UserProfileComponent],
-  imports: [
-    CommonModule,
-    ProfileRoutingModule
-  ]
+    declarations: [ProfileComponent],
+    imports: [
+        CommonModule,
+        ProfileRoutingModule,
+        AboutComponent,
+        OverviewComponent,
+    ],
+    providers: [UserService]
 })
-export class ProfileModule { }
+export class ProfileModule {
+}

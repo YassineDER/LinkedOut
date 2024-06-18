@@ -40,7 +40,6 @@ export class LoginComponent {
                     this.router.navigate([Path.HOME.toString()]);
                 })
                 .catch((error) => this.handleLoginError(error));
-
             this.resetForm();
         }
     }

@@ -6,8 +6,7 @@ const routes: Routes = [
     {
         path: '', children: [
             {path: '', redirectTo: 'feed', pathMatch: 'full'},
-            {path: 'feed', component: FeedComponent, data: {animation: 'FeedPage'},
-                title: 'Fil d\'actualité - LinkedOut'}
+            {path: 'feed', component: FeedComponent, title: 'Fil d\'actualité - LinkedOut'}
         ]
     }
 ];

@@ -7,6 +7,7 @@
 <!--Alert component to show messages-->
 <app-alert></app-alert>
 
-<div [@fadeAnimation]="prepareRoute(outlet)">
-    <router-outlet #outlet="outlet" />
+
+<div [@fadeAnimation]="prepareOutlet(outlet)">
+  <router-outlet #outlet="outlet" />
 </div>

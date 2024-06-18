@@ -4,7 +4,7 @@ import {environment} from "../../environments/environment";
 import {ReCaptchaV3Service} from "ng-recaptcha";
 import {LoginCredentials} from "../modules/auth/utils/login-credentials";
 import {Role} from "../models/role";
-import {BehaviorSubject, Observable} from "rxjs";
+import {BehaviorSubject, catchError, map, Observable, of, switchMap} from "rxjs";
 import {User} from "../models/user";
 
 @Injectable({
@@ -18,16 +18,23 @@ export class AuthService {
     }
 
 
-    getUser(): Observable<User | null> {
-        this.checkAuthStatus().then((res) => this.userSubject.next(res.principal))
-            .catch(() => this.userSubject.next(null));
-        return this.userSubject.asObservable();
+    getUser(): Observable<[User | null, boolean]> {
+        return this.checkAuthStatus().pipe(
+            switchMap((res) => {
+                this.userSubject.next(res.principal);
+                return of<[User | null, boolean]>([res.principal, res.authenticated]);
+            }),
+            catchError(() => {
+
+                return of<[User | null, boolean]>([null, false]);
+            })
+        );
     }
 
     login(credentials: LoginCredentials): Promise<string> {
         return new Promise((resolve, reject) => {
             this.http.post<LoginCredentials>(this.url + '/authenticate', credentials)
-                .subscribe(this.handleResponse(resolve, reject))
+                .subscribe(this.handleResponse(resolve, reject));
         });
     }
 
@@ -82,17 +89,8 @@ export class AuthService {
         });
     }
 
-    private checkAuthStatus(): Promise<any> {
-        return new Promise((resolve, reject) => {
-            this.http.get(this.url + '/status')
-                .subscribe({
-                    next: (res: any) => resolve(res),
-                    error: (err) => {
-                        localStorage.removeItem('token');
-                        reject(err);
-                    }
-                });
-        });
+    private checkAuthStatus(): Observable<any> {
+        return this.http.get(this.url + '/status');
     }
 
     private handleResponse(resolve: (value: any) => void, reject: (reason: any) => void) {
