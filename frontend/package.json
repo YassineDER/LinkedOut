@@ -22,6 +22,7 @@
     "@ngx-loading-bar/http-client": "^6.0.2",
     "@ngx-loading-bar/router": "^6.0.2",
     "@tailwindcss/typography": "^0.5.12",
+    "jwt-decode": "^4.0.0",
     "ng-otp-input": "^1.9.3",
     "ng-recaptcha": "^13.2.1",
     "rxjs": "~7.8.0",

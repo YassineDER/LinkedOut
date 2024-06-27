@@ -1,9 +1,10 @@
-import {AfterViewInit, ChangeDetectorRef, Component} from '@angular/core';
-import {Observable} from "rxjs";
+import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {map, Observable} from "rxjs";
 import {User} from "../../../models/user";
-import {AuthService} from "../../../services/auth.service";
-import {RouterOutlet} from "@angular/router";
+import {ActivatedRoute, RouterOutlet} from "@angular/router";
 import {fadeInUpAnimation} from "../../../animations";
+import {AuthService} from "../../../services/auth.service";
+import {UserService} from "../services/user.service";
 
 @Component({
     selector: 'app-home',
@@ -11,15 +12,17 @@ import {fadeInUpAnimation} from "../../../animations";
     styleUrl: './home.component.css',
     animations: [fadeInUpAnimation]
 })
-export class HomeComponent implements AfterViewInit{
+export class HomeComponent implements OnInit{
     user$: Observable<[User | null, boolean]>;
 
-    constructor(private auth: AuthService, private cdREf: ChangeDetectorRef) {
-        this.user$ = this.auth.getUser();
+    constructor(private auth: AuthService, private userServ:UserService, private cdREf: ChangeDetectorRef) {
+        this.user$ = this.auth.getAuthenticatedUser();
     }
 
-    ngAfterViewInit() {
-        this.cdREf.detectChanges();
+    ngOnInit() {
+        this.user$.subscribe(([user, authenticated]) => {
+            this.userServ.changeUser(authenticated ? user : null);
+        });
     }
 
     prepareOutlet(outlet: RouterOutlet) {

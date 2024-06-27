@@ -15,7 +15,6 @@ import {OverviewComponent} from "../shared/components/overview-profile/overview.
         AboutComponent,
         OverviewComponent,
     ],
-    providers: [UserService]
 })
 export class ProfileModule {
 }

@@ -8,8 +8,10 @@ import {UserService} from "../../../home/services/user.service";
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent {
-    user!: User;
+    user!: User | null;
 
-    constructor(private users: UserService){
+    constructor(private userServ: UserService){
+        this.userServ.currentUser.subscribe(user =>
+            this.user = user);
     }
 }

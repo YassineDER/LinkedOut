@@ -17,15 +17,17 @@ export class AuthService {
     constructor(private http: HttpClient, private recaptchaV3: ReCaptchaV3Service) {
     }
 
+    get user() {
+        return this.userSubject.asObservable();
+    }
 
-    getUser(): Observable<[User | null, boolean]> {
+    getAuthenticatedUser(): Observable<[User | null, boolean]> {
         return this.checkAuthStatus().pipe(
             switchMap((res) => {
                 this.userSubject.next(res.principal);
                 return of<[User | null, boolean]>([res.principal, res.authenticated]);
             }),
             catchError(() => {
-
                 return of<[User | null, boolean]>([null, false]);
             })
         );

@@ -6,6 +6,7 @@ import {Path} from "../../utils/path";
 import {Jobseeker} from "../../../../models/jobseeker";
 import {Company} from "../../../../models/company";
 import {Admin} from "../../../../models/admin";
+import {UserService} from "../../../home/services/user.service";
 
 @Component({
     selector: 'app-nav',
@@ -16,20 +17,8 @@ export class NavComponent{
     @Input() user!: User;
     hasNotifications: boolean = false;
 
-    constructor(private auth: AuthService, private router: Router) {
-    }
-
-
-    isJobseeker(user: User): user is Jobseeker {
-        return (user as Jobseeker).title !== undefined && (user as Jobseeker).title !== null;
-    }
-
-    isCompany(user: User): user is Company {
-        return (user as Company).company_name !== undefined && (user as Company).company_name !== null;
-    }
-
-    isAdmin(user: User): user is Admin {
-        return (user as Admin).admin_title !== undefined && (user as Admin).admin_title !== null;
+    constructor(private auth: AuthService, private router: Router,
+                public userServ: UserService) {
     }
 
     async disconnect() {
