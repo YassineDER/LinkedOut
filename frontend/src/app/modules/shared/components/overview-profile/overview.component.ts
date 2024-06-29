@@ -1,8 +1,9 @@
 import {Component, Input} from '@angular/core';
 import {User} from "../../../../models/user";
-import {NgOptimizedImage} from "@angular/common";
+import {NgIf, NgOptimizedImage} from "@angular/common";
 import {Router} from "@angular/router";
 import {Jobseeker} from "../../../../models/jobseeker";
+import {UserService} from "../../../home/services/user.service";
 
 @Component({
     selector: 'app-overview-profile',
@@ -10,13 +11,14 @@ import {Jobseeker} from "../../../../models/jobseeker";
     styleUrl: './overview.component.css',
     standalone: true,
     imports: [
-        NgOptimizedImage
+        NgOptimizedImage,
+        NgIf
     ],
 })
 export class OverviewComponent {
-    @Input() user!: User | null;
+    @Input() user!: User;
 
-    constructor(private router: Router) {
+    constructor(private router: Router, protected users: UserService) {
     }
 
 }

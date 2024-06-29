@@ -2,16 +2,16 @@
   <div class="relative">
     <img class="w-full h-32 object-cover" ngSrc="assets/images/profile_banner.png" width="1584" height="396" priority alt="Background Image">
     <div class="rounded-full border-4 border-white">
-      <img class="w-24 h-24 rounded-full object-cover" [ngSrc]="user?.image_url ?? 'assets/images/user.png'" width="96" height="96" priority alt="Profile Image">
+      <img class="w-24 h-24 rounded-full object-cover" [ngSrc]="user.image_url ?? 'assets/images/user.png'" width="96" height="96" priority alt="Profile Image">
     </div>
   </div>
-  <div class="p-4">
-    <h2 class="text-xl font-bold"> {{user?.username}} <span class="badge badge-info">out</span></h2>
-    <p class="text-gray-600">{{user?.email}}</p>
+  <div *ngIf="users.isJobseeker(user)" class="p-4">
+    <h2 class="text-xl font-bold"> {{user.first_name}} {{user.last_name}} <span class="badge badge-info">out</span></h2>
+    <p class="text-gray-600">{{user.title}}</p>
     <div class="flex items-center justify-between mt-4">
       <div class="text-sm text-gray-600 flex items-center">
         <i class="bi bi-geo-alt-fill text-lg me-2"></i>
-        Saint Petersburg, Russian Federation
+        {{user.address}}
       </div>
       <div class="flex items-center">
         <button class="btn btn-primary btn-sm mx-2">Contact Info</button>

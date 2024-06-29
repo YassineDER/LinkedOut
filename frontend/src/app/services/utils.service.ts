@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import {AlertType} from "../modules/shared/utils/alert-type";
-import {Router} from "@angular/router";
+import {HttpClient} from "@angular/common/http";
 
 @Injectable({
     providedIn: 'root'
@@ -9,8 +9,9 @@ import {Router} from "@angular/router";
 export class UtilsService {
     private alertSubject = new BehaviorSubject<{ message: string, type: AlertType } | null>(null);
     alert$ = this.alertSubject.asObservable();
+    private ip$ : string | null = null;
 
-    constructor(private router: Router) {}
+    constructor(private http: HttpClient) {}
 
     /**
      * Display an alert message using the alert component in the app.
@@ -22,8 +23,15 @@ export class UtilsService {
         this.alertSubject.next({message, type});
     }
 
-    delayedRedirect(route: string, delay: number = 2000) {
-        setTimeout(() => this.router.navigate([route]), delay);
+    fetchIp() {
+        return this.http.get<{ip: string}>('https://api.ipify.org?format=json');
     }
 
+    get ip(): string | null{
+        return this.ip$;
+    }
+
+    set ip(ip: string) {
+        this.ip$ = ip;
+    }
 }

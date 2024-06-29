@@ -27,7 +27,9 @@ export class AuthService {
                 this.userSubject.next(res.principal);
                 return of<[User | null, boolean]>([res.principal, res.authenticated]);
             }),
-            catchError(() => {
+            catchError((err) => {
+                if ((err.error.error as string).includes('Full authentication is required to access this resource'))
+                    this.logout();
                 return of<[User | null, boolean]>([null, false]);
             })
         );
@@ -40,12 +42,9 @@ export class AuthService {
         });
     }
 
-    logout(): Promise<void> {
-        return new Promise((resolve, reject) => {
-            localStorage.removeItem('token');
-            this.userSubject.next(null);
-            resolve();
-        });
+    logout() {
+        localStorage.removeItem('token');
+        this.userSubject.next(null);
     }
 
 
@@ -117,6 +116,16 @@ export class AuthService {
             this.http.get(this.url + '/sleep', {responseType: 'text'})
                 .subscribe({
                     next: (res: any) => resolve(res as string),
+                    error: (err) => reject(err)
+                });
+        });
+    }
+
+    private getPublicIP(): Promise<string> {
+        return new Promise((resolve, reject) => {
+            this.http.get('https://api.ipify.org?format=json')
+                .subscribe({
+                    next: (res: any) => resolve(res.ip),
                     error: (err) => reject(err)
                 });
         });
