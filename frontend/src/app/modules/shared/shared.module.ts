@@ -3,9 +3,6 @@ import {CommonModule, NgOptimizedImage} from '@angular/common';
 import {NavComponent} from "./components/nav/nav.component";
 import {FooterComponent} from "./components/footer/footer.component";
 import {RouterModule} from "@angular/router";
-import {ProfileModule} from "../profile/profile.module";
-import {AboutComponent} from "./components/about-profile/about.component";
-import {OverviewComponent} from "./components/overview-profile/overview.component";
 
 
 @NgModule({

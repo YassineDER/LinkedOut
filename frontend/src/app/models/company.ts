@@ -9,5 +9,6 @@ export interface Company extends User {
     description: string;
     headquarters: string;
     foundedDate: string;
+    website: string;
     sector: string;
 }

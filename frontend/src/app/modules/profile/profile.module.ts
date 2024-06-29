@@ -4,8 +4,8 @@ import {CommonModule} from '@angular/common';
 import {ProfileRoutingModule} from './profile-routing.module';
 import {ProfileComponent} from "./components/profile/profile.component";
 import {UserService} from "../home/services/user.service";
-import {AboutComponent} from "../shared/components/about-profile/about.component";
-import {OverviewComponent} from "../shared/components/overview-profile/overview.component";
+import {AboutComponent} from "./components/about-profile/about.component";
+import {OverviewComponent} from "./components/overview-profile/overview.component";
 
 @NgModule({
     declarations: [ProfileComponent],

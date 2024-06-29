@@ -33,18 +33,10 @@ export class RegisterCompanyComponent {
         this.isDev = !environment.production;
     }
 
-    preFillRecruiter() {
-        this.registerCompanyForm.setValue({
-            captcha: new FormControl(null).value,
-            email: new FormControl('company@example.com').value,
-            username: new FormControl('univ-nantes').value,
-            password: new FormControl('12345678').value,
-            siren: new FormControl('130029747').value
-        });
-    }
-
 
     async submitRegistration() {
+        this.formSrv.trimFormValues(this.registerCompanyForm)
+        this.registerCompanyForm.patchValue({username: this.registerCompanyForm.value.email.split('@')[0]})
         await this.formSrv.submitRegisterForm(this.registerCompanyForm, Role.COMPANY)
     }
 

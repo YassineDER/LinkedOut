@@ -5,7 +5,6 @@ import {AuthService} from "./auth.service";
 import {Role} from "../models/role";
 import {Router} from "@angular/router";
 import {UtilsService} from "./utils.service";
-import {ReCaptchaV3Service} from "ng-recaptcha";
 import {Path} from "../modules/shared/utils/path";
 
 @Injectable({
@@ -45,6 +44,16 @@ export class FormsService {
         }
 
         form.reset();
+    }
+
+    trimFormValues(form: FormGroup) {
+        for (const control in form.controls) {
+            let controlValue = form.controls[control].value;
+            if (typeof controlValue === 'string') {
+                controlValue = controlValue.replace(/\s/g, '');
+                form.controls[control].setValue(controlValue);
+            }
+        }
     }
 
 }

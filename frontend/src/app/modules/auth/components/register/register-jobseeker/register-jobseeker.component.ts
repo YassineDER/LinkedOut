@@ -47,6 +47,7 @@ export class RegisterJobseekerComponent {
     }
 
     async submitRegistration() {
+        this.formsSrv.trimFormValues(this.registerJobseeker);
         await this.formsSrv.submitRegisterForm(this.registerJobseeker, Role.JOBSEEKER);
     }
 
