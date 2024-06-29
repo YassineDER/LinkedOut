@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {User} from "../../../../models/user";
 import {NgIf, NgOptimizedImage} from "@angular/common";
 import {Router} from "@angular/router";
@@ -15,10 +15,11 @@ import {UserService} from "../../../home/services/user.service";
         NgIf
     ],
 })
-export class OverviewComponent {
+export class OverviewComponent{
     @Input() user!: User;
 
-    constructor(private router: Router, protected users: UserService) {
+    constructor(protected users: UserService) {
+
     }
 
 }

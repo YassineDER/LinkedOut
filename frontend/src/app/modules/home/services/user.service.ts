@@ -5,6 +5,7 @@ import {Jobseeker} from "../../../models/jobseeker";
 import {Company} from "../../../models/company";
 import {Admin} from "../../../models/admin";
 import {BehaviorSubject} from "rxjs";
+import {Role} from "../../../models/role";
 
 @Injectable()
 export class UserService {
@@ -16,18 +17,18 @@ export class UserService {
     }
 
     isJobseeker(user: User): user is Jobseeker {
-        return (user as Jobseeker).title !== undefined && (user as Jobseeker).title !== null;
+        return (user as Jobseeker).authorities[0].authority === Role.JOBSEEKER.toString();
     }
 
     isCompany(user: User): user is Company {
-        return (user as Company).company_name !== undefined && (user as Company).company_name !== null;
+        return (user as Company).authorities[0].authority === Role.COMPANY.toString();
     }
 
     isAdmin(user: User): user is Admin {
-        return (user as Admin).admin_title !== undefined && (user as Admin).admin_title !== null;
+        return (user as Admin).authorities[0].authority === Role.ADMIN.toString();
     }
 
-    changeUser(user: User | null) {
+    changeUser(user: User) {
         this.userSource.next(user);
     }
 }

@@ -5,18 +5,49 @@
       <img class="w-24 h-24 rounded-full object-cover" [ngSrc]="user.image_url ?? 'assets/images/user.png'" width="96" height="96" priority alt="Profile Image">
     </div>
   </div>
-  <div *ngIf="users.isJobseeker(user)" class="p-4">
-    <h2 class="text-xl font-bold"> {{user.first_name}} {{user.last_name}} <span class="badge badge-info">out</span></h2>
-    <p class="text-gray-600">{{user.title}}</p>
-    <div class="flex items-center justify-between mt-4">
-      <div class="text-sm text-gray-600 flex items-center">
-        <i class="bi bi-geo-alt-fill text-lg me-2"></i>
-        {{user.address}}
-      </div>
-      <div class="flex items-center">
-        <button class="btn btn-primary btn-sm mx-2">Contact Info</button>
-        <button class="btn btn-secondary btn-sm mx-2">1,043 Connections</button>
+
+  @if (users.isJobseeker(user)) {
+    <div class="p-4">
+      <h2 class="text-xl font-bold">{{ user.first_name }} {{ user.last_name }} <span
+        class="badge badge-info">out</span></h2>
+      <p class="text-gray-600">{{ user.title }}</p>
+      <div class="flex items-center justify-between mt-4">
+        <div class="text-sm text-gray-600 flex items-center">
+          <i class="bi bi-geo-alt-fill text-lg me-2"></i>
+          {{ user.address }}
+        </div>
       </div>
     </div>
-  </div>
+  }
+
+  @else if (users.isCompany(user)) {
+    <div class="p-4">
+      <h2 class="text-xl font-bold">{{ user.company_name }} <span class="badge badge-accent"> comp </span></h2>
+      <p class="text-gray-600">{{ user.description }}</p>
+      <div class="flex items-center justify-between mt-4">
+        <div class="text-sm text-gray-600 flex items-center">
+          <i class="bi bi-geo-alt-fill text-lg me-2"></i>
+          {{ user.headquarters }}
+        </div>
+      </div>
+    </div>
+  }
+
+  @else if (users.isAdmin(user)) {
+    <div class="p-4">
+      <h2 class="text-xl font-bold">{{ user.first_name }} {{ user.last_name }} <span class="badge badge-info">admin</span></h2>
+      <p class="text-gray-600">{{ user.admin_title }}</p>
+      <div class="flex items-center justify-between mt-4">
+        <div class="text-sm text-gray-600 flex items-center">
+          <i class="bi bi-geo-alt-fill text-lg me-2"></i>
+          {{ user.email }}
+        </div>
+      </div>
+    </div>
+  }
+
+  @else {
+    <h2> User type not recognized </h2>
+  }
+
 </div>

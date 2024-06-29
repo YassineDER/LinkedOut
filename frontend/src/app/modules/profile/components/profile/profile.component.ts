@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {User} from "../../../../models/user";
 import {UserService} from "../../../home/services/user.service";
 
@@ -7,11 +7,17 @@ import {UserService} from "../../../home/services/user.service";
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
-export class ProfileComponent {
-    user!: User | null;
+export class ProfileComponent implements OnInit{
+    user!: User;
 
     constructor(private userServ: UserService){
-        this.userServ.currentUser.subscribe(user =>
-            this.user = user);
+
     }
+
+    ngOnInit() {
+        this.userServ.currentUser.subscribe(user => {
+            if (user) this.user = user
+        });
+    }
+
 }

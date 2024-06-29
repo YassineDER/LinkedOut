@@ -7,4 +7,5 @@ export interface User{
     username: string;
     image_url: string | null;
     using_mfa: boolean;
+    authorities: any[];
 }
