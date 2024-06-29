@@ -6,7 +6,7 @@ import org.ichat.backend.model.util.auth.*;
 
 
 public interface IAuthService {
-    String registerJobseeker(RegisterJobseekerRequest request);
+    String registerJobseeker(RegisterJobseekerRequest request, String clientIP);
     String registerCompany(RegisterCompanyRequest request);
 
     AuthResponse authenticate(AccountCredentials credentials) throws QrGenerationException;

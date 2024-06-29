@@ -8,10 +8,12 @@ import org.ichat.backend.model.tables.Admin;
 import org.ichat.backend.model.tables.Company;
 import org.ichat.backend.model.tables.indentity.Roles;
 import org.ichat.backend.model.tables.User;
+import org.ichat.backend.model.util.GeolocationResponse;
 import org.ichat.backend.model.util.auth.*;
 import org.ichat.backend.service.*;
 import org.ichat.backend.service.account.*;
 import org.ichat.backend.service.shared.ICaptchaService;
+import org.ichat.backend.service.shared.IGeolocationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,8 +45,9 @@ public class AuthService implements IAuthService {
     private final IAccountResetService accountResetService;
     private final ITwoFactorAuthService twoFactorAuthService;
     private final IJwtService jwtService;
-    private final ICaptchaService captchaService;
 
+    private final ICaptchaService captchaService;
+    private final IGeolocationService geoService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
@@ -96,15 +99,18 @@ public class AuthService implements IAuthService {
     }
 
     @Override
-    public String registerJobseeker(RegisterJobseekerRequest request) {
+    public String registerJobseeker(RegisterJobseekerRequest request, String clientIP) {
         captchaIsValid(request.getCaptcha());
         Roles role = roleService.getRoleByName("JOBSEEKER");
+        GeolocationResponse geo = geoService.getGeolocationFromIP(clientIP);
+
         Jobseeker jobseeker = new Jobseeker();
         jobseeker.setFirst_name(request.getFirst_name());
         jobseeker.setLast_name(request.getLast_name());
         jobseeker.setEmail(request.getEmail());
         jobseeker.setUsername(request.getUsername());
         jobseeker.setPassword(passwordEncoder.encode(request.getPassword()));
+        jobseeker.setAddress(geo.getCity() + ", " + geo.getCountry());
         jobseeker.setUser_roles(Set.of(role));
         jobseekerService.add(jobseeker);
 
@@ -178,7 +184,7 @@ public class AuthService implements IAuthService {
     @Override
     public RecaptchaResponse captchaIsValid(String captcha) {
         RecaptchaResponse response = captchaService.verifyCaptcha(captcha);
-        if (!response.isSuccess() || response.getScore() < 0.5)
+        if (!response.isSuccess() || response.getScore() <= 0.5)
             throw new AccountException("Invalid captcha");
 
         return response;

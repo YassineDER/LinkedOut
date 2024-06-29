@@ -7,9 +7,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class RecaptchaResponse {
     private boolean success;
-    private String challenge_ts;
-    private String hostname;
-    private String action;
+    private String challenge_ts, hostname, action;
     private float score;
     private String[] error_codes;
 }

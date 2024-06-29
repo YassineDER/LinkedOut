@@ -1,6 +1,7 @@
 package org.ichat.backend.controller;
 
 import dev.samstevens.totp.exceptions.QrGenerationException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exeception.AccountException;
@@ -18,10 +19,12 @@ import java.util.Map;
 @RequestMapping("/api/auth")
 public class AuthController {
     private final IAuthService authService;
+    private final HttpServletRequest request;
 
     @PostMapping("/register/jobseeker")
-    public ResponseEntity<AuthResponse> registerJobseeker(@Valid @RequestBody RegisterJobseekerRequest req) {
-        String resp = authService.registerJobseeker(req);
+    public ResponseEntity<AuthResponse> registerJobseeker(@Valid @RequestBody RegisterJobseekerRequest reqBody) {
+        String clientIP = request.getHeader("X-FORWARDED-FOR");
+        String resp = authService.registerJobseeker(reqBody, clientIP);
         return ResponseEntity.ok(new AuthResponse(resp));
     }
 
