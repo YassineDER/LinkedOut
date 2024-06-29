@@ -15,4 +15,5 @@ public interface ICompanyService {
 
     Company update(Long oldUserID, CompanyPatch newCompany) throws AccountException;
     Company add(Company company);
+
 }

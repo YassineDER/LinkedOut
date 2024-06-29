@@ -2,10 +2,11 @@
 
 export DB_PASS=postgres
 export DB_USER=postgres
-export MAIL_USER=1761a535b5e9ea
-export MAIL_PASS=262f7d4dc51961
+export MAIL_USER="1761a535b5e9ea"
+export MAIL_PASS="262f7d4dc51961"
 export JWT_SECRET="9e2ca65fc47654116b9bad09a8e67d4986e8551ed637fdb6a59522f1e847ca45"
 export RECAPTCHA_SECRET="6Ld5duIpAAAAALCt7Zxg8auWt6VqixIdkenHh-DQ"
-export IPINFO_TOKEN=9abb4944010425
+export GOOGLE_API_KEY="AIzaSyBbiNw3i_Wlv8T5QAbdvA5RIwcZ3Wf4wTU"
+export GOOGLE_CX="b1365cc6b472c4e31"
 
 mvn clean spring-boot:run -DskipTests

@@ -13,4 +13,5 @@ public class CompanyPatch {
     private String sector;
     private String headquarters;
     private String image_url;
+    private String website;
 }

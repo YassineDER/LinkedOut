@@ -10,7 +10,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Service
 @RequiredArgsConstructor
 public class GeolocationService implements IGeolocationService {
-    private static final String IPINFO_URL = "http://ip-api.com/json/";
+    private static final String IP_API_URL = "http://ip-api.com/json/";
     private final RestClient http = RestClient.create();
 
     @Override
@@ -18,7 +18,7 @@ public class GeolocationService implements IGeolocationService {
         if (ip == null || ip.isEmpty())
             return null;
 
-        String url = UriComponentsBuilder.fromHttpUrl(IPINFO_URL)
+        String url = UriComponentsBuilder.fromHttpUrl(IP_API_URL)
                 .pathSegment(ip)
                 .toUriString();
 

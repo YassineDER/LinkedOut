@@ -1,6 +1,5 @@
 package org.ichat.backend.service.implementation;
 
-
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exeception.AccountException;
 import org.ichat.backend.model.tables.Company;
@@ -20,6 +19,8 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 public class CompanyService implements ICompanyService {
+    private final static String GOOGLE_API_KEY = System.getenv("GOOGLE_API_KEY");
+    private final static String GOOGLE_CX = System.getenv("GOOGLE_CX");
     private final CompanyRepo companyRepo;
     private final RestClient client = RestClient.create();
 
@@ -52,6 +53,8 @@ public class CompanyService implements ICompanyService {
             companyToUpdate.setSector(newCompany.getSector());
         if (newCompany.getHeadquarters() != null)
             companyToUpdate.setHeadquarters(newCompany.getHeadquarters());
+        if (newCompany.getWebsite() != null)
+            companyToUpdate.setWebsite(newCompany.getWebsite());
         if (newCompany.getImage_url() != null)
             companyToUpdate.setImage_url(newCompany.getImage_url());
 
@@ -70,6 +73,7 @@ public class CompanyService implements ICompanyService {
 
     @Override
     public Company getCompanyBySIREN(String SIREN) {
+        String logoAPI = "https://logo.clearbit.com/";
         String url = "https://api.recherche-entreprises.fabrique.social.gouv.fr/api/v1/entreprise/" + SIREN;
 
         String response = client.get()
@@ -77,10 +81,10 @@ public class CompanyService implements ICompanyService {
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, (req, resp) -> {
-                    throw new AccountException("Error fetching company from INPI: " + resp.getStatusText());
+                    throw new AccountException("Error fetching company info: " + resp.getStatusText());
                 })
                 .onStatus(HttpStatusCode::is5xxServerError, (req, resp) -> {
-                    throw new AccountException("Error fetching company from INPI: " + resp.getStatusText());
+                    throw new AccountException("Error fetching company info: " + resp.getStatusText());
                 })
                 .body(String.class);
 
@@ -89,15 +93,39 @@ public class CompanyService implements ICompanyService {
         String sector = content.getString("activitePrincipale");
         String headquarters = content.getJSONObject("firstMatchingEtablissement").getString("address");
         String foundedDate = content.getString("dateDebut");
+        String website = fetchWebsiteOfCompany(companyName);
 
         Company company = new Company();
         company.setCompany_name(companyName);
         company.setHeadquarters(headquarters);
         company.setFoundedDate(foundedDate);
+        company.setWebsite(website);
         company.setSector(sector);
         company.setSiren(SIREN);
+        company.setImage_url(logoAPI + website);
 
         return company;
+    }
+
+
+    private String fetchWebsiteOfCompany(String companyName) {
+        String searchAPI = "https://www.googleapis.com/customsearch/v1?key={key}&cx={cx}&q={q}";
+
+        String response = client.get()
+                .uri(searchAPI, GOOGLE_API_KEY, GOOGLE_CX, companyName)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError, (req, resp) -> {
+                    throw new AccountException("Error fetching company website: " + resp.getStatusText());
+                })
+                .onStatus(HttpStatusCode::is5xxServerError, (req, resp) -> {
+                    throw new AccountException("Error fetching company website: " + resp.getStatusText());
+                })
+                .body(String.class);
+
+        JSONObject content = new JSONObject(response);
+        JSONObject first_result = (JSONObject) content.getJSONArray("items").get(0);
+        return first_result.getString("displayLink");
     }
 
 }

@@ -37,6 +37,8 @@ public class Company extends User {
     @NotEmpty(message = "Sector is required")
     String sector;
 
+    String website;
+
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Job> availableJobs;
