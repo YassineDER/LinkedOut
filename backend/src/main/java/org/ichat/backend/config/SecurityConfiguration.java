@@ -39,7 +39,6 @@ public class SecurityConfiguration implements WebMvcConfigurer {
     }
 
     @Bean
-    @Profile("!prod")
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .anonymous(anonymous -> anonymous.authenticationFilter(customAnonymousAuthFilter()))
@@ -59,26 +58,6 @@ public class SecurityConfiguration implements WebMvcConfigurer {
         return http.build();
     }
 
-
-    @Bean
-    @Profile("prod")
-    public SecurityFilterChain securityFilterChainProd(HttpSecurity http) throws Exception {
-        http.anonymous(anonymous -> anonymous.authenticationFilter(customAnonymousAuthFilter()))
-                .exceptionHandling(Customizer.withDefaults())
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/jobseeker/**").hasAnyRole("JOBSEEKER", "ADMIN")
-                        .requestMatchers("/api/company/**").hasAnyRole("COMPANY", "ADMIN")
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .anyRequest().authenticated())
-                .httpBasic(basic -> basic.authenticationEntryPoint(entryPoint))
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authProvider)
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-
-        return http.build();
-    }
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {

@@ -5,6 +5,7 @@ target/
 .mvn
 logs
 uploads
+start
 
 *.db
 *.sql
