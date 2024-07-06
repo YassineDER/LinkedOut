@@ -1,5 +1,12 @@
+# Stage 1: Build the application
+FROM maven:3.9.6-openjdk-19-slim AS build
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests -Dspring-boot.run.profiles=prod
+
+# Stage 2: Run the application
 FROM openjdk:19-jdk-alpine3.16
-LABEL authors="Yassine DERGAOUI"
+COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
-ADD target/*.jar app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+ENTRYPOINT ["java", "-jar", "/app.jar"]
