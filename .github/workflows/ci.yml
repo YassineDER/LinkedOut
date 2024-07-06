@@ -31,12 +31,12 @@ jobs:
     needs: build
 
     steps:
-    - name: Setup SSH
-      run: |
-        mkdir -p ~/.ssh/
-        echo "${{ secrets.SSH_PRIVATE }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H ${{ secrets.VM_HOST }} >> ~/.ssh/known_hosts
+    #- name: Setup SSH
+    #  run: |
+    #    mkdir -p ~/.ssh/
+#        echo "${{ secrets.SSH_PRIVATE }}" > ~/.ssh/id_rsa
+ #       chmod 600 ~/.ssh/id_rsa
+  #      ssh-keyscan -H ${{ secrets.VM_HOST }} >> ~/.ssh/known_hosts
 
     - name: Deploying to remote VM
       uses: appleboy/ssh-action@v1.0.3
