@@ -1,4 +1,4 @@
-FROM node:current-alpine3.20
+FROM node:alpine
 LABEL authors="Yassine DERGAOUI"
 WORKDIR /app
 COPY package.json package-lock.json ./
