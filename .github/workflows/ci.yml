@@ -2,9 +2,6 @@ name: CI/CD Pipeline
 
 on:
   push:
-    paths-ignore: 
-      - 'frontend/**'
-      - 'backend/**'
     branches:
       - main
 
@@ -33,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      
+
     - name: SSH to VM and deploy
       uses: appleboy/ssh-action@v1.0.3
       with:
