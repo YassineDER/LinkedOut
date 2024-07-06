@@ -2,6 +2,9 @@ name: CI/CD Pipeline
 
 on:
   push:
+    paths-ignore: 
+      - 'frontend/**'
+      - 'backend/**'
     branches:
       - main
 
