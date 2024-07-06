@@ -43,7 +43,6 @@ jobs:
       with:
         host: ${{ secrets.VM_HOST }}
         username: ${{ secrets.VM_USER }}
-        port: 22
         key: ${{ secrets.SSH_PRIVATE }}
         script: |
           docker pull ${{ secrets.DOCKER_USERNAME }}/spring-app:latest
