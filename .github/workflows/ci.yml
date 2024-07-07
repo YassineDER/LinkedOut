@@ -39,7 +39,7 @@ jobs:
         host: ${{ secrets.VM_HOST }}
         local: 'docker/docker-compose.yml'
         username: ${{ secrets.VM_USER }}
-        remote: '/linkedout/docker-compose.yml'
+        remote: '/home/${{ secrets.VM_USER }}/linkedout/docker-compose.yml'
         privateKey: ${{ secrets.SSH_PRIVATE }}
 
     - name: Deploying to remote VM
