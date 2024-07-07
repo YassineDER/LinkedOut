@@ -31,6 +31,15 @@ jobs:
     needs: build
 
     steps:
+    - name: Copy docker-compose.yml to VM
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.VM_HOST }}
+        source: './docker-compose.yml'
+        username: ${{ secrets.VM_USER }}
+        target: '/home/${{ secrets.VM_USER }}/linkedout/docker-compose.yml'
+        key: ${{ secrets.SSH_PRIVATE }}
+
     - name: Deploying to remote VM
       uses: appleboy/ssh-action@v1.0.3
       with:
