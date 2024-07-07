@@ -24,6 +24,7 @@ services:
     environment:
       DB_USER: $DB_USER
       DB_PASS: $DB_PASS
+      DB_URL: jdbc:postgresql://postgres:5432/securecapita
       MAIL_USER: $MAIL_USER
       MAIL_PASS: $MAIL_PASS
       JWT_SECRET: $JWT_SECRET
