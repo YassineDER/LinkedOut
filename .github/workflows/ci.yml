@@ -35,10 +35,11 @@ jobs:
       uses: appleboy/scp-action@v0.1.7
       with:
         host: ${{ secrets.VM_HOST }}
-        source: './docker-compose.yml'
+        source: 'docker-compose.yml'
         overwrite: true
+        port: 22
         username: ${{ secrets.VM_USER }}
-        target: '~/linkedout/'
+        target: '/home/${{ secrets.VM_USER }}/linkedout'
         key: ${{ secrets.SSH_PRIVATE }}
 
     - name: Deploying to remote VM
