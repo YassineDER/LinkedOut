@@ -8,4 +8,5 @@ docker-compose*
 README.md
 LICENSE
 .vscode
+.idea
 deploy
