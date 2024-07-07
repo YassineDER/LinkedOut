@@ -36,8 +36,9 @@ jobs:
       with:
         host: ${{ secrets.VM_HOST }}
         source: './docker-compose.yml'
+        overwrite: true
         username: ${{ secrets.VM_USER }}
-        target: '/home/${{ secrets.VM_USER }}/linkedout/docker-compose.yml'
+        target: '~/linkedout/'
         key: ${{ secrets.SSH_PRIVATE }}
 
     - name: Deploying to remote VM
