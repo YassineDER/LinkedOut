@@ -16,6 +16,9 @@ jobs:
     - name: Log in to Docker Hub
       run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v4
+
     - name: Build Docker images
       run: |
         docker build -t ${{ secrets.DOCKER_USERNAME }}/spring-app:latest ./backend
@@ -31,13 +34,6 @@ jobs:
     needs: build
 
     steps:
-    #- name: Setup SSH
-    #  run: |
-    #    mkdir -p ~/.ssh/
-#        echo "${{ secrets.SSH_PRIVATE }}" > ~/.ssh/id_rsa
- #       chmod 600 ~/.ssh/id_rsa
-  #      ssh-keyscan -H ${{ secrets.VM_HOST }} >> ~/.ssh/known_hosts
-
     - name: Deploying to remote VM
       uses: appleboy/ssh-action@v1.0.3
       with:
@@ -47,9 +43,5 @@ jobs:
         script: |
           sudo docker pull ${{ secrets.DOCKER_USERNAME }}/spring-app:latest
           sudo docker pull ${{ secrets.DOCKER_USERNAME }}/angular-app:latest
-          sudo docker stop spring-app || true
-          sudo docker stop angular-app || true
-          sudo docker rm spring-app || true
-          sudo docker rm angular-app || true
-          sudo docker run -d --name spring-app --env-file ~/linkedout/.env -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/spring-app:latest
-          sudo docker run -d --name angular-app -p 4200:4200 ${{ secrets.DOCKER_USERNAME }}/angular-app:latest
+          docker-compose -f docker-compose.yml down
+          docker-compose -f docker-compose.yml up -d
