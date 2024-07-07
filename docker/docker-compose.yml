@@ -40,6 +40,11 @@ services:
       - postgres
     ports:
       - "80:80"
+      - "443:443"
+    volumes:
+      - /etc/letsencrypt/live/yassineonthewifi.com:/etc/letsencrypt/live/yassineonthewifi.com:ro
+    environment:
+      - VIRTUAL_HOST: yassineonthewifi.com
     depends_on:
       - spring-app
 
