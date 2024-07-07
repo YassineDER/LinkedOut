@@ -3,11 +3,13 @@ version: '3'
 services:
   postgres:
     image: postgres:alpine
+    networks:
+      - postgres
     restart: always
     environment:
-      POSTGRES_DB: securecapita
-      POSTGRES_USER: $DB_USER
-      POSTGRES_PASSWORD: $DB_PASS
+      POSTGRES_PASSWORD=$DB_PASS
+      POSTGRES_USER=$DB_USER
+      POSTGRES_DB=securecapita
     volumes:
       - postgres-data:/var/lib/postgresql/data
     ports:
@@ -15,26 +17,34 @@ services:
 
   spring-app:
     image: yassineder/spring-app:latest
+    networks:
+      - postgres
     ports:
       - "8080:8080"
     environment:
-      DB_USER: $DB_USER
-      DB_PASS: $DB_PASS
-      MAIL_USER: $MAIL_USER
-      MAIL_PASS: $MAIL_PASS
-      JWT_SECRET: $JWT_SECRET
-      RECAPTCHA_SECRET: $RECAPTCHA_SECRET
-      GOOGLE_API_KEY: $GOOGLE_API_KEY
-      GOOGLE_CX: $GOOGLE_CX
+      DB_USER=$DB_USER
+      DB_PASS=$DB_PASS
+      MAIL_USER=$MAIL_USER
+      MAIL_PASS=$MAIL_PASS
+      JWT_SECRET=$JWT_SECRET
+      RECAPTCHA_SECRET=$RECAPTCHA_SECRET
+      GOOGLE_API_KEY=$GOOGLE_API_KEY
+      GOOGLE_CX=$GOOGLE_CX
     depends_on:
       - postgres
 
   angular-app:
     image: yassineder/angular-app:latest
+    networks:
+      - postgres
     ports:
       - "4200:4200"
     depends_on:
       - spring-app
+
+networks:
+  postgres:
+    driver: bridge
 
 volumes:
   postgres-data:
