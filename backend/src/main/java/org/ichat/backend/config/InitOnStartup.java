@@ -41,27 +41,11 @@ public class InitOnStartup {
             admin.setEnabled(true);
 
             if (admins.isEmpty()) {
-                Scanner scanner = new Scanner(System.in);
-                System.out.println("No admin found, please create one: ");
-                System.out.println("Enter the admin email: ");
-                admin.setEmail(scanner.nextLine());
-                System.out.println("Enter the admin username: ");
-                admin.setUsername(scanner.nextLine());
-                System.out.println("Enter the admin password: ");
-                String password = scanner.nextLine();
-                System.out.println("Enter the admin password again: ");
-                String password2 = scanner.nextLine();
-                while (!password.equals(password2)) {
-                    System.out.println("Passwords do not match, please try again: ");
-                    System.out.println("Enter the admin password: ");
-                    password = scanner.nextLine();
-                    System.out.println("Enter the admin password again: ");
-                    password2 = scanner.nextLine();
-                }
-                admin.setPassword(encoder.encode(password));
+                admin.setEmail("admin@example.com");
+                admin.setUsername("admin");
+                admin.setPassword(encoder.encode("12345678"));
                 adminRepo.save(admin);
-
-                System.out.println("An admin has been created successfully.");
+                System.out.println("Admin not found, created a new one with default credentials");
             }
         };
     }
