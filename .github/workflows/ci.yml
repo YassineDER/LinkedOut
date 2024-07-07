@@ -32,15 +32,13 @@ jobs:
 
     steps:
     - name: Copy docker-compose.yml to VM
-      uses: appleboy/scp-action@v0.1.7
+      uses: garygrossgarten/github-action-scp@release
       with:
         host: ${{ secrets.VM_HOST }}
-        source: 'docker-compose.yml'
-        overwrite: true
-        port: 22
+        local: docker-compose.yml
         username: ${{ secrets.VM_USER }}
-        target: '/home/${{ secrets.VM_USER }}/linkedout'
-        key: ${{ secrets.SSH_PRIVATE }}
+        remote: ~/linkedout/
+        privateKey: ${{ secrets.SSH_PRIVATE }}
 
     - name: Deploying to remote VM
       uses: appleboy/ssh-action@v1.0.3
