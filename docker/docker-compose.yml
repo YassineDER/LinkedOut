@@ -3,7 +3,7 @@ services:
     image: postgres:alpine
     restart: always
     environment:
-      POSTGRES_DB: $DB_NAME
+      POSTGRES_DB: securecapita
       POSTGRES_USER: $DB_USER
       POSTGRES_PASSWORD: $DB_PASS
     volumes:
@@ -12,7 +12,7 @@ services:
       - "5432:5432"
 
   spring-app:
-    image: ${DOCKER_USERNAME}/spring-app:latest
+    image: yassineder/spring-app:latest
     ports:
       - "8080:8080"
     environment:
@@ -28,7 +28,7 @@ services:
       - postgres
 
   angular-app:
-    image: ${DOCKER_USERNAME}/angular-app:latest
+    image: yassineder/angular-app:latest
     ports:
       - "4200:4200"
     depends_on:
