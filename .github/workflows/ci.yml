@@ -30,6 +30,14 @@ jobs:
     needs: build
 
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4.1.7
+
+    - name: Debugging
+      run: |
+          pwd
+          ls -la
+
     - name: Copy docker-compose.yml to VM
       uses: garygrossgarten/github-action-scp@release
       with:
@@ -38,9 +46,6 @@ jobs:
         username: ${{ secrets.VM_USER }}
         remote: '~/linkedout'
         privateKey: ${{ secrets.SSH_PRIVATE }}
-        script: |
-          pwd
-          ls -la
 
     - name: Deploying to remote VM
       uses: appleboy/ssh-action@v1.0.3
