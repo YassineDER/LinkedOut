@@ -33,18 +33,13 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4.1.7
 
-    - name: Debugging
-      run: |
-          pwd
-          ls -la
-
     - name: Copy docker-compose.yml to VM
       uses: garygrossgarten/github-action-scp@release
       with:
         host: ${{ secrets.VM_HOST }}
         local: 'docker/docker-compose.yml'
         username: ${{ secrets.VM_USER }}
-        remote: '~/linkedout'
+        remote: '/linkedout/docker-compose.yml'
         privateKey: ${{ secrets.SSH_PRIVATE }}
 
     - name: Deploying to remote VM
