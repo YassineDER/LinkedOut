@@ -25,7 +25,7 @@ services:
       DB_USER: $DB_USER
       DB_PASS: $DB_PASS
       DB_URL: jdbc:postgresql://postgres:5432/securecapita
-      FRONTEND_URL: http://postgres:4200
+      FRONTEND_URL: https://postgres:4200
       MAIL_USER: $MAIL_USER
       MAIL_PASS: $MAIL_PASS
       JWT_SECRET: $JWT_SECRET
@@ -45,7 +45,6 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    restart: always
     depends_on:
       - spring-app
 
