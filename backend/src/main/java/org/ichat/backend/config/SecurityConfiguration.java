@@ -69,7 +69,9 @@ public class SecurityConfiguration {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Arrays.asList(frontendUrl, "http://yassine.onthewifi.com:80", "https://yassine.onthewifi.com:443", "http://postgres:80"));
+//        config.setAllowedOrigins(Arrays.asList(frontendUrl, "http://yassine.onthewifi.com:80", "https://yassine.onthewifi.com:443", "http://postgres:80"));
+        // disable cors for now
+        config.setAllowedOrigins(Collections.singletonList("*"));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         source.registerCorsConfiguration("/**", config);
         return source;
