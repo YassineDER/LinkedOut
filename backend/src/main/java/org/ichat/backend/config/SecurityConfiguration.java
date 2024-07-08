@@ -68,6 +68,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
                 .allowedOrigins(frontendUrl)
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS")
                 .allowedHeaders("*")
+                .allowedMethods("*")
                 .allowCredentials(true);
     }
 
