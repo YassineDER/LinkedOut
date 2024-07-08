@@ -39,7 +39,8 @@ services:
     networks:
       - postgres
     volumes:
-      - /etc/letsencrypt/live/yassine.onthewifi.com:/etc/nginx/ssl:ro
+      - /etc/letsencrypt/ssl/fullchain.pem:/etc/nginx/ssl/fullchain.pem
+      - /etc/letsencrypt/ssl/privkey.pem:/etc/nginx/ssl/privkey.pem
     ports:
       - "80:80"
       - "443:443"
