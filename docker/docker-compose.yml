@@ -38,8 +38,12 @@ services:
     image: yassineder/angular-app:latest
     networks:
       - postgres
+    volumes:
+      - /etc/letsencrypt/live/yassine.onthewifi.com:/etc/nginx/ssl:ro
     ports:
       - "80:80"
+      - "443:443"
+    restart: always
     depends_on:
       - spring-app
 
