@@ -53,5 +53,4 @@ jobs:
           sudo docker pull ${{ secrets.DOCKER_USERNAME }}/spring-app:latest
           sudo docker pull ${{ secrets.DOCKER_USERNAME }}/angular-app:latest
           sudo docker-compose -f docker-compose.yml down
-          sudo docker-compose -f docker-compose.yml build --no-cache
           sudo docker-compose -f docker-compose.yml up -d
