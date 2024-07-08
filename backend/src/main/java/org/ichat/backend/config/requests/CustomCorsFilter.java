@@ -14,6 +14,7 @@ import java.io.IOException;
 
 @Component
 public class CustomCorsFilter extends GenericFilterBean {
+    
     private static final Logger log = LoggerFactory.getLogger(CustomCorsFilter.class);
 
     @Override
