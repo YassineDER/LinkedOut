@@ -17,13 +17,13 @@ jobs:
 
     - name: Build Docker images
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/spring-app:latest ./backend
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/angular-app:latest ./frontend
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/backend:latest ./backend
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend:latest ./frontend
 
     - name: Push Docker images
       run: |
-        docker push ${{ secrets.DOCKER_USERNAME }}/spring-app:latest
-        docker push ${{ secrets.DOCKER_USERNAME }}/angular-app:latest
+        docker push ${{ secrets.DOCKER_USERNAME }}/backend:latest
+        docker push ${{ secrets.DOCKER_USERNAME }}/frontend:latest
 
   deploy:
     runs-on: ubuntu-latest
@@ -50,7 +50,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE }}
         script: |
           cd ~/linkedout
-          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/spring-app:latest
-          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/angular-app:latest
+          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/backend:latest
+          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/frontend:latest
           sudo docker-compose -f docker-compose.yml down
           sudo docker-compose -f docker-compose.yml up -d

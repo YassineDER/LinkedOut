@@ -15,8 +15,8 @@ services:
     ports:
       - "5432:5432"
 
-  spring-app:
-    image: yassineder/spring-app:latest
+  backend:
+    image: yassineder/backend:latest
     networks:
       - postgres
     ports:
@@ -25,7 +25,7 @@ services:
       DB_USER: $DB_USER
       DB_PASS: $DB_PASS
       DB_URL: jdbc:postgresql://postgres:5432/securecapita
-      FRONTEND_URL: https://postgres:443
+      FRONTEND_URL: https://frontend:443
       MAIL_USER: $MAIL_USER
       MAIL_PASS: $MAIL_PASS
       JWT_SECRET: $JWT_SECRET
@@ -35,8 +35,8 @@ services:
     depends_on:
       - postgres
 
-  angular-app:
-    image: yassineder/angular-app:latest
+  frontend:
+    image: yassineder/frontend:latest
     networks:
       - postgres
     volumes:
@@ -46,7 +46,7 @@ services:
       - "80:80"
       - "443:443"
     depends_on:
-      - spring-app
+      - backend
 
 networks:
   postgres:
