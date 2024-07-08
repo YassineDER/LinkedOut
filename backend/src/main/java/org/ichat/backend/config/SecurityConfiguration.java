@@ -32,6 +32,8 @@ public class SecurityConfiguration implements WebMvcConfigurer {
     private final AuthenticationProvider authProvider;
     @Qualifier("customAuthenticationEntryPoint")
     private final AuthenticationEntryPoint entryPoint;
+    @Value("${spring.frontend.url}")
+    private String frontendUrl;
 
     @Bean
     public AnonymousAuthFilter customAnonymousAuthFilter() {
@@ -62,7 +64,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:4200")
+                .allowedOrigins(frontendUrl)
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);
