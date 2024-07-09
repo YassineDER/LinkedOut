@@ -22,7 +22,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - /etc/letsencrypt/ssl/springboot.p12:/home/ubuntu/linkedout/ssl/springboot.p12
+      - /etc/letsencrypt/ssl/springboot.p12:/app/springboot.p12:ro
     environment:
       DB_USER: $DB_USER
       DB_PASS: $DB_PASS
