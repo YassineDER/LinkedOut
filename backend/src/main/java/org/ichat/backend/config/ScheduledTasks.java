@@ -35,6 +35,7 @@ public class ScheduledTasks {
     @CacheEvict(value = {"images"}, allEntries = true)
     public void clearImageCache() {
         log.info("Cleared cache.");
+        
     }
 
 }

@@ -4,9 +4,11 @@ import dev.samstevens.totp.exceptions.QrGenerationException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.ichat.backend.exeception.AccountException;
 import org.ichat.backend.model.util.auth.*;
 import org.ichat.backend.service.account.IAuthService;
+import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,12 +16,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
 public class AuthController {
     private final IAuthService authService;
     private final HttpServletRequest request;
+    private final Environment env;
 
     @PostMapping("/register/jobseeker")
     public ResponseEntity<AuthResponse> registerJobseeker(@Valid @RequestBody RegisterJobseekerRequest reqBody) {
@@ -87,6 +91,7 @@ public class AuthController {
 
     @GetMapping("/sleep")
     public ResponseEntity<String> sleep(){
+        log.info("Active profile: {}", env.getActiveProfiles()[0]);
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {

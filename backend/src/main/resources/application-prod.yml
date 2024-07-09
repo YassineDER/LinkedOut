@@ -20,5 +20,4 @@ server:
     key-store: file:/etc/nginx/ssl/springboot.p12
     key-store-password: ${KEY_STORE_PASS}
     key-alias: springboot
-    key-store-type: PKCS12
-    enabled-protocols: TLSv1.2 TLSv1.3
+    key-store-type: pkcs12
