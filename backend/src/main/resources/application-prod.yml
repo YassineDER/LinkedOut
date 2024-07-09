@@ -17,7 +17,7 @@ spring:
             required: true
 server:
   ssl:
-    key-store: file:/etc/nginx/ssl/springboot.p12
+    key-store: file:/home/ubuntu/linkedout/ssl/springboot.p12
     key-store-password: ${KEY_STORE_PASS}
     key-alias: springboot
     key-store-type: pkcs12
