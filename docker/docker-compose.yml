@@ -42,7 +42,7 @@ services:
     volumes:
       - /etc/letsencrypt/ssl/fullchain.pem:/etc/nginx/ssl/fullchain.pem
       - /etc/letsencrypt/ssl/privkey.pem:/etc/nginx/ssl/privkey.pem
-      - /etc/letsencrypt/ssl/springboot.jks:/etc/nginx/ssl/springboot.jks
+      - /etc/letsencrypt/ssl/springboot.p12:/etc/nginx/ssl/springboot.p12
     ports:
       - "80:80"
       - "443:443"

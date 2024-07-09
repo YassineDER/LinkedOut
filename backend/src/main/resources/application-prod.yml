@@ -17,8 +17,8 @@ spring:
             required: true
 server:
   ssl:
-    key-store: file:/etc/nginx/ssl/springboot.jks
+    key-store: file:/etc/nginx/ssl/springboot.p12
     key-store-password: ${KEY_STORE_PASS}
     key-alias: springboot
-    key-store-type: JKS
+    key-store-type: PKCS12
     enabled-protocols: TLSv1.2 TLSv1.3
