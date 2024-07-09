@@ -15,3 +15,9 @@ spring:
           starttls:
             enable: true
             required: true
+server:
+  ssl:
+    key-store: file:/etc/nginx/ssl/springboot.jks
+    key-store-password: ${KEY_STORE_PASS}
+    key-alias: springboot
+    key-store-type: JKS

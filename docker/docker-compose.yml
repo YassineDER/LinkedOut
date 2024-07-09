@@ -25,7 +25,7 @@ services:
       DB_USER: $DB_USER
       DB_PASS: $DB_PASS
       DB_URL: jdbc:postgresql://postgres:5432/securecapita
-      FRONTEND_URL: https://frontend:443
+      FRONTEND_URL: https://postgres:443
       MAIL_USER: $MAIL_USER
       MAIL_PASS: $MAIL_PASS
       JWT_SECRET: $JWT_SECRET
@@ -42,6 +42,7 @@ services:
     volumes:
       - /etc/letsencrypt/ssl/fullchain.pem:/etc/nginx/ssl/fullchain.pem
       - /etc/letsencrypt/ssl/privkey.pem:/etc/nginx/ssl/privkey.pem
+      - /etc/letsencrypt/ssl/springboot.jks:/etc/nginx/ssl/springboot.jks
     ports:
       - "80:80"
       - "443:443"

@@ -6,6 +6,7 @@ import org.ichat.backend.config.requests.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -24,6 +25,7 @@ import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.UUID;
 
 @Configuration
@@ -37,6 +39,7 @@ public class SecurityConfiguration {
     private final AuthenticationEntryPoint entryPoint;
     @Value("${spring.frontend.url}")
     private String frontendUrl;
+    private final Environment env;
 
     @Bean
     public AnonymousAuthFilter customAnonymousAuthFilter() {
@@ -45,7 +48,12 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        boolean isDev = Objects.equals(env.getActiveProfiles()[0], "dev");
         http.csrf(AbstractHttpConfigurer::disable)
+                .requiresChannel(channel -> {
+                    if (isDev) channel.anyRequest().requiresInsecure();
+                    else channel.anyRequest().requiresSecure();
+                })
                 .cors(Customizer.withDefaults())
                 .anonymous(anonymous -> anonymous.authenticationFilter(customAnonymousAuthFilter()))
                 .exceptionHandling(Customizer.withDefaults())
