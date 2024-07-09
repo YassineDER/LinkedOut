@@ -91,7 +91,6 @@ public class AuthController {
 
     @GetMapping("/sleep")
     public ResponseEntity<String> sleep(){
-        log.info("Active profile: {}", env.getActiveProfiles()[0]);
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
