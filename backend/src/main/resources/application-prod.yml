@@ -21,3 +21,4 @@ server:
     key-store-password: ${KEY_STORE_PASS}
     key-alias: springboot
     key-store-type: JKS
+    enabled-protocols: TLSv1.2 TLSv1.3
