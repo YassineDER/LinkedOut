@@ -20,7 +20,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - //letsencrypt/ssl/backend.p12:/app/backend.p12
+      - /home/ubuntu/scripts/backend.p12:/app/backend.p12
     environment:
       DB_USER: $DB_USER
       DB_PASS: $DB_PASS
