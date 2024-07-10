@@ -22,6 +22,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -31,8 +34,9 @@ import java.util.UUID;
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
+@EnableWebMvc
 @EnableMethodSecurity
-public class SecurityConfiguration {
+public class SecurityConfiguration implements WebMvcConfigurer {
     private final JwtAuthenticationFilter jwtFilter;
     private final AuthenticationProvider authProvider;
     @Qualifier("customAuthenticationEntryPoint")
@@ -54,7 +58,6 @@ public class SecurityConfiguration {
                     if (isDev) channel.anyRequest().requiresInsecure();
                     else channel.anyRequest().requiresSecure();
                 })
-//                .cors(Customizer.withDefaults())
                 .anonymous(anonymous -> anonymous.authenticationFilter(customAnonymousAuthFilter()))
                 .exceptionHandling(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize -> authorize
@@ -72,18 +75,8 @@ public class SecurityConfiguration {
         return http.build();
     }
 
-//    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-//        config.setAllowedOrigins(Arrays.asList(frontendUrl, "http://yassine.onthewifi.com:80", "https://yassine.onthewifi.com:443", "http://postgres:80"));
-        // disable cors for now
-        config.setAllowedOrigins(Collections.singletonList("*"));
-        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
-        source.registerCorsConfiguration("/**", config);
-        return source;
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**");
     }
-
-
 }
