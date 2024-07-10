@@ -41,6 +41,7 @@ services:
     volumes:
       - /etc/letsencrypt/ssl/fullchain.pem:/etc/nginx/ssl/fullchain.pem
       - /etc/letsencrypt/ssl/privkey.pem:/etc/nginx/ssl/privkey.pem
+      - /home/ubuntu/scripts/backend.crt:/etc/nginx/ssl/backend.crt
     ports:
       - "80:80"
       - "443:443"
