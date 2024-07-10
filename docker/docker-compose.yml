@@ -20,7 +20,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - /etc/letsencrypt/ssl/springboot.p12:/app/springboot.p12
+      - //letsencrypt/ssl/backend.p12:/app/backend.p12
     environment:
       DB_USER: $DB_USER
       DB_PASS: $DB_PASS

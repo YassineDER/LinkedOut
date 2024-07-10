@@ -17,8 +17,9 @@ spring:
             required: true
 server:
   ssl:
-    key-store: file:/app/springboot.p12
-    key-alias: springboot
+    key-store: file:/app/backend.p12
+    key-alias: backend
     key-store-type: pkcs12
     key-store-password: messi203
     key-password: messi203
+    enabled-protocols: TLSv1.2,TLSv1.3
