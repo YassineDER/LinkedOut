@@ -2,9 +2,8 @@ version: '3'
 
 services:
   postgres:
+    container_name: $DB
     image: postgres:alpine
-    networks:
-      - postgres
     restart: always
     environment:
       POSTGRES_PASSWORD: $DB_PASS
@@ -16,18 +15,17 @@ services:
       - "5432:5432"
 
   backend:
+    container_name: $BACKEND
     image: yassineder/backend:latest
-    networks:
-      - postgres
     ports:
       - "8080:8080"
     volumes:
-      - /etc/letsencrypt/ssl/springboot.p12:/app/springboot.p12:ro
+      - /etc/letsencrypt/ssl/springboot.p12:/app/springboot.p12
     environment:
       DB_USER: $DB_USER
       DB_PASS: $DB_PASS
-      DB_URL: jdbc:postgresql://postgres:5432/securecapita
-      FRONTEND_URL: https://linkedout_frontend_1:443
+      DB_URL: jdbc:postgresql://$DB:5432/securecapita
+      FRONTEND_URL: https://$FRONTEND:443
       MAIL_USER: $MAIL_USER
       MAIL_PASS: $MAIL_PASS
       JWT_SECRET: $JWT_SECRET
@@ -38,9 +36,8 @@ services:
       - postgres
 
   frontend:
+    container_name: $FRONTEND
     image: yassineder/frontend:latest
-    networks:
-      - postgres
     volumes:
       - /etc/letsencrypt/ssl/fullchain.pem:/etc/nginx/ssl/fullchain.pem
       - /etc/letsencrypt/ssl/privkey.pem:/etc/nginx/ssl/privkey.pem
@@ -49,10 +46,6 @@ services:
       - "443:443"
     depends_on:
       - backend
-
-networks:
-  postgres:
-    driver: bridge
 
 volumes:
   postgres-data:

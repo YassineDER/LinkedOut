@@ -52,5 +52,5 @@ jobs:
           cd ~/linkedout
           sudo docker pull ${{ secrets.DOCKER_USERNAME }}/backend:latest
           sudo docker pull ${{ secrets.DOCKER_USERNAME }}/frontend:latest
-          sudo docker-compose -f docker-compose.yml down
-          sudo docker-compose -f docker-compose.yml up -d
+          sudo docker compose -f docker-compose.yml down
+          sudo docker compose -f docker-compose.yml up -d
