@@ -39,8 +39,9 @@ services:
     container_name: $FRONTEND
     image: yassineder/frontend:latest
     volumes:
-      - /etc/letsencrypt/ssl/fullchain.pem:/etc/nginx/ssl/fullchain.pem
-      - /etc/letsencrypt/ssl/privkey.pem:/etc/nginx/ssl/privkey.pem
+      # - /etc/letsencrypt/ssl/fullchain.pem:/etc/nginx/ssl/fullchain.pem
+      # - /etc/letsencrypt/ssl/privkey.pem:/etc/nginx/ssl/privkey.pem
+      - /home/ubuntu/scripts/backend.key:/etc/nginx/ssl/backend.key
       - /home/ubuntu/scripts/backend.crt:/etc/nginx/ssl/backend.crt
     ports:
       - "80:80"
