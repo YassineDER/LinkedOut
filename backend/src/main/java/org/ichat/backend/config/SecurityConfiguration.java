@@ -54,7 +54,7 @@ public class SecurityConfiguration {
                     if (isDev) channel.anyRequest().requiresInsecure();
                     else channel.anyRequest().requiresSecure();
                 })
-                .cors(Customizer.withDefaults())
+//                .cors(Customizer.withDefaults())
                 .anonymous(anonymous -> anonymous.authenticationFilter(customAnonymousAuthFilter()))
                 .exceptionHandling(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize -> authorize
@@ -72,7 +72,7 @@ public class SecurityConfiguration {
         return http.build();
     }
 
-    @Bean
+//    @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
