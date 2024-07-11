@@ -60,12 +60,10 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE }}
         script: |
           git clone --depth 1 --no-checkout git@github.com:YassineDER/LinkedOut.git
-          cd LinkedOut
-          git sparse-checkout set frontend
-          git checkout
+          cd LinkedOut && git sparse-checkout set frontend && git checkout
           cd frontend
-          sudo cp -f nginx.conf /etc/nginx/nginx.conf
+          sudo cp -f ./nginx.conf /etc/nginx/nginx.conf
           npm install
           npm run build
           sudo mv dist/broswer/* /var/www/html/
-          sudo service nginx restart
+          sudo systemctl restart nginx.service
