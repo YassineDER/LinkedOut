@@ -34,12 +34,6 @@ spring:
       max-file-size: 5MB
       max-request-size: 5MB
 
-logging:
-  level:
-    org:
-      ichat:
-        backend: INFO
-
 # Two-factor authentication configuration
 totp:
   secret:

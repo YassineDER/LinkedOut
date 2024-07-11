@@ -20,7 +20,8 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - /home/ubuntu/scripts/backend.p12:/app/backend.p12
+      - /etc/letsencrypt/ssl/fullchain.crt:/app/fullchain.crt
+      - /etc/letsencrypt/ssl/privkey.key:/app/privkey.key
     environment:
       DB_USER: $DB_USER
       DB_PASS: $DB_PASS
@@ -41,7 +42,6 @@ services:
     volumes:
       - /etc/letsencrypt/ssl/fullchain.pem:/etc/nginx/ssl/fullchain.pem
       - /etc/letsencrypt/ssl/privkey.pem:/etc/nginx/ssl/privkey.pem
-      - /home/ubuntu/scripts/backend.crt:/etc/nginx/ssl/backend.crt
     ports:
       - "80:80"
       - "443:443"

@@ -15,5 +15,5 @@ spring:
           starttls:
             enable: true
             required: true
-
-
+server:
+  port: 8081
