@@ -67,7 +67,7 @@ jobs:
           fi
           cd frontend
           sudo cp -f ./nginx.conf /etc/nginx/nginx.conf
-          npm install
-          npm run build
+          /home/ubuntu/.nvm/versions/node/v20.13.1/bin/npm install
+          /home/ubuntu/.nvm/versions/node/v20.13.1/bin/npm run build
           sudo mv dist/broswer/* /var/www/html/
           sudo systemctl restart nginx.service
