@@ -40,15 +40,6 @@ jobs:
         remote: '/home/${{ secrets.VM_USER }}/linkedout/docker-compose.yml'
         privateKey: ${{ secrets.SSH_PRIVATE }}
 
-    - name: Copy frontend to VM
-      uses: garygrossgarten/github-action-scp@release
-      with:
-        host: ${{ secrets.VM_HOST }}
-        local: 'frontend'
-        username: ${{ secrets.VM_USER }}
-        remote: '/home/${{ secrets.VM_USER }}/linkedout/'
-        privateKey: ${{ secrets.SSH_PRIVATE }}
-
     - name: Deploying to remote VM
       uses: appleboy/ssh-action@v1.0.3
       with:
@@ -68,8 +59,13 @@ jobs:
         username: ${{ secrets.VM_USER }}
         key: ${{ secrets.SSH_PRIVATE }}
         script: |
-          cd ~/linkedout/frontend
+          cd ~/linkedout/
           sudo mv nginx.conf /etc/nginx/nginx.conf
+          git clone --depth 1 --no-checkout git@github.com:YassineDER/LinkedOut.git
+          cd LinkedOut
+          git sparse-checkout set frontend
+          git checkout
+          cd frontend
           npm install
           npm run build
           sudo mv dist/broswer/* /var/www/html/
