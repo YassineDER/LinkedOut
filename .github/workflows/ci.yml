@@ -51,7 +51,6 @@ jobs:
           sudo docker pull ${{ secrets.DOCKER_USERNAME }}/backend:latest
           sudo docker compose -f docker-compose.yml down
           sudo docker compose -f docker-compose.yml up -d
-          sudo mv nginx.conf /etc/nginx/nginx.conf
 
     - name: Compile frontend and refresh nginx
       uses: appleboy/ssh-action@v1.0.3
@@ -65,6 +64,7 @@ jobs:
           git sparse-checkout set frontend
           git checkout
           cd frontend
+          sudo cp -f nginx.conf /etc/nginx/nginx.conf
           npm install
           npm run build
           sudo mv dist/broswer/* /var/www/html/
