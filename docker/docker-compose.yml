@@ -20,8 +20,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - /etc/letsencrypt/ssl/fullchain.crt:/app/fullchain.crt
-      - /etc/letsencrypt/ssl/privkey.key:/app/privkey.key
+      - /etc/letsencrypt/ssl/keystore.p12:/app/keystore.p12
     environment:
       DB_USER: $DB_USER
       DB_PASS: $DB_PASS
@@ -33,6 +32,7 @@ services:
       RECAPTCHA_SECRET: $RECAPTCHA_SECRET
       GOOGLE_API_KEY: $GOOGLE_API_KEY
       GOOGLE_CX: $GOOGLE_CX
+      KEYSTORE_PASS: $KEYSTORE_PASS
     depends_on:
       - postgres
 
