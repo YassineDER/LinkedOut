@@ -18,12 +18,10 @@ jobs:
     - name: Build Docker images
       run: |
         docker build -t ${{ secrets.DOCKER_USERNAME }}/backend:latest ./backend
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend:latest ./frontend
 
     - name: Push Docker images
       run: |
         docker push ${{ secrets.DOCKER_USERNAME }}/backend:latest
-        docker push ${{ secrets.DOCKER_USERNAME }}/frontend:latest
 
   deploy:
     runs-on: ubuntu-latest
@@ -33,13 +31,22 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4.1.7
 
-    - name: Copy docker-compose.yml to VM
+    - name: Copy docker-compose.yml and nginx.conf to VM
       uses: garygrossgarten/github-action-scp@release
       with:
         host: ${{ secrets.VM_HOST }}
-        local: 'docker/docker-compose.yml'
+        local: '/docker/*'
         username: ${{ secrets.VM_USER }}
-        remote: '/home/${{ secrets.VM_USER }}/linkedout/docker-compose.yml'
+        remote: '/home/${{ secrets.VM_USER }}/linkedout/'
+        privateKey: ${{ secrets.SSH_PRIVATE }}
+
+    - name: Copy frontend to VM
+      uses: garygrossgarten/github-action-scp@release
+      with:
+        host: ${{ secrets.VM_HOST }}
+        local: 'frontend'
+        username: ${{ secrets.VM_USER }}
+        remote: '/home/${{ secrets.VM_USER }}/linkedout/'
         privateKey: ${{ secrets.SSH_PRIVATE }}
 
     - name: Deploying to remote VM
@@ -51,6 +58,19 @@ jobs:
         script: |
           cd ~/linkedout
           sudo docker pull ${{ secrets.DOCKER_USERNAME }}/backend:latest
-          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/frontend:latest
           sudo docker compose -f docker-compose.yml down
           sudo docker compose -f docker-compose.yml up -d
+
+    - name: Compile frontend and refresh nginx
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.VM_HOST }}
+        username: ${{ secrets.VM_USER }}
+        key: ${{ secrets.SSH_PRIVATE }}
+        script: |
+          cd ~/linkedout/frontend
+          sudo mv nginx.conf /etc/nginx/nginx.conf
+          npm install
+          npm run build
+          sudo mv dist/broswer/* /var/www/html/
+          sudo service nginx restart

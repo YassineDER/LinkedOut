@@ -25,7 +25,6 @@ services:
       DB_USER: $DB_USER
       DB_PASS: $DB_PASS
       DB_URL: jdbc:postgresql://$DB:5432/securecapita
-      FRONTEND_URL: https://$FRONTEND:443
       MAIL_USER: $MAIL_USER
       MAIL_PASS: $MAIL_PASS
       JWT_SECRET: $JWT_SECRET
@@ -35,18 +34,6 @@ services:
       KEYSTORE_PASS: $KEYSTORE_PASS
     depends_on:
       - postgres
-
-  frontend:
-    container_name: $FRONTEND
-    image: yassineder/frontend:latest
-    volumes:
-      - /etc/letsencrypt/ssl/fullchain.pem:/etc/nginx/ssl/fullchain.pem
-      - /etc/letsencrypt/ssl/privkey.pem:/etc/nginx/ssl/privkey.pem
-    ports:
-      - "80:80"
-      - "443:443"
-    depends_on:
-      - backend
 
 volumes:
   postgres-data:
