@@ -1,6 +1,4 @@
 spring:
-  frontend:
-    url: http://localhost:4200
   mail:
     host: sandbox.smtp.mailtrap.io
     port: 2525

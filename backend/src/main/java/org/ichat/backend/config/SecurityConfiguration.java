@@ -17,7 +17,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -41,8 +40,6 @@ public class SecurityConfiguration implements WebMvcConfigurer {
     private final AuthenticationProvider authProvider;
     @Qualifier("customAuthenticationEntryPoint")
     private final AuthenticationEntryPoint entryPoint;
-    @Value("${spring.frontend.url}")
-    private String frontendUrl;
     private final Environment env;
 
     @Bean

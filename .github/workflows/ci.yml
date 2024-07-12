@@ -52,27 +52,3 @@ jobs:
           sudo docker compose -f docker-compose.yml down
           sudo docker compose -f docker-compose.yml up -d
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20
-
-    - name: Compile frontend and refresh nginx
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.VM_HOST }}
-        username: ${{ secrets.VM_USER }}
-        key: ${{ secrets.SSH_PRIVATE }}
-        script: |
-          if [ -d "LinkedOut" ]; then
-          cd LinkedOut
-          else
-          git clone --depth 1 --no-checkout git@github.com:YassineDER/LinkedOut.git
-          cd LinkedOut && git sparse-checkout set frontend && git checkout
-          fi
-          cd frontend
-          sudo cp -f ./nginx.conf /etc/nginx/nginx.conf
-          npm install
-          npm run build
-          sudo mv dist/broswer/* /var/www/html/
-          sudo systemctl restart nginx.service

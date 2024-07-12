@@ -1,6 +1,4 @@
 spring:
-  frontend:
-    url: ${FRONTEND_URL}
   mail:
     host: smtp.gmail.com
     port: 587
