@@ -34,6 +34,13 @@ spring:
       max-file-size: 5MB
       max-request-size: 5MB
 
+management:
+  endpoint:
+    web:
+      exposure:
+        include: health, info, metrics, shutdown
+    shutdown:
+      enabled: true
 # Two-factor authentication configuration
 totp:
   secret:

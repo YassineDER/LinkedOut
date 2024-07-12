@@ -6,7 +6,8 @@ import org.ichat.backend.config.requests.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -16,11 +17,15 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.resource.PathResourceResolver;
 
+import java.io.IOException;
 import java.util.UUID;
 
 @Configuration
@@ -33,7 +38,6 @@ public class SecurityConfiguration implements WebMvcConfigurer {
     private final AuthenticationProvider authProvider;
     @Qualifier("customAuthenticationEntryPoint")
     private final AuthenticationEntryPoint entryPoint;
-    private final Environment env;
 
     @Bean
     public AnonymousAuthFilter customAnonymousAuthFilter() {
@@ -44,12 +48,14 @@ public class SecurityConfiguration implements WebMvcConfigurer {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .anonymous(anonymous -> anonymous.authenticationFilter(customAnonymousAuthFilter()))
-                .exceptionHandling(Customizer.withDefaults())
+                .exceptionHandling(e -> e.defaultAuthenticationEntryPointFor(
+                        new HttpStatusEntryPoint(HttpStatus.NOT_FOUND), req -> true))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/jobseeker/**").hasAnyRole("JOBSEEKER", "ADMIN")
                         .requestMatchers("/api/company/**").hasAnyRole("COMPANY", "ADMIN")
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/", "/index.html", "/assets/**", "/favicon.ico").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(basic -> basic.authenticationEntryPoint(entryPoint))
                 .sessionManagement(session -> session
@@ -63,5 +69,24 @@ public class SecurityConfiguration implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**");
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/**")
+                .addResourceLocations("classpath:/static/");
+
+        // Forward angular routes to index.html
+        registry.addResourceHandler("/**")
+                .addResourceLocations("classpath:/static/index.html")
+                .resourceChain(true)
+                .addResolver(new PathResourceResolver() {
+                    @Override
+                    protected Resource getResource(String resourcePath, Resource location) throws IOException {
+                        if (resourcePath.startsWith("/api/") || resourcePath.matches("\\.(?:css|js|png|jpg|jpeg|gif|ico)$"))
+                            return null;
+                        return location.exists() && location.isReadable() ? location : null;
+                    }
+                });
     }
 }

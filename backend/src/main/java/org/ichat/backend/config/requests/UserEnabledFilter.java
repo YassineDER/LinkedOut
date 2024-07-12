@@ -7,9 +7,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.model.tables.User;
 import org.ichat.backend.service.account.IUserService;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
 import java.io.IOException;
 
 @Component
@@ -18,19 +20,22 @@ public class UserEnabledFilter extends OncePerRequestFilter {
     private final IUserService userService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String requestURI = request.getRequestURI();
+    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws ServletException, IOException {
+        String requestURI = req.getRequestURI();
 
-        if (!requestURI.startsWith("/api/auth/")) {
-            User authenticatedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            User userInDb = userService.findBy(authenticatedUser.getUser_id());
+        // Apply the check only for requests that start with /api/ and not /api/auth/
+        if (requestURI.startsWith("/api/") && !requestURI.startsWith("/api/auth/")) {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication != null && authentication.getPrincipal() instanceof User authenticatedUser) {
+                User userInDb = userService.findBy(authenticatedUser.getUser_id());
 
-            if (!userInDb.isEnabled()) {
-                response.sendError(HttpServletResponse.SC_FORBIDDEN, "User is not enabled");
-                return;
+                if (!userInDb.isEnabled()) {
+                    res.sendError(HttpServletResponse.SC_FORBIDDEN, "User is not enabled");
+                    return;
+                }
             }
         }
 
-        filterChain.doFilter(request, response);
+        filterChain.doFilter(req, res);
     }
 }
