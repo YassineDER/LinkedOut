@@ -17,17 +17,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Objects;
 import java.util.UUID;
 
 @Configuration
@@ -49,12 +42,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        boolean isDev = Objects.equals(env.getActiveProfiles()[0], "dev");
         http.csrf(AbstractHttpConfigurer::disable)
-                .requiresChannel(channel -> {
-                    if (isDev) channel.anyRequest().requiresInsecure();
-                    else channel.anyRequest().requiresSecure();
-                })
                 .anonymous(anonymous -> anonymous.authenticationFilter(customAnonymousAuthFilter()))
                 .exceptionHandling(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize -> authorize

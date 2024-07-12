@@ -12,27 +12,6 @@ services:
     ports:
       - "5432:5432"
 
-  backend:
-    container_name: $BACKEND
-    image: yassineder/backend:latest
-    ports:
-      - "8080:8080"
-    volumes:
-      - /etc/letsencrypt/ssl/keystore.p12:/app/keystore.p12
-    environment:
-      DB_USER: $DB_USER
-      DB_PASS: $DB_PASS
-      DB_URL: jdbc:postgresql://$DB:5432/securecapita
-      MAIL_USER: $MAIL_USER
-      MAIL_PASS: $MAIL_PASS
-      JWT_SECRET: $JWT_SECRET
-      RECAPTCHA_SECRET: $RECAPTCHA_SECRET
-      GOOGLE_API_KEY: $GOOGLE_API_KEY
-      GOOGLE_CX: $GOOGLE_CX
-      KEYSTORE_PASS: $KEYSTORE_PASS
-    depends_on:
-      - postgres
-
 volumes:
   postgres-data:
     driver: local
