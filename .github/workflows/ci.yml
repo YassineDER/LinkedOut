@@ -47,4 +47,3 @@ jobs:
         heroku_email: ${{secrets.HEROKU_EMAIL}}
         appdir: "backend"
         stack: "heroku-22"
-        buildpack: "https://github.com/heroku/heroku-buildpack-java.git"
