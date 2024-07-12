@@ -40,8 +40,11 @@ jobs:
           sudo docker compose -f docker-compose.yml up -d
 
     - name: Build and deploy the application
-      env:
-        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-      run: |
-        git remote add heroku https://git.heroku.com/linkedout.git
-        git subtree push --prefix backend heroku main
+      uses: akhileshns/heroku-deploy@v3.13.15
+      with:
+        heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+        heroku_app_name: "linkedout"
+        heroku_email: ${{secrets.HEROKU_EMAIL}}
+        appdir: "backend"
+        stack: "heroku-22"
+        buildpack: "https://github.com/heroku/heroku-buildpack-java.git"
