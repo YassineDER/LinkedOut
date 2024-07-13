@@ -6,6 +6,7 @@ import org.ichat.backend.config.requests.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -38,6 +39,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
     private final AuthenticationProvider authProvider;
     @Qualifier("customAuthenticationEntryPoint")
     private final AuthenticationEntryPoint entryPoint;
+    private final Environment env;
 
     @Bean
     public AnonymousAuthFilter customAnonymousAuthFilter() {
@@ -68,7 +70,8 @@ public class SecurityConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
+        String origin = env.getActiveProfiles()[0] == "dev" ? "/**" : "https://yassineder.github.io/LinkedOut";
+        registry.addMapping(origin)
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedOrigins("*")
                 .allowedHeaders("*");

@@ -39,7 +39,7 @@ jobs:
           sudo docker compose -f docker-compose.yml down
           sudo docker compose -f docker-compose.yml up -d
 
-    - name: Build and deploy the application
+    - name: Build and deploy the backend
       uses: akhileshns/heroku-deploy@v3.13.15
       with:
         heroku_api_key: ${{secrets.HEROKU_API_KEY}}
@@ -47,3 +47,9 @@ jobs:
         heroku_email: ${{secrets.HEROKU_EMAIL}}
         appdir: "backend"
         stack: "heroku-22"
+
+    - name: Build and deploy the frontend
+      run: |
+        chmod +x ./deploy
+        ./deploy
+        
