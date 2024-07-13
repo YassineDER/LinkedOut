@@ -128,6 +128,12 @@
                         ],
                         "scripts": []
                     }
+                },
+                "deploy": {
+                  "builder": "angular-cli-ghpages:deploy",
+                  "options": {
+                    "buildTarget": "frontend:build:production"
+                  }
                 }
             }
         }

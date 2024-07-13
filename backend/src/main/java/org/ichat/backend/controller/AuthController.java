@@ -92,11 +92,11 @@ public class AuthController {
     @GetMapping("/sleep")
     public ResponseEntity<String> sleep(){
         try {
-            Thread.sleep(5000);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return ResponseEntity.ok("Slept for 5 seconds");
+        return ResponseEntity.ok("Slept for 3 seconds");
     }
 
 }

@@ -47,6 +47,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
+                .cors(Customizer.withDefaults())
                 .anonymous(anonymous -> anonymous.authenticationFilter(customAnonymousAuthFilter()))
                 .exceptionHandling(e -> e.defaultAuthenticationEntryPointFor(
                         new HttpStatusEntryPoint(HttpStatus.NOT_FOUND), req -> true))
@@ -55,7 +56,6 @@ public class SecurityConfiguration implements WebMvcConfigurer {
                         .requestMatchers("/api/jobseeker/**").hasAnyRole("JOBSEEKER", "ADMIN")
                         .requestMatchers("/api/company/**").hasAnyRole("COMPANY", "ADMIN")
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/", "/index.html", "/assets/**", "/favicon.ico").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(basic -> basic.authenticationEntryPoint(entryPoint))
                 .sessionManagement(session -> session
@@ -68,25 +68,9 @@ public class SecurityConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**");
-    }
-
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/**")
-                .addResourceLocations("classpath:/static/");
-
-        // Forward angular routes to index.html
-        registry.addResourceHandler("/**")
-                .addResourceLocations("classpath:/static/index.html")
-                .resourceChain(true)
-                .addResolver(new PathResourceResolver() {
-                    @Override
-                    protected Resource getResource(String resourcePath, Resource location) throws IOException {
-                        if (resourcePath.startsWith("/api/") || resourcePath.matches("\\.(?:css|js|png|jpg|jpeg|gif|ico)$"))
-                            return null;
-                        return location.exists() && location.isReadable() ? location : null;
-                    }
-                });
+        registry.addMapping("/**")
+                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowedOrigins("*")
+                .allowedHeaders("*");
     }
 }

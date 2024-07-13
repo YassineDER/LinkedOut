@@ -6,8 +6,7 @@
     "start": "ng s",
     "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "deploy": "./deploy"
+    "test": "ng test"
   },
   "private": true,
   "dependencies": {
@@ -34,6 +33,7 @@
     "@angular/cli": "^17.1.1",
     "@angular/compiler-cli": "^17.1.0",
     "@types/jasmine": "~5.1.0",
+    "angular-cli-ghpages": "^2.0.1",
     "autoprefixer": "^10.4.19",
     "daisyui": "^4.11.1",
     "gh-pages": "^6.1.1",

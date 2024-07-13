@@ -2,6 +2,7 @@ package org.ichat.backend.exeception;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -20,6 +21,8 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 @Slf4j
 public class GlobalExceptionAdvice {
+    private final Environment env;
+
     private static final String ERROR = "error";
     private static final String STATUS = "status";
     private static final String CAUSE = "cause";
@@ -59,7 +62,10 @@ public class GlobalExceptionAdvice {
     @ResponseBody
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleGlobalErrors(Exception ex) {
-        log.error("Global error", ex);
+        String profile = env.getActiveProfiles()[0];
+        if (profile.equals("dev"))
+            log.error("Error: ", ex);
+
         Map<String, Object> body = new HashMap<>();
         body.put(TYPE, "Global");
         body.put(CLASS, ex.getClass().getName());
