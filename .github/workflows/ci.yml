@@ -50,6 +50,5 @@ jobs:
 
     - name: Build and deploy the frontend
       run: |
-        chmod +x ./deploy
+        chmod +x frontend/deploy
         ./deploy
-        
