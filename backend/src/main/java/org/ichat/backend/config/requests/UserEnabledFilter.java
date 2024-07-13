@@ -28,7 +28,7 @@ public class UserEnabledFilter extends OncePerRequestFilter {
             User userInDb = userService.findBy(authenticatedUser.getUser_id());
 
                 if (!userInDb.isEnabled()) {
-                response.sendError(HttpServletResponse.SC_FORBIDDEN, "User is not enabled");
+                res.sendError(HttpServletResponse.SC_FORBIDDEN, "User is not enabled");
                 return;
             }
         }
