@@ -4,7 +4,7 @@
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
 @font-face {
     font-family: 'Inter';
-    src: url('/assets/fonts/Inter.ttf') format('truetype');
+    src: url('assets/fonts/Inter.ttf') format('truetype');
     font-weight: 100 900;
     font-display: swap;
 }

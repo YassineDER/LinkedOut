@@ -70,7 +70,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        String origin = env.getActiveProfiles()[0] == "dev" ? "/**" : "https://yassineder.github.io";
+        String origin = env.getActiveProfiles()[0] == "dev" ? "*" : "https://yassineder.github.io";
         registry.addMapping("/**")
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedOrigins(origin)
