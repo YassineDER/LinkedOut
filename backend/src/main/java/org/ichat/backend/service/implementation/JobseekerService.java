@@ -7,9 +7,11 @@ import org.ichat.backend.model.tables.Skill;
 import org.ichat.backend.model.util.patchers.JobseekerPatch;
 import org.ichat.backend.repository.JobseekerRepo;
 import org.ichat.backend.service.IJobseekerService;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -71,6 +73,15 @@ public class JobseekerService implements IJobseekerService {
         jobseeker.setSkills(skills);
         jobseekerRepo.save(jobseeker);
         return jobseeker.getSkills();
+    }
+
+    @Override
+    public List<Jobseeker> findSuggested() {
+        int total = (int) jobseekerRepo.count();
+        var lst = new java.util.ArrayList<>(jobseekerRepo.findAll(PageRequest.of(0, total))
+                .getContent().stream().limit(5).toList());
+        Collections.shuffle(lst);
+        return lst.stream().toList();
     }
 }
 

@@ -23,11 +23,11 @@ public class UserEnabledFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws ServletException, IOException {
         String requestURI = req.getRequestURI();
 
-         if (!requestURI.startsWith("/api/auth/")) {
+        if (!requestURI.startsWith("/api/auth/")) {
             User authenticatedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             User userInDb = userService.findBy(authenticatedUser.getUser_id());
 
-                if (!userInDb.isEnabled()) {
+            if (!userInDb.isEnabled()) {
                 res.sendError(HttpServletResponse.SC_FORBIDDEN, "User is not enabled");
                 return;
             }

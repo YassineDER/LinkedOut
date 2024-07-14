@@ -41,7 +41,6 @@ public class UserController {
 
     @PostMapping("/mfa/{action}")
     @Transactional
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'JOBSEEKER', 'COMPANY')")
     public ResponseEntity<AuthResponse> enableMfa(@PathVariable String action, @RequestBody AccountCredentials confirmation) throws QrGenerationException {
         User authenticatedUser = authService.getAuthenticatedUser();
 
@@ -52,6 +51,7 @@ public class UserController {
         if (action.equals("enable")) {
             if (Boolean.TRUE.equals(authenticatedUser.getUsing_mfa()))
                 throw new AccountException("MFA is already enabled");
+
             authenticatedUser.activateMFA(twoFactorService.generateMfaSecret());
             String qrCode = twoFactorService.generateMfaImage(authenticatedUser.getMfa_secret(), authenticatedUser.getEmail());
             userService.update(authenticatedUser.getUser_id(), authenticatedUser);

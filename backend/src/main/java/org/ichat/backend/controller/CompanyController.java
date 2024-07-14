@@ -25,7 +25,6 @@ public class CompanyController {
         return ResponseEntity.ok(user);
     }
 
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'COMPANY')")
     @PutMapping("/id/{id}")
     public ResponseEntity<Company> update(@PathVariable Long id, @RequestBody @Valid CompanyPatch user) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

@@ -17,4 +17,6 @@ public interface IJobseekerService{
     Jobseeker add(Jobseeker jobseeker);
 
     Set<Skill> addAquiredSkills(Long jobseeker_id, Set<Skill> skills);
+
+    List<Jobseeker> findSuggested();
 }

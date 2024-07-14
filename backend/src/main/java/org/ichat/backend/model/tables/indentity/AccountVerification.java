@@ -34,8 +34,4 @@ public class AccountVerification {
     private User user;
 
 
-    public void verifyUser() {
-        this.user.setEnabled(true);
-    }
-
 }

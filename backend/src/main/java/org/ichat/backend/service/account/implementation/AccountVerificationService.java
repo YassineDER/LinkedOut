@@ -35,10 +35,10 @@ public class AccountVerificationService implements IAccountVerificationService {
         if (user == null)
             throw new AccountException("No user found with the provided token. Please register again.");
         if (Boolean.TRUE.equals(user.getEnabled()))
-            throw new AccountException("User account is already verified and enabled");
+            throw new AccountException("User of this account verification is already enabled");
 
-        accountVerification.verifyUser();
-        accountVerificationRepository.save(accountVerification);
+        user.setEnabled(true);
+        accountVerificationRepository.deleteByUser(user);
         return jwtService.generateToken(user);
     }
 

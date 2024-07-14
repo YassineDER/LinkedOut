@@ -27,6 +27,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.resource.PathResourceResolver;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
 @Configuration
@@ -50,12 +51,13 @@ public class SecurityConfiguration implements WebMvcConfigurer {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .anonymous(anonymous -> anonymous.authenticationFilter(customAnonymousAuthFilter()))
+                .cors(Customizer.withDefaults())
                 .exceptionHandling(e -> e.defaultAuthenticationEntryPointFor(
                         new HttpStatusEntryPoint(HttpStatus.NOT_FOUND), req -> true))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/jobseeker/**").hasAnyRole("JOBSEEKER", "ADMIN")
-                        .requestMatchers("/api/company/**").hasAnyRole("COMPANY", "ADMIN")
+                        .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
+                        .requestMatchers("/api/jobseeker/**").hasAnyAuthority("JOBSEEKER", "ADMIN")
+                        .requestMatchers("/api/company/**").hasAnyAuthority("COMPANY", "ADMIN")
                         .requestMatchers("/api/auth/**").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(basic -> basic.authenticationEntryPoint(entryPoint))
@@ -69,10 +71,10 @@ public class SecurityConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        String origin = env.getActiveProfiles()[0] == "dev" ? "http://localhost:4200" : "https://yassineder.github.io";
+        String origin = Objects.equals(env.getActiveProfiles()[0], "dev") ? "http://localhost:4200" : "https://yassineder.github.io";
         registry.addMapping("/**")
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
-                .allowedOrigins(origin)
+                .allowedOrigins(origin, "http://localhost")
                 .allowedHeaders("*");
     }
 }

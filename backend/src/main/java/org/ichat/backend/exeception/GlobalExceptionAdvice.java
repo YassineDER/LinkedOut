@@ -2,6 +2,7 @@ package org.ichat.backend.exeception;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,8 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 @Slf4j
 public class GlobalExceptionAdvice {
-    private final Environment env;
+    @Autowired
+    private Environment env;
 
     private static final String ERROR = "error";
     private static final String STATUS = "status";
@@ -63,8 +65,7 @@ public class GlobalExceptionAdvice {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleGlobalErrors(Exception ex) {
         String profile = env.getActiveProfiles()[0];
-        if (profile.equals("dev"))
-            log.error("Error: ", ex);
+        log.error("Error: ", ex.getMessage());
 
         Map<String, Object> body = new HashMap<>();
         body.put(TYPE, "Global");

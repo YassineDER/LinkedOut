@@ -1,0 +1,21 @@
+<div class="bg-white rounded-lg shadow-md p-4">
+  <h2 class="text-lg font-semibold mb-4">Autres profils similaires</h2>
+  @for (profile of profiles; track profile.user_id){
+    <div class="flex items center mb-4">
+      <img ngSrc="{{ profile.image_url}}" fill priority alt="Profile Image" class="w-10 h-10 rounded-full mr-3">
+      <div>
+        <h3 class="text-sm font-medium">{{ profile.first_name }} {{ profile.last_name }}</h3>
+        <p class="text-sm text-gray-500">{{ profile.title }}</p>
+      </div>
+      <div class="ml-auto">
+        @if (users.isJobseeker(user)){
+          <button *ngIf="social.isConnection(user, profile)" class="btn btn-outline btn-primary btn-sm">Se connecter</button>
+          <button *ngIf="!social.isConnection(user, profile)" class="btn btn-primary btn-sm">Message</button>
+        } @else {
+          <button *ngIf="social.isConnection(user, profile)" class="btn btn-outline btn-primary btn-sm">Recruter</button>
+        }
+      </div>
+    </div>
+  }
+
+</div>
