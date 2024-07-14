@@ -27,6 +27,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.resource.PathResourceResolver;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
 @Configuration
@@ -70,7 +71,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        String origin = env.getActiveProfiles()[0] == "dev" ? "*" : "https://yassineder.github.io";
+        String origin = Objects.equals(env.getActiveProfiles()[0], "dev") ? "http://localhost:4200" : "https://yassineder.github.io";
         registry.addMapping("/**")
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedOrigins(origin)
