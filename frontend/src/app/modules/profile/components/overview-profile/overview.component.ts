@@ -19,7 +19,6 @@ export class OverviewComponent{
     @Input() user!: User;
 
     constructor(protected users: UserService) {
-
     }
 
 }

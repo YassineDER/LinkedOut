@@ -10,12 +10,12 @@ import {UserService} from "../../../home/services/user.service";
 export class ProfileComponent implements OnInit{
     user!: User;
 
-    constructor(private userServ: UserService){
+    constructor(protected users: UserService){
 
     }
 
     ngOnInit() {
-        this.userServ.currentUser.subscribe(user => {
+        this.users.currentUser.subscribe(user => {
             if (user) this.user = user
         });
     }

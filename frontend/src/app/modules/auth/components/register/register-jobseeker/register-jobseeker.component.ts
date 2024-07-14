@@ -36,14 +36,29 @@ export class RegisterJobseekerComponent {
     }
 
     preFillJobseeker() {
-        this.registerJobseeker.setValue({
-            captcha: new FormControl(null).value,
-            email: new FormControl('jobseeker@example.com').value,
-            username: new FormControl('YassineDER').value,
-            password: new FormControl('12345678').value,
-            first_name: new FormControl('Yassine').value,
-            last_name: new FormControl('DERGAOUI').value
-        });
+        this.randomJobseeker().then(randomUser => {
+            this.registerJobseeker.setValue({
+                captcha: new FormControl(null).value,
+                email: new FormControl(randomUser.email).value,
+                username: new FormControl(randomUser.username).value,
+                password: new FormControl('12345678').value,
+                first_name: new FormControl(randomUser.first_name).value,
+                last_name: new FormControl(randomUser.last_name).value
+            });
+        })
+    }
+
+    private async randomJobseeker() {
+        let randomUser: any;
+        const response = await fetch('https://randomuser.me/api/');
+        const data = await response.json();
+        randomUser = {
+            email: data.results[0].email,
+            username: data.results[0].login.username,
+            first_name: data.results[0].name.first,
+            last_name: data.results[0].name.last
+        };
+        return randomUser;
     }
 
     async submitRegistration() {

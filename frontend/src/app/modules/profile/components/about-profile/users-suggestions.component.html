@@ -12,7 +12,7 @@
           <button *ngIf="social.isConnection(user, profile)" class="btn btn-outline btn-primary btn-sm">Se connecter</button>
           <button *ngIf="!social.isConnection(user, profile)" class="btn btn-primary btn-sm">Message</button>
         } @else {
-          <button *ngIf="social.isConnection(user, profile)" class="btn btn-outline btn-primary btn-sm">Recruter</button>
+          <button class="btn btn-outline btn-primary btn-sm">Recruter</button>
         }
       </div>
     </div>

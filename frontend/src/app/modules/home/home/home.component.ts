@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Observable} from "rxjs";
+import {Observable, shareReplay} from "rxjs";
 import {User} from "../../../models/user";
 import {RouterOutlet} from "@angular/router";
 import {fadeInUpAnimation} from "../../../animations";
@@ -15,14 +15,14 @@ import {UserService} from "../services/user.service";
 export class HomeComponent implements OnInit{
     user$: Observable<[User | null, boolean]>;
 
-    constructor(private auth: AuthService, private userServ:UserService) {
-        this.user$ = this.auth.getAuthenticatedUser();
+    constructor(private auth: AuthService, private users: UserService) {
+        this.user$ = this.auth.getAuthenticatedUser().pipe(shareReplay(1));
     }
 
     ngOnInit() {
         this.user$.subscribe(([user, authenticated]) => {
             if (authenticated && user)
-                this.userServ.changeUser(user);
+                this.users.changeUser(user);
         });
     }
 

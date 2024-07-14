@@ -121,14 +121,4 @@ export class AuthService {
         });
     }
 
-    private getPublicIP(): Promise<string> {
-        return new Promise((resolve, reject) => {
-            this.http.get('https://api.ipify.org?format=json')
-                .subscribe({
-                    next: (res: any) => resolve(res.ip),
-                    error: (err) => reject(err)
-                });
-        });
-    }
-
 }
