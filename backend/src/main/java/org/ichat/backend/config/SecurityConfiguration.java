@@ -49,7 +49,6 @@ public class SecurityConfiguration implements WebMvcConfigurer {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-                .cors(Customizer.withDefaults())
                 .anonymous(anonymous -> anonymous.authenticationFilter(customAnonymousAuthFilter()))
                 .exceptionHandling(e -> e.defaultAuthenticationEntryPointFor(
                         new HttpStatusEntryPoint(HttpStatus.NOT_FOUND), req -> true))
@@ -70,7 +69,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        String origin = env.getActiveProfiles()[0] == "dev" ? "*" : "https://yassineder.github.io";
+        String origin = env.getActiveProfiles()[0] == "dev" ? "http://localhost:4200" : "https://yassineder.github.io";
         registry.addMapping("/**")
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedOrigins(origin)
