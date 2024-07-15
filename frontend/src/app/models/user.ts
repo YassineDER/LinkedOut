@@ -5,7 +5,7 @@ export interface User{
     user_id: number;
     email: string;
     username: string;
-    image_url: string | null;
+    image_url: string;
     using_mfa: boolean;
     authorities: any[];
 }

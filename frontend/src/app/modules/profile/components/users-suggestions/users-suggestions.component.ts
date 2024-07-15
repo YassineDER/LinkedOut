@@ -1,7 +1,6 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {User} from '../../../../models/user';
 import {Jobseeker} from "../../../../models/jobseeker";
-import {NgIf, NgOptimizedImage} from "@angular/common";
 import {SocialService} from "../../../home/services/social.service";
 import {UserService} from "../../../home/services/user.service";
 
@@ -9,13 +8,8 @@ import {UserService} from "../../../home/services/user.service";
     selector: 'app-users-suggestions',
     templateUrl: './users-suggestions.component.html',
     styleUrl: './users-suggestions.component.css',
-    standalone: true,
-    imports: [
-        NgOptimizedImage,
-        NgIf
-    ],
 })
-export class UsersSuggestionsComponent {
+export class UsersSuggestionsComponent implements OnInit {
     @Input() user!: User;
     profiles: Jobseeker[] = [];
 
@@ -25,7 +19,6 @@ export class UsersSuggestionsComponent {
     ngOnInit() {
         this.users.suggestJobseekers().subscribe((profiles: Jobseeker[]) => {
             this.profiles = profiles;
-            console.log(profiles);
         });
 
     }

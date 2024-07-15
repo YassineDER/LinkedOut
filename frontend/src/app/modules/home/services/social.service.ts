@@ -1,15 +1,27 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Jobseeker} from "../../../models/jobseeker";
+import {User} from "../../../models/user";
 
 @Injectable()
 export class SocialService {
 
-  constructor(private http: HttpClient) {
+    constructor(private http: HttpClient) {
+    }
 
-  }
+    isConnection(user: User, user2: User) {
+        // TODO
+        return false
+    }
 
-    isConnection(user: Jobseeker, user2: Jobseeker) {
-      return Math.random() > 0.5;
+    triggerMsg(profile: User) {
+        // TODO
+    }
+
+    connect(profile: User) {
+        // TODO
+    }
+
+    getProfileStats(id: number) {
+        // TODO
     }
 }

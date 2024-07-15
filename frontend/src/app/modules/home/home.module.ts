@@ -16,7 +16,7 @@ import {JobseekerService} from "./services/jobseeker.service";
     imports: [
         CommonModule,
         HomeRoutingModule,
-        SharedModule
+        SharedModule,
     ],
     providers: [
         UserService,

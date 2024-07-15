@@ -1,11 +1,16 @@
 <div class="container mx-6 my-5">
   <div class="gap-4 grid grid-cols-3 w-full">
     @if ((user)) {
-      <app-overview-profile [user]="user" class="my-1 col-span-2"/>
+      <!-- first column -->
+      <div class="col-span-2 p-0">
+        <app-overview-profile [user]="user" class="p-0 m-0"/>
+      </div>
 
-      @if (!users.isAdmin(user)) {
-        <app-users-suggestions [user]="user" class="my-1"/>
-      }
+      <!-- second column -->
+      <div class="col-span-1 flex flex-col">
+        <app-stats-profile [user]="user" class="p-0 mb-4"/>
+        <app-users-suggestions [user]="user" class="p-0 mb-4"/>
+      </div>
     }
   </div>
 
