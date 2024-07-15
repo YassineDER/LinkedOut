@@ -37,10 +37,4 @@ public class JobseekerController {
         Jobseeker updatedUser = jobseekerService.update(id, patch);
         return ResponseEntity.ok(updatedUser);
     }
-
-    @GetMapping("/suggested")
-    public ResponseEntity<List<Jobseeker>> suggested() {
-        var suggested = jobseekerService.findSuggested();
-        return ResponseEntity.ok(suggested);
-    }
 }

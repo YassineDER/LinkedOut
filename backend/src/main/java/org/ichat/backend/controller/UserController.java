@@ -4,6 +4,7 @@ import dev.samstevens.totp.exceptions.QrGenerationException;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exeception.AccountException;
 import org.ichat.backend.model.tables.User;
+import org.ichat.backend.model.tables.Jobseeker;
 import org.ichat.backend.model.util.auth.AccountCredentials;
 import org.ichat.backend.model.util.auth.AuthResponse;
 import org.ichat.backend.service.account.IAuthService;
@@ -14,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.ichat.backend.service.IJobseekerService;
 
 import java.util.List;
 
@@ -25,6 +27,7 @@ public class UserController {
     private final ITwoFactorAuthService twoFactorService;
     private final PasswordEncoder passwordEncoder;
     private final IAuthService authService;
+    private final IJobseekerService jobseekerService;
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/all")
@@ -38,6 +41,14 @@ public class UserController {
         userService.deleteBy(id);
         return ResponseEntity.noContent().build();
     }
+
+    
+    @GetMapping("/suggested")
+    public ResponseEntity<List<Jobseeker>> suggested() {
+        var suggested = jobseekerService.findSuggested();
+        return ResponseEntity.ok(suggested);
+    }
+    
 
     @PostMapping("/mfa/{action}")
     @Transactional
