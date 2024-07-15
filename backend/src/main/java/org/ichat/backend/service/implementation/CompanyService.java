@@ -89,7 +89,7 @@ public class CompanyService implements ICompanyService {
                 .body(String.class);
 
         JSONObject content = new JSONObject(response);
-        String companyName = content.getString("label");
+        String companyName = content.getString("simpleLabel");
         String sector = content.getString("activitePrincipale");
         String headquarters = content.getJSONObject("firstMatchingEtablissement").getString("address");
         String foundedDate = content.getString("dateDebut");

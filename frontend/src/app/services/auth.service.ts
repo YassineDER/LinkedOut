@@ -28,8 +28,7 @@ export class AuthService {
                 return of<[User | null, boolean]>([res.principal, res.authenticated]);
             }),
             catchError((err) => {
-                if ((err.error.error as string).includes('Full authentication is required to access this resource'))
-                    this.logout();
+                this.logout();
                 return of<[User | null, boolean]>([null, false]);
             })
         );
@@ -45,6 +44,7 @@ export class AuthService {
     logout() {
         localStorage.removeItem('token');
         this.userSubject.next(null);
+        window.location.reload();
     }
 
 

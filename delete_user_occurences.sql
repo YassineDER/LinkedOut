@@ -1,7 +1,7 @@
 DO $$
 DECLARE
     r record;
-    user_id_to_delete INTEGER := 2; 
+    user_id_to_delete INTEGER := 452;
 BEGIN
     FOR r IN (
         SELECT 
