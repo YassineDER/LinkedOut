@@ -80,6 +80,8 @@ public class AuthController {
                 "authorities", auth.getAuthorities(),
                 "name", auth.getName()
         );
+        if (auth == null || !auth.isAuthenticated())
+            throw new AccountException("User not authenticated");
         return ResponseEntity.ok(response);
     }
 
