@@ -110,6 +110,7 @@ public class AuthService implements IAuthService {
         jobseeker.setEmail(request.getEmail());
         jobseeker.setUsername(request.getUsername());
         jobseeker.setPassword(passwordEncoder.encode(request.getPassword()));
+        jobseeker.setImage_url(request.getImage_url());
         jobseeker.setAddress(geo.getCity() + ", " + geo.getCountry());
         jobseeker.setUser_roles(Set.of(role));
         jobseekerService.add(jobseeker);

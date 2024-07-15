@@ -19,6 +19,7 @@ public class RegisterJobseekerRequest {
     private String username;
     @NotEmpty(message = "password is mandatory")
     private String password;
+    private String image_url = "https://img.icons8.com/pastel-glyph/64/000000/user-male-circle.png";
     @NotEmpty(message = "captcha is mandatory")
     private String captcha;
     boolean debug = false;

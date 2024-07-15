@@ -4,16 +4,17 @@ import {environment} from "../../../../environments/environment";
 import {Jobseeker} from "../../../models/jobseeker";
 import {Company} from "../../../models/company";
 import {Admin} from "../../../models/admin";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, map, Observable} from "rxjs";
 import {Role} from "../../../models/role";
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class UserService {
-    url = environment.hostUrl + '/api/user';
+    api = environment.hostUrl + '/api/user';
     private userSource = new BehaviorSubject<User | null>(null);
     currentUser = this.userSource.asObservable();
 
-    constructor() {
+    constructor(private http: HttpClient) {
     }
 
     isJobseeker(user: User): user is Jobseeker {
@@ -30,6 +31,12 @@ export class UserService {
 
     changeUser(user: User) {
         this.userSource.next(user);
+    }
+
+    suggestJobseekers(): Observable<Jobseeker[]> {
+        return this.http.get(this.api + '/suggested').pipe(
+            map((res: any) => res as Jobseeker[])
+        );
     }
 
 }
