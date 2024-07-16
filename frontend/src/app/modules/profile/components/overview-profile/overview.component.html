@@ -2,52 +2,56 @@
   <div class="relative mb-2">
     <img alt="Banner Image" class="w-full h-32 object-cover" height="396" ngSrc="assets/images/profile_banner.png"
          priority width="1584">
-    <div class="rounded-full border-4 border-white absolute left-7 transform -translate-x-1/4 -bottom-16">
-      <div class="w-20 h-20 bg-white rounded-full flex items-start justify-start">
+    <div class="rounded-full border-4 border-white absolute left-5 transform -bottom-16">
+      <div class="w-24 h-22 bg-white rounded-full flex items-start justify-start">
         <img [ngSrc]="user.image_url" alt="Profile Image" class="w-full h-full rounded-full" height="96"
              priority width="96">
       </div>
-
+    </div>
+    <div class="absolute top-0 right-0 m-2">
+      <button class="text-white text-xl bg-transparent hover:bg-gray-500 rounded-full px-2 py-1">
+        <i class="bi bi-pencil-square"></i>
+      </button>
     </div>
   </div>
   <br>
   <br>
 
-  <div class="p-3">
+  <div class="p-3 mx-2">
     @if (users.isJobseeker(user)) {
-      <h2 class="text-xl font-bold">{{ user.first_name }} {{ user.last_name }} <span
-        class="badge badge-info">out</span></h2>
-      <p class="text-gray-600">{{ user.title }}</p>
-      <div class="flex items-center justify-between mt-2">
-        <div class="text-sm text-gray-600 flex items-center">
-          <i class="bi bi-geo-alt-fill text-lg me-2"></i>
+      <div class="flex items-center justify-between">
+        <h2 class="text-2xl font-bold">{{ user.first_name }} {{ user.last_name }}</h2>
+        <div class="me-3">
+          <i class="bi bi-geo-alt-fill text-primary text-lg"></i>
           {{ user.address }}
         </div>
       </div>
+      <p class="text-gray-600 text-sm">{{ user.title }}</p>
     } @else if (users.isCompany(user)) {
-      <h2 class="text-xl font-bold">{{ user.company_name }} <span class="badge badge-accent"> comp </span></h2>
-      <p class="text-gray-600">{{ user.sector }}</p>
-
-      <div class="text-sm text-gray-600 flex items-center mt-2">
-        <i class="bi bi-geo-alt-fill text-lg me-2"></i>
-        {{ user.headquarters }}
+      <div class="flex items-center justify-between">
+        <h2 class="text-xl font-bold">{{ user.company_name }}</h2>
+        <div class="me-3">
+          <i class="bi bi-geo-alt-fill text-primary text-lg me-2"></i>
+          {{ user.headquarters }}
+        </div>
       </div>
-
+      <p class="text-gray-600">{{ user.sector }}</p>
       <div class="text-sm text-gray-600 flex items-center">
         <i class="bi bi-box-arrow-up-right text-lg me-2"></i>
-        <a href="https://{{user.website}}" target="_blank" class="link link-primary">{{ user.website }}</a>
+        <a [href]="user.website" target="_blank" class="link link-primary">{{ user.website }}</a>
       </div>
     } @else if (users.isAdmin(user)) {
-      <h2 class="text-xl font-bold">{{ user.first_name }} {{ user.last_name }} <span
-        class="badge badge-info">admin</span></h2>
-      <p class="text-gray-600">{{ user.admin_title }}</p>
-      <div class="flex items-center justify-between mt-2">
-        <div class="text-sm text-gray-600 flex items-center">
-          <i class="bi bi-geo-alt-fill text-lg me-2"></i>
+      <div class="flex items-center justify-between">
+        <h2 class="text-xl font-bold">{{ user.first_name }} {{ user.last_name }} <span
+          class="badge badge-info">staff</span></h2>
+        <div class="me-3">
+          <i class="bi bi-geo-alt-fill text-primary text-lg me-2"></i>
           {{ user.email }}
         </div>
       </div>
+      <p class="text-gray-600">{{ user.admin_title }}</p>
     }
+    <a class="link link-primary mt-2">{{ social.profile_stats?.connections }} connections</a>
   </div>
 
 </div>

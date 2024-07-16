@@ -1,18 +1,20 @@
 <div class="rounded-lg shadow p-4">
   <h1 class="font-semibold text-xl mb-6">Autres profils similaires</h1>
-  @for (profile of profiles; track profile.user_id){
-    <div class="flex items center mb-4">
-      <img ngSrc="{{ profile.image_url}}" width="64" height="64" priority alt="Profile pic" class="w-10 h-10 rounded-full mr-3">
+  @for (profile of profiles; track profile.user_id) {
+    <div class="flex items-center my-2">
+      <img ngSrc="{{ profile.image_url}}" width="64" height="64" priority alt="Profile pic"
+           class="w-10 h-10 rounded-full mr-3">
       <div>
         <h5 class="text-sm">{{ profile.first_name }} {{ profile.last_name }}</h5>
         <p class="text-xs text-gray-500">{{ profile.title ? profile.title : 'Nouveau sur LinkedOut' }}</p>
       </div>
-      <div class="ml-auto">
-        <button *ngIf="!social.isConnection(user, profile)" (click)="social.connect(profile)"
-                class="btn btn-outline btn-primary btn-sm">Se connecter</button>
-        <button *ngIf="social.isConnection(user, profile)" (click)="social.triggerMsg(profile)"
-                class="btn btn-primary btn-sm">Message</button>
-      </div>
+    </div>
+    <div class="w-full text-end mb-4">
+      @if (!social.isConnection(user, profile)) {
+        <button (click)="social.connect(profile)" class="btn btn-outline btn-primary btn-sm">Se connecter</button>
+      } @else {
+        <button (click)="social.triggerMsg(profile)" class="btn btn-primary btn-sm">Message</button>
+      }
     </div>
   }
 

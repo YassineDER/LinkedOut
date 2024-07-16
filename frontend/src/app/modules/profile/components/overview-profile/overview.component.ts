@@ -1,6 +1,7 @@
 import {Component, Input, } from '@angular/core';
 import {User} from "../../../../models/user";
 import {UserService} from "../../../home/services/user.service";
+import {SocialService} from "../../../home/services/social.service";
 
 @Component({
     selector: 'app-overview-profile',
@@ -10,7 +11,7 @@ import {UserService} from "../../../home/services/user.service";
 export class OverviewComponent{
     @Input() user!: User;
 
-    constructor(protected users: UserService) {
+    constructor(protected users: UserService, protected social: SocialService) {
     }
 
 }
