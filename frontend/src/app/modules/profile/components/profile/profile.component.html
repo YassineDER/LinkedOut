@@ -2,8 +2,9 @@
   <div class="gap-4 grid grid-cols-4 w-full">
     @if ((user)) {
       <!-- first column -->
-      <div class="col-span-3 p-0">
-        <app-overview-profile [user]="user" class="p-0 m-0"/>
+      <div class="col-span-3">
+        <app-overview-profile class="my-1" [user]="user" />
+        <app-about-profile [user]="user" class="my-1" />
       </div>
 
       <!-- second column -->

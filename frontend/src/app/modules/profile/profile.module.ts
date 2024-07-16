@@ -6,14 +6,17 @@ import {ProfileComponent} from "./components/profile/profile.component";
 import {UsersSuggestionsComponent} from "./components/users-suggestions/users-suggestions.component";
 import {OverviewComponent} from "./components/overview-profile/overview.component";
 import { StatsProfileComponent } from './components/stats-profile/stats-profile.component';
+import { AboutProfileComponent } from './components/about-profile/about-profile.component';
+import {ProfileService} from "./services/profile.service";
 
 @NgModule({
-    declarations: [ProfileComponent, UsersSuggestionsComponent, OverviewComponent, StatsProfileComponent],
+    declarations: [ProfileComponent, UsersSuggestionsComponent, OverviewComponent, StatsProfileComponent, AboutProfileComponent],
     imports: [
         CommonModule,
         ProfileRoutingModule,
         NgOptimizedImage,
     ],
+    providers: [ProfileService]
 })
 export class ProfileModule {
 }
