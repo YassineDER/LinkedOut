@@ -1,9 +1,23 @@
 <div class="bg-white shadow rounded overflow-hidden">
-  <div class="card-body">
-    <h2 class="card-title text-2xl font-bold mb-2">About</h2>
-    {{ user_profile.about }}
-    <div class="card-actions">
-      <button class="ms-auto link-primary" *ngIf="expandable">Voir plus</button>
+  <div class="card-body p-4">
+    <div class="flex justify-between mb-2">
+      <h2 class="card-title text-2xl font-bold">À propos</h2>
+      <button class="text-xl bg-transparent hover:bg-gray-500 rounded-full px-2 py-1">
+        <i class="bi bi-pencil-square"></i>
+      </button>
     </div>
+
+    @if (expandable) {
+      {{ user_profile.about.slice(0, 200) }}...
+      <div class="card-actions">
+        <button (click)="expandable = false" class="ms-auto link-primary">Voir plus</button>
+      </div>
+    }
+    @else {
+      {{ user_profile.about }}
+      <div class="card-actions">
+        <button (click)="expandable = true" class="ms-auto link-primary">Voir moins</button>
+      </div>
+    }
   </div>
 </div>

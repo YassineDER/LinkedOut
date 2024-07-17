@@ -1,0 +1,49 @@
+<div class="p-4 bg-white shadow rounded-lg">
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-2xl font-bold">Activité</h2>
+    <button class="text-xl bg-transparent hover:bg-gray-500 rounded-full px-2 py-1">
+      <i class="bi bi-pencil-square"></i>
+    </button>
+  </div>
+
+  <div role="tablist" class="tabs tabs-lifted">
+    <a role="tab" class="tab" [ngClass]="actualTab === Tabs.POSTS ? 'tab-active' : ''" (click)="setTab(Tabs.POSTS)">Posts</a>
+    <a role="tab" class="tab ml-4" [ngClass]="actualTab === Tabs.COMMENTS ? 'tab-active' : ''" (click)="setTab(Tabs.COMMENTS)">Commentaires</a>
+  </div>
+  <div class="mt-4">
+    @if (actualTab === Tabs.POSTS) {
+      <div class="mb-4">
+        <p><strong>Yassine Dergaoui</strong> a republié ceci • 2 mois</p>
+        <p><strong>Stefano Alletti</strong></p>
+        <p class="text-gray-600">Le langage le plus important n'est pas Python, C++, Rust, PHP ou Java. 99 % d'entre
+          vous
+          se tromperont 👉 c'est l'écriture. 1- L'écriture d...</p>
+      </div>
+      <div class="divider"></div>
+      <div class="mb-4">
+        <p><strong>Yassine Dergaoui</strong> a republié ceci • 3 mois</p>
+        <p><strong>Louiza KERDEL</strong></p>
+        <p class="text-gray-600">Je cherche un nouvel emploi : 💼 2900€ net par mois 📅 treizième mois 💊 mutuelle et
+          tickets
+          restaurant à 100% employeur 📆 8 sem...</p>
+      </div>
+    }
+    @else {
+      <div class="mb-4">
+        <p><strong>Yassine Dergaoui</strong> a commenté un post • 1 mois</p>
+        <p class="text-gray-600">Le jeu est formidable et vraiment ultra-realiste. bravo les gars !</p>
+      </div>
+      <div class="divider"></div>
+      <div class="mb-4">
+        <p><strong>Yassine Dergaoui</strong> a commenté un post • 1 mois</p>
+        <p class="text-gray-600">Quand le stagiaire Bac+2 drop la database de production par erreur.</p>
+      </div>
+      <div class="divider"></div>
+      <div class="mb-4">
+        <p><strong>Yassine Dergaoui</strong> a commenté un post • 2 mois</p>
+        <p class="text-gray-600">La "possibilité" de réaliser un rêve 💀</p>
+      </div>
+    }
+  </div>
+  <button class="btn btn-link text-blue-500">Afficher tous les posts →</button>
+</div>

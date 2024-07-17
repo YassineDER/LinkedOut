@@ -8,9 +8,10 @@ import {OverviewComponent} from "./components/overview-profile/overview.componen
 import { StatsProfileComponent } from './components/stats-profile/stats-profile.component';
 import { AboutProfileComponent } from './components/about-profile/about-profile.component';
 import {ProfileService} from "./services/profile.service";
+import { ActivityProfileComponent } from './components/activity-profile/activity-profile.component';
 
 @NgModule({
-    declarations: [ProfileComponent, UsersSuggestionsComponent, OverviewComponent, StatsProfileComponent, AboutProfileComponent],
+    declarations: [ProfileComponent, UsersSuggestionsComponent, OverviewComponent, StatsProfileComponent, AboutProfileComponent, ActivityProfileComponent],
     imports: [
         CommonModule,
         ProfileRoutingModule,

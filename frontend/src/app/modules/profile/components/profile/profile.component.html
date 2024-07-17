@@ -1,10 +1,11 @@
-<div class="container mx-6 my-5">
+<div class="container mx-4 my-5">
   <div class="gap-4 grid grid-cols-4 w-full">
     @if ((user)) {
       <!-- first column -->
-      <div class="col-span-3">
-        <app-overview-profile class="my-1" [user]="user" />
-        <app-about-profile [user]="user" class="my-1" />
+      <div class="col-span-3 flex flex-col">
+        <app-overview-profile class="p-0 mb-4" [user]="user" />
+        <app-about-profile class="p-0 mb-4" [user]="user" />
+        <app-activity-profile class="p-0 mb-4" [user]="user" />
       </div>
 
       <!-- second column -->

@@ -19,5 +19,6 @@ export class AboutProfileComponent implements OnInit {
 
     ngOnInit() {
         this.user_profile = this.profile.getProfileOf(this.user);
+        this.expandable = this.user_profile.about.length > 100;
     }
 }
