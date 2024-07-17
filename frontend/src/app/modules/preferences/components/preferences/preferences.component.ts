@@ -1,17 +1,17 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from "../../../../models/user";
 import {UserService} from "../../../home/services/user.service";
+import {Path} from "../../../shared/utils/path";
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrl: './profile.component.css'
+  selector: 'app-preferences',
+  templateUrl: './preferences.component.html',
+  styleUrl: './preferences.component.css'
 })
-export class ProfileComponent implements OnInit{
+export class PreferencesComponent implements OnInit{
     user!: User;
 
-    constructor(protected users: UserService){
-
+    constructor(private users: UserService){
     }
 
     ngOnInit() {
@@ -20,4 +20,5 @@ export class ProfileComponent implements OnInit{
         });
     }
 
+    protected readonly Path = Path;
 }

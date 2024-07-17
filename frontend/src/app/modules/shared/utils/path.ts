@@ -19,6 +19,9 @@ export enum Path {
     JOBS = '/jobs',
     //Preferences
     PREFERENCES = '/preferences',
+    PREFERENCES_ACCOUNT = PREFERENCES + '/account',
+    PREFERENCES_SECURITY = PREFERENCES + '/security',
+    PREFERENCES_NOTIFICATIONS = PREFERENCES + '/notifications',
     //Profile
     PROFILE = '/out',
     PROFILE_POSTS = PROFILE + '/posts',

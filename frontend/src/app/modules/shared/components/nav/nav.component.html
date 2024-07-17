@@ -1,4 +1,4 @@
-<nav class="navbar border bg-base-100 p-0 shadow-sm w-full">
+<nav class="navbar border bg-white p-0 shadow-sm">
   <div class="navbar-start w-full">
     <!--    Logo and Navigation-->
     <a [routerLink]="Path.HOME.toString()">
@@ -53,9 +53,12 @@
         </div>
         <hr class="mt-2">
         <div class="menu menu-sm">
-          <li><a [routerLink]="Path.PROFILE.toString()">Profil</a></li>
-          <li><a [routerLink]="Path.PREFERENCES.toString()">Préférences</a></li>
-          <li><a (click)="disconnect()">Se déconnecter</a></li>
+          <li><a [routerLink]="Path.PROFILE.toString()">
+            <i class="bi bi-person-fill"></i>Profil</a></li>
+          <li><a [routerLink]="Path.PREFERENCES.toString()">
+            <i class="bi bi-gear-fill"></i>Préférences</a></li>
+          <li><a (click)="disconnect()">
+            <i class="bi bi-box-arrow-right"></i>Se déconnecter</a></li>
         </div>
       </ul>
     </div>
