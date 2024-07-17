@@ -1,1 +1,0 @@
-var r={production:!0,hostUrl:"https://linkedout-b1ceb23bad13.herokuapp.com",RECAPTCHA_SITE_KEY:"6Ld5duIpAAAAAN5aZxtsN9JscAckhTQ3h5jTvJyz"};var A=function(t){return t.COMPANY="COMPANY",t.JOBSEEKER="JOBSEEKER",t.ADMIN="ADMIN",t}(A||{});export{r as a,A as b};
