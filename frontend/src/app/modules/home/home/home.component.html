@@ -1,5 +1,5 @@
 <ng-container *ngIf="{ user: user$ | async } as auth">
-  <ng-container class="border border-black" *ngIf="auth.user?.[0] as user">
+  <ng-container *ngIf="auth.user?.[0] as user">
     <app-nav [user]="user" />
 
     <div [@fadeInUpAnimation]="prepareOutlet(outlet)">

@@ -11,7 +11,7 @@
   <div class="mt-4 text-sm">
     @if (actualTab === Tabs.POSTS) {
       <div>
-        <p><strong>Yassine Dergaoui</strong> a republié ceci • 2 mois</p>
+        <p class="mb-2"><strong>{{ user.username }}</strong> a republié ceci • 2 mois</p>
         <p><strong>Stefano Alletti</strong></p>
         <p class="text-gray-600">Le langage le plus important n'est pas Python, C++, Rust, PHP ou Java. 99 % d'entre
           vous
@@ -19,7 +19,7 @@
       </div>
       <div class="divider "></div>
       <div>
-        <p><strong>Yassine Dergaoui</strong> a republié ceci • 3 mois</p>
+        <p class="mb-2"><strong>{{ user.username }}</strong> a republié ceci • 2 mois</p>
         <p><strong>Louiza KERDEL</strong></p>
         <p class="text-gray-600">Je cherche un nouvel emploi : 💼 2900€ net par mois 📅 treizième mois 💊 mutuelle et
           tickets
@@ -28,21 +28,24 @@
     }
     @else {
       <div>
-        <p><strong>Yassine Dergaoui</strong> a commenté un post • 1 mois</p>
+        <p><strong> {{ user.username }}</strong> a commenté un post • 1 mois</p>
         <p class="text-gray-600">Le jeu est formidable et vraiment ultra-realiste. bravo les gars !</p>
       </div>
       <div class="divider"></div>
       <div>
-        <p><strong>Yassine Dergaoui</strong> a commenté un post • 1 mois</p>
+        <p><strong> {{ user.username }}</strong> a commenté un post • 1 mois</p>
         <p class="text-gray-600">Quand le stagiaire Bac+2 drop la database de production par erreur.</p>
       </div>
       <div class="divider"></div>
       <div>
-        <p><strong>Yassine Dergaoui</strong> a commenté un post • 2 mois</p>
+        <p><strong> {{ user.username }}</strong> a commenté un post • 1 mois</p>
         <p class="text-gray-600">La "possibilité" de réaliser un rêve 💀</p>
       </div>
     }
   </div>
 
-  <a [routerLink]="Path.PROFILE_POSTS.toString()" class="btn btn-link text-lg p-0 mt-4 text-blue-500">Afficher tous les posts →</a>
+  <div class="flex">
+    <a [routerLink]="Path.PROFILE_POSTS.toString()" class="btn btn-link p-0 mt-4 ms-auto text-blue-500">Voir plus de posts</a>
+</div>
+
 </div>
