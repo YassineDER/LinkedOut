@@ -1,6 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {User} from "../../../../models/user";
 import {SocialService} from "../../../home/services/social.service";
+import {Path} from "../../../shared/utils/path";
 
 @Component({
   selector: 'app-activity-profile',
@@ -19,6 +20,7 @@ export class ActivityProfileComponent {
     }
 
     protected readonly Tabs = Tabs;
+    protected readonly Path = Path;
 }
 
 enum Tabs {

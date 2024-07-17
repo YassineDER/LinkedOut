@@ -21,5 +21,5 @@ export enum Path {
     PREFERENCES = '/preferences',
     //Profile
     PROFILE = '/out',
-
+    PROFILE_POSTS = PROFILE + '/posts',
 }
