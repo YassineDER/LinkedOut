@@ -1,13 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {ProfileComponent} from "../profile/components/profile/profile.component";
 import {PreferencesComponent} from "./components/preferences/preferences.component";
+import {AccountPreferencesComponent} from "./components/account-preferences/account-preferences.component";
+import {SecurityPreferencesComponent} from "./components/security-preferences/security-preferences.component";
+import {
+    NotificationsPreferencesComponent
+} from "./components/notifications-preferences/notifications-preferences.component";
 
 const routes: Routes = [
     {
-        path: '', children: [
-        {path: '',  component: PreferencesComponent},
-    ]
+        path: '', component: PreferencesComponent, children: [
+            {path: '', redirectTo: 'account', pathMatch: 'full'},
+            {path: 'account', component: AccountPreferencesComponent},
+            {path: 'security', component: SecurityPreferencesComponent},
+            {path: 'notifications', component: NotificationsPreferencesComponent},
+        ]
     }
 ];
 

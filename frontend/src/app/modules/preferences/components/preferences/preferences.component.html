@@ -1,22 +1,23 @@
 <div class="gap-0 grid grid-cols-4 w-full">
-  <div class="col-span-1 flex flex-col w-full p-4 bg-white" style="height: 300px">
-    <h1 class="text-2xl font-bold mb-4">Préferences</h1>
-    <ul class="menu bg-base-200 rounded-box space-y-4 text-lg">
+  <div class="col-span-1 flex flex-col w-full p-4 bg-white h-screen shadow">
+    <h1 class="text-3xl font-bold my-4 ms-3">Préferences</h1>
+    <hr class="border-gray-200 mb-6" />
+    <ul class="menu space-y-4 text-lg">
       <li class="mb-2">
-        <a [routerLink]="Path.PREFERENCES_ACCOUNT.toString()"><i class="bi bi-person-fill"></i>Préférences du compte</a>
+        <a class="border-primary rounded-none" routerLinkActive="border-l-4" [routerLink]="Path.PREFERENCES_ACCOUNT.toString()"><i class="bi bi-person-fill me-2"></i>Préférences du compte</a>
       </li>
       <li class="mb-2">
-        <a [routerLink]="Path.PREFERENCES_SECURITY.toString()"><i class="bi bi-lock-fill"></i>Authentification et sécurité</a>
+        <a class="border-primary rounded-none" routerLinkActive="border-l-4" [routerLink]="Path.PREFERENCES_SECURITY.toString()"><i class="bi bi-lock-fill me-2"></i>Authentification et Sécurité</a>
       </li>
       <li class="mb-2">
-        <a [routerLink]="Path.PREFERENCES_NOTIFICATIONS.toString()"><i class="bi bi-bell-fill"></i>Notifications</a>
+        <a class="border-primary rounded-none" routerLinkActive="border-l-4" [routerLink]="Path.PREFERENCES_NOTIFICATIONS.toString()"><i class="bi bi-bell-fill me-2"></i>Notifications</a>
       </li>
     </ul>
   </div>
 
 
-  <div class="col-span-3 flex flex-col border border-black">
-
+  <div class="col-span-3 flex flex-col">
+    <router-outlet #outlet="outlet" />
   </div>
 
 </div>
