@@ -20,5 +20,10 @@ export class PreferencesComponent implements OnInit{
         });
     }
 
+    onOutletLoaded(component: any) {
+        component.user = this.user;
+    }
+
+
     protected readonly Path = Path;
 }

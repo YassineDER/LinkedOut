@@ -17,7 +17,9 @@
 
 
   <div class="col-span-3 flex flex-col">
-    <router-outlet #outlet="outlet" />
+    <div class="w-4/5 p-8 mx-auto">
+      <router-outlet (activate)="onOutletLoaded($event)" />
+    </div>
   </div>
 
 </div>

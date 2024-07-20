@@ -1,1 +1,48 @@
-<p>security-preferences works!</p>
+<div class="bg-white rounded-lg shadow p-6">
+  <h2 class="text-xl font-bold mb-4">Accès au compte</h2>
+
+  <ul>
+    <a>
+      <li class="flex justify-between items-center mb-3">
+        <span>Addresse e-mail</span>
+        <div class="flex items-center">
+          <span class="mr-2 text-sm text-gray-500">{{ user.email }} </span>
+          <i class="bi bi-chevron-right"></i>
+        </div>
+      </li>
+    </a>
+
+    <a>
+      <li class="flex justify-between items-center mb-3">
+        <span>Numeros de téléphone</span>
+        <i class="bi bi-chevron-right"></i>
+      </li>
+    </a>
+
+    <a>
+      <li class="flex justify-between items-center mb-3">
+        <span>Changer le mot de passe</span>
+        <i class="bi bi-chevron-right"></i>
+      </li>
+    </a>
+
+    <a>
+      <li class="flex justify-between items-center mb-3">
+        <span>Où vous vous êtes identifié</span>
+        <i class="bi bi-chevron-right"></i>
+      </li>
+    </a>
+
+    <a>
+      <li class="flex justify-between items-center mb-3">
+        <span>Verifications en deux étapes</span>
+        <div class="flex items-center">
+          <span class="mr-2 text-sm text-gray-500">{{ user.using_mfa ? 'Activé' : 'Désactivé' }}</span>
+          <i class="bi bi-chevron-right"></i>
+        </div>
+      </li>
+    </a>
+  </ul>
+
+
+</div>
