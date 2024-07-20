@@ -19,8 +19,6 @@ public class RegisterCompanyRequest {
     private String username;
     @NotEmpty(message = "password is mandatory")
     private String password;
-    @NotEmpty(message = "captcha is mandatory")
-    private String captcha;
     boolean debug = false;
 
 }
