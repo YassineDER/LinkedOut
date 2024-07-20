@@ -10,16 +10,12 @@
     <div class="space-y-4 mb-2">
       <input [formControl]="email" class="input input-bordered input-primary w-full" name="email" placeholder="Email"
              type="email"/>
-      <label class="input input-bordered input-primary flex items-center gap-2">
+      <label class="input input-bordered input-primary flex items-center gap-2 mb-2">
         <input [formControl]="password" [type]="passVisible ? 'text' : 'password'" class="grow" name="password"
                placeholder="Mot de passe"/>
         <button (click)="passVisible = !passVisible" type="button">
           <i class="bi bi-eye"></i></button>
       </label>
-      <span class="text-xs text-gray-500 leading-3">
-            This site is protected by reCAPTCHA and the Google
-    <a class="text-blue-500" href="https://policies.google.com/privacy">Privacy Policy</a> and
-    <a class="text-blue-500" href="https://policies.google.com/terms">Terms of Service</a> apply.</span>
     </div>
     <span class="text-base">
           <a class="text-blue-500" [routerLink]="Path.REQUEST_PASSWORD_RESET.toString()">Mot de passe oublié ? </a>

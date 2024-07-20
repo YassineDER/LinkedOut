@@ -18,7 +18,6 @@ export class ResetPasswordRequestComponent {
     usingMFA = false;
     otp = new FormControl('000000', [Validators.required, Validators.minLength(6), Validators.maxLength(6)]);
     email = new FormControl('', [Validators.required, Validators.email]);
-    captcha = new FormControl(null, [Validators.required]);
 
     otp_config = {
         allowNumbersOnly: true,
@@ -27,20 +26,17 @@ export class ResetPasswordRequestComponent {
     }
 
     constructor(private fb: FormBuilder, private location: Location, private router: Router,
-                private utils: UtilsService, private auth: AuthService, private formsSrv: FormsService) {
+                private utils: UtilsService, private auth: AuthService, private forms: FormsService) {
         this.resetForm = this.fb.group({
-            email: this.email, captcha: this.captcha
+            email: this.email,
         });
-
     }
 
     async submitResetRequestForm() {
-        const captcha = await this.auth.executeRecaptchaV3('ResetPassword');
-        this.resetForm.controls['captcha'].setValue(captcha);
         if (this.usingMFA)
             this.resetForm.addControl('code', this.otp);
 
-        if (this.formsSrv.checkFormValidity(this.resetForm)) {
+        if (this.forms.checkFormValidity(this.resetForm)) {
             await this.auth.requestPasswordReset(this.resetForm.value)
                 .then((res) => this.router.navigate([Path.RESET_PASSWORD.toString()])
                     .then(() => this.utils.alert(res, AlertType.SUCCESS)))

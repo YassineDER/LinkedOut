@@ -1,10 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
-import {ReCaptchaV3Service} from "ng-recaptcha";
 import {LoginCredentials} from "../modules/auth/utils/login-credentials";
 import {Role} from "../models/role";
-import {BehaviorSubject, catchError, map, Observable, of, switchMap} from "rxjs";
+import {BehaviorSubject, catchError, Observable, of, switchMap} from "rxjs";
 import {User} from "../models/user";
 
 @Injectable({
@@ -14,7 +13,7 @@ export class AuthService {
     private userSubject = new BehaviorSubject<User | null>(null);
     url = environment.hostUrl + '/api/auth';
 
-    constructor(private http: HttpClient, private recaptchaV3: ReCaptchaV3Service) {
+    constructor(private http: HttpClient) {
     }
 
     get user() {
@@ -100,16 +99,6 @@ export class AuthService {
             error: (err: any) => reject(err)
         }
     }
-
-    executeRecaptchaV3(action: string): Promise<string> {
-        return new Promise((resolve, reject) =>
-            this.recaptchaV3.execute(action)
-                .subscribe({
-                    next: (token) => resolve(token),
-                    error: (error) => reject(error)
-                }))
-    }
-
 
     simulateLongRequest() :Promise<string>{
         return new Promise((resolve, reject) => {

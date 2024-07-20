@@ -18,22 +18,17 @@ export class LoginComponent {
     email = new FormControl('', [Validators.required, Validators.email]);
     password = new FormControl('', [Validators.required]);
 
-    constructor(private fb: FormBuilder, private auth: AuthService, private formsSrv:FormsService,
+    constructor(private fb: FormBuilder, private auth: AuthService, protected forms:FormsService,
                 private utils: UtilsService, private router: Router) {
         this.loginForm = this.fb.group({
             email: this.email,
             password: this.password,
             code: [''],
-            captcha: [null, [Validators.required]]
         });
     }
 
-
     async submitLogin() {
-        const captcha_token = await this.auth.executeRecaptchaV3("Login");
-        this.loginForm.controls['captcha'].setValue(captcha_token);
-
-        if (this.formsSrv.checkFormValidity(this.loginForm)) {
+        if (this.forms.checkFormValidity(this.loginForm)) {
             await this.auth.login(this.loginForm.value)
                 .then((token) => {
                     localStorage.setItem('token', token);

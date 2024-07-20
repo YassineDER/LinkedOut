@@ -17,7 +17,6 @@ export class RegisterCompanyComponent {
 
     email = new FormControl('', [Validators.required, Validators.email]);
     pwd = new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]);
-    captcha = new FormControl(null, [Validators.required]);
     siren = new FormControl('', [Validators.required, Validators.minLength(9), Validators.maxLength(9)]);
 
     constructor(private fb: FormBuilder, private formSrv: FormsService) {
@@ -27,7 +26,6 @@ export class RegisterCompanyComponent {
             username: this.email.value!.split('@')[0],
             password: this.pwd,
             siren: this.siren,
-            captcha: this.captcha
         });
 
         this.isDev = !environment.production;

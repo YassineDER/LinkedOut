@@ -20,7 +20,6 @@ export class RegisterJobseekerComponent {
     pwd = new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]);
     first_name = new FormControl('', [Validators.required]);
     last_name = new FormControl('', [Validators.required]);
-    captcha = new FormControl(null, [Validators.required]);
 
     constructor(private fb: FormBuilder, private formsSrv: FormsService) {
         this.registerJobseeker = this.fb.group({
@@ -29,7 +28,6 @@ export class RegisterJobseekerComponent {
             password: this.pwd,
             first_name: this.first_name,
             last_name: this.last_name,
-            captcha: this.captcha
         });
 
         this.isDev = !environment.production;
@@ -38,7 +36,6 @@ export class RegisterJobseekerComponent {
     preFillJobseeker() {
         this.randomJobseeker().then(randomUser => {
             this.registerJobseeker.setValue({
-                captcha: new FormControl(null).value,
                 email: new FormControl(randomUser.email).value,
                 username: new FormControl(randomUser.username).value,
                 image_url: new FormControl(randomUser.image).value,

@@ -33,9 +33,6 @@ export class FormsService {
 
 
     async submitRegisterForm(form: FormGroup, role: Role) {
-        const captcha = await this.auth.executeRecaptchaV3('Register_' + role.toString())
-        form.controls['captcha'].setValue(captcha);
-
         if (this.checkFormValidity(form)) {
             await this.auth.register(form.value, role)
                 .then((res) =>  this.router.navigate([Path.VERIFY_EMAIL.toString()])

@@ -13,7 +13,7 @@ import {Path} from "../../../shared/utils/path";
   templateUrl: './confirmation.component.html',
   styleUrl: './confirmation.component.css'
 })
-export class ConfirmationComponent{
+export class ConfirmationComponent {
     protected readonly VerificationType = VerificationType;
     verification :VerificationType | undefined;
 
