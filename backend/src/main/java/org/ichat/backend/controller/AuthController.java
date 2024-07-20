@@ -85,12 +85,6 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/verify/captcha")
-    public ResponseEntity<RecaptchaResponse> verifyCaptcha(@RequestBody String captcha) {
-        RecaptchaResponse resp = authService.captchaIsValid(captcha);
-        return ResponseEntity.ok(resp);
-    }
-
     @GetMapping("/sleep")
     public ResponseEntity<String> sleep(){
         try {
