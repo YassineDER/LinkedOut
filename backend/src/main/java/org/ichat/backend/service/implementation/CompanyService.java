@@ -42,23 +42,21 @@ public class CompanyService implements ICompanyService {
     }
 
     @Override
-    public Company update(Long companyId, CompanyPatchDTO newCompany) throws AccountException {
-        Company companyToUpdate = findBy(companyId);
-
+    public Company update(Company oldCompany, CompanyPatchDTO newCompany) throws AccountException {
         if (newCompany.getName() != null)
-            companyToUpdate.setCompany_name(newCompany.getName());
+            oldCompany.setCompany_name(newCompany.getName());
         if (newCompany.getDescription() != null)
-            companyToUpdate.setDescription(newCompany.getDescription());
+            oldCompany.setDescription(newCompany.getDescription());
         if (newCompany.getSector() != null)
-            companyToUpdate.setSector(newCompany.getSector());
+            oldCompany.setSector(newCompany.getSector());
         if (newCompany.getHeadquarters() != null)
-            companyToUpdate.setHeadquarters(newCompany.getHeadquarters());
+            oldCompany.setHeadquarters(newCompany.getHeadquarters());
         if (newCompany.getWebsite() != null)
-            companyToUpdate.setWebsite(newCompany.getWebsite());
+            oldCompany.setWebsite(newCompany.getWebsite());
         if (newCompany.getImage_url() != null)
-            companyToUpdate.setImage_url(newCompany.getImage_url());
+            oldCompany.setImage_url(newCompany.getImage_url());
 
-        return companyRepo.save(companyToUpdate);
+        return companyRepo.save(oldCompany);
     }
 
     @Override

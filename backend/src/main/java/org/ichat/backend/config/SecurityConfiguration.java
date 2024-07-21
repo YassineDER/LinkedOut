@@ -55,8 +55,8 @@ public class SecurityConfiguration implements WebMvcConfigurer {
                         new HttpStatusEntryPoint(HttpStatus.NOT_FOUND), req -> true))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
-                        .requestMatchers("/api/jobseeker/**").hasAnyAuthority("JOBSEEKER", "ADMIN")
-                        .requestMatchers("/api/company/**").hasAnyAuthority("COMPANY", "ADMIN")
+                        .requestMatchers("/api/jobseeker/**").hasAnyAuthority("JOBSEEKER")
+                        .requestMatchers("/api/company/**").hasAnyAuthority("COMPANY")
                         .requestMatchers("/api/auth/**").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(basic -> basic.authenticationEntryPoint(entryPoint))

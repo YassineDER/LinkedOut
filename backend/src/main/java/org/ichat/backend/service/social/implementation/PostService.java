@@ -8,7 +8,6 @@ import org.ichat.backend.model.util.social.PostRequestDTO;
 import org.ichat.backend.model.util.social.Reaction;
 import org.ichat.backend.repository.PostRepository;
 import org.ichat.backend.service.social.IPostService;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,11 +21,10 @@ public class PostService implements IPostService {
     private final PostRepository repo;
 
     @Override
-    public Post createPost(PostRequestDTO req) {
+    public Post createPost(User creator ,PostRequestDTO req) {
         if (req.getDescription().length() > 1000)
             throw new IllegalArgumentException("Description too long");
 
-        User creator = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         var P = new Post();
         P.setDescription(req.getDescription());
         P.setImage_url(req.getImage_url());

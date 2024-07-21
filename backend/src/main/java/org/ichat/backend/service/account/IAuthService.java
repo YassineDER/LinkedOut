@@ -20,7 +20,5 @@ public interface IAuthService {
     String resetPassword(String token, String newPassword);
     String requestPasswordReset(AccountCredentialsDTO credentials);
 
-    User getAuthenticatedUser();
-
     boolean userUsingMFA(String email);
 }

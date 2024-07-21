@@ -52,27 +52,25 @@ public class UserController {
 
     @PostMapping("/mfa/{action}")
     @Transactional
-    public ResponseEntity<AuthResponseDTO> enableMfa(@PathVariable String action, @RequestBody AccountCredentialsDTO confirmation) throws QrGenerationException {
-        User authenticatedUser = authService.getAuthenticatedUser();
-
-        if (!passwordEncoder.matches(confirmation.getPassword(), authenticatedUser.getPassword())
+    public ResponseEntity<AuthResponseDTO> enableMfa(User me, @PathVariable String action, @RequestBody AccountCredentialsDTO confirmation) throws QrGenerationException {
+        if (!passwordEncoder.matches(confirmation.getPassword(), me.getPassword())
                 || confirmation.getPassword() == null)
             throw new AccountException("Invalid or missing password");
 
         if (action.equals("enable")) {
-            if (Boolean.TRUE.equals(authenticatedUser.getUsing_mfa()))
+            if (Boolean.TRUE.equals(me.getUsing_mfa()))
                 throw new AccountException("MFA is already enabled");
 
-            authenticatedUser.activateMFA(twoFactorService.generateMfaSecret());
-            String qrCode = twoFactorService.generateMfaImage(authenticatedUser.getMfa_secret(), authenticatedUser.getEmail());
-            userService.update(authenticatedUser.getUser_id(), authenticatedUser);
+            me.activateMFA(twoFactorService.generateMfaSecret());
+            String qrCode = twoFactorService.generateMfaImage(me.getMfa_secret(), me.getEmail());
+            userService.update(me.getUser_id(), me);
             return ResponseEntity.ok(new AuthResponseDTO("MFA enabled", true, qrCode));
         }
         else if (action.equals("disable")) {
-            if (Boolean.FALSE.equals(authenticatedUser.getUsing_mfa()))
+            if (Boolean.FALSE.equals(me.getUsing_mfa()))
                 throw new AccountException("MFA is already disabled");
-            authenticatedUser.deactivateMFA();
-            userService.update(authenticatedUser.getUser_id(), authenticatedUser);
+            me.deactivateMFA();
+            userService.update(me.getUser_id(), me);
             return ResponseEntity.ok(new AuthResponseDTO("MFA disabled"));
         }
 

@@ -13,7 +13,7 @@ public interface IJobseekerService{
     Jobseeker findBy(String email);
     Jobseeker findBy(Long jobseeker_id);
 
-    Jobseeker update(Long oldUserID, JobseekerPatchDTO newUser) throws AccountException;
+    Jobseeker update(Jobseeker oldJobseeker, JobseekerPatchDTO newUser) throws AccountException;
     Jobseeker add(Jobseeker jobseeker);
 
     Set<Skill> addAquiredSkills(Long jobseeker_id, Set<Skill> skills);

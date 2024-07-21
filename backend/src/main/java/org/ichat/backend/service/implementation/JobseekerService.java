@@ -39,8 +39,7 @@ public class JobseekerService implements IJobseekerService {
     }
 
     @Override
-    public Jobseeker update(Long userId, JobseekerPatchDTO newJobseeker) throws AccountException {
-        Jobseeker jobseekerToUpdate = findBy(userId);
+    public Jobseeker update(Jobseeker jobseekerToUpdate, JobseekerPatchDTO newJobseeker) throws AccountException {
 
         if (newJobseeker.getFirst_name() != null)
             jobseekerToUpdate.setFirst_name(newJobseeker.getFirst_name());

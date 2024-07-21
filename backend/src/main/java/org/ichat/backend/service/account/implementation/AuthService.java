@@ -166,14 +166,6 @@ public class AuthService implements IAuthService {
     }
 
     @Override
-    public User getAuthenticatedUser() {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (user == null)
-            throw new AccountException("User not authenticated");
-        return user;
-    }
-
-    @Override
     public boolean userUsingMFA(String email) {
         return userService.findBy(email).getUsing_mfa();
     }
