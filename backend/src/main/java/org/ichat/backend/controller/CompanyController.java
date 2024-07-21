@@ -4,10 +4,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exeception.AccountException;
 import org.ichat.backend.model.tables.Company;
-import org.ichat.backend.model.util.patchers.CompanyPatch;
+import org.ichat.backend.model.util.patchers.CompanyPatchDTO;
 import org.ichat.backend.service.ICompanyService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,7 +25,7 @@ public class CompanyController {
     }
 
     @PutMapping("/id/{id}")
-    public ResponseEntity<Company> update(@PathVariable Long id, @RequestBody @Valid CompanyPatch user) {
+    public ResponseEntity<Company> update(@PathVariable Long id, @RequestBody @Valid CompanyPatchDTO user) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Company currentUser = companyService.findBy(userDetails.getUsername());
         if (!currentUser.getUser_id().equals(id) &&

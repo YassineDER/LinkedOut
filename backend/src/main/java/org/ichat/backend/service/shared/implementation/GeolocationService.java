@@ -1,7 +1,7 @@
 package org.ichat.backend.service.shared.implementation;
 
 import lombok.RequiredArgsConstructor;
-import org.ichat.backend.model.util.GeolocationResponse;
+import org.ichat.backend.model.util.GeolocationResponseDTO;
 import org.ichat.backend.service.shared.IGeolocationService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -14,7 +14,7 @@ public class GeolocationService implements IGeolocationService {
     private final RestClient http = RestClient.create();
 
     @Override
-    public GeolocationResponse getGeolocationFromIP(String ip) {
+    public GeolocationResponseDTO getGeolocationFromIP(String ip) {
         if (ip == null || ip.isEmpty())
             return null;
 
@@ -25,7 +25,7 @@ public class GeolocationService implements IGeolocationService {
         return http.get()
                 .uri(url)
                 .retrieve()
-                .body(GeolocationResponse.class);
+                .body(GeolocationResponseDTO.class);
     }
 
 }

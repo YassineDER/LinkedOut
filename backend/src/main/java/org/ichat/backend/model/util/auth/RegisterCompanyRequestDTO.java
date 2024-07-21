@@ -1,6 +1,7 @@
 package org.ichat.backend.model.util.auth;
 
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,18 +9,16 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterJobseekerRequest {
-    @NotEmpty(message = "First name is required")
-    String first_name;
-    @NotEmpty(message = "Last name is required")
-    String last_name;
+public class RegisterCompanyRequestDTO {
+    @NotEmpty(message = "SIREN is mandatory")
+    @Size(min = 9, max = 9, message = "SIREN must be 9 characters")
+    private String siren;
     @NotEmpty(message = "email is mandatory")
     private String email;
     @NotEmpty(message = "username is mandatory")
     private String username;
     @NotEmpty(message = "password is mandatory")
     private String password;
-    private String image_url = "https://img.icons8.com/pastel-glyph/64/000000/user-male-circle.png";
     boolean debug = false;
 
 }

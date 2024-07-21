@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class JobseekerPatch {
+public class JobseekerPatchDTO {
     private String first_name;
     private String last_name;
     private String address;

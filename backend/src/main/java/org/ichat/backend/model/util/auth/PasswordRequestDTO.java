@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PasswordRequest {
+public class PasswordRequestDTO {
     @NotEmpty(message = "Received code is missing")
     String received_code;
     @NotEmpty(message = "The new password is missing")

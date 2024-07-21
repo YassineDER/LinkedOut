@@ -1,8 +1,8 @@
 package org.ichat.backend.service.shared;
 
-import org.ichat.backend.model.util.GeolocationResponse;
+import org.ichat.backend.model.util.GeolocationResponseDTO;
 
 public interface IGeolocationService {
-    GeolocationResponse getGeolocationFromIP(String ip);
+    GeolocationResponseDTO getGeolocationFromIP(String ip);
 
 }

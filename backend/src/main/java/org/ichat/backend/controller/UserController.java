@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exeception.AccountException;
 import org.ichat.backend.model.tables.User;
 import org.ichat.backend.model.tables.Jobseeker;
-import org.ichat.backend.model.util.auth.AccountCredentials;
-import org.ichat.backend.model.util.auth.AuthResponse;
+import org.ichat.backend.model.util.auth.AccountCredentialsDTO;
+import org.ichat.backend.model.util.auth.AuthResponseDTO;
 import org.ichat.backend.service.account.IAuthService;
 import org.ichat.backend.service.account.ITwoFactorAuthService;
 import org.ichat.backend.service.account.IUserService;
@@ -52,7 +52,7 @@ public class UserController {
 
     @PostMapping("/mfa/{action}")
     @Transactional
-    public ResponseEntity<AuthResponse> enableMfa(@PathVariable String action, @RequestBody AccountCredentials confirmation) throws QrGenerationException {
+    public ResponseEntity<AuthResponseDTO> enableMfa(@PathVariable String action, @RequestBody AccountCredentialsDTO confirmation) throws QrGenerationException {
         User authenticatedUser = authService.getAuthenticatedUser();
 
         if (!passwordEncoder.matches(confirmation.getPassword(), authenticatedUser.getPassword())
@@ -66,14 +66,14 @@ public class UserController {
             authenticatedUser.activateMFA(twoFactorService.generateMfaSecret());
             String qrCode = twoFactorService.generateMfaImage(authenticatedUser.getMfa_secret(), authenticatedUser.getEmail());
             userService.update(authenticatedUser.getUser_id(), authenticatedUser);
-            return ResponseEntity.ok(new AuthResponse("MFA enabled", true, qrCode));
+            return ResponseEntity.ok(new AuthResponseDTO("MFA enabled", true, qrCode));
         }
         else if (action.equals("disable")) {
             if (Boolean.FALSE.equals(authenticatedUser.getUsing_mfa()))
                 throw new AccountException("MFA is already disabled");
             authenticatedUser.deactivateMFA();
             userService.update(authenticatedUser.getUser_id(), authenticatedUser);
-            return ResponseEntity.ok(new AuthResponse("MFA disabled"));
+            return ResponseEntity.ok(new AuthResponseDTO("MFA disabled"));
         }
 
         throw new AccountException("Invalid action");

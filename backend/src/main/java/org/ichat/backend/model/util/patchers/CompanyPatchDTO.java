@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CompanyPatch {
+public class CompanyPatchDTO {
     private String name;
     private String description;
     private String sector;

@@ -8,7 +8,7 @@ import org.ichat.backend.model.tables.Admin;
 import org.ichat.backend.model.tables.Company;
 import org.ichat.backend.model.tables.indentity.Roles;
 import org.ichat.backend.model.tables.User;
-import org.ichat.backend.model.util.GeolocationResponse;
+import org.ichat.backend.model.util.GeolocationResponseDTO;
 import org.ichat.backend.model.util.auth.*;
 import org.ichat.backend.service.*;
 import org.ichat.backend.service.account.*;
@@ -47,7 +47,7 @@ public class AuthService implements IAuthService {
     private final AuthenticationManager authenticationManager;
 
     @Override
-    public AuthResponse authenticate(AccountCredentials credentials) {
+    public AuthResponseDTO authenticate(AccountCredentialsDTO credentials) {
         User user = userService.findBy(credentials.getEmail());
 
         if (!passwordEncoder.matches(credentials.getPassword(), user.getPassword()))
@@ -67,7 +67,7 @@ public class AuthService implements IAuthService {
                     Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(auth);
                     var token = jwtService.generateToken(user);
-                    return new AuthResponse(token);
+                    return new AuthResponseDTO(token);
                 } catch (AccountException e) {
                     throw new BadCredentialsException("Invalid MFA code");
                 }
@@ -80,20 +80,20 @@ public class AuthService implements IAuthService {
         var token = jwtService.generateToken(user);
         SecurityContextHolder.getContext().setAuthentication(auth);
 
-        return new AuthResponse(token);
+        return new AuthResponseDTO(token);
     }
 
     @Override
-    public void verifyMFA(AccountCredentials credentials) {
+    public void verifyMFA(AccountCredentialsDTO credentials) {
         User user = userService.findBy(credentials.getEmail());
         if (!twoFactorAuthService.codeIsValid(user.getMfa_secret(), credentials.getCode()))
             throw new AccountException("Invalid MFA code");
     }
 
     @Override
-    public String registerJobseeker(RegisterJobseekerRequest request, String clientIP) {
+    public String registerJobseeker(RegisterJobseekerRequestDTO request, String clientIP) {
         Roles role = roleService.getRoleByName("JOBSEEKER");
-        GeolocationResponse geo = geoService.getGeolocationFromIP(clientIP);
+        GeolocationResponseDTO geo = geoService.getGeolocationFromIP(clientIP);
 
         Jobseeker jobseeker = new Jobseeker();
         jobseeker.setFirst_name(request.getFirst_name());
@@ -112,7 +112,7 @@ public class AuthService implements IAuthService {
     }
 
     @Override
-    public String registerCompany(RegisterCompanyRequest request) {
+    public String registerCompany(RegisterCompanyRequestDTO request) {
         Roles USER_Roles = roleService.getRoleByName("COMPANY");
         Company company = companyService.getCompanyBySIREN(request.getSiren());
         company.setUsername(request.getUsername());
@@ -127,7 +127,7 @@ public class AuthService implements IAuthService {
     }
 
     @Override
-    public String registerAdmin(RegisterAdminRequest request) {
+    public String registerAdmin(RegisterAdminRequestDTO request) {
         if (!Objects.equals(request.getAdmin_secret(), adminSecret))
             throw new AccountException("Invalid admin secret");
 
@@ -157,7 +157,7 @@ public class AuthService implements IAuthService {
     }
 
     @Override
-    public String requestPasswordReset(AccountCredentials credentials) {
+    public String requestPasswordReset(AccountCredentialsDTO credentials) {
         User user = userService.findBy(credentials.getEmail());
         String resetToken = accountResetService.sendResetEmail(user.getEmail());
         accountResetService.saveReset(user, resetToken);

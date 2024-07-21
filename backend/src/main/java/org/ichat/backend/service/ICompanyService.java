@@ -2,7 +2,7 @@ package org.ichat.backend.service;
 
 import org.ichat.backend.exeception.AccountException;
 import org.ichat.backend.model.tables.Company;
-import org.ichat.backend.model.util.patchers.CompanyPatch;
+import org.ichat.backend.model.util.patchers.CompanyPatchDTO;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public interface ICompanyService {
 
     Company getCompanyBySIREN(String SIRET);
 
-    Company update(Long oldUserID, CompanyPatch newCompany) throws AccountException;
+    Company update(Long oldUserID, CompanyPatchDTO newCompany) throws AccountException;
     Company add(Company company);
 
 }

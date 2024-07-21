@@ -3,10 +3,9 @@ package org.ichat.backend.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.model.tables.Admin;
-import org.ichat.backend.model.util.patchers.AdminPatch;
+import org.ichat.backend.model.util.patchers.AdminPatchDTO;
 import org.ichat.backend.service.IAdminService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -23,7 +22,7 @@ public class AdminController {
     }
 
     @PutMapping("/id/{id}")
-    public ResponseEntity<Admin> update(@PathVariable Long id, @Valid @RequestBody AdminPatch admin) {
+    public ResponseEntity<Admin> update(@PathVariable Long id, @Valid @RequestBody AdminPatchDTO admin) {
         Admin updatedAdmin = adminService.update(id, admin);
         return ResponseEntity.ok(updatedAdmin);
     }

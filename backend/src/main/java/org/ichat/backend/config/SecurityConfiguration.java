@@ -1,13 +1,14 @@
 package org.ichat.backend.config;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.ichat.backend.config.requests.AnonymousAuthFilter;
 import org.ichat.backend.config.requests.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
@@ -22,14 +23,12 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.resource.PathResourceResolver;
 
-import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
+@EnableConfigurationProperties(SecurityConfigurationProperties.class)
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
@@ -40,18 +39,16 @@ public class SecurityConfiguration implements WebMvcConfigurer {
     private final AuthenticationProvider authProvider;
     @Qualifier("customAuthenticationEntryPoint")
     private final AuthenticationEntryPoint entryPoint;
-    private final Environment env;
-
-    @Bean
-    public AnonymousAuthFilter customAnonymousAuthFilter() {
-        return new AnonymousAuthFilter(UUID.randomUUID().toString());
-    }
+    private final SecurityConfigurationProperties properties;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
-                .anonymous(anonymous -> anonymous.authenticationFilter(customAnonymousAuthFilter()))
-                .cors(Customizer.withDefaults())
+        http.csrf(AbstractHttpConfigurer::disable) // CSRF should be disabled when using JWT
+                .anonymous(AbstractHttpConfigurer::disable) // Disable default anonymous filter
+                .cors(Customizer.withDefaults()) // Enabled by default, customized in the addCorsMappings method bellow
+                .formLogin(AbstractHttpConfigurer::disable) // Disable default form login, we use JWT
+                .logout(AbstractHttpConfigurer::disable) // Disable default logout, we use JWT and session is stateless
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(e -> e.defaultAuthenticationEntryPointFor(
                         new HttpStatusEntryPoint(HttpStatus.NOT_FOUND), req -> true))
                 .authorizeHttpRequests(authorize -> authorize
@@ -63,18 +60,25 @@ public class SecurityConfiguration implements WebMvcConfigurer {
                 .httpBasic(basic -> basic.authenticationEntryPoint(entryPoint))
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authProvider)
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                .authenticationProvider(authProvider);
 
         return http.build();
     }
 
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        String origin = Objects.equals(env.getActiveProfiles()[0], "dev") ? "http://localhost:4200" : "https://yassineder.github.io";
         registry.addMapping("/**")
-                .allowedMethods("GET", "POST", "PUT", "DELETE")
-                .allowedOrigins(origin, "http://localhost")
-                .allowedHeaders("*");
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "HEAD")
+                .allowedOrigins(properties.getAllowedOrigins().toArray(new String[0]))
+                .allowedHeaders("*")
+                .allowCredentials(true);
     }
+}
+
+@Getter
+@AllArgsConstructor
+@ConfigurationProperties("security")
+class SecurityConfigurationProperties {
+    private final List<String> allowedOrigins;
 }

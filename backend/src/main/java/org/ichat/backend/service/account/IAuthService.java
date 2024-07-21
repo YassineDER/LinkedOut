@@ -6,19 +6,19 @@ import org.ichat.backend.model.util.auth.*;
 
 
 public interface IAuthService {
-    String registerJobseeker(RegisterJobseekerRequest request, String clientIP);
-    String registerCompany(RegisterCompanyRequest request);
+    String registerJobseeker(RegisterJobseekerRequestDTO request, String clientIP);
+    String registerCompany(RegisterCompanyRequestDTO request);
 
-    AuthResponse authenticate(AccountCredentials credentials) throws QrGenerationException;
+    AuthResponseDTO authenticate(AccountCredentialsDTO credentials) throws QrGenerationException;
 
-    void verifyMFA(AccountCredentials credentials);
+    void verifyMFA(AccountCredentialsDTO credentials);
 
-    String registerAdmin(RegisterAdminRequest request);
+    String registerAdmin(RegisterAdminRequestDTO request);
 
     String validateAccount(String token);
 
     String resetPassword(String token, String newPassword);
-    String requestPasswordReset(AccountCredentials credentials);
+    String requestPasswordReset(AccountCredentialsDTO credentials);
 
     User getAuthenticatedUser();
 

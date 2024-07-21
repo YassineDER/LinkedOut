@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AdminPatch {
+public class AdminPatchDTO {
     private String first_name;
     private String last_name;
     private String phone;

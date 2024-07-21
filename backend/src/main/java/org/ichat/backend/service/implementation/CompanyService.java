@@ -3,7 +3,7 @@ package org.ichat.backend.service.implementation;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exeception.AccountException;
 import org.ichat.backend.model.tables.Company;
-import org.ichat.backend.model.util.patchers.CompanyPatch;
+import org.ichat.backend.model.util.patchers.CompanyPatchDTO;
 import org.ichat.backend.repository.CompanyRepo;
 import org.ichat.backend.service.ICompanyService;
 import org.json.JSONObject;
@@ -42,7 +42,7 @@ public class CompanyService implements ICompanyService {
     }
 
     @Override
-    public Company update(Long companyId, CompanyPatch newCompany) throws AccountException {
+    public Company update(Long companyId, CompanyPatchDTO newCompany) throws AccountException {
         Company companyToUpdate = findBy(companyId);
 
         if (newCompany.getName() != null)

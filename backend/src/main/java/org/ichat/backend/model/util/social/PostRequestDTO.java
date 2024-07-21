@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class PostRequest {
+public class PostRequestDTO {
     @NotEmpty(message = "Post title is required")
     private String description;
     private String image_url;

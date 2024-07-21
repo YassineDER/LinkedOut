@@ -7,12 +7,12 @@ import lombok.*;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL) // Don't include null fields in response
-public class AuthResponse {
+public class AuthResponseDTO {
     private final String response;
     private boolean must_verify_mfa = false;
     private String qr_image;
 
-    public AuthResponse(String response, boolean must_verify_mfa) {
+    public AuthResponseDTO(String response, boolean must_verify_mfa) {
         this.response = response;
         this.must_verify_mfa = must_verify_mfa;
     }

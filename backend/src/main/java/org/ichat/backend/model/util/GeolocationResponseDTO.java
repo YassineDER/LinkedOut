@@ -5,6 +5,6 @@ import lombok.AllArgsConstructor;
 
 @Data
 @AllArgsConstructor
-public class GeolocationResponse {
+public class GeolocationResponseDTO {
     private String query, city, regionName, country, zip, timezone;
 }

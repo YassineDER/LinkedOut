@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterAdminRequest {
+public class RegisterJobseekerRequestDTO {
     @NotEmpty(message = "First name is required")
     String first_name;
     @NotEmpty(message = "Last name is required")
@@ -19,7 +19,7 @@ public class RegisterAdminRequest {
     private String username;
     @NotEmpty(message = "password is mandatory")
     private String password;
-    @NotEmpty(message = "Admin secret is mandatory")
-    private String admin_secret;
+    private String image_url = "https://img.icons8.com/pastel-glyph/64/000000/user-male-circle.png";
     boolean debug = false;
+
 }

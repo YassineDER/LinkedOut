@@ -26,33 +26,33 @@ public class AuthController {
     private final Environment env;
 
     @PostMapping("/register/jobseeker")
-    public ResponseEntity<AuthResponse> registerJobseeker(@Valid @RequestBody RegisterJobseekerRequest reqBody) {
+    public ResponseEntity<AuthResponseDTO> registerJobseeker(@Valid @RequestBody RegisterJobseekerRequestDTO reqBody) {
         String clientIP = request.getHeader("X-FORWARDED-FOR");
         String resp = authService.registerJobseeker(reqBody, clientIP);
-        return ResponseEntity.ok(new AuthResponse(resp));
+        return ResponseEntity.ok(new AuthResponseDTO(resp));
     }
 
     @PostMapping("/register/company")
-    public ResponseEntity<AuthResponse> registerCompany(@Valid @RequestBody RegisterCompanyRequest req) {
+    public ResponseEntity<AuthResponseDTO> registerCompany(@Valid @RequestBody RegisterCompanyRequestDTO req) {
         String resp = authService.registerCompany(req);
-        return ResponseEntity.ok(new AuthResponse(resp));
+        return ResponseEntity.ok(new AuthResponseDTO(resp));
     }
 
     @GetMapping("/verify/{code}")
-    public ResponseEntity<AuthResponse> validateAccount(@PathVariable String code) {
+    public ResponseEntity<AuthResponseDTO> validateAccount(@PathVariable String code) {
         String jwt = authService.validateAccount(code);
-        return ResponseEntity.ok(new AuthResponse(jwt));
+        return ResponseEntity.ok(new AuthResponseDTO(jwt));
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthResponse> login(@Valid @RequestBody AccountCredentials credentials) throws QrGenerationException {
-        AuthResponse authResponse = authService.authenticate(credentials);
-        return ResponseEntity.ok(authResponse);
+    public ResponseEntity<AuthResponseDTO> login(@Valid @RequestBody AccountCredentialsDTO credentials) throws QrGenerationException {
+        AuthResponseDTO authResponseDTO = authService.authenticate(credentials);
+        return ResponseEntity.ok(authResponseDTO);
     }
 
     @PostMapping("/reset-password")
     @Transactional
-    public ResponseEntity<AuthResponse> requestReset(@RequestBody AccountCredentials credentials) {
+    public ResponseEntity<AuthResponseDTO> requestReset(@RequestBody AccountCredentialsDTO credentials) {
         if (Boolean.TRUE.equals(authService.userUsingMFA(credentials.getEmail()))) {
             if (credentials.getCode() == null)
                 throw new AccountException("MFA code is required for this user");
@@ -60,15 +60,15 @@ public class AuthController {
         }
 
         String resp = authService.requestPasswordReset(credentials);
-        return ResponseEntity.ok(new AuthResponse(resp));
+        return ResponseEntity.ok(new AuthResponseDTO(resp));
     }
 
     @PostMapping("/verify/password")
-    public ResponseEntity<AuthResponse> resetPassword(@Valid @RequestBody PasswordRequest req) {
+    public ResponseEntity<AuthResponseDTO> resetPassword(@Valid @RequestBody PasswordRequestDTO req) {
         if (!req.getPassword().equals(req.getPassword_confirmation()))
             throw new AccountException("Passwords do not match");
         String resp = authService.resetPassword(req.getReceived_code(), req.getPassword());
-        return ResponseEntity.ok(new AuthResponse(resp));
+        return ResponseEntity.ok(new AuthResponseDTO(resp));
     }
 
     @GetMapping("/status")

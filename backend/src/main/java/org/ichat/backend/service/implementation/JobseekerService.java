@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exeception.AccountException;
 import org.ichat.backend.model.tables.Jobseeker;
 import org.ichat.backend.model.tables.Skill;
-import org.ichat.backend.model.util.patchers.JobseekerPatch;
+import org.ichat.backend.model.util.patchers.JobseekerPatchDTO;
 import org.ichat.backend.repository.JobseekerRepo;
 import org.ichat.backend.service.IJobseekerService;
 import org.springframework.data.domain.PageRequest;
@@ -39,7 +39,7 @@ public class JobseekerService implements IJobseekerService {
     }
 
     @Override
-    public Jobseeker update(Long userId, JobseekerPatch newJobseeker) throws AccountException {
+    public Jobseeker update(Long userId, JobseekerPatchDTO newJobseeker) throws AccountException {
         Jobseeker jobseekerToUpdate = findBy(userId);
 
         if (newJobseeker.getFirst_name() != null)

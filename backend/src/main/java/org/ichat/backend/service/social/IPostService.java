@@ -2,13 +2,13 @@ package org.ichat.backend.service.social;
 
 import org.ichat.backend.model.tables.social.Comment;
 import org.ichat.backend.model.tables.social.Post;
-import org.ichat.backend.model.util.social.PostRequest;
+import org.ichat.backend.model.util.social.PostRequestDTO;
 import org.ichat.backend.model.util.social.Reaction;
 
 import java.util.List;
 
 public interface IPostService {
-    Post createPost(PostRequest req);
+    Post createPost(PostRequestDTO req);
     List<Post> getLatestPosts();
     List<Post> getPostsByUser(Long userId);
 

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.ichat.backend.model.tables.User;
 import org.ichat.backend.model.tables.social.Comment;
 import org.ichat.backend.model.tables.social.Post;
-import org.ichat.backend.model.util.social.PostRequest;
+import org.ichat.backend.model.util.social.PostRequestDTO;
 import org.ichat.backend.model.util.social.Reaction;
 import org.ichat.backend.repository.PostRepository;
 import org.ichat.backend.service.social.IPostService;
@@ -22,7 +22,7 @@ public class PostService implements IPostService {
     private final PostRepository repo;
 
     @Override
-    public Post createPost(PostRequest req) {
+    public Post createPost(PostRequestDTO req) {
         if (req.getDescription().length() > 1000)
             throw new IllegalArgumentException("Description too long");
 

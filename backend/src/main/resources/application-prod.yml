@@ -20,4 +20,5 @@ spring:
           starttls:
             enable: true
             required: true
-
+security:
+  allowed-origins: https://yassineder.github.io
