@@ -38,7 +38,7 @@
       <p class="text-gray-600">{{ user.sector }}</p>
       <div class="text-sm text-gray-600 flex items-center">
         <i class="bi bi-box-arrow-up-right text-lg me-2"></i>
-        <a [href]="user.website" target="_blank" class="link link-primary">{{ user.website }}</a>
+        <a href="https://{{user.website}}" target="_blank" class="link link-primary">{{ user.website }}</a>
       </div>
     } @else if (users.isAdmin(user)) {
       <div class="flex items-center justify-between">
