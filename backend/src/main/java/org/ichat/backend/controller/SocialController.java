@@ -2,6 +2,7 @@ package org.ichat.backend.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.ichat.backend.model.tables.User;
 import org.ichat.backend.model.tables.social.Post;
 import org.ichat.backend.model.util.social.PostRequestDTO;
 import org.ichat.backend.service.social.IPostService;
@@ -18,8 +19,8 @@ public class SocialController {
     private final IPostService postService;
 
     @PostMapping("/post")
-    public ResponseEntity<Post> createPost(@Valid @RequestBody PostRequestDTO req) {
-        Post post = postService.createPost(req);
+    public ResponseEntity<Post> createPost(User me, @Valid @RequestBody PostRequestDTO req) {
+        Post post = postService.createPost(me, req);
         return ResponseEntity.ok(post);
     }
 

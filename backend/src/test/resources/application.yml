@@ -50,6 +50,3 @@ totp:
   time:
     period: 30
 
-admin:
-  secret: 696969
-

@@ -7,7 +7,6 @@ import org.ichat.backend.model.tables.User;
 import org.ichat.backend.model.tables.Jobseeker;
 import org.ichat.backend.model.util.auth.AccountCredentialsDTO;
 import org.ichat.backend.model.util.auth.AuthResponseDTO;
-import org.ichat.backend.service.account.IAuthService;
 import org.ichat.backend.service.account.ITwoFactorAuthService;
 import org.ichat.backend.service.account.IUserService;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +25,6 @@ public class UserController {
     private final IUserService userService;
     private final ITwoFactorAuthService twoFactorService;
     private final PasswordEncoder passwordEncoder;
-    private final IAuthService authService;
     private final IJobseekerService jobseekerService;
 
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -69,6 +67,7 @@ public class UserController {
         else if (action.equals("disable")) {
             if (Boolean.FALSE.equals(me.getUsing_mfa()))
                 throw new AccountException("MFA is already disabled");
+
             me.deactivateMFA();
             userService.update(me.getUser_id(), me);
             return ResponseEntity.ok(new AuthResponseDTO("MFA disabled"));

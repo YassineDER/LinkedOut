@@ -19,12 +19,12 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     private final GlobalExceptionAdvice advice;
 
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
+    public void commence(HttpServletRequest req, HttpServletResponse resp, AuthenticationException exp)
             throws IOException {
-        var error = advice.accountErrorHandler(authException);
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.setStatus(error.getStatusCode().value());
-        OutputStream res = response.getOutputStream();
+        var error = advice.accountErrorHandler(exp);
+        resp.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        resp.setStatus(error.getStatusCode().value());
+        OutputStream res = resp.getOutputStream();
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(res, error.getBody());
         res.flush();
