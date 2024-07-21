@@ -6,9 +6,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.ichat.backend.exeception.AccountException;
+import org.ichat.backend.model.tables.User;
 import org.ichat.backend.model.util.auth.*;
 import org.ichat.backend.service.account.IAuthService;
-import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +23,6 @@ import java.util.Map;
 public class AuthController {
     private final IAuthService authService;
     private final HttpServletRequest request;
-    private final Environment env;
 
     @PostMapping("/register/jobseeker")
     public ResponseEntity<AuthResponseDTO> registerJobseeker(@Valid @RequestBody RegisterJobseekerRequestDTO reqBody) {
@@ -80,9 +79,15 @@ public class AuthController {
                 "authorities", auth.getAuthorities(),
                 "name", auth.getName()
         );
+
         if (auth == null || !auth.isAuthenticated())
             throw new AccountException("User not authenticated");
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/status/v2")
+    public ResponseEntity<User> authenticatedUserV2(User me) {
+        return ResponseEntity.ok(me);
     }
 
     @GetMapping("/sleep")

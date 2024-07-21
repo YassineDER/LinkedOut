@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.config.requests.JwtAuthenticationFilter;
+import org.ichat.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -21,12 +22,12 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
-import java.util.Objects;
 
 @EnableConfigurationProperties(SecurityConfigurationProperties.class)
 @Configuration
@@ -37,6 +38,7 @@ import java.util.Objects;
 public class SecurityConfiguration implements WebMvcConfigurer {
     private final JwtAuthenticationFilter jwtFilter;
     private final AuthenticationProvider authProvider;
+    private final UserRepository userRepo;
     @Qualifier("customAuthenticationEntryPoint")
     private final AuthenticationEntryPoint entryPoint;
     private final SecurityConfigurationProperties properties;
@@ -73,6 +75,12 @@ public class SecurityConfiguration implements WebMvcConfigurer {
                 .allowedOrigins(properties.getAllowedOrigins().toArray(new String[0]))
                 .allowedHeaders("*")
                 .allowCredentials(true);
+    }
+
+    // Supply the user object to the controller methods
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(new UserArgumentResolver(userRepo));
     }
 }
 
