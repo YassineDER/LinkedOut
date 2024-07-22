@@ -15,7 +15,7 @@ import java.io.OutputStream;
 
 @Component("customAuthenticationEntryPoint")
 @RequiredArgsConstructor
-public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
+public class ExceptionHandlerEntryPoint implements AuthenticationEntryPoint {
     private final GlobalExceptionAdvice advice;
 
     @Override

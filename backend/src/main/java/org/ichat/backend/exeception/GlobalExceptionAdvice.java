@@ -22,8 +22,7 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 @Slf4j
 public class GlobalExceptionAdvice {
-    @Autowired
-    private Environment env;
+    private final Environment env;
 
     private static final String ERROR = "error";
     private static final String STATUS = "status";
@@ -35,6 +34,10 @@ public class GlobalExceptionAdvice {
     @ExceptionHandler({AccountException.class, AccountExpiredException.class,
             BadCredentialsException.class, AccessDeniedException.class})
     public ResponseEntity<Object> accountErrorHandler(Exception ex) {
+        String profile = env.getActiveProfiles()[0];
+        if (profile.equals("dev"))
+            ex.printStackTrace();
+
         Map<String, Object> body = new HashMap<>();
         body.put(TYPE, "Account");
         body.put(CLASS, ex.getClass().getName());
@@ -65,7 +68,8 @@ public class GlobalExceptionAdvice {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleGlobalErrors(Exception ex) {
         String profile = env.getActiveProfiles()[0];
-        log.error("Error: ", ex.getMessage());
+        if (profile.equals("dev"))
+            ex.printStackTrace();
 
         Map<String, Object> body = new HashMap<>();
         body.put(TYPE, "Global");

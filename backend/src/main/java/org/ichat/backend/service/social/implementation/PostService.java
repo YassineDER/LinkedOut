@@ -21,7 +21,7 @@ public class PostService implements IPostService {
     private final PostRepository repo;
 
     @Override
-    public Post createPost(User creator ,PostRequestDTO req) {
+    public Post createPost(User creator, PostRequestDTO req) {
         if (req.getDescription().length() > 1000)
             throw new IllegalArgumentException("Description too long");
 
