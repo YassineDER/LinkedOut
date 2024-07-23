@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.model.tables.Company;
 import org.ichat.backend.model.tables.User;
-import org.ichat.backend.model.util.patchers.CompanyPatchDTO;
+import org.ichat.backend.model.patchers.CompanyPatchDTO;
 import org.ichat.backend.service.ICompanyService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

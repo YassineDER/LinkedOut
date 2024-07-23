@@ -1,9 +1,9 @@
 package org.ichat.backend.service.implementation;
 
 import lombok.RequiredArgsConstructor;
-import org.ichat.backend.exeception.AccountException;
+import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.model.tables.Company;
-import org.ichat.backend.model.util.patchers.CompanyPatchDTO;
+import org.ichat.backend.model.patchers.CompanyPatchDTO;
 import org.ichat.backend.repository.CompanyRepo;
 import org.ichat.backend.service.ICompanyService;
 import org.json.JSONObject;

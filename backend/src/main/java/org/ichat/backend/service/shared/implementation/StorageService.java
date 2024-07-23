@@ -7,7 +7,7 @@ import com.oracle.bmc.objectstorage.requests.GetObjectRequest;
 import com.oracle.bmc.objectstorage.ObjectStorageClient;
 import com.oracle.bmc.objectstorage.requests.PutObjectRequest;
 import jakarta.transaction.Transactional;
-import org.ichat.backend.exeception.StorageException;
+import org.ichat.backend.exception.StorageException;
 import org.ichat.backend.model.util.StorageFile;
 import org.ichat.backend.service.shared.IStorageService;
 import org.springframework.cache.annotation.Cacheable;

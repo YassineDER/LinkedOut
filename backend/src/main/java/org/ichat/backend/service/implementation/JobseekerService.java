@@ -1,10 +1,10 @@
 package org.ichat.backend.service.implementation;
 
 import lombok.RequiredArgsConstructor;
-import org.ichat.backend.exeception.AccountException;
+import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.model.tables.Jobseeker;
 import org.ichat.backend.model.tables.Skill;
-import org.ichat.backend.model.util.patchers.JobseekerPatchDTO;
+import org.ichat.backend.model.patchers.JobseekerPatchDTO;
 import org.ichat.backend.repository.JobseekerRepo;
 import org.ichat.backend.service.IJobseekerService;
 import org.springframework.data.domain.PageRequest;

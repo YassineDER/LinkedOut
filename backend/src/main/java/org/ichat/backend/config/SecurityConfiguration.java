@@ -1,12 +1,9 @@
 package org.ichat.backend.config;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.config.requests.JwtAuthenticationFilter;
 import org.ichat.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -80,9 +77,3 @@ public class SecurityConfiguration implements WebMvcConfigurer {
     }
 }
 
-@Getter
-@AllArgsConstructor
-@ConfigurationProperties("security")
-class SecurityConfigurationProperties {
-    private final List<String> allowedOrigins;
-}

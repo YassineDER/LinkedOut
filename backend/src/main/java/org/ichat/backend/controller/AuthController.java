@@ -5,7 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.ichat.backend.exeception.AccountException;
+import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.model.tables.User;
 import org.ichat.backend.model.util.auth.*;
 import org.ichat.backend.service.account.IAuthService;

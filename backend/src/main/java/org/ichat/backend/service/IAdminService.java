@@ -1,8 +1,8 @@
 package org.ichat.backend.service;
 
-import org.ichat.backend.exeception.AccountException;
+import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.model.tables.Admin;
-import org.ichat.backend.model.util.patchers.AdminPatchDTO;
+import org.ichat.backend.model.patchers.AdminPatchDTO;
 
 import java.util.List;
 

@@ -1,9 +1,9 @@
 package org.ichat.backend.service.implementation;
 
-import org.ichat.backend.model.util.patchers.AdminPatchDTO;
+import org.ichat.backend.model.patchers.AdminPatchDTO;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.ichat.backend.exeception.AccountException;
+import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.model.tables.Admin;
 import org.ichat.backend.repository.AdminRepository;
 import org.ichat.backend.service.IAdminService;

@@ -1,6 +1,6 @@
 package org.ichat.backend.service.implementation;
 
-import org.ichat.backend.exeception.AccountException;
+import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.model.tables.User;
 import org.ichat.backend.repository.UserRepository;
 import org.ichat.backend.service.account.implementation.UserService;

@@ -3,7 +3,7 @@ package org.ichat.backend.service.account.implementation;
 import org.ichat.backend.service.account.IUserService;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.ichat.backend.exeception.AccountException;
+import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.model.tables.User;
 import org.ichat.backend.repository.UserRepository;
 import org.springframework.stereotype.Service;

@@ -2,7 +2,7 @@ package org.ichat.backend.service.account.implementation;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.ichat.backend.exeception.AccountException;
+import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.model.tables.*;
 import org.ichat.backend.model.tables.Admin;
 import org.ichat.backend.model.tables.Company;

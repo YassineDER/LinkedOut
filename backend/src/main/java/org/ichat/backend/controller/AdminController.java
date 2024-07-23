@@ -3,7 +3,7 @@ package org.ichat.backend.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.model.tables.Admin;
-import org.ichat.backend.model.util.patchers.AdminPatchDTO;
+import org.ichat.backend.model.patchers.AdminPatchDTO;
 import org.ichat.backend.service.IAdminService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

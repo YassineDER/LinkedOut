@@ -1,8 +1,8 @@
-package org.ichat.backend.exeception;
+package org.ichat.backend.exception;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.ichat.backend.model.util.ErrorDTO;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +13,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,28 +22,16 @@ import java.util.regex.Pattern;
 public class GlobalExceptionAdvice {
     private final Environment env;
 
-    private static final String ERROR = "error";
-    private static final String STATUS = "status";
-    private static final String CAUSE = "cause";
-    private static final String TYPE = "type";
-    private static final String CLASS = "class";
-
     @ResponseBody
     @ExceptionHandler({AccountException.class, AccountExpiredException.class,
             BadCredentialsException.class, AccessDeniedException.class})
-    public ResponseEntity<Object> accountErrorHandler(Exception ex) {
+    public ResponseEntity<ErrorDTO> accountErrorHandler(Exception ex) {
         String profile = env.getActiveProfiles()[0];
         if (profile.equals("dev"))
             ex.printStackTrace();
 
-        Map<String, Object> body = new HashMap<>();
-        body.put(TYPE, "Account");
-        body.put(CLASS, ex.getClass().getName());
-        body.put(ERROR, ex.getMessage());
-        body.put(STATUS, HttpStatus.BAD_REQUEST.value());
-        body.put(CAUSE, ex.getCause() == null ? "Unknown" : ex.getCause().getMessage());
-
-        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+        ErrorDTO error = buildErrorDTO(ex, "Account");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
     }
 
     @ResponseBody
@@ -66,31 +52,35 @@ public class GlobalExceptionAdvice {
 
     @ResponseBody
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> handleGlobalErrors(Exception ex) {
+    public ResponseEntity<ErrorDTO> handleGlobalErrors(Exception ex) {
         String profile = env.getActiveProfiles()[0];
         if (profile.equals("dev"))
             ex.printStackTrace();
 
-        Map<String, Object> body = new HashMap<>();
-        body.put(TYPE, "Global");
-        body.put(CLASS, ex.getClass().getName());
-        body.put(STATUS, HttpStatus.INTERNAL_SERVER_ERROR.value());
-        body.put(ERROR, ex.getMessage());
-        body.put(CAUSE, ex.getCause() == null ? "Unknown" : ex.getCause().getMessage());
-
-        return ResponseEntity.internalServerError().body(body);
+        ErrorDTO error = buildErrorDTO(ex, "Global");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
 
     @ResponseBody
     @ExceptionHandler(StorageException.class)
     public ResponseEntity<Object> handleStorageErrors(StorageException ex) {
-        Map<String, Object> body = new HashMap<>();
-        body.put(TYPE, "Storage");
-        body.put(STATUS, HttpStatus.INTERNAL_SERVER_ERROR.value());
-        body.put(ERROR, ex.getMessage());
-        body.put(CAUSE, ex.getCause() == null ? "Unknown" : ex.getCause().getMessage());
+        String profile = env.getActiveProfiles()[0];
+        if (profile.equals("dev"))
+            ex.printStackTrace();
 
-        return ResponseEntity.internalServerError().body(body);
+        ErrorDTO error = buildErrorDTO(ex, "Storage");
+        return ResponseEntity.internalServerError().body(error);
+    }
+
+
+    private ErrorDTO buildErrorDTO(Exception ex, String type) {
+        ErrorDTO error = new ErrorDTO();
+        error.setError(ex.getMessage());
+        error.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        error.setClassName(ex.getClass().getName());
+        error.setCause(ex.getCause() == null ? "Unknown" : ex.getCause().getMessage());
+        error.setType(type);
+        return error;
     }
 
 }

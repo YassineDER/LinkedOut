@@ -1,7 +1,7 @@
 package org.ichat.backend.config;
 
 import lombok.RequiredArgsConstructor;
-import org.ichat.backend.exeception.AccountException;
+import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.model.tables.User;
 import org.ichat.backend.repository.UserRepository;
 import org.springframework.core.MethodParameter;

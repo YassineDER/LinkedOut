@@ -3,7 +3,7 @@ package org.ichat.backend.jwt;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import org.ichat.backend.config.requests.JwtAuthenticationFilter;
-import org.ichat.backend.exeception.AccountException;
+import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.model.tables.User;
 import org.ichat.backend.service.account.IJwtService;
 import org.ichat.backend.service.account.IUserService;

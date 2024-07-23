@@ -1,4 +1,4 @@
-package org.ichat.backend.exeception;
+package org.ichat.backend.exception;
 
 import lombok.experimental.StandardException;
 

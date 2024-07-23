@@ -1,7 +1,8 @@
 package org.ichat.backend.config.requests;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.ichat.backend.exeception.AccountException;
+import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.model.tables.User;
 import org.ichat.backend.service.account.IJwtService;
 import org.ichat.backend.service.account.IUserService;
@@ -13,7 +14,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -41,7 +45,8 @@ class JwtAuthenticationFilterTest {
     @Test
     @DisplayName("Should not authenticate if Authorization header is missing")
     void shouldNotAuthenticateIfAuthorizationHeaderIsMissing() throws Exception {
-        jwtFilter.doFilterInternal(request, response, (req, res) -> {});
+        jwtFilter.doFilterInternal(request, response, (req, res) -> {
+        });
         assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
 
@@ -49,7 +54,8 @@ class JwtAuthenticationFilterTest {
     @DisplayName("Should not authenticate if Authorization header does not start with Bearer")
     void shouldNotAuthenticateIfAuthorizationHeaderDoesNotStartWithBearer() throws Exception {
         request.addHeader("Authorization", "Basic abcdefg");
-        jwtFilter.doFilterInternal(request, response, (req, res) -> {});
+        jwtFilter.doFilterInternal(request, response, (req, res) -> {
+        });
         assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
 
@@ -63,35 +69,33 @@ class JwtAuthenticationFilterTest {
         when(userService.findBy(email)).thenReturn(mockUser);
         request.addHeader("Authorization", "Bearer " + token);
 
-        jwtFilter.doFilterInternal(request, response, (req, res) -> {});
+        jwtFilter.doFilterInternal(request, response, (req, res) -> {
+        });
 
         assertNotNull(SecurityContextHolder.getContext().getAuthentication());
         assertEquals(mockUser, SecurityContextHolder.getContext().getAuthentication().getPrincipal());
     }
 
     @Test
-    @DisplayName("Should send unauthorized error if token is invalid")
-    void shouldSendUnauthorizedErrorIfTokenIsInvalid() throws Exception {
+    @DisplayName("Should use entryPoint when exception is thrown in JwtFilter")
+    void shouldUseEntryPointWhenExceptionIsThrownInJwtFilter() throws Exception {
         String token = "invalidToken";
         request.addHeader("Authorization", "Bearer " + token);
-        doThrow(new AccountException("Invalid token")).when(jwtService).getEmailFromToken(token);
+        AccountException accountException = new AccountException("Invalid token");
+        when(jwtService.getEmailFromToken(token)).thenThrow(accountException);
 
+        AuthenticationEntryPoint mockEntryPoint = mock(AuthenticationEntryPoint.class);
+        jwtFilter = new JwtAuthenticationFilter(jwtService, userService, mockEntryPoint);
         jwtFilter.doFilterInternal(request, response, (req, res) -> {});
 
-        assertEquals(HttpServletResponse.SC_UNAUTHORIZED, response.getStatus());
+        verify(mockEntryPoint).commence(any(HttpServletRequest.class), any(HttpServletResponse.class), any(AuthenticationException.class));
     }
 
     @Test
-    @DisplayName("Should continue filter if token provided and user not found")
-    void shouldContinueFilterChainIfUserIsNotFound() throws Exception {
-        String token = "validToken";
-        String userEmail = "user@example.com";
-        request.addHeader("Authorization", "Bearer " + token);
-        when(jwtService.getEmailFromToken(token)).thenReturn(userEmail);
-        when(userService.findBy(userEmail)).thenThrow(new AccountException("User not found"));
-
+    @DisplayName("Should clear SecurityContext before processing request")
+    void shouldClearSecurityContextBeforeProcessingRequest() throws Exception {
+        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken("user", "password"));
         jwtFilter.doFilterInternal(request, response, (req, res) -> {});
-
         assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
 }

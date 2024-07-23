@@ -2,7 +2,7 @@ package org.ichat.backend.service.shared.implementation;
 
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
-import org.ichat.backend.exeception.AccountException;
+import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.model.util.MailType;
 import org.ichat.backend.service.shared.IMailService;
 import org.springframework.beans.factory.annotation.Value;

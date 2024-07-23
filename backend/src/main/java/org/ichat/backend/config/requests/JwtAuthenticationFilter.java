@@ -5,7 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.ichat.backend.exeception.AccountException;
+import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.service.account.IJwtService;
 import org.ichat.backend.model.tables.User;
 import org.ichat.backend.service.account.IUserService;
@@ -31,6 +31,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public void doFilterInternal(@NonNull HttpServletRequest request,
                                  @NonNull HttpServletResponse response,
                                  @NonNull FilterChain filterChain) throws ServletException, IOException {
+        SecurityContextHolder.clearContext();
+
         try {
             String authorizationHeader = request.getHeader("Authorization");
 
@@ -46,10 +48,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
         } catch (AccountException ex) {
-            SecurityContextHolder.clearContext();
             entryPoint.commence(request, response, new AuthenticationException(ex.getMessage()) {});
             return;
         }
+
         filterChain.doFilter(request, response);
     }
 }

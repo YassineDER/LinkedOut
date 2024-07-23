@@ -2,7 +2,7 @@ package org.ichat.backend.controller;
 
 import dev.samstevens.totp.exceptions.QrGenerationException;
 import lombok.RequiredArgsConstructor;
-import org.ichat.backend.exeception.AccountException;
+import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.model.tables.User;
 import org.ichat.backend.model.tables.Jobseeker;
 import org.ichat.backend.model.util.auth.AccountCredentialsDTO;

@@ -1,4 +1,4 @@
-package org.ichat.backend.model.util.patchers;
+package org.ichat.backend.model.patchers;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
