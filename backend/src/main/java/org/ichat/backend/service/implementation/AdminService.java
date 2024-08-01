@@ -1,6 +1,7 @@
 package org.ichat.backend.service.implementation;
 
 import org.ichat.backend.model.patchers.AdminPatchDTO;
+import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exception.AccountException;
@@ -27,13 +28,13 @@ public class AdminService implements IAdminService {
     @Override
     public Admin findBy(String email) {
         return adminRepository.findByEmail(email)
-                .orElseThrow(() -> new AccountException("Admin not found with given email"));
+                .orElseThrow(() -> new AccountException("Admin not found with given email", HttpStatus.NOT_FOUND.value()));
     }
 
     @Override
     public Admin findBy(Long admin_id) {
         return adminRepository.findById(admin_id)
-                .orElseThrow(() -> new AccountException("Admin not found with given id"));
+                .orElseThrow(() -> new AccountException("Admin not found with given id", HttpStatus.NOT_FOUND.value()));
     }
 
     @Override
@@ -57,7 +58,7 @@ public class AdminService implements IAdminService {
         boolean userExists = adminRepository.findByEmail(admin.getEmail()).isPresent() ||
                 adminRepository.findByUsername(admin.getUsername()).isPresent();
         if (userExists)
-            throw new AccountException("Admin already exists with given email or username");
+            throw new AccountException("Admin already exists with given email or username", HttpStatus.CONFLICT.value());
 
         return adminRepository.save(admin);
     }

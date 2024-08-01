@@ -27,5 +27,10 @@ public class AdminController {
         return ResponseEntity.ok(updatedAdmin);
     }
 
+    @GetMapping("/test")
+    public ResponseEntity<String> test() {
+        return ResponseEntity.ok("Test");
+    }
+
 
 }

@@ -6,6 +6,7 @@ import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.model.util.MailType;
 import org.ichat.backend.service.shared.IMailService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.thymeleaf.context.Context;
@@ -57,9 +58,9 @@ public class MailService implements IMailService {
                     .get(MAIL_TIMEOUT, TimeUnit.SECONDS);
 
         } catch (MailException e) {
-            throw new AccountException("Failed to send reset email. The operation timed out.");
+            throw new AccountException("Failed to send reset email. The operation timed out.", e, HttpStatus.REQUEST_TIMEOUT.value());
         } catch (Exception e) {
-            throw new RuntimeException("Failed to send reset email. " + e.getMessage());
+            throw new AccountException("Failed to send reset email. An error occurred.", e, HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
     }
 }

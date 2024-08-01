@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -84,7 +85,7 @@ class JwtAuthenticationFilterTest {
         request.addHeader("Authorization", "Bearer validToken");
         String email = "test@example.com";
         when(jwtService.getEmailFromToken("validToken")).thenReturn(email);
-        when(userService.findBy(email)).thenThrow(new AccountException("User not found"));
+        when(userService.findBy(email)).thenThrow(new AccountException("User not found", HttpStatus.NOT_FOUND.value()));
 
         filter.doFilterInternal(request, response, filterChain);
 

@@ -57,7 +57,7 @@ public class AuthController {
     public ResponseEntity<AuthResponseDTO> requestReset(@RequestBody AccountCredentialsDTO credentials) {
         if (Boolean.TRUE.equals(authService.userUsingMFA(credentials.getEmail()))) {
             if (credentials.getCode() == null)
-                throw new AccountException("MFA code is required for this user");
+                throw new AccountException("MFA code is required for this user", HttpStatus.FORBIDDEN.value());
             authService.verifyMFA(credentials);
         }
 
@@ -68,7 +68,7 @@ public class AuthController {
     @PostMapping("/verify/password")
     public ResponseEntity<AuthResponseDTO> resetPassword(@Valid @RequestBody PasswordRequestDTO req) {
         if (!req.getPassword().equals(req.getPassword_confirmation()))
-            throw new AccountException("Passwords do not match");
+            throw new AccountException("Passwords do not match", HttpStatus.BAD_REQUEST.value());
         String resp = authService.resetPassword(req.getReceived_code(), req.getPassword());
         return ResponseEntity.ok(new AuthResponseDTO(resp));
     }
@@ -83,8 +83,8 @@ public class AuthController {
                 "name", auth.getName()
         );
 
-        if (auth == null || !auth.isAuthenticated())
-            throw new AccountException("User not authenticated");
+        if (!auth.isAuthenticated())
+            throw new AccountException("User not authenticated", HttpStatus.UNAUTHORIZED.value());
         return ResponseEntity.ok(response);
     }
 

@@ -10,6 +10,7 @@ import org.ichat.backend.repository.AccountVerificationRepository;
 import org.ichat.backend.service.shared.IMailService;
 import org.ichat.backend.service.account.IAccountVerificationService;
 import org.ichat.backend.service.account.IJwtService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
@@ -27,15 +28,15 @@ public class AccountVerificationService implements IAccountVerificationService {
     @Override
     public String verifyToken(String token) {
         var accountVerification = accountVerificationRepository.findByToken(token)
-                .orElseThrow(() -> new AccountException("No account verification found with the provided token"));
+                .orElseThrow(() -> new AccountException("Account verification not found or has expired a long time ago", HttpStatus.NOT_FOUND.value()));
         if (accountVerification.getExpiresAt().isBefore(OffsetDateTime.now()))
-            throw new AccountException("The provided token has expired, please try to login to send a new one");
+            throw new AccountException("The provided token has just expired, please try to login to send a new one", HttpStatus.GONE.value());
 
         User user = accountVerification.getUser();
         if (user == null)
-            throw new AccountException("No user found with the provided token. Please register again.");
+            throw new AccountException("No user found with the provided token. Please register again.", HttpStatus.NOT_FOUND.value());
         if (Boolean.TRUE.equals(user.getEnabled()))
-            throw new AccountException("User of this account verification is already enabled");
+            throw new AccountException("User of this account verification is already enabled", HttpStatus.CONFLICT.value());
 
         user.setEnabled(true);
         accountVerificationRepository.deleteByUser(user);

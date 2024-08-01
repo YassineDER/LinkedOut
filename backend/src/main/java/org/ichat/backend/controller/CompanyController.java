@@ -27,4 +27,9 @@ public class CompanyController {
         Company updatedUser = companyService.update(currentCompany, patch);
         return ResponseEntity.ok(updatedUser);
     }
+
+    @GetMapping("/test")
+    public ResponseEntity<String> test() {
+        return ResponseEntity.ok("Test");
+    }
 }

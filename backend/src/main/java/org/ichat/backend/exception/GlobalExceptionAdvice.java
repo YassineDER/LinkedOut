@@ -31,7 +31,7 @@ public class GlobalExceptionAdvice {
             ex.printStackTrace();
 
         ErrorDTO error = buildErrorDTO(ex, "Account");
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+        return ResponseEntity.status(error.getStatus()).body(error);
     }
 
     @ResponseBody
@@ -58,7 +58,7 @@ public class GlobalExceptionAdvice {
             ex.printStackTrace();
 
         ErrorDTO error = buildErrorDTO(ex, "Global");
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+        return ResponseEntity.internalServerError().body(error);
     }
 
     @ResponseBody
@@ -76,7 +76,8 @@ public class GlobalExceptionAdvice {
     private ErrorDTO buildErrorDTO(Exception ex, String type) {
         ErrorDTO error = new ErrorDTO();
         error.setError(ex.getMessage());
-        error.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        error.setStatus(ex.getClass().equals(AccountException.class) ?
+                ((AccountException) ex).getStatus() : HttpStatus.INTERNAL_SERVER_ERROR.value());
         error.setClassName(ex.getClass().getName());
         error.setCause(ex.getCause() == null ? "Unknown" : ex.getCause().getMessage());
         error.setType(type);

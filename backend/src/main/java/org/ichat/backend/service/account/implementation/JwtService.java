@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.model.tables.User;
 import org.ichat.backend.service.account.IJwtService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -54,7 +55,7 @@ public class JwtService implements IJwtService {
                     .parseClaimsJws(token)
                     .getBody();
         } catch (Exception e) {
-            throw new AccountException("Invalid token or expired :(", e);
+            throw new AccountException("Invalid token or expired :(", HttpStatus.NOT_ACCEPTABLE.value());
         }
     }
 

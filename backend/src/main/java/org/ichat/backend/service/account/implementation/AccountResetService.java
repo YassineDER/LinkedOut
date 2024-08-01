@@ -9,6 +9,7 @@ import org.ichat.backend.model.util.MailType;
 import org.ichat.backend.repository.AccountResetRepository;
 import org.ichat.backend.service.shared.IMailService;
 import org.ichat.backend.service.account.IAccountResetService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
@@ -34,13 +35,15 @@ public class AccountResetService implements IAccountResetService {
     @Override
     public String resetPassword(String token, String encodedPassword) {
         var accountReset = accountResetRepository.findByToken(token)
-                .orElseThrow(() -> new AccountException("No password reset request found with the provided token"));
+                .orElseThrow(() -> new AccountException("Password reset request not found or has expired a long time ago",
+                        HttpStatus.NOT_FOUND.value()));
         if (accountReset.getExpiresAt().isBefore(OffsetDateTime.now()))
-            throw new AccountException("The provided token has expired, please retry to send another request.");
+            throw new AccountException("The provided token has just expired, please retry to send another request",
+                    HttpStatus.GONE.value());
 
         User user = accountReset.getUser();
         if (user == null)
-            throw new AccountException("No user found with the provided token. This is an unexpected behaviour.");
+            throw new AccountException("No user found with the provided token. This is an unexpected behaviour", HttpStatus.NOT_FOUND.value());
 
         accountReset.resetUserPassword(encodedPassword);
         accountResetRepository.save(accountReset);

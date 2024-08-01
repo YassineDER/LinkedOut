@@ -1,6 +1,7 @@
 package org.ichat.backend.service.account.implementation;
 
 import org.ichat.backend.service.account.IUserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exception.AccountException;
@@ -18,22 +19,27 @@ public class UserService implements IUserService {
 
     @Override
     public User findBy(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new AccountException("User not found by id"));
+        return userRepository.findById(id).orElseThrow(() -> new AccountException("User not found by id", HttpStatus.NOT_FOUND.value()));
     }
 
     @Override
     public User findBy(String email) {
-        return userRepository.findByEmail(email).orElseThrow(() -> new AccountException("User not found by email"));
+        return userRepository.findByEmail(email).orElseThrow(() -> new AccountException("User not found by email", HttpStatus.NOT_FOUND.value()));
     }
 
     @Override
     public User findByUsername(String username) {
-        return userRepository.findByUsername(username).orElseThrow(() -> new AccountException("User not found by username"));
+        return userRepository.findByUsername(username).orElseThrow(() -> new AccountException("User not found by username", HttpStatus.NOT_FOUND.value()));
     }
 
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public UserRepository getUserRepository() {
+        return userRepository;
     }
 
     @Override

@@ -9,6 +9,7 @@ import org.ichat.backend.model.util.auth.AccountCredentialsDTO;
 import org.ichat.backend.model.util.auth.AuthResponseDTO;
 import org.ichat.backend.service.account.ITwoFactorAuthService;
 import org.ichat.backend.service.account.IUserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -51,13 +52,12 @@ public class UserController {
     @PostMapping("/mfa/{action}")
     @Transactional
     public ResponseEntity<AuthResponseDTO> enableMfa(User me, @PathVariable String action, @RequestBody AccountCredentialsDTO confirmation) throws QrGenerationException {
-        if (!passwordEncoder.matches(confirmation.getPassword(), me.getPassword())
-                || confirmation.getPassword() == null)
-            throw new AccountException("Invalid or missing password");
+        if (!passwordEncoder.matches(confirmation.getPassword(), me.getPassword()))
+            throw new AccountException("Invalid or missing password", HttpStatus.BAD_REQUEST.value());
 
         if (action.equals("enable")) {
             if (Boolean.TRUE.equals(me.getUsing_mfa()))
-                throw new AccountException("MFA is already enabled");
+                throw new AccountException("MFA is already enabled", HttpStatus.NO_CONTENT.value());
 
             me.activateMFA(twoFactorService.generateMfaSecret());
             String qrCode = twoFactorService.generateMfaImage(me.getMfa_secret(), me.getEmail());
@@ -66,14 +66,14 @@ public class UserController {
         }
         else if (action.equals("disable")) {
             if (Boolean.FALSE.equals(me.getUsing_mfa()))
-                throw new AccountException("MFA is already disabled");
+                throw new AccountException("MFA is already disabled", HttpStatus.NO_CONTENT.value());
 
             me.deactivateMFA();
             userService.update(me.getUser_id(), me);
             return ResponseEntity.ok(new AuthResponseDTO("MFA disabled"));
         }
 
-        throw new AccountException("Invalid action");
+        throw new AccountException("Invalid action", HttpStatus.BAD_REQUEST.value());
     }
 
 }

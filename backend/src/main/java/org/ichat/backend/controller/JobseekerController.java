@@ -26,4 +26,10 @@ public class JobseekerController {
         Jobseeker updatedUser = jobseekerService.update((Jobseeker) me, patch);
         return ResponseEntity.ok(updatedUser);
     }
+
+    @GetMapping("/test")
+    public ResponseEntity<String> test() {
+        return ResponseEntity.ok("Test");
+    }
+
 }

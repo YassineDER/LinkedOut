@@ -8,6 +8,7 @@ import org.ichat.backend.model.patchers.JobseekerPatchDTO;
 import org.ichat.backend.repository.JobseekerRepo;
 import org.ichat.backend.service.IJobseekerService;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,13 +30,13 @@ public class JobseekerService implements IJobseekerService {
     @Override
     public Jobseeker findBy(String email) {
         return jobseekerRepo.findByEmail(email)
-                .orElseThrow(() -> new AccountException("Jobseeker not found by email"));
+                .orElseThrow(() -> new AccountException("Jobseeker not found by email", HttpStatus.NOT_FOUND.value()));
     }
 
     @Override
     public Jobseeker findBy(Long jobseekerId) {
         return jobseekerRepo.findById(jobseekerId)
-                .orElseThrow(() -> new AccountException("Jobseeker not found by id"));
+                .orElseThrow(() -> new AccountException("Jobseeker not found by id", HttpStatus.NOT_FOUND.value()));
     }
 
     @Override
@@ -62,7 +63,7 @@ public class JobseekerService implements IJobseekerService {
         boolean userExists = jobseekerRepo.findByEmail(jobseeker.getEmail()).isPresent() ||
                 jobseekerRepo.findByUsername(jobseeker.getUsername()).isPresent();
         if (userExists)
-            throw new AccountException("Jobseeker already exists with given email or username");
+            throw new AccountException("Jobseeker already exists with given email or username", HttpStatus.CONFLICT.value());
         return jobseekerRepo.save(jobseeker);
     }
 

@@ -7,6 +7,7 @@ import org.ichat.backend.model.patchers.CompanyPatchDTO;
 import org.ichat.backend.repository.CompanyRepo;
 import org.ichat.backend.service.ICompanyService;
 import org.json.JSONObject;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -32,13 +33,13 @@ public class CompanyService implements ICompanyService {
     @Override
     public Company findBy(String email) {
         return companyRepo.findByEmail(email)
-                .orElseThrow(() -> new AccountException("Company not found by email"));
+                .orElseThrow(() -> new AccountException("Company not found by email", HttpStatus.NOT_FOUND.value()));
     }
 
     @Override
     public Company findBy(Long company_id) {
         return companyRepo.findById(company_id)
-                .orElseThrow(() -> new AccountException("Company not found by id"));
+                .orElseThrow(() -> new AccountException("Company not found by id", HttpStatus.NOT_FOUND.value()));
     }
 
     @Override
@@ -64,7 +65,7 @@ public class CompanyService implements ICompanyService {
         boolean exists = companyRepo.findByEmail(company.getEmail()).isPresent() ||
                 companyRepo.findByUsername(company.getUsername()).isPresent();
         if (exists)
-            throw new AccountException("Company already exists");
+            throw new AccountException("Company already exists", HttpStatus.CONFLICT.value());
 
         return companyRepo.save(company);
     }
@@ -79,10 +80,10 @@ public class CompanyService implements ICompanyService {
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, (req, resp) -> {
-                    throw new AccountException("Error fetching company info: " + resp.getStatusText());
+                    throw new AccountException("Error fetching company info", resp.getStatusCode().value());
                 })
                 .onStatus(HttpStatusCode::is5xxServerError, (req, resp) -> {
-                    throw new AccountException("Error fetching company info: " + resp.getStatusText());
+                    throw new AccountException("Error fetching company info", resp.getStatusCode().value());
                 })
                 .body(String.class);
 
@@ -114,10 +115,10 @@ public class CompanyService implements ICompanyService {
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, (req, resp) -> {
-                    throw new AccountException("Error fetching company website: " + resp.getStatusText());
+                    throw new AccountException("Error fetching company website", resp.getStatusCode().value());
                 })
                 .onStatus(HttpStatusCode::is5xxServerError, (req, resp) -> {
-                    throw new AccountException("Error fetching company website: " + resp.getStatusText());
+                    throw new AccountException("Error fetching company website", resp.getStatusCode().value());
                 })
                 .body(String.class);
 

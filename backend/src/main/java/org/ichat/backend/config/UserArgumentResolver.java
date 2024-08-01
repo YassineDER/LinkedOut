@@ -5,6 +5,7 @@ import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.model.tables.User;
 import org.ichat.backend.repository.UserRepository;
 import org.springframework.core.MethodParameter;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -24,9 +25,9 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
     public Object resolveArgument(MethodParameter param, ModelAndViewContainer container, NativeWebRequest req, WebDataBinderFactory binderFactory) {
         var auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !auth.isAuthenticated())
-            throw new AccountException("User not authenticated");
+            throw new AccountException("User not authenticated", HttpStatus.UNAUTHORIZED.value());
 
         return repo.findByUsername(auth.getName())
-                .orElseThrow(() -> new AccountException("User not found"));
+                .orElseThrow(() -> new AccountException("User not found", HttpStatus.NOT_FOUND.value()));
     }
 }

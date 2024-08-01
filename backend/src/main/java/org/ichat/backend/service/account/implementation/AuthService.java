@@ -14,6 +14,7 @@ import org.ichat.backend.service.*;
 import org.ichat.backend.service.account.*;
 import org.ichat.backend.service.shared.IGeolocationService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -51,7 +52,7 @@ public class AuthService implements IAuthService {
         User user = userService.findBy(credentials.getEmail());
 
         if (!passwordEncoder.matches(credentials.getPassword(), user.getPassword()))
-            throw new AccountException("Invalid email or password");
+            throw new AccountException("Invalid email or password", HttpStatus.BAD_REQUEST.value());
 
         if (!user.isEnabled()) {
             var new_verif = accountVerificationService.sendVerificationEmail(user.getEmail());
@@ -71,7 +72,7 @@ public class AuthService implements IAuthService {
                 } catch (AccountException e) {
                     throw new BadCredentialsException("Invalid MFA code");
                 }
-            } else throw new AccountException("MFA code is required for this user");
+            } else throw new AccountException("MFA code is required for this user", HttpStatus.FORBIDDEN.value());
         }
 
         Authentication auth = authenticationManager.authenticate(
@@ -87,7 +88,7 @@ public class AuthService implements IAuthService {
     public void verifyMFA(AccountCredentialsDTO credentials) {
         User user = userService.findBy(credentials.getEmail());
         if (!twoFactorAuthService.codeIsValid(user.getMfa_secret(), credentials.getCode()))
-            throw new AccountException("Invalid MFA code");
+            throw new AccountException("Invalid MFA code", HttpStatus.BAD_REQUEST.value());
     }
 
     @Override
@@ -129,7 +130,7 @@ public class AuthService implements IAuthService {
     @Override
     public String registerAdmin(RegisterAdminRequestDTO request) {
         if (!Objects.equals(request.getAdmin_secret(), adminSecret))
-            throw new AccountException("Invalid admin secret");
+            throw new AccountException("Invalid admin secret", HttpStatus.BAD_REQUEST.value());
 
         Roles USER_Roles = roleService.getRoleByName("ADMIN");
         Admin admin = new Admin();
