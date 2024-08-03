@@ -13,7 +13,6 @@ import org.ichat.backend.model.util.auth.*;
 import org.ichat.backend.service.*;
 import org.ichat.backend.service.account.*;
 import org.ichat.backend.service.shared.IGeolocationService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,16 +23,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
 import java.util.Set;
 
 @Service
 @Transactional(dontRollbackOn = AccountExpiredException.class)
 @RequiredArgsConstructor
 public class AuthService implements IAuthService {
-    @Value("${admin.secret}")
-    private String adminSecret;
-
     private final IUserService userService;
     private final ICompanyService companyService;
     private final IJobseekerService jobseekerService;
@@ -129,9 +124,6 @@ public class AuthService implements IAuthService {
 
     @Override
     public String registerAdmin(RegisterAdminRequestDTO request) {
-        if (!Objects.equals(request.getAdmin_secret(), adminSecret))
-            throw new AccountException("Invalid admin secret", HttpStatus.BAD_REQUEST.value());
-
         Roles USER_Roles = roleService.getRoleByName("ADMIN");
         Admin admin = new Admin();
         admin.setFirst_name(request.getFirst_name());

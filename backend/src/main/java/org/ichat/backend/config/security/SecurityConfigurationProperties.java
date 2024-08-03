@@ -1,4 +1,4 @@
-package org.ichat.backend.config;
+package org.ichat.backend.config.security;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

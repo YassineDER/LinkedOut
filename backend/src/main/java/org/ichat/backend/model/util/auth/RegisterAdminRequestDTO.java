@@ -19,7 +19,5 @@ public class RegisterAdminRequestDTO {
     private String username;
     @NotEmpty(message = "password is mandatory")
     private String password;
-    @NotEmpty(message = "Admin secret is mandatory")
-    private String admin_secret;
     boolean debug = false;
 }

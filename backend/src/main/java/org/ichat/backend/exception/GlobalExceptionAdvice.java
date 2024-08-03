@@ -27,7 +27,7 @@ public class GlobalExceptionAdvice {
             BadCredentialsException.class, AccessDeniedException.class})
     public ResponseEntity<ErrorDTO> accountErrorHandler(Exception ex) {
         String profile = env.getActiveProfiles()[0];
-        if (profile.equals("dev"))
+        if (!profile.equals("prod"))
             ex.printStackTrace();
 
         ErrorDTO error = buildErrorDTO(ex, "Account");
@@ -54,7 +54,7 @@ public class GlobalExceptionAdvice {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorDTO> handleGlobalErrors(Exception ex) {
         String profile = env.getActiveProfiles()[0];
-        if (profile.equals("dev"))
+        if (!profile.equals("prod"))
             ex.printStackTrace();
 
         ErrorDTO error = buildErrorDTO(ex, "Global");
@@ -65,7 +65,7 @@ public class GlobalExceptionAdvice {
     @ExceptionHandler(StorageException.class)
     public ResponseEntity<Object> handleStorageErrors(StorageException ex) {
         String profile = env.getActiveProfiles()[0];
-        if (profile.equals("dev"))
+        if (!profile.equals("prod"))
             ex.printStackTrace();
 
         ErrorDTO error = buildErrorDTO(ex, "Storage");

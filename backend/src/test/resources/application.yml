@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: test
   application:
     name: LinkedOut
   datasource:
@@ -50,3 +52,5 @@ totp:
   time:
     period: 30
 
+security:
+  allowed-origins: http://localhost:4200

@@ -1,4 +1,4 @@
-package org.ichat.backend.config;
+package org.ichat.backend.config.security;
 
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.config.requests.JwtAuthenticationFilter;
@@ -17,18 +17,12 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.method.support.HandlerMethodArgumentResolver;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
-@EnableWebSecurity
-@EnableWebMvc
-@EnableMethodSecurity
-public class SecurityConfiguration implements WebMvcConfigurer {
+@EnableWebSecurity // Enables Spring Security beans
+@EnableMethodSecurity // Enables all methods to have security annotations like @PreAuthorize
+public class SecurityConfiguration {
     private final AuthenticationProvider authProvider;
     private final IJwtService jwtService;
     private final IUserService userService;
@@ -59,10 +53,5 @@ public class SecurityConfiguration implements WebMvcConfigurer {
         return http.build();
     }
 
-    // Supply the user object to the controller methods
-    @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new UserArgumentResolver(userService.getUserRepository()));
-    }
 }
 

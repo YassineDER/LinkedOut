@@ -1,6 +1,5 @@
 package org.ichat.backend.controller;
 
-import org.ichat.backend.model.tables.Jobseeker;
 import org.ichat.backend.model.tables.User;
 import org.ichat.backend.service.account.ITwoFactorAuthService;
 import org.ichat.backend.service.account.IUserService;
@@ -14,6 +13,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.test.context.support.TestExecutionEvent;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -37,20 +38,20 @@ class UserControllerTest {
     private IUserService userService;
     @MockBean
     private ITwoFactorAuthService twoFactorService;
-    private Jobseeker user;
+    private User user;
 
     @BeforeEach
     void setUp() {
-        user = new Jobseeker();
+        SecurityContextHolder.clearContext();
+        user = new User();
         user.setUser_id(1L);
         user.setEmail("xx@yy.com");
         user.setUsername("user");
         user.setPassword("password");
-        user.setFirst_name("first");
-        user.setLast_name("last");
     }
 
     @Test
+    @WithMockUser(username = "user", authorities = {"ADMIN"})
     void all() throws Exception {
         // TODO
         List<User> users = Collections.singletonList(user);
@@ -63,6 +64,7 @@ class UserControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "user", authorities = {"ADMIN"})
     void delete() throws Exception {
         doNothing().when(userService).deleteBy(1L);
         mvc.perform(MockMvcRequestBuilders.delete("/api/user/id/1"))
@@ -71,16 +73,13 @@ class UserControllerTest {
     }
 
     @Test
-    void enableMfa() throws Exception {
+    @WithMockUser(username = "user", authorities = {"ADMIN"})
+    void enableMfaSuccessful() throws Exception {
         when(userService.findBy(1L)).thenReturn(user);
         when(twoFactorService.generateMfaSecret()).thenReturn("secret");
         when(userService.update(any(Long.class), any(User.class))).thenReturn(user);
 
-        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
-        when(securityContext.getAuthentication()).thenReturn(new UsernamePasswordAuthenticationToken(user, null));
-        SecurityContextHolder.setContext(securityContext);
-
-        mvc.perform(post("/api/user/enable-mfa"))
+        mvc.perform(post("/api/user/mfa/enable"))
                 .andExpect(status().isNoContent());
 
         assertTrue(user.getUsing_mfa());
@@ -88,15 +87,12 @@ class UserControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "user", authorities = {"ADMIN"})
     void enableMfa_alreadyEnabled() throws Exception {
         user.setUsing_mfa(true);
         when(userService.findBy(1L)).thenReturn(user);
 
-        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
-        when(securityContext.getAuthentication()).thenReturn(new UsernamePasswordAuthenticationToken(user, null));
-        SecurityContextHolder.setContext(securityContext);
-
-        mvc.perform(post("/api/user/enable-mfa"))
+        mvc.perform(post("/api/user/mfa/enable"))
                 .andExpect(status().isBadRequest());
     }
 }
