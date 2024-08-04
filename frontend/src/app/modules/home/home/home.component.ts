@@ -13,15 +13,15 @@ import {UserService} from "../services/user.service";
     animations: [fadeInUpAnimation]
 })
 export class HomeComponent implements OnInit{
-    user$: Observable<[User | null, boolean]>;
+    user$: Observable<User | null>;
 
     constructor(private auth: AuthService, private users: UserService) {
         this.user$ = this.auth.getAuthenticatedUser().pipe(shareReplay(1));
     }
 
     ngOnInit() {
-        this.user$.subscribe(([user, authenticated]) => {
-            if (authenticated && user)
+        this.user$.subscribe((user) => {
+            if (user)
                 this.users.changeUser(user);
         });
     }

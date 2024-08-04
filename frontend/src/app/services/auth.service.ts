@@ -20,15 +20,15 @@ export class AuthService {
         return this.userSubject.asObservable();
     }
 
-    getAuthenticatedUser(): Observable<[User | null, boolean]> {
+    getAuthenticatedUser(): Observable<User | null> {
         return this.checkAuthStatus().pipe(
-            switchMap((res) => {
-                this.userSubject.next(res.principal);
-                return of<[User | null, boolean]>([res.principal, res.authenticated]);
+            switchMap((user: User) => {
+                this.userSubject.next(user);
+                return of(user);
             }),
-            catchError((err) => {
+            catchError(() => {
                 this.logout();
-                return of<[User | null, boolean]>([null, false]);
+                return of(null);
             })
         );
     }
@@ -89,7 +89,7 @@ export class AuthService {
     }
 
     private checkAuthStatus(): Observable<any> {
-        return this.http.get(environment.hostUrl + '/api/user/status');
+        return this.http.get(environment.hostUrl + '/api/user/status/v2');
     }
 
     private handleResponse(resolve: (value: any) => void, reject: (reason: any) => void) {
