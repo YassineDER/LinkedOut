@@ -10,7 +10,7 @@ export const requestsInterceptor: HttpInterceptorFn = (req, next) => {
 
     // Exclude the ipify.org API from the Authorization header and the auth endpoints (except for the status one)
     if (!req.url.includes('api.ipify.org') &&
-        (!req.url.includes('auth') || req.url.includes('auth/status')))
+        (!req.url.includes('auth')))
         headers = req.headers.set('Authorization', `Bearer ${token}`);
 
     const cloned = req.clone({headers});

@@ -46,7 +46,6 @@ export class AuthService {
         window.location.reload();
     }
 
-
     /**
      * Register a userSubject with the given object and role.
      * @param userObject The object containing the userSubject information
@@ -90,7 +89,7 @@ export class AuthService {
     }
 
     private checkAuthStatus(): Observable<any> {
-        return this.http.get(this.url + '/status');
+        return this.http.get(environment.hostUrl + '/api/user/status');
     }
 
     private handleResponse(resolve: (value: any) => void, reject: (reason: any) => void) {
