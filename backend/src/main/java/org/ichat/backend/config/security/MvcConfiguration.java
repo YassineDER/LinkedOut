@@ -34,4 +34,6 @@ public class MvcConfiguration implements WebMvcConfigurer {
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(new UserArgumentResolver(userService.getUserRepository()));
     }
+
+
 }

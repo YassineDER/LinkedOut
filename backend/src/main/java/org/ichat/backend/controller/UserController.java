@@ -12,12 +12,14 @@ import org.ichat.backend.service.account.IUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.ichat.backend.service.IJobseekerService;
 
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -74,6 +76,27 @@ public class UserController {
         }
 
         throw new AccountException("Invalid action", HttpStatus.BAD_REQUEST.value());
+    }
+
+    @GetMapping("/status")
+    public ResponseEntity<Map<String,Object>> authenticatedUser() {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        var response = Map.of(
+                "authenticated", auth.isAuthenticated(),
+                "principal", auth.getPrincipal(),
+                "authorities", auth.getAuthorities(),
+                "name", auth.getName()
+        );
+
+        if (!auth.isAuthenticated())
+            throw new AccountException("User not authenticated", HttpStatus.UNAUTHORIZED.value());
+        return ResponseEntity.ok(response);
+    }
+
+
+    @GetMapping("/status/v2")
+    public ResponseEntity<User> authenticatedUserV2(User me) {
+        return ResponseEntity.ok(me);
     }
 
 }

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,15 +24,25 @@ public class GlobalExceptionAdvice {
     private final Environment env;
 
     @ResponseBody
-    @ExceptionHandler({AccountException.class, AccountExpiredException.class,
-            BadCredentialsException.class, AccessDeniedException.class})
+    @ExceptionHandler({AccountException.class, AccessDeniedException.class, BadCredentialsException.class, AccountExpiredException.class})
     public ResponseEntity<ErrorDTO> accountErrorHandler(Exception ex) {
         String profile = env.getActiveProfiles()[0];
         if (!profile.equals("prod"))
             ex.printStackTrace();
 
         ErrorDTO error = buildErrorDTO(ex, "Account");
-        return ResponseEntity.status(error.getStatus()).body(error);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ResponseBody
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErrorDTO> handleAuthenticationErrors(AuthenticationException ex) {
+        String profile = env.getActiveProfiles()[0];
+        if (!profile.equals("prod"))
+            ex.printStackTrace();
+
+        ErrorDTO error = buildErrorDTO(ex, "Authentication");
+        return ResponseEntity.badRequest().body(error);
     }
 
     @ResponseBody
@@ -76,8 +87,6 @@ public class GlobalExceptionAdvice {
     private ErrorDTO buildErrorDTO(Exception ex, String type) {
         ErrorDTO error = new ErrorDTO();
         error.setError(ex.getMessage());
-        error.setStatus(ex.getClass().equals(AccountException.class) ?
-                ((AccountException) ex).getStatus() : HttpStatus.INTERNAL_SERVER_ERROR.value());
         error.setClassName(ex.getClass().getName());
         error.setCause(ex.getCause() == null ? "Unknown" : ex.getCause().getMessage());
         error.setType(type);

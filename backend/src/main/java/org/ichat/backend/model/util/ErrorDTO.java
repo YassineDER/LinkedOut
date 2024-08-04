@@ -12,5 +12,4 @@ public class ErrorDTO {
     private String error, cause, type;
     @JsonProperty("class")
     private String className;
-    private int status;
 }

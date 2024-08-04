@@ -73,26 +73,6 @@ public class AuthController {
         return ResponseEntity.ok(new AuthResponseDTO(resp));
     }
 
-    @GetMapping("/status")
-    public ResponseEntity<Map<String,Object>> authenticatedUser() {
-        var auth = SecurityContextHolder.getContext().getAuthentication();
-        var response = Map.of(
-                "authenticated", auth.isAuthenticated(),
-                "principal", auth.getPrincipal(),
-                "authorities", auth.getAuthorities(),
-                "name", auth.getName()
-        );
-
-        if (!auth.isAuthenticated())
-            throw new AccountException("User not authenticated", HttpStatus.UNAUTHORIZED.value());
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/status/v2")
-    public ResponseEntity<User> authenticatedUserV2(User me) {
-        return ResponseEntity.ok(me);
-    }
-
     @GetMapping("/sleep")
     public ResponseEntity<String> sleep(){
         try {

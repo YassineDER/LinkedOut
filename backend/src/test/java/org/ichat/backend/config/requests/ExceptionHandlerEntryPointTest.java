@@ -43,7 +43,6 @@ class ExceptionHandlerEntryPointTests {
     @DisplayName("Should correctly handle authentication exception with custom error")
     void shouldCorrectlyHandleAuthenticationExceptionWithCustomError() throws Exception {
         ErrorDTO errorDTO = new ErrorDTO();
-        errorDTO.setStatus(401);
         errorDTO.setError("Invalid credentials");
         errorDTO.setClassName("org.springframework.security.authentication.BadCredentialsException");
         errorDTO.setCause("Bad credentials");
@@ -77,7 +76,6 @@ class ExceptionHandlerEntryPointTests {
     @DisplayName("Should use global error handler when account error handler returns null")
     void shouldUseGlobalErrorHandlerWhenAccountErrorHandlerReturnsNull() throws Exception {
         ErrorDTO errorDTO = new ErrorDTO();
-        errorDTO.setStatus(500);
         errorDTO.setError("Error");
         errorDTO.setClassName("org.springframework.dao.DataIntegrityViolationException");
         errorDTO.setCause("Data integrity violation");

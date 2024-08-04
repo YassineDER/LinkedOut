@@ -12,11 +12,13 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 
 @Configuration
 @RequiredArgsConstructor
@@ -38,8 +40,8 @@ public class SecurityConfiguration {
                 .cors(Customizer.withDefaults()) // Enabled by default, customized in the addCorsMappings method bellow
                 .formLogin(AbstractHttpConfigurer::disable) // Disable default form login, we use JWT
                 .logout(AbstractHttpConfigurer::disable) // Disable default logout, we use JWT and session is stateless
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class) // Custom JWT filter
                 .exceptionHandling(e -> e.authenticationEntryPoint(entryPoint)) // Custom entry point for formating error messages
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/api/jobseeker/**").hasAuthority("JOBSEEKER")
@@ -51,6 +53,11 @@ public class SecurityConfiguration {
                 .authenticationProvider(authProvider); // Custom authentication provider
 
         return http.build();
+    }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring().requestMatchers("/api/auth/**");
     }
 
 }

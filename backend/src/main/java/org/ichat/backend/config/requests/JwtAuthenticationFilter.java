@@ -49,7 +49,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
             // If the token is invalid, the user will be redirected to the entrypoint
         } catch (AccountException ex) {
-            entryPoint.commence(request, response, new AuthenticationException(ex.getMessage()) {});
+            entryPoint.commence(request, response, new AuthenticationException(ex.getMessage(), ex) {});
             return;
         }
 
