@@ -9,6 +9,7 @@ import org.ichat.backend.exception.GlobalExceptionAdvice;
 import org.ichat.backend.model.util.ErrorDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -29,8 +30,8 @@ public class ExceptionHandlerEntryPoint implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest req, HttpServletResponse resp, AuthenticationException exp)
             throws IOException {
         ResponseEntity<ErrorDTO> error = advice.handleAuthenticationErrors(exp);
-
         resp.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        resp.setStatus(HttpStatus.BAD_REQUEST.value());
         OutputStream res = resp.getOutputStream();
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(res, error.getBody());

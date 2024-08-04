@@ -6,7 +6,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.ichat.backend.model.tables.indentity.AccountReset;
 import org.ichat.backend.model.tables.indentity.AccountVerification;
 import org.ichat.backend.model.tables.indentity.Roles;
@@ -50,7 +52,7 @@ public class User implements UserDetails {
     String mfa_secret;
 
     @Column
-    String image_url;
+    String image_url = "https://img.icons8.com/pastel-glyph/64/000000/user-male-circle.png";
 
     @Column(nullable = false)
     Boolean enabled = false;
@@ -74,18 +76,16 @@ public class User implements UserDetails {
     @JsonIgnore
     private Set<AccountVerification> userAccountVerifications;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinTable(
-            name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id")
-    )
+    // if the user is deleted, the roles keep existing
+    @OneToOne(cascade = CascadeType.DETACH)
     @JsonIgnoreProperties("role_id")
-    Set<Roles> user_roles;
+    Roles role;
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return new HashSet<>(user_roles).stream()
+        return new HashSet<>(Set.of(role)).stream()
                 .map(role -> (GrantedAuthority) role::getName)
                 .collect(Collectors.toSet());
     }

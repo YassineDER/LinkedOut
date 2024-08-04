@@ -1,4 +1,4 @@
-package org.ichat.backend.model.tables;
+package org.ichat.backend.model.tables.jobs;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.ichat.backend.model.tables.Jobseeker;
 
 @Entity
 @Getter

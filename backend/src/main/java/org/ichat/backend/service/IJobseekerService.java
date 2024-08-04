@@ -2,7 +2,7 @@ package org.ichat.backend.service;
 
 import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.model.tables.Jobseeker;
-import org.ichat.backend.model.tables.Skill;
+import org.ichat.backend.model.tables.jobs.Skill;
 import org.ichat.backend.model.patchers.JobseekerPatchDTO;
 
 import java.util.List;

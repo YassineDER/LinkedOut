@@ -35,10 +35,12 @@ public class InitOnStartup {
     public CommandLineRunner createAdminIfNotExists() {
         return args -> {
             List<Admin> admins = adminRepo.findAll();
+            Roles adminRole = roleRepository.findByName("ADMIN").get();
             Admin admin = new Admin("Yassine", "Dergaoui", "0605897043", "Owner");
             admin.setUser_id(1L);
-            admin.setUser_roles(Set.of(roleRepository.findByName("ADMIN").get()));
+            admin.setRole(adminRole);
             admin.setEnabled(true);
+            admin.setImage_url("https://ax0judwwk3y8.objectstorage.eu-paris-1.oci.customer-oci.com/n/ax0judwwk3y8/b/images/o/default_profile.jpg");
 
             if (admins.isEmpty()) {
                 admin.setEmail("admin@example.com");

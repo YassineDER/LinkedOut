@@ -1,10 +1,11 @@
-package org.ichat.backend.model.tables;
+package org.ichat.backend.model.tables.jobs;
 
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.ichat.backend.model.tables.Jobseeker;
 import org.ichat.backend.model.util.job.ApplicationStatus;
 
 @Entity

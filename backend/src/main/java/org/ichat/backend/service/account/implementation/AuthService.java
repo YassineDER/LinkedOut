@@ -97,9 +97,8 @@ public class AuthService implements IAuthService {
         jobseeker.setEmail(request.getEmail());
         jobseeker.setUsername(request.getUsername());
         jobseeker.setPassword(passwordEncoder.encode(request.getPassword()));
-        jobseeker.setImage_url(request.getImage_url());
         jobseeker.setAddress(geo.getCity() + ", " + geo.getCountry());
-        jobseeker.setUser_roles(Set.of(role));
+        jobseeker.setRole(role);
         jobseekerService.add(jobseeker);
 
         String verifToken = accountVerificationService.sendVerificationEmail(jobseeker.getEmail());
@@ -109,12 +108,12 @@ public class AuthService implements IAuthService {
 
     @Override
     public String registerCompany(RegisterCompanyRequestDTO request) {
-        Roles USER_Roles = roleService.getRoleByName("COMPANY");
+        Roles role = roleService.getRoleByName("COMPANY");
         Company company = companyService.getCompanyBySIREN(request.getSiren());
         company.setUsername(request.getUsername());
         company.setEmail(request.getEmail());
         company.setPassword(passwordEncoder.encode(request.getPassword()));
-        company.setUser_roles(Set.of(USER_Roles));
+        company.setRole(role);
         companyService.add(company);
 
         String verifToken = accountVerificationService.sendVerificationEmail(company.getEmail());
@@ -124,14 +123,14 @@ public class AuthService implements IAuthService {
 
     @Override
     public String registerAdmin(RegisterAdminRequestDTO request) {
-        Roles USER_Roles = roleService.getRoleByName("ADMIN");
+        Roles role = roleService.getRoleByName("ADMIN");
         Admin admin = new Admin();
         admin.setFirst_name(request.getFirst_name());
         admin.setLast_name(request.getLast_name());
         admin.setEmail(request.getEmail());
         admin.setUsername(request.getUsername());
         admin.setPassword(passwordEncoder.encode(request.getPassword()));
-        admin.setUser_roles(Set.of(USER_Roles));
+        admin.setRole(role);
 
         String verifToken = accountVerificationService.sendVerificationEmail(admin.getEmail());
         accountVerificationService.saveVerification(admin, verifToken);

@@ -10,6 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.ichat.backend.model.tables.jobs.JobApplication;
+import org.ichat.backend.model.tables.jobs.Skill;
 
 import java.util.Set;
 

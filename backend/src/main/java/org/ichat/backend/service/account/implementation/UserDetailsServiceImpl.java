@@ -21,7 +21,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         var user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email + "."));
-        if (user.getUser_roles().isEmpty())
+        if (user.getRole() == null)
             throw new AccountException("User has no roles", HttpStatus.UNAUTHORIZED.value());
 
         return new User(user.getEmail(), user.getPassword(), user.getAuthorities());

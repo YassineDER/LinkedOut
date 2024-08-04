@@ -3,7 +3,7 @@ package org.ichat.backend.service.implementation;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.model.tables.Jobseeker;
-import org.ichat.backend.model.tables.Skill;
+import org.ichat.backend.model.tables.jobs.Skill;
 import org.ichat.backend.model.patchers.JobseekerPatchDTO;
 import org.ichat.backend.repository.JobseekerRepo;
 import org.ichat.backend.service.IJobseekerService;
@@ -12,9 +12,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -78,8 +80,12 @@ public class JobseekerService implements IJobseekerService {
     @Override
     public List<Jobseeker> findSuggested() {
         int total = (int) jobseekerRepo.count();
-        var lst = new java.util.ArrayList<>(jobseekerRepo.findAll(PageRequest.of(0, total))
-                .getContent().stream().limit(5).toList());
+        if (total == 0)
+            return List.of();
+
+        var lst = jobseekerRepo.findAll(PageRequest.of(0, total))
+                .getContent().stream().limit(5)
+                .collect(Collectors.toCollection(ArrayList::new));
         Collections.shuffle(lst);
         return lst.stream().toList();
     }
