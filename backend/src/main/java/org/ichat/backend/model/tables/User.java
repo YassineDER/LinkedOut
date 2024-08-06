@@ -66,22 +66,19 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
-    private Set<Post> userPosts;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonIgnore
     private Set<AccountReset> userAccountResets;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<AccountVerification> userAccountVerifications;
 
-    // if the user is deleted, the roles keep existing
     @OneToOne(cascade = CascadeType.DETACH)
     @JsonIgnoreProperties("role_id")
     Roles role;
 
-
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<Post> userPosts;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

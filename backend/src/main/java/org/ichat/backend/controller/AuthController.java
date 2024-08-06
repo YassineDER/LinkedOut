@@ -4,25 +4,21 @@ import dev.samstevens.totp.exceptions.QrGenerationException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.ichat.backend.exception.AccountException;
-import org.ichat.backend.model.tables.User;
 import org.ichat.backend.model.util.auth.*;
+import org.ichat.backend.service.account.IAccountManagementService;
 import org.ichat.backend.service.account.IAuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
 public class AuthController {
     private final IAuthService authService;
+    private final IAccountManagementService accountService;
     private final HttpServletRequest request;
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -42,7 +38,7 @@ public class AuthController {
 
     @GetMapping("/verify/{code}")
     public ResponseEntity<AuthResponseDTO> validateAccount(@PathVariable String code) {
-        String jwt = authService.validateAccount(code);
+        String jwt = accountService.validateAccount(code);
         return ResponseEntity.ok(new AuthResponseDTO(jwt));
     }
 
@@ -55,13 +51,13 @@ public class AuthController {
     @PostMapping("/reset-password")
     @Transactional
     public ResponseEntity<AuthResponseDTO> requestReset(@RequestBody AccountCredentialsDTO credentials) {
-        if (Boolean.TRUE.equals(authService.userUsingMFA(credentials.getEmail()))) {
+        if (Boolean.TRUE.equals(accountService.userUsingMFA(credentials.getEmail()))) {
             if (credentials.getCode() == null)
                 throw new AccountException("MFA code is required for this user", HttpStatus.FORBIDDEN.value());
             authService.verifyMFA(credentials);
         }
 
-        String resp = authService.requestPasswordReset(credentials);
+        String resp = accountService.requestPasswordReset(credentials);
         return ResponseEntity.ok(new AuthResponseDTO(resp));
     }
 
@@ -69,7 +65,7 @@ public class AuthController {
     public ResponseEntity<AuthResponseDTO> resetPassword(@Valid @RequestBody PasswordRequestDTO req) {
         if (!req.getPassword().equals(req.getPassword_confirmation()))
             throw new AccountException("Passwords do not match", HttpStatus.BAD_REQUEST.value());
-        String resp = authService.resetPassword(req.getReceived_code(), req.getPassword());
+        String resp = accountService.resetPassword(req.getReceived_code(), req.getPassword());
         return ResponseEntity.ok(new AuthResponseDTO(resp));
     }
 

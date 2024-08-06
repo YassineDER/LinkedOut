@@ -3,6 +3,7 @@ package org.ichat.backend.model.tables.indentity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
+import org.ichat.backend.model.util.RoleType;
 
 @Entity
 @Getter
@@ -18,6 +19,6 @@ public class Roles {
     @Column(nullable = false, unique = true)
     @NotEmpty(message = "Role name cannot be empty")
     @NonNull
-    private String name;
+    private RoleType name;
 
 }

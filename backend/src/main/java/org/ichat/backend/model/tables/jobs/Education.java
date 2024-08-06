@@ -1,0 +1,59 @@
+package org.ichat.backend.model.tables.jobs;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.ichat.backend.model.tables.social.JobseekerProfile;
+import org.ichat.backend.model.util.job.Flow;
+
+import java.time.LocalDate;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@Entity
+public class Education {
+    @Id
+    @GeneratedValue
+    Long education_id;
+
+    @NotEmpty(message = "School name is required")
+    @Column(nullable = false)
+    String etablissement;
+
+    @NotEmpty(message = "Logo url is required")
+    @Column(nullable = false)
+    String logo_url = "https://ax0judwwk3y8.objectstorage.eu-paris-1.oci.customer-oci.com/n/ax0judwwk3y8/b/images/o/default_education_logo.png";
+
+    @NotEmpty(message = "Location is required")
+    @Column(nullable = false)
+    String location;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    @NotEmpty(message = "Education flow is required")
+    Flow flow;
+
+    @NotEmpty(message = "Degree is required")
+    @Column(nullable = false)
+    String diplome;
+
+    @NotEmpty(message = "Field of study is required")
+    @Column(nullable = false)
+    String field_of_study;
+
+    @Column(nullable = false)
+    @NotEmpty(message = "Start date is required")
+    LocalDate start_date;
+
+    LocalDate end_date;
+
+    // if the education got deleted, we don't want to delete the profile
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "jobseeker_profile_id", referencedColumnName = "jobseeker_profile_id")
+    @JsonIgnore
+    JobseekerProfile jobseekerProfile;
+}

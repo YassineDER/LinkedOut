@@ -1,7 +1,6 @@
 package org.ichat.backend.service.account;
 
 import dev.samstevens.totp.exceptions.QrGenerationException;
-import org.ichat.backend.model.tables.User;
 import org.ichat.backend.model.util.auth.*;
 
 
@@ -11,14 +10,7 @@ public interface IAuthService {
 
     AuthResponseDTO authenticate(AccountCredentialsDTO credentials) throws QrGenerationException;
 
-    void verifyMFA(AccountCredentialsDTO credentials);
-
     String registerAdmin(RegisterAdminRequestDTO request);
 
-    String validateAccount(String token);
-
-    String resetPassword(String token, String newPassword);
-    String requestPasswordReset(AccountCredentialsDTO credentials);
-
-    boolean userUsingMFA(String email);
+    void verifyMFA(AccountCredentialsDTO credentials);
 }

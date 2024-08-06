@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.ichat.backend.model.tables.Company;
 import org.ichat.backend.model.util.job.JobType;
+import org.ichat.backend.model.util.job.Flow;
 
 import java.util.Set;
 
@@ -37,6 +38,11 @@ public class Job {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     JobType type;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    @NotEmpty(message = "Workflow is required")
+    Flow workflow;
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "company_id", referencedColumnName = "user_id")

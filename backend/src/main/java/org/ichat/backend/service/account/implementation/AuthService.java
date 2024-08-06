@@ -8,8 +8,11 @@ import org.ichat.backend.model.tables.Admin;
 import org.ichat.backend.model.tables.Company;
 import org.ichat.backend.model.tables.indentity.Roles;
 import org.ichat.backend.model.tables.User;
+import org.ichat.backend.model.tables.social.JobseekerProfile;
 import org.ichat.backend.model.util.GeolocationResponseDTO;
+import org.ichat.backend.model.util.RoleType;
 import org.ichat.backend.model.util.auth.*;
+import org.ichat.backend.repository.RoleRepository;
 import org.ichat.backend.service.*;
 import org.ichat.backend.service.account.*;
 import org.ichat.backend.service.shared.IGeolocationService;
@@ -23,23 +26,20 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
-
 @Service
 @Transactional(dontRollbackOn = AccountExpiredException.class)
 @RequiredArgsConstructor
 public class AuthService implements IAuthService {
-    private final IUserService userService;
     private final ICompanyService companyService;
     private final IJobseekerService jobseekerService;
-    private final IRoleService roleService;
-    private final IAccountVerificationService accountVerificationService;
-    private final IAccountResetService accountResetService;
-    private final ITwoFactorAuthService twoFactorAuthService;
+    private final RoleRepository roleRepo;
     private final IJwtService jwtService;
+    private final IUserService userService;
+    private final IAccountVerificationService accountVerificationService;
+    private final PasswordEncoder passwordEncoder;
+    private final ITwoFactorAuthService twoFactorAuthService;
 
     private final IGeolocationService geoService;
-    private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
     @Override
@@ -80,15 +80,8 @@ public class AuthService implements IAuthService {
     }
 
     @Override
-    public void verifyMFA(AccountCredentialsDTO credentials) {
-        User user = userService.findBy(credentials.getEmail());
-        if (!twoFactorAuthService.codeIsValid(user.getMfa_secret(), credentials.getCode()))
-            throw new AccountException("Invalid MFA code", HttpStatus.BAD_REQUEST.value());
-    }
-
-    @Override
     public String registerJobseeker(RegisterJobseekerRequestDTO request, String clientIP) {
-        Roles role = roleService.getRoleByName("JOBSEEKER");
+        Roles role = roleRepo.findByName(RoleType.JOBSEEKER).orElseThrow();
         GeolocationResponseDTO geo = geoService.getGeolocationFromIP(clientIP);
 
         Jobseeker jobseeker = new Jobseeker();
@@ -96,6 +89,7 @@ public class AuthService implements IAuthService {
         jobseeker.setLast_name(request.getLast_name());
         jobseeker.setEmail(request.getEmail());
         jobseeker.setUsername(request.getUsername());
+        jobseeker.setProfile(new JobseekerProfile());
         jobseeker.setPassword(passwordEncoder.encode(request.getPassword()));
         jobseeker.setAddress(geo.getCity() + ", " + geo.getCountry());
         jobseeker.setRole(role);
@@ -108,7 +102,7 @@ public class AuthService implements IAuthService {
 
     @Override
     public String registerCompany(RegisterCompanyRequestDTO request) {
-        Roles role = roleService.getRoleByName("COMPANY");
+        Roles role = roleRepo.findByName(RoleType.COMPANY).orElseThrow();
         Company company = companyService.getCompanyBySIREN(request.getSiren());
         company.setUsername(request.getUsername());
         company.setEmail(request.getEmail());
@@ -123,7 +117,7 @@ public class AuthService implements IAuthService {
 
     @Override
     public String registerAdmin(RegisterAdminRequestDTO request) {
-        Roles role = roleService.getRoleByName("ADMIN");
+        Roles role = roleRepo.findByName(RoleType.ADMIN).orElseThrow();
         Admin admin = new Admin();
         admin.setFirst_name(request.getFirst_name());
         admin.setLast_name(request.getLast_name());
@@ -137,28 +131,13 @@ public class AuthService implements IAuthService {
         return "Admin registered successfully. Please verify your email.";
     }
 
-    @Override
-    public String validateAccount(String token) {
-        return accountVerificationService.verifyToken(token);
-    }
 
     @Override
-    public String resetPassword(String token, String newPassword) {
-        var encoded = passwordEncoder.encode(newPassword);
-        return accountResetService.resetPassword(token, encoded);
-    }
-
-    @Override
-    public String requestPasswordReset(AccountCredentialsDTO credentials) {
+    public void verifyMFA(AccountCredentialsDTO credentials) {
         User user = userService.findBy(credentials.getEmail());
-        String resetToken = accountResetService.sendResetEmail(user.getEmail());
-        accountResetService.saveReset(user, resetToken);
-
-        return "Password reset request has been sent to your email address. Please check your email.";
+        boolean codeIsValid = twoFactorAuthService.codeIsValid(user.getMfa_secret(), credentials.getCode());
+        if (!codeIsValid)
+            throw new AccountException("Invalid MFA code", HttpStatus.BAD_REQUEST.value());
     }
 
-    @Override
-    public boolean userUsingMFA(String email) {
-        return userService.findBy(email).getUsing_mfa();
-    }
 }

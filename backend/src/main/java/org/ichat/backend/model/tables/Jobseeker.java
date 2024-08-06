@@ -1,10 +1,7 @@
 package org.ichat.backend.model.tables;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.ichat.backend.model.tables.jobs.JobApplication;
 import org.ichat.backend.model.tables.jobs.Skill;
+import org.ichat.backend.model.tables.social.JobseekerProfile;
 
 import java.util.Set;
 
@@ -45,5 +43,9 @@ public class Jobseeker extends User {
     @OneToMany(mappedBy = "jobseeker")
     @JsonIgnore
     private Set<Skill> skills;
+
+    @OneToOne(mappedBy = "jobseeker", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private JobseekerProfile profile;
 
 }
