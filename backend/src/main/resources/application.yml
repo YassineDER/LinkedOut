@@ -8,6 +8,10 @@ spring:
     url: ${DB_URL}
     username: ${DB_USER}
     password: ${DB_PASS}
+  data:
+    jpa:
+      repositories:
+        bootstrap-mode: deferred
   jpa:
     generate-ddl: true
     hibernate:

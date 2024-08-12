@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,7 +23,7 @@ public class Experience {
     @GeneratedValue
     Long experience_id;
 
-    @OneToOne(mappedBy = "company", cascade = CascadeType.DETACH)
+    @OneToOne
     @JoinColumn(name = "company_id")
     @JsonIncludeProperties({"company_name", "image_url"})
     Company company;
@@ -32,7 +33,7 @@ public class Experience {
     String title;
 
     @Column(nullable = false)
-    @NotEmpty(message = "Job type is required")
+    @NotNull
     @Enumerated(EnumType.STRING)
     JobType job_type;
 
@@ -42,8 +43,8 @@ public class Experience {
 
     LocalDate end_date;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "jobseeker_profile_id", referencedColumnName = "jobseeker_profile_id")
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "profile_id", referencedColumnName = "profile_id")
     @JsonIgnore
     JobseekerProfile jobseekerProfile;
 

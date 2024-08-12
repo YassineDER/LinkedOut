@@ -3,5 +3,10 @@ package org.ichat.backend.model.util.job;
 public enum ApplicationStatus {
     PENDING,
     ACCEPTED,
-    REJECTED
+    REJECTED;
+
+    @Override
+    public String toString() {
+        return this.name().toUpperCase();
+    }
 }

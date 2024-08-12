@@ -12,5 +12,5 @@ public interface IAdminService {
     Admin findBy(Long admin_id);
 
     Admin update(Long oldUserID, AdminPatchDTO newAdmin) throws AccountException;
-    Admin add(Admin admin);
+    Admin create(Admin admin);
 }

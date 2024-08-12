@@ -7,8 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.ichat.backend.model.tables.jobs.Job;
-import org.ichat.backend.model.tables.social.JobseekerProfile;
-import org.ichat.backend.model.tables.social.SocialProfile;
+import org.ichat.backend.model.tables.social.CompanyStaffProfile;
 
 import java.util.Set;
 
@@ -42,11 +41,7 @@ public class Company extends User {
 
     String website;
 
-    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Set<Job> postedJobs;
-
-    @OneToOne(mappedBy = "company", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private SocialProfile profile;
 }

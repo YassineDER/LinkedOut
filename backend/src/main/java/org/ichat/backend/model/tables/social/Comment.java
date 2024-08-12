@@ -17,13 +17,13 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long comment_id;
 
-    @NotEmpty(message = "Comment is required")
+    @NotEmpty(message = "Comment content is required")
     @Column(nullable = false)
-    String comment;
+    String content;
 
     LocalDateTime created_at = LocalDateTime.now();
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "post_id", referencedColumnName = "post_id")
     Post post;
 

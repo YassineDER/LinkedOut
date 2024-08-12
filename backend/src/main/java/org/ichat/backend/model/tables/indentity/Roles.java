@@ -17,8 +17,12 @@ public class Roles {
     private Integer role_id;
 
     @Column(nullable = false, unique = true)
-    @NotEmpty(message = "Role name cannot be empty")
     @NonNull
+    @Enumerated(EnumType.STRING)
     private RoleType name;
+
+    public String getName() {
+        return name.toString();
+    }
 
 }

@@ -8,14 +8,18 @@ import org.ichat.backend.model.tables.Admin;
 import org.ichat.backend.model.tables.Company;
 import org.ichat.backend.model.tables.indentity.Roles;
 import org.ichat.backend.model.tables.User;
+import org.ichat.backend.model.tables.social.CompanyStaffProfile;
 import org.ichat.backend.model.tables.social.JobseekerProfile;
+import org.ichat.backend.model.tables.social.Profile;
 import org.ichat.backend.model.util.GeolocationResponseDTO;
 import org.ichat.backend.model.util.RoleType;
 import org.ichat.backend.model.util.auth.*;
 import org.ichat.backend.repository.RoleRepository;
 import org.ichat.backend.service.*;
 import org.ichat.backend.service.account.*;
+import org.ichat.backend.service.implementation.AdminService;
 import org.ichat.backend.service.shared.IGeolocationService;
+import org.ichat.backend.service.social.implementation.ProfileService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -41,6 +45,8 @@ public class AuthService implements IAuthService {
 
     private final IGeolocationService geoService;
     private final AuthenticationManager authenticationManager;
+    private final ProfileService profileService;
+    private final AdminService adminService;
 
     @Override
     public AuthResponseDTO authenticate(AccountCredentialsDTO credentials) {
@@ -93,7 +99,9 @@ public class AuthService implements IAuthService {
         jobseeker.setPassword(passwordEncoder.encode(request.getPassword()));
         jobseeker.setAddress(geo.getCity() + ", " + geo.getCountry());
         jobseeker.setRole(role);
-        jobseekerService.add(jobseeker);
+        Profile profile = profileService.createJobseekerProfile(jobseeker);
+        jobseeker.setProfile(profile);
+        jobseekerService.create(jobseeker);
 
         String verifToken = accountVerificationService.sendVerificationEmail(jobseeker.getEmail());
         accountVerificationService.saveVerification(jobseeker, verifToken);
@@ -108,7 +116,8 @@ public class AuthService implements IAuthService {
         company.setEmail(request.getEmail());
         company.setPassword(passwordEncoder.encode(request.getPassword()));
         company.setRole(role);
-        companyService.add(company);
+        company.setProfile(new CompanyStaffProfile());
+        companyService.create(company);
 
         String verifToken = accountVerificationService.sendVerificationEmail(company.getEmail());
         accountVerificationService.saveVerification(company, verifToken);
@@ -119,12 +128,15 @@ public class AuthService implements IAuthService {
     public String registerAdmin(RegisterAdminRequestDTO request) {
         Roles role = roleRepo.findByName(RoleType.ADMIN).orElseThrow();
         Admin admin = new Admin();
+
         admin.setFirst_name(request.getFirst_name());
         admin.setLast_name(request.getLast_name());
         admin.setEmail(request.getEmail());
         admin.setUsername(request.getUsername());
         admin.setPassword(passwordEncoder.encode(request.getPassword()));
         admin.setRole(role);
+        admin.setProfile(new CompanyStaffProfile());
+        adminService.create(admin);
 
         String verifToken = accountVerificationService.sendVerificationEmail(admin.getEmail());
         accountVerificationService.saveVerification(admin, verifToken);

@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.ichat.backend.model.tables.jobs.JobApplication;
-import org.ichat.backend.model.tables.jobs.Skill;
 import org.ichat.backend.model.tables.social.JobseekerProfile;
 
 import java.util.Set;
@@ -36,16 +35,8 @@ public class Jobseeker extends User {
 
     String title;
 
-    @OneToMany(mappedBy = "jobseeker")
+    @OneToMany(mappedBy = "jobseeker", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Set<JobApplication> jobApplications;
-
-    @OneToMany(mappedBy = "jobseeker")
-    @JsonIgnore
-    private Set<Skill> skills;
-
-    @OneToOne(mappedBy = "jobseeker", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private JobseekerProfile profile;
 
 }

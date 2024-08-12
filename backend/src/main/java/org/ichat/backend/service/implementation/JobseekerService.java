@@ -61,7 +61,7 @@ public class JobseekerService implements IJobseekerService {
     }
 
     @Override
-    public Jobseeker add(Jobseeker jobseeker) {
+    public Jobseeker create(Jobseeker jobseeker) {
         boolean userExists = jobseekerRepo.findByEmail(jobseeker.getEmail()).isPresent() ||
                 jobseekerRepo.findByUsername(jobseeker.getUsername()).isPresent();
         if (userExists)
@@ -71,10 +71,8 @@ public class JobseekerService implements IJobseekerService {
 
     @Override
     public Set<Skill> addAquiredSkills(Long jobseeker_id, Set<Skill> skills) {
-        Jobseeker jobseeker = findBy(jobseeker_id);
-        jobseeker.setSkills(skills);
-        jobseekerRepo.save(jobseeker);
-        return jobseeker.getSkills();
+        // TODO: Implement this method
+        return null;
     }
 
     @Override

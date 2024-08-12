@@ -22,15 +22,8 @@ public class PostService implements IPostService {
 
     @Override
     public Post createPost(User creator, PostRequestDTO req) {
-        if (req.getDescription().length() > 1000)
-            throw new IllegalArgumentException("Description too long");
-
-        var P = new Post();
-        P.setDescription(req.getDescription());
-        P.setImage_url(req.getImage_url());
-        P.setUser(creator);
-
-        return repo.save(P);
+        // TODO: Create a post
+        return null;
     }
 
     @Override
@@ -67,7 +60,7 @@ public class PostService implements IPostService {
 
     @Override
     public List<Comment> getComments(Long postId) {
-        var post = repo.findById(postId).orElseThrow(() -> new NoSuchElementException("Post not found"));
-        return post.getComments().stream().toList();
+        // TODO: Get all comments for a post
+        return List.of();
     }
 }

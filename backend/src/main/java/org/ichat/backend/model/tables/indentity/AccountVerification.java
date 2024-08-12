@@ -16,10 +16,9 @@ import org.ichat.backend.model.tables.User;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AccountVerification {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer account_verification_id;
+    private Long account_verification_id;
 
     @Column(nullable = false, unique = true)
     @NotEmpty
@@ -29,9 +28,7 @@ public class AccountVerification {
     @NotNull
     private OffsetDateTime expiresAt;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
-
-
 }

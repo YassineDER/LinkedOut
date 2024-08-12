@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,26 +33,22 @@ public class Job {
 
     @NotEmpty(message = "Location is required")
     @Column(nullable = false)
-    String location; // autocomplete with google maps api
+    String location;
 
-    @NotEmpty(message = "Type is required")
+    @NotNull
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     JobType type;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    @NotEmpty(message = "Workflow is required")
+    @NotNull
     Flow workflow;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(name = "company_id", referencedColumnName = "user_id")
     @JsonIncludeProperties({"user_id", "image_url", "company_name"})
     Company company;
-
-    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL)
-    @JsonIncludeProperties({"name"})
-    private Set<Skill> requiredSkills;
 
     @OneToMany(mappedBy = "job", cascade = CascadeType.ALL)
     @JsonIgnore

@@ -14,7 +14,7 @@ public interface IJobseekerService{
     Jobseeker findBy(Long jobseeker_id);
 
     Jobseeker update(Jobseeker oldJobseeker, JobseekerPatchDTO newUser) throws AccountException;
-    Jobseeker add(Jobseeker jobseeker);
+    Jobseeker create(Jobseeker jobseeker);
 
     Set<Skill> addAquiredSkills(Long jobseeker_id, Set<Skill> skills);
 

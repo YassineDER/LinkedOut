@@ -61,7 +61,7 @@ public class CompanyService implements ICompanyService {
     }
 
     @Override
-    public Company add(Company company) {
+    public Company create(Company company) {
         boolean exists = companyRepo.findByEmail(company.getEmail()).isPresent() ||
                 companyRepo.findByUsername(company.getUsername()).isPresent();
         if (exists)

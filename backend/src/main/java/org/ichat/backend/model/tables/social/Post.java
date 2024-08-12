@@ -30,12 +30,11 @@ public class Post {
 
     int likes = 0;
 
-    @JsonIncludeProperties({"user_id", "image_url", "username", "company_name", "first_name", "last_name", "title"})
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-    User user;
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "profile_id", referencedColumnName = "profile_id")
+    Profile profile;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Comment> comments;
 
     public void like() {

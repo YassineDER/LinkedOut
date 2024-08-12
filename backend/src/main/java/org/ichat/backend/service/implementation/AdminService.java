@@ -54,7 +54,7 @@ public class AdminService implements IAdminService {
     }
 
     @Override
-    public Admin add(Admin admin) {
+    public Admin create(Admin admin) {
         boolean userExists = adminRepository.findByEmail(admin.getEmail()).isPresent() ||
                 adminRepository.findByUsername(admin.getUsername()).isPresent();
         if (userExists)

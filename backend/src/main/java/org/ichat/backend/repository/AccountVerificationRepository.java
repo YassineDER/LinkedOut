@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
 import java.util.Optional;
 
 @Repository
-public interface AccountVerificationRepository extends JpaRepository<AccountVerification, Integer> {
+public interface AccountVerificationRepository extends JpaRepository<AccountVerification, Long> {
     // Delete all account verifications that have expired before the provided date
     @Modifying
     @Transactional

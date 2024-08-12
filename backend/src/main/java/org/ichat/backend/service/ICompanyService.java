@@ -14,6 +14,6 @@ public interface ICompanyService {
     Company getCompanyBySIREN(String SIRET);
 
     Company update(Company oldCompany, CompanyPatchDTO newCompany) throws AccountException;
-    Company add(Company company);
+    Company create(Company company);
 
 }

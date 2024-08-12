@@ -3,6 +3,7 @@ package org.ichat.backend.model.tables.jobs;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -34,7 +35,7 @@ public class Education {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    @NotEmpty(message = "Education flow is required")
+    @NotNull
     Flow flow;
 
     @NotEmpty(message = "Degree is required")
@@ -51,9 +52,8 @@ public class Education {
 
     LocalDate end_date;
 
-    // if the education got deleted, we don't want to delete the profile
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "jobseeker_profile_id", referencedColumnName = "jobseeker_profile_id")
+    @ManyToOne
+    @JoinColumn(name = "profile_id", referencedColumnName = "profile_id")
     @JsonIgnore
     JobseekerProfile jobseekerProfile;
 }

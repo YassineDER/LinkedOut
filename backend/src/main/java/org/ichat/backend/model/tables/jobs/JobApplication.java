@@ -2,6 +2,7 @@ package org.ichat.backend.model.tables.jobs;
 
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,21 +18,24 @@ public class JobApplication {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long job_application_id;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     @JsonIncludeProperties({"user_id", "first_name", "last_name", "email", "image_url", "phone", "cv_url"})
-    private Jobseeker jobseeker;
+    Jobseeker jobseeker;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "job_id", referencedColumnName = "job_id")
     @JsonIncludeProperties({"job_id", "title", "type", "employer"})
-    private Job job;
+    Job job;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
+    @NotNull
     ApplicationStatus status;
 
-    @Column
     String coverLetter_url;
 
+    public String getStatus() {
+        return status.toString();
+    }
 }
