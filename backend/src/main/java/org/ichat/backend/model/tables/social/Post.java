@@ -1,12 +1,10 @@
 package org.ichat.backend.model.tables.social;
 
-import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.ichat.backend.model.tables.User;
 
 import java.time.LocalDateTime;
 import java.util.Set;

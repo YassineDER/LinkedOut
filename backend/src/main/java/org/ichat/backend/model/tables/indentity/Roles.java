@@ -8,16 +8,14 @@ import org.ichat.backend.model.util.RoleType;
 @Entity
 @Getter
 @Setter
-@RequiredArgsConstructor // constructor with fields that are marked as @NonNull
+@AllArgsConstructor
 @NoArgsConstructor
 public class Roles {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NonNull
     private Integer role_id;
 
-    @Column(nullable = false, unique = true)
-    @NonNull
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private RoleType name;
 

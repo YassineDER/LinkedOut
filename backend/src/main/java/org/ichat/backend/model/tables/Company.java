@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.ichat.backend.model.tables.jobs.Job;
-import org.ichat.backend.model.tables.social.CompanyStaffProfile;
 
 import java.util.Set;
 

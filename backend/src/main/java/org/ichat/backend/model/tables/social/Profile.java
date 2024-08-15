@@ -1,14 +1,12 @@
 package org.ichat.backend.model.tables.social;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
-import org.ichat.backend.model.tables.User;
 
 import java.util.Set;
 
@@ -18,10 +16,10 @@ import java.util.Set;
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, name = "profile_type")
-@DiscriminatorValue("P")
-public class Profile {
+@DiscriminatorValue("PROFILE")
+public abstract class Profile {
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     Long profile_id;
 
     @Column(nullable = false)
@@ -31,11 +29,19 @@ public class Profile {
     @Column(nullable = false)
     String banner_url = "https://ax0judwwk3y8.objectstorage.eu-paris-1.oci.customer-oci.com/n/ax0judwwk3y8/b/images/o/default_banner.png";
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-    User user;
-
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Set<Post> posts;
+
+    @Column(nullable = false)
+    Integer profile_views = 0;
+
+    @OneToMany(mappedBy = "profile1", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private Set<Connection> connections;
+
+    @JsonProperty("connections")
+    public int getNumberOfConnections() {
+        return connections.size();
+    }
 }

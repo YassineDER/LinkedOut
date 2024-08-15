@@ -1,4 +1,4 @@
-<!doctype html> <html>
+<!doctype html><html lang="fr">
 <head>
     <meta name="viewport" content="width=device-width"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -19,8 +19,8 @@
 
         table {
             border-collapse: separate;
-            mso-table-lspace: 0pt;
-            mso-table-rspace: 0pt;
+            mso-table-lspace: 0;
+            mso-table-rspace: 0;
             width: 100%;
         }
 
@@ -60,13 +60,6 @@
         .wrapper {
             box-sizing: border-box;
             padding: 20px;
-        }
-
-        .footer {
-            clear: both;
-            padding-top: 10px;
-            text-align: center;
-            width: 100%;
         }
 
         .footer td,
@@ -115,11 +108,6 @@
         a {
             color: #3498db;
             text-decoration: underline;
-        }
-
-        .btn {
-            box-sizing: border-box;
-            width: 100%;
         }
 
         .btn > tbody > tr > td {
@@ -194,11 +182,6 @@
                 font-size: 16px !important;
             }
 
-            table[class=body] .wrapper,
-            table[class=body] .article {
-                padding: 10px !important;
-            }
-
             table[class=body] .content {
                 padding: 0 !important;
             }
@@ -260,14 +243,14 @@
                                 <tr>
                                     <td>
                                         <h1 th:text="${header}"></h1>
-                                        <h2>You are just one step away</h2><br>
+                                        <h2>Vous êtes à un pas</h2><br>
                                         <br>
-                                        Please copy the code below and paste it in the verification page to verify your email address.
-                                        <strong>(valid for only 30 minutes)</strong>
+                                        Veuillez copier le code ci-dessous et le coller dans la page de vérification pour vérifier votre adresse e-mail.
+                                        <strong>(valide seulement 30 minutes)</strong>
                                         <br>
                                         <h2 th:text="${code}"></h2>
                                         <br>
-                                        <p>If you received this email by mistake, simply delete it. </p>
+                                        <p>Si vous avez reçu cet e-mail par erreur, supprimez-le simplement. </p>
                                     </td>
                                 </tr>
                             </table>
@@ -276,11 +259,6 @@
 
                     <!-- END MAIN CONTENT AREA -->
                 </table>
-
-                    <!-- START FOOTER -->
-                <div class="footer">
-                    <span class="apple-link">securecapita.com | 2024</span>
-                </div>
             </div>
         </td>
     </tr>

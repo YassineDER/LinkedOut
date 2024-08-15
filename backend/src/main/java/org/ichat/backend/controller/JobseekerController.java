@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.ichat.backend.model.tables.Jobseeker;
 import org.ichat.backend.model.tables.User;
 import org.ichat.backend.model.patchers.JobseekerPatchDTO;
-import org.ichat.backend.service.IJobseekerService;
+import org.ichat.backend.services.IJobseekerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

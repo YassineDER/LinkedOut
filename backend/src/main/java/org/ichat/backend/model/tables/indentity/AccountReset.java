@@ -19,6 +19,7 @@ import org.ichat.backend.model.tables.User;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AccountReset {
+
     @Id
     @Column(nullable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)

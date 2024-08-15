@@ -7,8 +7,8 @@ import org.ichat.backend.model.tables.User;
 import org.ichat.backend.model.tables.Jobseeker;
 import org.ichat.backend.model.util.auth.AccountCredentialsDTO;
 import org.ichat.backend.model.util.auth.AuthResponseDTO;
-import org.ichat.backend.service.account.ITwoFactorAuthService;
-import org.ichat.backend.service.account.IUserService;
+import org.ichat.backend.services.account.ITwoFactorAuthService;
+import org.ichat.backend.services.account.IUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,7 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.ichat.backend.service.IJobseekerService;
+import org.ichat.backend.services.IJobseekerService;
 
 import java.util.List;
 import java.util.Map;
@@ -42,14 +42,13 @@ public class UserController {
         userService.deleteBy(id);
         return ResponseEntity.noContent().build();
     }
-
     
     @GetMapping("/suggested")
-    public ResponseEntity<List<Jobseeker>> suggested() {
-        var suggested = jobseekerService.findSuggested();
+    public ResponseEntity<List<Jobseeker>> suggested(User me) {
+        var suggested = jobseekerService.findSuggested(me);
+        suggested.forEach(jobseeker -> jobseeker.setProfile(null));
         return ResponseEntity.ok(suggested);
     }
-    
 
     @PostMapping("/mfa/{action}")
     @Transactional

@@ -6,8 +6,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.model.util.auth.*;
-import org.ichat.backend.service.account.IAccountManagementService;
-import org.ichat.backend.service.account.IAuthService;
+import org.ichat.backend.services.account.IAccountManagementService;
+import org.ichat.backend.services.account.IAuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,15 +21,14 @@ public class AuthController {
     private final IAccountManagementService accountService;
     private final HttpServletRequest request;
 
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/register/jobseeker")
     public ResponseEntity<AuthResponseDTO> registerJobseeker(@Valid @RequestBody RegisterJobseekerRequestDTO reqBody) {
         String clientIP = request.getHeader("X-FORWARDED-FOR");
         String resp = authService.registerJobseeker(reqBody, clientIP);
-        return ResponseEntity.ok(new AuthResponseDTO(resp));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new AuthResponseDTO(resp));
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/register/company")
     public ResponseEntity<AuthResponseDTO> registerCompany(@Valid @RequestBody RegisterCompanyRequestDTO req) {
         String resp = authService.registerCompany(req);

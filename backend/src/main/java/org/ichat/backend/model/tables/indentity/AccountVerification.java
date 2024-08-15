@@ -16,6 +16,7 @@ import org.ichat.backend.model.tables.User;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AccountVerification {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long account_verification_id;

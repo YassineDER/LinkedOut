@@ -2,7 +2,7 @@ package org.ichat.backend.config.security;
 
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.config.UserArgumentResolver;
-import org.ichat.backend.service.account.IUserService;
+import org.ichat.backend.services.account.IUserService;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;

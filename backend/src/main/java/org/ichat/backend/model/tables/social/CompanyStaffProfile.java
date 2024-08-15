@@ -12,5 +12,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @DiscriminatorValue("COMPANY_STAFF")
 public class CompanyStaffProfile extends Profile {
+    
 
 }

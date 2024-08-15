@@ -2,17 +2,18 @@ package org.ichat.backend.model.tables;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.ichat.backend.model.tables.indentity.AccountReset;
 import org.ichat.backend.model.tables.indentity.AccountVerification;
 import org.ichat.backend.model.tables.indentity.Roles;
-import org.ichat.backend.model.tables.social.Post;
 import org.ichat.backend.model.tables.social.Profile;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 @Entity
 @Getter
 @Setter
+@EqualsAndHashCode(of = "user_id")
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.CHAR, name = "user_type")
@@ -73,12 +75,13 @@ public class User implements UserDetails {
     @JsonIgnore
     private Set<AccountVerification> userAccountVerifications;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "role_id", referencedColumnName = "role_id")
     @JsonIgnoreProperties("role_id")
     Roles role;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties("user")
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     Profile profile;
 
     @Override

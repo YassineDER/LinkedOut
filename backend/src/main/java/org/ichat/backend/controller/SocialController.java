@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.ichat.backend.model.tables.User;
 import org.ichat.backend.model.tables.social.Post;
 import org.ichat.backend.model.util.social.PostRequestDTO;
-import org.ichat.backend.service.social.IPostService;
+import org.ichat.backend.services.social.IPostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

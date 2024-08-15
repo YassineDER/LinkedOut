@@ -2,8 +2,8 @@ package org.ichat.backend.config.security;
 
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.config.requests.JwtAuthenticationFilter;
-import org.ichat.backend.service.account.IJwtService;
-import org.ichat.backend.service.account.IUserService;
+import org.ichat.backend.services.account.IJwtService;
+import org.ichat.backend.services.account.IUserService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +18,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 
 @Configuration
 @RequiredArgsConstructor

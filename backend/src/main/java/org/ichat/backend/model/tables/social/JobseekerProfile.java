@@ -19,14 +19,12 @@ import java.util.Set;
 public class JobseekerProfile extends Profile {
 
     @OneToMany(mappedBy = "jobseekerProfile", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties({"jobseekerProfile"})
-    Set<Experience> experiences = Set.of();
+    Set<Experience> experiences;
 
     @OneToMany(mappedBy = "jobseekerProfile", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties({"jobseekerProfile"})
-    Set<Education> studies = Set.of();
+    Set<Education> studies;
 
     @OneToMany
-    Set<Skill> skills = Set.of();
+    Set<Skill> skills;
 
 }
