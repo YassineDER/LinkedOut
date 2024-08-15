@@ -8,16 +8,13 @@
     </div>
 
     @if (expandable) {
-      {{ user_profile.about.slice(0, 200) }}...
+      {{ user.profile.bio.slice(0, 200) }}...
       <div class="card-actions">
         <button (click)="expandable = false" class="ms-auto link-primary">Voir plus</button>
       </div>
     }
     @else {
-      {{ user_profile.about }}
-      <div class="card-actions">
-        <button (click)="expandable = true" class="ms-auto link-primary">Voir moins</button>
-      </div>
+      {{ user.profile.bio }}
     }
   </div>
 </div>

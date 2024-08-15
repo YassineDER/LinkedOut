@@ -1,18 +1,18 @@
 <div class="p-4 bg-white shadow rounded-lg">
   <h1 class="font-semibold text-xl">Tableau de bord</h1>
   <span class="text-gray-500 text-sm mb-3">
-    <i class="bi bi-eye-fill"></i>Privé pour vous
+    <i class="bi bi-eye-fill me-2"></i>Privé pour vous
   </span>
   <div class="my-4">
-    <div class="text-5xl font-bold text-primary">{{ profile_views }}</div>
+    <div class="text-5xl font-bold text-primary">{{ user.profile.connections }}</div>
     <div class="text-gray-500">Vues totales</div>
   </div>
   <div class="my-4">
-    <div class="text-5xl font-bold text-primary">{{ today_views }}</div>
-    <div class="text-gray-500">Vues aujourd'hui</div>
+    <div class="text-5xl font-bold text-primary">{{ user.profile.connections }}</div>
+    <div class="text-gray-500">Connexions</div>
   </div>
   <div class="my-4">
-    <div class="text-5xl font-bold text-primary">{{ search_apperances }}</div>
+    <div class="text-5xl font-bold text-primary">{{ 0 }}</div>
     <div class="text-gray-500">Apparitions dans les recherches</div>
   </div>
 </div>

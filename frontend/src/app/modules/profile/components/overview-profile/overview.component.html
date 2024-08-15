@@ -51,7 +51,7 @@
       </div>
       <p class="text-gray-600">{{ user.admin_title }}</p>
     }
-    <a [routerLink]="Path.NETWORK.toString()" class="link link-primary mt-2">{{ social.profile_stats?.connections }} connections</a>
+    <a [routerLink]="Path.NETWORK.toString()" class="link link-primary mt-2">{{ user.profile.connections }} connections</a>
   </div>
 
 </div>

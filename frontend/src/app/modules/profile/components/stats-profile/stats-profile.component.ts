@@ -9,9 +9,6 @@ import {SocialService} from "../../../home/services/social.service";
 })
 export class StatsProfileComponent implements OnInit{
     @Input() user!: User;
-    profile_views: number = 0;
-    today_views: number = 0;
-    search_apperances: number = 0;
 
     constructor(private social: SocialService) {
     }

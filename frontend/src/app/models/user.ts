@@ -1,3 +1,5 @@
+import {Profile} from "./profile";
+
 /**
  * User model, macthes the one in the backend
  */
@@ -8,4 +10,5 @@ export interface User{
     image_url: string;
     using_mfa: boolean;
     authorities: any[];
+    profile: Profile;
 }

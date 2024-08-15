@@ -28,6 +28,7 @@ export class RegisterJobseekerComponent {
             password: this.pwd,
             first_name: this.first_name,
             last_name: this.last_name,
+            image_url: new FormControl(null)
         });
 
         this.isDev = !environment.production;

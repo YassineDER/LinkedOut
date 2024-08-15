@@ -52,8 +52,8 @@ export class ConfirmationComponent {
 
         if (this.verification === VerificationType.EMAIL_VERIFICATION && code !== null) {
             await this.auth.verifyEmail(code)
-                .then(() => this.router.navigate([Path.LOGIN.toString()])
-                    .then(() => this.utils.alert('Email vérifié. Vous pouvez maintenant vous connecter', AlertType.SUCCESS)))
+                .then((res) => this.router.navigate([Path.LOGIN.toString()], {queryParams: {token: res}})
+                    .then(() => this.utils.alert('Votre adresse email a été vérifiée', AlertType.SUCCESS)))
                     .catch((err) => this.utils.alert(err.error.error, AlertType.ERROR));
         }
 

@@ -2,6 +2,7 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
+
 @font-face {
     font-family: 'Inter';
     src: url('assets/fonts/Inter.ttf') format('truetype');
@@ -9,6 +10,23 @@
     font-display: swap;
 }
 
+@keyframes gradient-animation {
+    0% {
+        background-position: 0 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0 50%;
+    }
+}
+
+.gradient-bg {
+    background: linear-gradient(295deg,#004dac,#002655,#3264a1,#2d6cbc);
+    background-size: 240% 240%;
+    animation: gradient-animation 12s ease infinite;
+}
 
 html, body {
     height: 100vh;
