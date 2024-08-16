@@ -7,10 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.ichat.backend.model.tables.indentity.AccountReset;
 import org.ichat.backend.model.tables.indentity.AccountVerification;
 import org.ichat.backend.model.tables.indentity.Roles;
@@ -30,10 +27,11 @@ import java.util.stream.Collectors;
 @Setter
 @EqualsAndHashCode(of = "user_id")
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.CHAR, name = "user_type")
 @DiscriminatorValue("U")
-public class User implements UserDetails {
+public abstract class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     Long user_id;
@@ -81,7 +79,6 @@ public class User implements UserDetails {
     Roles role;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     Profile profile;
 
     @Override

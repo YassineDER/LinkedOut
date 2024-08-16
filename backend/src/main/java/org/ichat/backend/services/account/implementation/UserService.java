@@ -55,4 +55,17 @@ public class UserService implements IUserService {
         userToUpdate.setImage_url(newUser.getImage_url());
         return userRepository.save(userToUpdate);
     }
+
+    @Override
+    public User compact(User user) {
+        user.setPassword(null);
+        user.setUsing_mfa(null);
+        user.setEnabled(null);
+        user.setMfa_secret(null);
+        user.setCreatedDate(null);
+        user.setProfile(null);
+        user.setUserAccountVerifications(null);
+        user.setUserAccountResets(null);
+        return user;
+    }
 }

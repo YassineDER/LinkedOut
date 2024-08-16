@@ -15,4 +15,6 @@ public interface IUserService {
     UserRepository getUserRepository();
 
     User update(Long userId, User newUser);
+
+    User compact(User user);
 }

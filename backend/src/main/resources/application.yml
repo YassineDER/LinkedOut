@@ -45,15 +45,3 @@ totp:
     length: 64
   time:
     period: 30
-
-resilience4j:
-  ratelimiter:
-    instances:
-        default:
-            limitForPeriod: 10
-            limitRefreshPeriod: 10s
-            timeoutDuration: 20s
-            register-health-indicator: true
-            eventConsumerBufferSize: 100
-
-

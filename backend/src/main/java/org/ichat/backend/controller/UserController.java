@@ -46,7 +46,7 @@ public class UserController {
     @GetMapping("/suggested")
     public ResponseEntity<List<Jobseeker>> suggested(User me) {
         var suggested = jobseekerService.findSuggested(me);
-        suggested.forEach(jobseeker -> jobseeker.setProfile(null));
+        suggested.forEach(userService::compact);
         return ResponseEntity.ok(suggested);
     }
 
