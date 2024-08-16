@@ -20,5 +20,8 @@ spring:
           starttls:
             enable: true
             required: true
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
 security:
   allowed-origins: https://yassineder.github.io
