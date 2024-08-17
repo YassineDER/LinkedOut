@@ -32,7 +32,7 @@ public class MvcConfiguration implements WebMvcConfigurer {
     // Supply the user object to the controller methods
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new UserArgumentResolver(userService.getUserRepository()));
+        resolvers.add(new UserArgumentResolver(userService.getUserRepo()));
     }
 
 

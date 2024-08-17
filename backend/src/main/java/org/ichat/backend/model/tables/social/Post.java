@@ -1,5 +1,6 @@
 package org.ichat.backend.model.tables.social;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
@@ -30,6 +31,7 @@ public class Post {
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "profile_id", referencedColumnName = "profile_id")
+    @JsonIgnore
     Profile profile;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)

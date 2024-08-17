@@ -75,19 +75,5 @@ public class JobseekerService implements IJobseekerService {
         // TODO: Implement this method
         return null;
     }
-
-    @Override
-    public List<Jobseeker> findSuggested(User excluded) {
-        int total = (int) jobseekerRepo.count();
-        if (total == 0)
-            return List.of();
-
-        var lst = jobseekerRepo.findAll(PageRequest.of(0, total))
-                .getContent().stream().limit(6)
-                .filter(jobseeker -> !jobseeker.equals(excluded))
-                .collect(Collectors.toCollection(ArrayList::new));
-        Collections.shuffle(lst);
-        return lst.stream().toList();
-    }
 }
 

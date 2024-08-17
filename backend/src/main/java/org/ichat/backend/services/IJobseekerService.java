@@ -18,6 +18,4 @@ public interface IJobseekerService{
     Jobseeker create(Jobseeker jobseeker);
 
     Set<Skill> addAquiredSkills(Long jobseeker_id, Set<Skill> skills);
-
-    List<Jobseeker> findSuggested(User excluded);
 }

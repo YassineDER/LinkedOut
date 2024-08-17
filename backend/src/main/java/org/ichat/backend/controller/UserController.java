@@ -20,6 +20,7 @@ import org.ichat.backend.services.IJobseekerService;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @RestController
@@ -44,8 +45,8 @@ public class UserController {
     }
     
     @GetMapping("/suggested")
-    public ResponseEntity<List<Jobseeker>> suggested(User me) {
-        var suggested = jobseekerService.findSuggested(me);
+    public ResponseEntity<Set<User>> suggested(User me) {
+        var suggested = userService.findSuggested(me);
         suggested.forEach(userService::compact);
         return ResponseEntity.ok(suggested);
     }

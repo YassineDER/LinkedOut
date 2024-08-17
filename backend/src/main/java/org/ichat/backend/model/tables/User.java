@@ -27,7 +27,6 @@ import java.util.stream.Collectors;
 @Setter
 @EqualsAndHashCode(of = "user_id")
 @NoArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.CHAR, name = "user_type")
 @DiscriminatorValue("U")
