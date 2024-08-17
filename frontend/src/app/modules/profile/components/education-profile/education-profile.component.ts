@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
 import { User } from '../../../../models/user';
+import {Profile} from "../../../../models/social/profile";
 
 @Component({
   selector: 'app-education-profile',
@@ -7,7 +8,7 @@ import { User } from '../../../../models/user';
   styleUrl: './education-profile.component.css'
 })
 export class EducationProfileComponent {
-    @Input() user!: User;
+    @Input() profile!: Profile;
 
     constructor() {
     }

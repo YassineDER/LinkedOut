@@ -10,37 +10,22 @@
 
   <div class="mt-4 text-sm">
     @if (actualTab === Tabs.POSTS) {
+      @for (post of profile.posts | slice:0:2 ; track post.post_id) {
       <div>
-        <p class="mb-2"><strong>{{ user.username }}</strong> a republié ceci • 2 mois</p>
-        <p><strong>Stefano Alletti</strong></p>
-        <p class="text-gray-600">Le langage le plus important n'est pas Python, C++, Rust, PHP ou Java. 99 % d'entre
-          vous
-          se tromperont 👉 c'est l'écriture. 1- L'écriture d...</p>
+        <p class="mb-2"><strong>Vous</strong> avez publié ceci • <span [appDateFormat]="post.created"></span></p>
+        <p class="text-gray-600">{{post.description}}</p>
       </div>
       <div class="divider "></div>
-      <div>
-        <p class="mb-2"><strong>{{ user.username }}</strong> a republié ceci • 2 mois</p>
-        <p><strong>Louiza KERDEL</strong></p>
-        <p class="text-gray-600">Je cherche un nouvel emploi : 💼 2900€ net par mois 📅 treizième mois 💊 mutuelle et
-          tickets
-          restaurant à 100% employeur 📆 8 sem...</p>
-      </div>
+      }
     }
     @else {
+      @for (comment of profile.comments | slice:0:3 ; track comment.comment_id) {
       <div>
-        <p><strong> {{ user.username }}</strong> a commenté un post • 1 mois</p>
-        <p class="text-gray-600">Le jeu est formidable et vraiment ultra-realiste. bravo les gars !</p>
+        <p class="mb-2"><strong>Vous</strong> avez commenté ceci • <span [appDateFormat]="comment.created_at"></span></p>
+        <p class="text-gray-600">{{comment.content}}</p>
       </div>
-      <div class="divider"></div>
-      <div>
-        <p><strong> {{ user.username }}</strong> a commenté un post • 1 mois</p>
-        <p class="text-gray-600">Quand le stagiaire Bac+2 drop la database de production par erreur.</p>
-      </div>
-      <div class="divider"></div>
-      <div>
-        <p><strong> {{ user.username }}</strong> a commenté un post • 1 mois</p>
-        <p class="text-gray-600">La "possibilité" de réaliser un rêve 💀</p>
-      </div>
+      <div class="divider "></div>
+      }
     }
   </div>
 

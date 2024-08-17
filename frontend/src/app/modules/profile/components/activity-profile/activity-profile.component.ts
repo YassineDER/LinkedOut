@@ -2,6 +2,7 @@ import {Component, Input} from '@angular/core';
 import {User} from "../../../../models/user";
 import {SocialService} from "../../../home/services/social.service";
 import {Path} from "../../../shared/utils/path";
+import {Profile} from "../../../../models/social/profile";
 
 @Component({
   selector: 'app-activity-profile',
@@ -9,19 +10,22 @@ import {Path} from "../../../shared/utils/path";
   styleUrl: './activity-profile.component.css'
 })
 export class ActivityProfileComponent {
-    @Input() user!: User;
+    @Input() profile!: Profile;
     actualTab: Tabs = Tabs.POSTS;
 
-    constructor(private social: SocialService) {
+    constructor() {
     }
+
 
     setTab(tab: Tabs) {
         this.actualTab = tab;
     }
 
+
     protected readonly Tabs = Tabs;
     protected readonly Path = Path;
 }
+
 
 enum Tabs {
     POSTS,

@@ -4,16 +4,18 @@
       <!-- first column -->
       <div class="col-span-3 flex flex-col">
         <app-overview-profile class="p-0 mb-4" [user]="user" />
-        <app-about-profile class="p-0 mb-4" [user]="user" />
-        <app-activity-profile class="p-0 mb-4" [user]="user" />
-        <app-experience-profile class="p-0 mb-4" [user]="user" />
-        <app-education-profile class="p-0 mb-4" [user]="user" />
-        <app-skills-profile class="p-0 mb-4" [user]="user" />
+        <app-about-profile class="p-0 mb-4" [profile]="user.profile" />
+        <app-activity-profile class="p-0 mb-4" [profile]="user.profile" />
+      @if (users.isJobseeker(user)) {
+        <app-experience-profile class="p-0 mb-4" [profile]="user.profile" />
+        <app-education-profile class="p-0 mb-4" [profile]="user.profile" />
+        <app-skills-profile class="p-0 mb-4" [profile]="user.profile" />
+      }
       </div>
 
       <!-- second column -->
       <div class="col-span-1 flex flex-col">
-        <app-stats-profile [user]="user" class="p-0 mb-4"/>
+        <app-stats-profile [profile]="user.profile" class="p-0 mb-4"/>
         <app-users-suggestions [user]="user" class="p-0 mb-4"/>
       </div>
     }

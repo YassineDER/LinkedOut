@@ -1,4 +1,4 @@
-import {Profile} from "./profile";
+import {Profile} from "./social/profile";
 
 /**
  * User model, macthes the one in the backend
@@ -11,4 +11,5 @@ export interface User{
     using_mfa: boolean;
     authorities: any[];
     profile: Profile;
+    createdDate: string;
 }

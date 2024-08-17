@@ -1,6 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {User} from "../../../../models/user";
 import {ProfileService} from "../../services/profile.service";
+import {Profile} from "../../../../models/social/profile";
 
 @Component({
   selector: 'app-experience-profile',
@@ -8,12 +9,9 @@ import {ProfileService} from "../../services/profile.service";
   styleUrl: './experience-profile.component.css'
 })
 export class ExperienceProfileComponent {
-    @Input() user!: User;
+    @Input() profile!: Profile;
 
-    constructor(private profile: ProfileService) {
+    constructor() {
     }
-
-
-
 
 }

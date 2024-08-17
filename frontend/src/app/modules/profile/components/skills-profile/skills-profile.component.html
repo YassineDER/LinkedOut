@@ -7,10 +7,9 @@
   </div>
 
   <ul class="space-y-3">
-    <li>PostgreSQL</li>
-    <li>ESLint</li>
-    <li>Git</li>
-    <li>Node.js</li>
+    @for (skill of profile.skills | slice:0:5; track skill.skill_id){
+      <li>{{skill.name}}</li>
+    }
   </ul>
 
   <div class="flex">

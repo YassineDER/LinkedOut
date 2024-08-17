@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {User} from "../../../../models/user";
 import {ProfileService} from "../../services/profile.service";
+import {Profile} from "../../../../models/social/profile";
 
 @Component({
   selector: 'app-about-profile',
@@ -8,13 +9,13 @@ import {ProfileService} from "../../services/profile.service";
   styleUrl: './about-profile.component.css'
 })
 export class AboutProfileComponent implements OnInit {
-    @Input() user!: User;
+    @Input() profile!: Profile;
     expandable = false;
 
-    constructor(protected profile: ProfileService) {
+    constructor() {
     }
 
     ngOnInit() {
-        this.expandable = this.user.profile.bio.length > 100;
+        this.expandable = this.profile.bio.length > 100;
     }
 }

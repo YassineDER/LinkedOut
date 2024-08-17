@@ -17,9 +17,9 @@ export class UsersSuggestionsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.users.suggestJobseekers().subscribe((profiles: Jobseeker[]) => {
-            this.profiles = profiles;
-        });
+        // this.users.suggestJobseekers().subscribe((profiles: Jobseeker[]) => {
+        //     this.profiles = [];
+        // });
 
     }
 

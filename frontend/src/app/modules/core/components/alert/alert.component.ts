@@ -7,7 +7,7 @@ import {UtilsService} from "../../../../services/utils.service";
 @Component({
     selector: 'app-alert',
     template: `
-        @for (alert of alerts | keyvalue; track alert) {
+        @for (alert of alerts | keyvalue; track alert.key) {
             <div [ngClass]="{
          'alert-success': alert.value.type === SERVERITY.SUCCESS,
             'alert-warning': alert.value.type === SERVERITY.WARNING,
