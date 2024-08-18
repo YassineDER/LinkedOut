@@ -31,7 +31,12 @@ export class FormsService {
         return true;
     }
 
-
+    /**
+     * Submit the register form and redirect to the verify email page if successful
+     * @param form The register form
+     * @param role The role of the user to register
+     * @return Promise<void> A promise that resolves when the form is submitted
+     */
     async submitRegisterForm(form: FormGroup, role: Role) {
         if (this.checkFormValidity(form)) {
             await this.auth.register(form.value, role)
@@ -43,6 +48,10 @@ export class FormsService {
         form.reset();
     }
 
+    /**
+     * Trim all the values of a form
+     * @param form
+     */
     trimFormValues(form: FormGroup) {
         for (const control in form.controls) {
             let controlValue = form.controls[control].value;

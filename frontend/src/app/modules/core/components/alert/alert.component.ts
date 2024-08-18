@@ -1,9 +1,11 @@
 import {Component} from '@angular/core';
 import {trigger, style, animate, transition,} from '@angular/animations';
 import {AlertType} from '../../../shared/utils/alert-type';
-import {KeyValuePipe, NgClass} from "@angular/common";
 import {UtilsService} from "../../../../services/utils.service";
 
+/**
+ * Alert component to display messages to the user in a toast-like fashion.
+ */
 @Component({
     selector: 'app-alert',
     template: `
@@ -36,8 +38,10 @@ export class AlertComponent {
     public SERVERITY = AlertType;
 
     constructor(private utils: UtilsService) {
+        // Subscribe to the alert service to get new alerts
         this.utils.alert$.subscribe(alert => {
             if (alert) {
+                // Add the new alert to the list and remove it after 5 seconds
                 this.alerts.set(this.alerts.size, {message: alert.message, type: alert.type});
                 setTimeout(() => this.closeAlert(this.alerts.size - 1), 5000);
                 if (this.alerts.size > 5)
@@ -46,6 +50,7 @@ export class AlertComponent {
         });
     }
 
+    // Close the alert manually
     closeAlert(index: number) {
         this.alerts.delete(index);
     }

@@ -5,7 +5,7 @@ import {LoadingBarHttpClientModule} from "@ngx-loading-bar/http-client";
 import {LoadingBarRouterModule} from "@ngx-loading-bar/router";
 import {LoadingBarModule} from "@ngx-loading-bar/core";
 import {provideAnimations} from "@angular/platform-browser/animations";
-import {requestsInterceptor} from "../shared/interceptors/requests.interceptor";
+import {jwtInterceptor} from "../shared/interceptors/jwt.interceptor";
 import {AlertComponent} from "./components/alert/alert.component";
 import {UtilsService} from "../../services/utils.service";
 import {ipInterceptor} from "../shared/interceptors/ip.interceptor";
@@ -38,7 +38,7 @@ export function initializeApp(utils: UtilsService) {
     ],
     providers: [
         provideAnimations(),
-        provideHttpClient(withInterceptors([ipInterceptor, requestsInterceptor])),
+        provideHttpClient(withInterceptors([ipInterceptor, jwtInterceptor])),
         {
             provide: APP_INITIALIZER,
             useFactory: initializeApp,

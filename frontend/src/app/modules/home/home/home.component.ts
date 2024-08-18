@@ -16,6 +16,7 @@ export class HomeComponent implements OnInit{
     user$: Observable<User | null>;
 
     constructor(private auth: AuthService, private users: UserService) {
+        // Share the user observable object once to avoid multiple subscriptions
         this.user$ = this.auth.getAuthenticatedUser().pipe(shareReplay(1));
     }
 
@@ -26,6 +27,7 @@ export class HomeComponent implements OnInit{
         });
     }
 
+    // Prepare the outlet for the animation (different from the one in app module)
     prepareOutlet(outlet: RouterOutlet) {
         return outlet && outlet.activatedRouteData && outlet.activatedRouteData['animation']
     }

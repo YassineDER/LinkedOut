@@ -7,12 +7,18 @@ import {jwtDecode, JwtPayload} from 'jwt-decode';
 export class JwtService {
     constructor() {}
 
-    // Decode the JWT and extract the payload
+    /**
+     * Get the decoded token
+     * @param token The JWT token
+     */
     private getDecodedToken(token: string): JwtPayload {
         return jwtDecode(token);
     }
 
-    // Check if the token is expired
+    /**
+     * Check if the token is expired
+     * @param token The JWT token
+     */
     isTokenExpired(token: string): boolean {
         const decodedToken = this.getDecodedToken(token);
         if (!decodedToken.exp)

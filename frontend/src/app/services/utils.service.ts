@@ -23,6 +23,9 @@ export class UtilsService {
         this.alertSubject.next({message, type});
     }
 
+    /**
+     * This api fetches the ip address of the user.
+     */
     fetchIp() {
         return this.http.get<{ip: string}>('https://api.ipify.org?format=json');
     }

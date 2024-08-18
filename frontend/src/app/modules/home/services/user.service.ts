@@ -17,25 +17,48 @@ export class UserService {
     constructor(private http: HttpClient) {
     }
 
+    /**
+     * Check if the user is a jobseeker. To be used in the template to display the right content.
+     * @param user
+     * @return boolean true if the user is a jobseeker
+     */
     isJobseeker(user: User): user is Jobseeker {
         return (user as Jobseeker).authorities[0].authority === Role.JOBSEEKER.toString();
     }
 
+    /**
+     * Check if the user is a company. To be used in the template to display the right content.
+     * @param user
+     * @return boolean true if the user is a company
+     */
     isCompany(user: User): user is Company {
         return (user as Company).authorities[0].authority === Role.COMPANY.toString();
     }
 
+    /**
+     * Check if the user is an admin. To be used in the template to display the right content.
+     * @param user
+     * @return boolean true if the user is an admin
+     */
     isAdmin(user: User): user is Admin {
         return (user as Admin).authorities[0].authority === Role.ADMIN.toString();
     }
 
+    /**
+     * Get the current user
+     * @return User
+     */
     changeUser(user: User) {
         this.userSource.next(user);
     }
 
-    suggestJobseekers(): Observable<Jobseeker[]> {
+    /**
+     * Get a list of users with the same role
+     * @return Observable<User[]> list of users
+     */
+    suggestJobseekers(): Observable<User[]> {
         return this.http.get(this.api + '/suggested').pipe(
-            map((res: any) => res as Jobseeker[])
+            map((res: any) => res as User[])
         );
     }
 

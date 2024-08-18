@@ -11,6 +11,9 @@ import {HomeLoginComponent} from "./components/home-login/home-login.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AuthRoutingModule} from "./auth.routes";
 
+/**
+ * Auth module for all authentication related components. Its separate from the home module.
+ */
 @NgModule({
     declarations: [
         RegisterCompanyComponent,
@@ -28,7 +31,7 @@ import {AuthRoutingModule} from "./auth.routes";
         FormsModule,
         ReactiveFormsModule,
 
-        AuthRoutingModule,
+        AuthRoutingModule, // Any routing module must stay at the end
     ],
 })
 export class AuthModule {

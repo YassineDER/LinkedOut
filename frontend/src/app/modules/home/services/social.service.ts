@@ -2,6 +2,9 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {User} from "../../../models/user";
 
+/**
+ * Responsible for managing social interactions between users
+ */
 @Injectable()
 export class SocialService {
 

@@ -12,7 +12,6 @@ import { ActivityProfileComponent } from './components/activity-profile/activity
 import { ExperienceProfileComponent } from './components/experience-profile/experience-profile.component';
 import { EducationProfileComponent } from './components/education-profile/education-profile.component';
 import { SkillsProfileComponent } from './components/skills-profile/skills-profile.component';
-import {DateFormatDirective} from "../shared/directives/date-format.directive";
 import {SharedModule} from "../shared/shared.module";
 
 @NgModule({

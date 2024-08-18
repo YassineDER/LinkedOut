@@ -1,3 +1,6 @@
+/**
+ * List of all paths/routes in the application (api endpoints excluded)
+ */
 export enum Path {
     HOME = '/',
     // Auth

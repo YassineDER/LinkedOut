@@ -13,10 +13,8 @@ export class ActivityProfileComponent {
     @Input() profile!: Profile;
     actualTab: Tabs = Tabs.POSTS;
 
-    constructor() {
-    }
 
-
+    // Change the tabs of the activity section
     setTab(tab: Tabs) {
         this.actualTab = tab;
     }

@@ -6,7 +6,6 @@ import { HomeComponent } from './home/home.component';
 import {SharedModule} from "../shared/shared.module";
 import {UserService} from "./services/user.service";
 import {SocialService} from "./services/social.service";
-import {JobseekerService} from "./services/jobseeker.service";
 
 
 @NgModule({
@@ -21,7 +20,6 @@ import {JobseekerService} from "./services/jobseeker.service";
     providers: [
         UserService,
         SocialService,
-        JobseekerService
     ]
 })
 export class HomeModule { }

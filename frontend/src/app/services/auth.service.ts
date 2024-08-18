@@ -6,6 +6,9 @@ import {Role} from "../models/role";
 import {BehaviorSubject, catchError, Observable, of, switchMap} from "rxjs";
 import {User} from "../models/user";
 
+/**
+ * Service to handle the authentication system of the application
+ */
 @Injectable({
     providedIn: 'root'
 })
@@ -20,6 +23,10 @@ export class AuthService {
         return this.userSubject.asObservable();
     }
 
+    /**
+     * Get the authenticated userSubject from the server.
+     * @return An observable containing the userSubject, or null if the userSubject is not authenticated.
+     */
     getAuthenticatedUser(): Observable<User | null> {
         return this.checkAuthStatus().pipe(
             switchMap((user: User) => {
@@ -33,6 +40,11 @@ export class AuthService {
         );
     }
 
+    /**
+     * Login the userSubject with the given credentials.
+     * @param credentials The credentials of the userSubject
+     * @see LoginCredentials
+     */
     login(credentials: LoginCredentials): Promise<string> {
         return new Promise((resolve, reject) => {
             this.http.post<LoginCredentials>(this.url + '/authenticate', credentials)
@@ -40,6 +52,9 @@ export class AuthService {
         });
     }
 
+    /**
+     * Logout the userSubject from the application by removing the token from the local storage.
+     */
     logout() {
         localStorage.removeItem('token');
         this.userSubject.next(null);
@@ -81,6 +96,10 @@ export class AuthService {
         });
     }
 
+    /**
+     * Request a password reset for the userSubject with the given object.
+     * @param objectRequest The object containing the email of the userSubject
+     */
     requestPasswordReset(objectRequest: any): Promise<string> {
         return new Promise((resolve, reject) => {
             this.http.post(this.url + '/reset-password', objectRequest)
@@ -88,10 +107,18 @@ export class AuthService {
         });
     }
 
-    private checkAuthStatus(): Observable<any> {
-        return this.http.get(environment.hostUrl + '/api/user/status/v2');
+    /**
+     * Check the authentication status of the userSubject.
+     * @return An observable containing the userSubject, or an error if the userSubject is not authenticated.
+     * @see User
+     */
+    private checkAuthStatus(): Observable<User> {
+        return this.http.get<User>(environment.hostUrl + '/api/user/status/v2');
     }
 
+    /**
+     * Format the response of the server to a promise.
+     */
     private handleResponse(resolve: (value: any) => void, reject: (reason: any) => void) {
         return {
             next: (res: any) => resolve(res.response),
@@ -99,6 +126,9 @@ export class AuthService {
         }
     }
 
+    /**
+     * Simulate a long request to the server.
+     */
     simulateLongRequest() :Promise<string>{
         return new Promise((resolve, reject) => {
             this.http.get(this.url + '/sleep', {responseType: 'text'})

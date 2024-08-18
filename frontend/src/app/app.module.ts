@@ -18,7 +18,7 @@ import {AuthModule} from "./modules/auth/auth.module";
         CoreModule,
         AuthModule,
 
-        AppRoutingModule,
+        AppRoutingModule, // routing module must be last
     ],
     bootstrap: [AppComponent],
     providers: []

@@ -15,6 +15,7 @@ export class AboutProfileComponent implements OnInit {
     constructor() {
     }
 
+    // Check if the bio is longer than 100 characters
     ngOnInit() {
         this.expandable = this.profile.bio.length > 100;
     }

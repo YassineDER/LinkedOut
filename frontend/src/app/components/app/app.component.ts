@@ -11,6 +11,10 @@ import {fadeAnimation} from "../../animations";
 export class AppComponent {
     constructor() {}
 
+    /**
+     * Prepare route animation
+     * @param outlet the outlet of the changing route
+     */
     prepareOutlet(outlet: RouterOutlet) {
         return outlet && outlet.activatedRouteData && outlet.activatedRouteData['animation'];
     }
