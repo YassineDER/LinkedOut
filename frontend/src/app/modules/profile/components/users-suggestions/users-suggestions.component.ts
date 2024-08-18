@@ -10,13 +10,13 @@ import {UserService} from "../../../home/services/user.service";
 })
 export class UsersSuggestionsComponent implements OnInit {
     @Input() user!: User;
-    profiles: User[] = [];
+    suggested_users: User[] = [];
 
     constructor(protected social: SocialService, protected users: UserService) {
     }
 
     ngOnInit() {
         this.users.suggestJobseekers()
-            .subscribe((profiles: User[]) => this.profiles = profiles);
+            .subscribe((suggested: User[]) => this.suggested_users = suggested);
     }
 }
