@@ -19,6 +19,9 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * Security configuration class that configures the security of the application.
+ */
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity // Enables Spring Security beans
@@ -39,21 +42,25 @@ public class SecurityConfiguration {
                 .cors(Customizer.withDefaults()) // Enabled by default, customized in the addCorsMappings method bellow
                 .formLogin(AbstractHttpConfigurer::disable) // Disable default form login, we use JWT
                 .logout(AbstractHttpConfigurer::disable) // Disable default logout, we use JWT and session is stateless
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class) // Custom JWT filter
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class) // Custom JWT filter defined above
                 .exceptionHandling(e -> e.authenticationEntryPoint(entryPoint)) // Custom entry point for formating error messages
-                .authorizeHttpRequests(authorize -> authorize
+                .authorizeHttpRequests(authorize -> authorize // Authorize requests based on roles
                         .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/api/jobseeker/**").hasAuthority("JOBSEEKER")
                         .requestMatchers("/api/company/**").hasAuthority("COMPANY")
-                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll() // Allow all requests to the auth endpoint
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authProvider); // Custom authentication provider
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Not sure about this one
+                .authenticationProvider(authProvider);
 
         return http.build();
     }
 
+    /**
+     * Customizes the web security configuration to ignore requests to the auth endpoint.
+     * <p> requestMatchers.permitAll() is also used but it is not enough to ignore the requests to the auth endpoint.
+     */
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().requestMatchers("/api/auth/**");

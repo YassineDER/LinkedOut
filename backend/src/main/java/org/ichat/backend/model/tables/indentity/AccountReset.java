@@ -12,7 +12,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.ichat.backend.model.tables.User;
 
-
+/**
+ * This class represents the AccountReset table in the database.
+ * It is used to store the token and expiration date for a password reset request.
+ */
 @Entity
 @Getter
 @Setter
@@ -36,6 +39,7 @@ public class AccountReset {
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
+
 
     public void resetUserPassword(String encodedPassword) {
         this.user.setPassword(encodedPassword);

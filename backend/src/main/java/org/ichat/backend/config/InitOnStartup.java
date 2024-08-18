@@ -16,6 +16,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * This class is used to execute some operations on application startup.
+ */
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -24,6 +27,9 @@ public class InitOnStartup {
     private final AdminRepository adminRepo;
     private final PasswordEncoder encoder;
 
+    /**
+     * This method is used to create roles if they don't exist in the database.
+     */
     @Bean
     @PostConstruct
     public void createRoles() {
@@ -35,6 +41,10 @@ public class InitOnStartup {
         }
     }
 
+    /**
+     * This method is used to create an admin if it doesn't exist in the database.
+     * The credentials are the default ones, they must be defined in application.yml
+     */
     @Bean
     public CommandLineRunner createAdminIfNotExists() {
         return args -> {

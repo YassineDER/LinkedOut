@@ -14,6 +14,9 @@ import org.ichat.backend.model.util.job.JobType;
 
 import java.time.LocalDate;
 
+/**
+ * Experience table, contains the professional experience of a jobseeker
+ */
 @Getter
 @Setter
 @NoArgsConstructor

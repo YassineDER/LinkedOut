@@ -7,6 +7,9 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+/**
+ * Connection entity class. Represents a connection between two profiles.
+ */
 @Entity
 @Getter
 @Setter

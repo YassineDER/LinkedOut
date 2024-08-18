@@ -1,6 +1,5 @@
 package org.ichat.backend.model.tables.social;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +10,10 @@ import org.ichat.backend.model.tables.jobs.Skill;
 
 import java.util.Set;
 
+/**
+ * JobseekerProfile class is a subclass of Profile class.
+ * It is used to store the professional information of a jobseeker.
+ */
 @Entity
 @Getter
 @Setter

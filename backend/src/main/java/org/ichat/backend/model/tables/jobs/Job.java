@@ -14,6 +14,9 @@ import org.ichat.backend.model.util.job.Flow;
 
 import java.util.Set;
 
+/**
+ * Job entity class, represents the job table in the database.
+ */
 @Entity
 @Getter
 @Setter

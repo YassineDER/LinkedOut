@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Skill entity class, used to represent the skills that a jobseeker can have.
+ */
 @Entity
 @Getter
 @Setter

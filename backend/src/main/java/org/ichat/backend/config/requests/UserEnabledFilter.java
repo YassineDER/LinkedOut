@@ -13,13 +13,17 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+/**
+ * Filter that checks if the user is enabled.
+ * If the user is not enabled, it will return a 403 Forbidden status code.
+ */
 @Component
 @RequiredArgsConstructor
 public class UserEnabledFilter extends OncePerRequestFilter {
     private final IUserService userService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws ServletException, IOException {
         String requestURI = req.getRequestURI();
 
         if (!requestURI.startsWith("/api/auth/")) {
@@ -32,6 +36,6 @@ public class UserEnabledFilter extends OncePerRequestFilter {
             }
         }
 
-        filterChain.doFilter(req, res);
+        chain.doFilter(req, res);
     }
 }

@@ -20,9 +20,12 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import java.io.IOException;
 import java.io.OutputStream;
 
+/**
+ * A custom authentication entry point that handles exceptions thrown during authentication.
+ * Somehow, the {@link GlobalExceptionAdvice} is not able to handle exceptions thrown during filter chain execution, so this class is created to handle those exceptions.
+ */
 @Component("customAuthenticationEntryPoint")
 @RequiredArgsConstructor
-@Slf4j
 public class ExceptionHandlerEntryPoint implements AuthenticationEntryPoint {
     private final GlobalExceptionAdvice advice;
 

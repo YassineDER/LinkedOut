@@ -12,6 +12,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
+/**
+ * This class is responsible for custom-configuring the MVC settings of the application.
+ * It enables CORS, and adds the UserArgumentResolver to the list of argument resolvers.
+ */
 @Configuration
 @EnableConfigurationProperties(SecurityConfigurationProperties.class)
 @EnableWebMvc
@@ -20,6 +24,7 @@ public class MvcConfiguration implements WebMvcConfigurer {
     private final SecurityConfigurationProperties properties;
     private final IUserService userService;
 
+    // Allowed origins are defined in the application.yml file (based on the profile env)
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")

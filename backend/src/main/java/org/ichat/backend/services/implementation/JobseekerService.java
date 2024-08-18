@@ -3,21 +3,13 @@ package org.ichat.backend.services.implementation;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.model.tables.Jobseeker;
-import org.ichat.backend.model.tables.User;
-import org.ichat.backend.model.tables.jobs.Skill;
 import org.ichat.backend.model.patchers.JobseekerPatchDTO;
 import org.ichat.backend.repository.JobseekerRepo;
 import org.ichat.backend.services.IJobseekerService;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -68,12 +60,6 @@ public class JobseekerService implements IJobseekerService {
         if (userExists)
             throw new AccountException("Jobseeker already exists with given email or username", HttpStatus.CONFLICT.value());
         return jobseekerRepo.save(jobseeker);
-    }
-
-    @Override
-    public Set<Skill> addAquiredSkills(Long jobseeker_id, Set<Skill> skills) {
-        // TODO: Implement this method
-        return null;
     }
 }
 

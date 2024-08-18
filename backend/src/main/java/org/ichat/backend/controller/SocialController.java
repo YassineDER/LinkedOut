@@ -10,12 +10,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controller for social media related endpoints
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/social")
 public class SocialController {
     private final IPostService postService;
 
+    /**
+     * Endpoint for creating a post
+     * @param me the user creating the post
+     * @param req the request body containing the post content
+     * @return the created post
+     */
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/post")
     public ResponseEntity<Post> addPost(User me, @Valid @RequestBody PostRequestDTO req) {

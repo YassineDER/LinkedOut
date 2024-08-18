@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import org.ichat.backend.model.util.RoleType;
 
+/**
+ * Roles table, which determines the access level of the user.
+ */
 @Entity
 @Getter
 @Setter

@@ -11,7 +11,6 @@ import org.ichat.backend.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -30,15 +29,11 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User findByUsername(String username) {
-        return userRepo.findByUsername(username).orElseThrow(() -> new AccountException("User not found by username", HttpStatus.NOT_FOUND.value()));
-    }
-
-    @Override
-    public List<User> findAll() {
+    public List<User> findAll(int page, int size) {
         return userRepo.findAll();
     }
 
+    @Override
     public UserRepository getUserRepo() {
         return userRepo;
     }
@@ -73,7 +68,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User compact(User user) {
+    public void compact(User user) {
         user.setPassword(null);
         user.setUsing_mfa(null);
         user.setEnabled(null);
@@ -82,6 +77,5 @@ public class UserService implements IUserService {
         user.setProfile(null);
         user.setUserAccountVerifications(null);
         user.setUserAccountResets(null);
-        return user;
     }
 }

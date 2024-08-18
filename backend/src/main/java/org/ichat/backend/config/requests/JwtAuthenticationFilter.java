@@ -19,6 +19,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+/**
+ * Filter that checks if the request has a valid JWT token and sets the authentication in the Spring Security context.
+ * If the token is invalid, the user will be redirected to the entrypoint. <br> <br>
+ * This filter is executed once per request.
+ */
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final IJwtService jwtService;
@@ -46,13 +51,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 }
             }
-            // If the token is invalid, the user will be redirected to the entrypoint
         } catch (AccountException ex) {
+            // If the token is invalid, the user will be redirected to the entrypoint
             entryPoint.commence(request, response, new AuthenticationException(ex.getMessage(), ex) {});
             return;
         }
 
-        // Continue the filter chain in any case
+        // Continue the filter chain in any case.
         filterChain.doFilter(request, response);
     }
 }

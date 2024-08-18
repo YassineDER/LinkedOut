@@ -12,15 +12,22 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+/**
+ * Resolves the User object from the current authenticated user. <p>
+ * Basically, this class is used to inject the User object into the controller methods. This is done by adding a User object as a parameter to the controller method.
+ * So the user represents the current authenticated user.
+ */
 @RequiredArgsConstructor
 public class UserArgumentResolver implements HandlerMethodArgumentResolver {
     private final UserRepository repo;
 
+    // This method is used to check if the parameter type is User
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         return parameter.getParameterType().equals(User.class);
     }
 
+    // This method is used to resolve the User object from the current authenticated user
     @Override
     public Object resolveArgument(MethodParameter param, ModelAndViewContainer container, NativeWebRequest req, WebDataBinderFactory binderFactory) {
         var auth = SecurityContextHolder.getContext().getAuthentication();

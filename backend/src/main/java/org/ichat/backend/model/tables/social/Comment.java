@@ -1,5 +1,6 @@
 package org.ichat.backend.model.tables.social;
 
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
@@ -26,5 +27,10 @@ public class Comment {
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "post_id", referencedColumnName = "post_id")
     Post post;
+
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "profile_id", referencedColumnName = "profile_id")
+    @JsonIncludeProperties("first_name, last_name, company_name")
+    Profile author;
 
 }

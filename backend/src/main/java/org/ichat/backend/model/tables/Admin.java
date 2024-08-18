@@ -2,15 +2,16 @@ package org.ichat.backend.model.tables;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+/**
+ * Admin class is a subclass of User class. It is used to store the information of an admin user.
+ */
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @DiscriminatorValue("A")
 public class Admin extends User {

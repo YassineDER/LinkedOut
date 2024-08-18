@@ -26,8 +26,8 @@ public class AccountVerificationService implements IAccountVerificationService {
     private final Random random = new Random();
 
     @Override
-    public String verifyToken(String token) {
-        var accountVerification = accountVerificationRepository.findByToken(token)
+    public String verifyEmailCode(String code) {
+        var accountVerification = accountVerificationRepository.findByToken(code)
                 .orElseThrow(() -> new AccountException("Account verification not found or has expired a long time ago", HttpStatus.NOT_FOUND.value()));
         if (accountVerification.getExpiresAt().isBefore(OffsetDateTime.now()))
             throw new AccountException("The provided token has just expired, please try to login to send a new one", HttpStatus.GONE.value());
@@ -53,12 +53,12 @@ public class AccountVerificationService implements IAccountVerificationService {
     }
 
     @Override
-    public void saveVerification(User user, String token) {
+    public void saveVerificationRequest(User user, String code) {
         accountVerificationRepository.deleteByUser(user);
 
         AccountVerification accountVerification = new AccountVerification();
         accountVerification.setUser(user);
-        accountVerification.setToken(token);
+        accountVerification.setToken(code);
         accountVerification.setExpiresAt(OffsetDateTime.now().plusMinutes(35));
 
         accountVerificationRepository.save(accountVerification);

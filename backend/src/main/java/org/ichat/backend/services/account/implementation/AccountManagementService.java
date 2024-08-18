@@ -19,7 +19,7 @@ public class AccountManagementService implements IAccountManagementService {
 
     @Override
     public String validateAccount(String token) {
-        return accountVerificationService.verifyToken(token);
+        return accountVerificationService.verifyEmailCode(token);
     }
 
     @Override
@@ -31,10 +31,10 @@ public class AccountManagementService implements IAccountManagementService {
     @Override
     public String requestPasswordReset(AccountCredentialsDTO credentials) {
         User user = userService.findBy(credentials.getEmail());
-        String resetToken = accountResetService.sendResetEmail(user.getEmail());
+        String resetToken = accountResetService.sendPasswordResetEmail(user.getEmail());
         accountResetService.saveReset(user, resetToken);
 
-        return "Password reset request has been sent to your email address. Please check your email.";
+        return "Un code a été envoyé à " + user.getEmail() + ". Veuillez vérifier votre boîte de réception";
     }
 
     @Override

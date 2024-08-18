@@ -4,6 +4,19 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * CompanyPatchDTO is a class that represents the data transfer object for the company patch request.
+ * It contains the fields that can be updated in a company:
+ * <ul>
+ *     <li>name</li>
+ *     <li>description</li>
+ *     <li>sector</li>
+ *     <li>headquarters</li>
+ *     <li>image_url</li>
+ *     <li>website</li>
+ *     </ul>
+ * @see org.ichat.backend.model.tables.Company
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

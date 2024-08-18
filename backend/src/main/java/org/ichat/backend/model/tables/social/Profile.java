@@ -10,6 +10,10 @@ import org.hibernate.validator.constraints.Length;
 
 import java.util.Set;
 
+/**
+ * Profile class is an abstract class that represents a profile of a user in the social network.
+ * It is the parent class of the JobseekerProfile and CompanyStaffProfile classes.
+ */
 @Entity
 @Getter
 @Setter
@@ -39,6 +43,10 @@ public abstract class Profile {
     @OneToMany(mappedBy = "profile1", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Set<Connection> connections;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private Set<Comment> comments;
 
     @JsonProperty("connections")
     public int getNumberOfConnections() {

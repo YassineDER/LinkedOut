@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Data;
 
+/**
+ * ErrorDTO is a data transfer object that is used to send an error response to the client.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

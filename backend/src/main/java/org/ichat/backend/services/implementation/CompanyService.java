@@ -106,7 +106,14 @@ public class CompanyService implements ICompanyService {
         return company;
     }
 
-
+    /**
+     * Helper function to fetch the website of a company. It works by fetching the first result from google search and returning the display link. <br>
+     * This is because the API used to fetch company info does not provide the website of the company.
+     * @param companyName
+     * @return the first result from google search as the website of the company
+     *
+     * @apiNote Sometimes, the website fetched may not be the correct one. This is because the company name may not be relevant to the company website.
+     */
     private String fetchWebsiteOfCompany(String companyName) {
         String searchAPI = "https://www.googleapis.com/customsearch/v1?key={key}&cx={cx}&q={q}";
 

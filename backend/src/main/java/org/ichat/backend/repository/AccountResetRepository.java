@@ -23,6 +23,5 @@ public interface AccountResetRepository extends JpaRepository<AccountReset, Inte
     @Modifying
     @Transactional
     @Query("delete from AccountReset a where a.token = :token")
-    void deleteByToken(String token);
     Optional<AccountReset> findByToken(String token);
 }

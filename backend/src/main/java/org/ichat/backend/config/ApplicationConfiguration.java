@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class ApplicationConfiguration {
     private final UserDetailsService userDetailsService;
 
+    // AuthenticationProvider is used to authenticate a user
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -30,6 +31,7 @@ public class ApplicationConfiguration {
         return config.getAuthenticationManager();
     }
 
+    // PasswordEncoder is used to encode the password.
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

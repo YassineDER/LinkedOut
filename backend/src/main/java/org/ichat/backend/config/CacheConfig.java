@@ -6,6 +6,9 @@ import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Cache configuration class, used to enable caching for the application.
+ */
 @Configuration
 @EnableCaching
 public class CacheConfig {

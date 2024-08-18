@@ -3,6 +3,7 @@ package org.ichat.backend.model.tables;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,9 +11,13 @@ import org.ichat.backend.model.tables.jobs.Job;
 
 import java.util.Set;
 
+/**
+ * Company entity is a subclass of User entity.
+ */
 @Entity
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @DiscriminatorValue("C")
 public class Company extends User {

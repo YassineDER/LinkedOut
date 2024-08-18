@@ -8,29 +8,32 @@ import org.ichat.backend.services.IAdminService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/admin")
 public class AdminController {
     private final IAdminService adminService;
 
+    /**
+     * Find an admin by id
+     * @param id the id of the admin
+     * @return the admin as a response entity
+     */
     @GetMapping("/id/{id}")
     public ResponseEntity<Admin> one(@PathVariable Long id) {
         Admin admin = adminService.findBy(id);
         return ResponseEntity.ok(admin);
     }
 
+    /**
+     * Update an admin by id
+     * @param id the id of the admin
+     * @param admin the admin to update
+     */
     @PutMapping("/id/{id}")
     public ResponseEntity<Admin> update(@PathVariable Long id, @Valid @RequestBody AdminPatchDTO admin) {
         Admin updatedAdmin = adminService.update(id, admin);
         return ResponseEntity.ok(updatedAdmin);
     }
-
-    @GetMapping("/test")
-    public ResponseEntity<String> test() {
-        return ResponseEntity.ok("Test");
-    }
-
 
 }

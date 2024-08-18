@@ -9,7 +9,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.ichat.backend.model.tables.User;
 
-
+/**
+ * This class represents the account verification table in the database.
+ * An account verification is created when a user registers an account and is used to verify the user's email address.
+ */
 @Entity
 @Getter
 @Setter

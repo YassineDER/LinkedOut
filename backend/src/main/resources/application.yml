@@ -37,9 +37,19 @@ spring:
       max-request-size: 5MB
   jta:
     enabled: true
+
 # Two-factor authentication configuration
 totp:
   secret:
     length: 64
   time:
     period: 30
+
+# admin default credentials when initializing the app (if not already present)
+admin:
+  default:
+    firstname: Yassine
+    lastname: Dergaoui
+    email: yassineyassine333@gmail.com
+    username: admin
+    password: 12345678

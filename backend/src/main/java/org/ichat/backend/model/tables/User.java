@@ -2,7 +2,6 @@ package org.ichat.backend.model.tables;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -22,6 +21,11 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * The User class is an abstract class that represents the user entity in the database.
+ * It is an abstract class because it is the parent class of the Admin, JobSeeker, and Company classes.
+ * @apiNote This class is so important. Try not to break it.
+ */
 @Entity
 @Getter
 @Setter
@@ -48,10 +52,8 @@ public abstract class User implements UserDetails {
     @NotEmpty(message = "Password is required")
     String password;
 
-    @Column
     String mfa_secret;
 
-    @Column
     String image_url = "https://img.icons8.com/pastel-glyph/64/000000/user-male-circle.png";
 
     @Column(nullable = false)

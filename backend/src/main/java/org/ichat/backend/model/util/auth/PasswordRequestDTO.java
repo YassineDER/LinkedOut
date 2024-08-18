@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * PasswordRequestDTO is a data transfer object that is used to send a request to the server to change the password.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

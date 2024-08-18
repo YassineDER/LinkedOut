@@ -9,6 +9,9 @@ import lombok.Setter;
 import org.ichat.backend.model.tables.Jobseeker;
 import org.ichat.backend.model.util.job.ApplicationStatus;
 
+/**
+ * Represents a job application made by a jobseeker to a job.
+ */
 @Entity
 @Getter
 @Setter
@@ -34,8 +37,4 @@ public class JobApplication {
     ApplicationStatus status;
 
     String coverLetter_url;
-
-    public String getStatus() {
-        return status.toString();
-    }
 }

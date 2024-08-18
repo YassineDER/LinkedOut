@@ -25,6 +25,7 @@ public class StorageService implements IStorageService {
     @Override
     public void init() throws IOException {
         final ConfigFileReader.ConfigFile configFile = ConfigFileReader.parseDefault();
+
         final AuthenticationDetailsProvider provider =
                 new ConfigFileAuthenticationDetailsProvider(configFile);
         client = ObjectStorageClient.builder().build(provider);

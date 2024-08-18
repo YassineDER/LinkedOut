@@ -10,6 +10,9 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+/**
+ * Post entity class, represents a post in the social media platform.
+ */
 @Entity
 @Getter
 @Setter

@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.http.MediaType;
 
+/**
+ * StorageFile is a data transfer object that is used to send a file to the client.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

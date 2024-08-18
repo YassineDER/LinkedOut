@@ -24,11 +24,12 @@ public class AccountResetService implements IAccountResetService {
     private final Random random = new Random();
 
     @Override
-    public String sendResetEmail(String email) {
+    public String sendPasswordResetEmail(String email) {
         int number = random.nextInt(999999);
         String code = String.format("%06d", number);
 
-        mailService.sendMail(email, "Password Reset Request", code, MailType.RESET_PASSWORD);
+        mailService.sendMail(email, "Demande de renitialisation de mot de passe",
+                code, MailType.RESET_PASSWORD);
         return code;
     }
 

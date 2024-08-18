@@ -3,19 +3,20 @@ package org.ichat.backend.model.tables;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.ichat.backend.model.tables.jobs.JobApplication;
 
 import java.util.Set;
 
+/**
+ * Jobseeker entity class, represents the jobseeker table in the database.
+ */
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @DiscriminatorValue("J")
 public class Jobseeker extends User {
     @Column(nullable = false)

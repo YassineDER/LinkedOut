@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * RegisterJobseekerRequestDTO is a data transfer object that is used to send a request to the server to register a jobseeker.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,7 +22,6 @@ public class RegisterJobseekerRequestDTO {
     private String username;
     @NotEmpty(message = "password is mandatory")
     private String password;
-    private String image_url;
-    boolean debug = false;
 
+    private String image_url;
 }

@@ -7,11 +7,17 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.ichat.backend.model.tables.Jobseeker;
 import org.ichat.backend.model.tables.social.JobseekerProfile;
 import org.ichat.backend.model.util.job.Flow;
 
 import java.time.LocalDate;
 
+/**
+ * Education table, used to store the education of a jobseeker.
+ * @see Jobseeker
+ * @see JobseekerProfile
+ */
 @Getter
 @Setter
 @NoArgsConstructor

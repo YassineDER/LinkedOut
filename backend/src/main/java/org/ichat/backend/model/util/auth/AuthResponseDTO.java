@@ -3,6 +3,9 @@ package org.ichat.backend.model.util.auth;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
+/**
+ * AuthResponseDTO is a data transfer object that is used to send a response to the client after an authentication request.
+ */
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
@@ -15,9 +18,5 @@ public class AuthResponseDTO {
     public AuthResponseDTO(String response, boolean must_verify_mfa) {
         this.response = response;
         this.must_verify_mfa = must_verify_mfa;
-    }
-
-    public boolean mustVerifyMfa() {
-        return must_verify_mfa;
     }
 }

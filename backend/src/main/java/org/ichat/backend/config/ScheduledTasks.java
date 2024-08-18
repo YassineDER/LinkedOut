@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 
 import java.time.OffsetDateTime;
 
+/**
+ * Scheduled tasks for some cleanup operations.
+ */
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -17,6 +20,7 @@ public class ScheduledTasks {
     private final AccountVerificationRepository accountVerificationRepository;
     private final AccountResetRepository accountResetRepository;
 
+    // Delete expired account verifications tokens every day at midnight
     @Scheduled(cron = "0 0 0 * * ?")
     public void deleteExpiredAccountVerification() {
         OffsetDateTime threshold = OffsetDateTime.now().minusHours(24);
@@ -24,6 +28,7 @@ public class ScheduledTasks {
         log.info("Deleted expired account verification tokens");
     }
 
+    // Delete expired account password reset every day at midnight
     @Scheduled(cron = "0 0 0 * * ?")
     public void deleteExpiredAccountReset() {
         OffsetDateTime threshold = OffsetDateTime.now().minusHours(24);
@@ -31,11 +36,11 @@ public class ScheduledTasks {
         log.info("Deleted expired account reset tokens");
     }
 
+    // Clear image cache every 3 hours (default, defined in application.yml)
     @Scheduled(fixedRateString = "${spring.caching.user.images}")
     @CacheEvict(value = {"images"}, allEntries = true)
     public void clearImageCache() {
         log.info("Cleared cache.");
-        
     }
 
 }
