@@ -1,7 +1,8 @@
+-- This script deletes a user from the database including its references, making it totally unexistent. DEBUGGING USE ONLY !
 DO $$
 DECLARE
     r record;
-    user_id_to_delete INTEGER := 452;
+    user_id_to_delete INTEGER := 1;
 BEGIN
     FOR r IN (
         SELECT 

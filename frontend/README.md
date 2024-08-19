@@ -1,3 +1,0 @@
-# Frontend
-
-By Yassine DERGAOUI
