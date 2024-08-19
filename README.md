@@ -20,7 +20,7 @@ You can then start to work on each sub-directory separately and commit your chan
 The project uses PostgreSQL as the database. Its required to have it ready before running the backend. You can install it either with Docker (Recommanded) or by downloading it from the official website.
 
 ```bash
-docker run --name linkedout-db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=securecapita -p 5432:5432 -d postgres:14-alpine
+docker run --name linkedout-db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=securecapita -p 5432:5432 -v linkedout-db:/var/lib/postgresql/data -d postgres:14-alpine
 ```
 
 The credentials must be respected as they are hardcoded in the backend.
@@ -33,6 +33,8 @@ A ready-to-use script can be requested from the project owner to skip the steps 
 
 Before creating your own start script, you need to:
 
+- Make sure JDK 19 or higher is installed and set as the default Java version.
+- Install [Maven](https://maven.apache.org/download.cgi) if not already installed.
 - Sign up for a free account on [Mailtrap](https://mailtrap.io/), enable Email Testing, get your SMTP credentials (username and password) from your created inbox and set them as `MAIL_USER` and `MAIL_PASS` environment variables. You will receive each email sent by the application in the Mailtrap inbox but won't be able to send emails to real addresses since this is just for developpement environments
 - Generate a JWT secret key with 32 characters and set it as `JWT_SECRET` environment variable. You can use a random string generator like [this one](https://jwtsecret.com/generate).
 - Create a new project on the Google Cloud Console and enable the [Custom Search API](https://console.cloud.google.com/apis/library/customsearch.googleapis.com). Then, [create a new API key]((https://support.google.com/googleapi/answer/6158862)) if not already created and set it as `GOOGLE_API_KEY` environment variable in the script. 
