@@ -7,6 +7,7 @@ import org.ichat.backend.model.patchers.CompanyPatchDTO;
 import org.ichat.backend.repository.CompanyRepo;
 import org.ichat.backend.services.ICompanyService;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
@@ -20,8 +21,10 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 public class CompanyService implements ICompanyService {
+    @Value("${google.cx}")
+    private static String GOOGLE_CX;
+
     private final static String GOOGLE_API_KEY = System.getenv("GOOGLE_API_KEY");
-    private final static String GOOGLE_CX = System.getenv("GOOGLE_CX");
     private final CompanyRepo companyRepo;
     private final RestClient client = RestClient.create();
 

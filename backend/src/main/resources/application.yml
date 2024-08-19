@@ -45,6 +45,8 @@ totp:
   time:
     period: 30
 
+google:
+  cx: b1365cc6b472c4e31
 # admin default credentials when initializing the app (if not already present)
 admin:
   default:

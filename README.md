@@ -1,8 +1,8 @@
 # Getting Started
 
-## Part 1: Cloning each sub-directory
+## Part 1: Cloning each sub-directory (Optional)
 
-The project is divided into two sub-directories: `backend` and `frontend`. You can clone each sub-directory separately by running the following commands:
+The project is divided into two sub-directories: `backend` and `frontend`. You can clone each sub-directory to work in separate directories by running:
 
 ```bash
 git clone --depth 1 --branch dev --no-checkout git@github.com:YassineDER/LinkedOut.git
@@ -13,7 +13,7 @@ git checkout dev
 ```
 You can then start to work on each sub-directory separately and commit your changes like you would do with a normal git repository.
 
-**Note:** Pushing from any of the sub-directories will trigger the CI/CD pipeline and deploy the whole project. If you want to avoid this, add `[skip ci]` to the end of your commit message.
+**Note:** Pushing from any of the sub-directories (including the root) will trigger the CI/CD pipeline and deploy the whole project. If you want to avoid this, add `[skip ci]` to the end of your commit message.
 
 # Part 2: Setup the database
 
@@ -33,9 +33,9 @@ A ready-to-use script can be requested from the project owner to skip the steps 
 
 Before creating your own start script, you need to:
 
-- Sign up for a free account on [Mailtrap](https://mailtrap.io/) and get your SMTP credentials (username and password) and set them as `MAIL_USER` and `MAIL_PASS` environment variables.
+- Sign up for a free account on [Mailtrap](https://mailtrap.io/), enable Email Testing, get your SMTP credentials (username and password) from your created inbox and set them as `MAIL_USER` and `MAIL_PASS` environment variables. You will receive each email sent by the application in the Mailtrap inbox but won't be able to send emails to real addresses since this is just for developpement environments
 - Generate a JWT secret key with 32 characters and set it as `JWT_SECRET` environment variable. You can use a random string generator like [this one](https://jwtsecret.com/generate).
-- Create a new project on the [Google Developers Console](https://console.developers.google.com/) and enable the Custom Search API. Then, create a new API key and set it as `GOOGLE_API_KEY` environment variable. Finally, create a new search engine [here](https://programmablesearchengine.google.com/controlpanel/all) and set its ID as `GOOGLE_CX` environment variable.
+- Create a new project on the Google Cloud Console and enable the [Custom Search API](https://console.cloud.google.com/apis/library/customsearch.googleapis.com). Then, [create a new API key]((https://support.google.com/googleapi/answer/6158862)) if not already created and set it as `GOOGLE_API_KEY` environment variable in the script. 
 - Create a new file called `start` (with no extension) in the `backend` directory like the following:
 
 ```bash
@@ -48,7 +48,6 @@ export MAIL_USER="<Mailtrap username>"
 export MAIL_PASS="<Mailtrap password>"
 export JWT_SECRET="<JWT secret>"
 export GOOGLE_API_KEY="<Google API key>"
-export GOOGLE_CX="<Google CX>"
 
 mvn clean spring-boot:run -DskipTests -Dspring.profiles.active=dev
 ```
