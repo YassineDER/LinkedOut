@@ -23,4 +23,9 @@ export class NavComponent{
     }
 
     protected readonly Path = Path;
+
+    hideDropdown() {
+        // return this.router.url === Path.HOME_LOGIN.toString() ||
+        //     this.router.url === Path.HOME_REGISTER.toString
+    }
 }

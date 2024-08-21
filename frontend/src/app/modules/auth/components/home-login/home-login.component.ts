@@ -5,7 +5,7 @@ import {UtilsService} from "../../../../services/utils.service";
 import {Path} from "../../../shared/utils/path";
 
 @Component({
-    selector: 'app-home-login',
+    selector: 'app-home-component-login',
     templateUrl: './home-login.component.html',
     styleUrl: './home-login.component.css'
 })

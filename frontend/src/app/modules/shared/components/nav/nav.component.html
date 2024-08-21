@@ -31,7 +31,7 @@
 
     <!--    Profile-->
     <div class="dropdown dropdown-end" id="profile">
-      <div class="flex overflow-hidden btn leading-none p-0 btn-ghost" tabindex="0">
+      <div class="flex overflow-hidden btn leading-none px-0.5 btn-ghost" tabindex="0">
         <img alt="Profile Picture" class="rounded-full w-10" height="64" ngSrc="{{user.image_url}}"
              priority width="64">
         <div class="me-2">
@@ -45,7 +45,7 @@
           <img ngSrc="{{user.image_url}}" alt="Profile pic" priority class="rounded-full mx-auto" width="100" height="150" />
         </a>
         <div class="card-body items-center text-center py-0">
-          <a [routerLink]="Path.PROFILE.toString()" class="text-primary card-title font-bold">
+          <a [routerLink]="Path.PROFILE.toString()" (click)="hideDropdown()" class="text-primary card-title font-bold">
             {{ user.username }}
           </a>
           <p class="text-sm" *ngIf="userServ.isAdmin(user)">{{ user.admin_title }}</p>
@@ -53,14 +53,14 @@
           <p class="text-sm" *ngIf="userServ.isJobseeker(user)">{{ user.title }}</p>
         </div>
         <hr class="mt-2">
-        <div class="menu menu-sm">
-          <li><a [routerLink]="Path.PROFILE.toString()" routerLinkActive="active">
+        <ul class="menu menu-sm">
+          <li><a [routerLink]="Path.PROFILE.toString()" (click)="hideDropdown()" routerLinkActive="active">
             <i class="bi bi-person-fill"></i>Profil</a></li>
           <li><a [routerLink]="Path.PREFERENCES.toString()" routerLinkActive="active">
             <i class="bi bi-gear-fill"></i>Préférences</a></li>
           <li><a (click)="disconnect()">
             <i class="bi bi-box-arrow-right"></i>Se déconnecter</a></li>
-        </div>
+        </ul>
       </ul>
     </div>
   </div>

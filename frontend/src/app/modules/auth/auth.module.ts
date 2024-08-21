@@ -12,7 +12,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AuthRoutingModule} from "./auth.routes";
 
 /**
- * Auth module for all authentication related components. Its separate from the home module.
+ * Auth module for all authentication related components. Its separate from the home-component module.
  */
 @NgModule({
     declarations: [

@@ -4,7 +4,7 @@ import {CommonModule, NgOptimizedImage} from '@angular/common';
 import {ProfileRoutingModule} from './profile-routing.module';
 import {ProfileComponent} from "./components/profile/profile.component";
 import {UsersSuggestionsComponent} from "./components/users-suggestions/users-suggestions.component";
-import {OverviewComponent} from "./components/overview-profile/overview.component";
+import {HeaderProfileComponent} from "./components/header-profile/header-profile.component";
 import { StatsProfileComponent } from './components/stats-profile/stats-profile.component';
 import { AboutProfileComponent } from './components/about-profile/about-profile.component';
 import {ProfileService} from "./services/profile.service";
@@ -15,7 +15,7 @@ import { SkillsProfileComponent } from './components/skills-profile/skills-profi
 import {SharedModule} from "../shared/shared.module";
 
 @NgModule({
-    declarations: [ProfileComponent, UsersSuggestionsComponent, OverviewComponent, StatsProfileComponent, AboutProfileComponent, ActivityProfileComponent, ExperienceProfileComponent, EducationProfileComponent, SkillsProfileComponent],
+    declarations: [ProfileComponent, UsersSuggestionsComponent, HeaderProfileComponent, StatsProfileComponent, AboutProfileComponent, ActivityProfileComponent, ExperienceProfileComponent, EducationProfileComponent, SkillsProfileComponent],
     imports: [
         CommonModule,
         ProfileRoutingModule,

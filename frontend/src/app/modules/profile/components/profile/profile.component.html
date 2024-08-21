@@ -3,7 +3,7 @@
     @if ((user)) {
       <!-- first column -->
       <div class="col-span-3 flex flex-col">
-        <app-overview-profile class="p-0 mb-4" [user]="user" />
+        <app-header-profile class="p-0 mb-4" [user]="user" />
         <app-about-profile class="p-0 mb-4" [profile]="user.profile" />
         <app-activity-profile class="p-0 mb-4" [profile]="user.profile" />
       @if (users.isJobseeker(user)) {

@@ -21,9 +21,10 @@ export class FormsService {
      */
     checkFormValidity(form: FormGroup) : boolean {
         for (let i in form.controls) {
-            if (form.controls[i].errors) {
+            const errors = form.controls[i].errors;
+            if (errors) {
                 form.controls[i].markAsTouched();
-                this.utils.alert('Le champ ' + i + ' est invalide', AlertType.ERROR);
+                this.utils.alert('Le champ ' + i + ' est invalide: ' + Object.keys(errors)[0], AlertType.ERROR);
                 return false;
             }
         }

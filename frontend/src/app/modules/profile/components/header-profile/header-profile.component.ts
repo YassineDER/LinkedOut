@@ -5,11 +5,11 @@ import {SocialService} from "../../../home/services/social.service";
 import {Path} from "../../../shared/utils/path";
 
 @Component({
-    selector: 'app-overview-profile',
-    templateUrl: './overview.component.html',
-    styleUrl: './overview.component.css',
+    selector: 'app-header-profile',
+    templateUrl: './header-profile.component.html',
+    styleUrl: './header-profile.component.css',
 })
-export class OverviewComponent{
+export class HeaderProfileComponent {
     @Input() user!: User;
 
     constructor(protected users: UserService, protected social: SocialService) {
