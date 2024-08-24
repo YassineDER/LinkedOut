@@ -48,7 +48,7 @@ public class UserService implements IUserService {
         User userToUpdate = findBy(userId);
         userToUpdate.setUsing_mfa(newUser.getUsing_mfa());
         userToUpdate.setMfa_secret(newUser.getMfa_secret());
-        userToUpdate.setImage_url(newUser.getImage_url());
+        userToUpdate.setImage_name(newUser.getImage_name());
         return userRepo.save(userToUpdate);
     }
 

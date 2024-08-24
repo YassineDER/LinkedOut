@@ -22,6 +22,5 @@ public class RegisterJobseekerRequestDTO {
     private String username;
     @NotEmpty(message = "password is mandatory")
     private String password;
-
-    private String image_url;
+    private String image;
 }

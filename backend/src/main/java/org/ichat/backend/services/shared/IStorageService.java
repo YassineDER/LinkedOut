@@ -1,33 +1,31 @@
 package org.ichat.backend.services.shared;
 
-import org.ichat.backend.model.util.StorageFile;
-import org.springframework.web.multipart.MultipartFile;
+import org.ichat.backend.model.tables.User;
 
-import java.io.IOException;
+import java.time.OffsetDateTime;
 
 public interface IStorageService {
-    /**
-     * Initialize the storage service from the config file <br>
-     * By default, the config file is located at ~/.oci/config
-     * @throws IOException if the config file cannot be read
-     */
-    void init() throws IOException;
 
     /**
-     * Store the file in the storage service
-     * @param file the file to store (MultipartFile)
-     * @return the stored file
-     * @throws IOException if the file cannot be stored
-     * @see StorageFile
+     * Create a pre-authenticated request for a user to access a bucket (Valid for 24 hours by default).
+     * @param user the user that will access the bucket
+     * @param bucketName the name of the bucket
+     * @return the pre-authenticated request URL
      */
-    StorageFile store(MultipartFile file) throws IOException;
+    String createPreAuthenticatedRequest(User user, String bucketName);
 
     /**
-     * Get the image from the storage service
-     * @param filename the name of the file to get
-     * @return the file
-     * @throws IOException if the file cannot be retrieved
-     * @see StorageFile
+     * Upload an image from a URL to a bucket.
+     * @param url the URL of the image
+     * @param bucketName the name of the bucket
+     * @param objectName the name of the object (or its path) in the bucket
+     * @return true if the image was uploaded successfully, false otherwise
      */
-    StorageFile getImage(String filename) throws IOException;
+    boolean uploadImageFromUrl(String url, String bucketName, String objectName);
+
+    /**
+     * Delete expired images from a bucket.
+     * @param threshold the threshold date to delete images before
+     */
+    void deleteExpiredImages(OffsetDateTime threshold);
 }

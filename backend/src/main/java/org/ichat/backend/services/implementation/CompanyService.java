@@ -6,6 +6,7 @@ import org.ichat.backend.model.tables.Company;
 import org.ichat.backend.model.patchers.CompanyPatchDTO;
 import org.ichat.backend.repository.CompanyRepo;
 import org.ichat.backend.services.ICompanyService;
+import org.ichat.backend.services.shared.IStorageService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -22,10 +23,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CompanyService implements ICompanyService {
     @Value("${google.cx}")
-    private static String GOOGLE_CX;
-
+    private String GOOGLE_CX;
     private final static String GOOGLE_API_KEY = System.getenv("GOOGLE_API_KEY");
+
     private final CompanyRepo companyRepo;
+    private final IStorageService storageService;
     private final RestClient client = RestClient.create();
 
     @Override
@@ -57,8 +59,6 @@ public class CompanyService implements ICompanyService {
             oldCompany.setHeadquarters(newCompany.getHeadquarters());
         if (newCompany.getWebsite() != null)
             oldCompany.setWebsite(newCompany.getWebsite());
-        if (newCompany.getImage_url() != null)
-            oldCompany.setImage_url(newCompany.getImage_url());
 
         return companyRepo.save(oldCompany);
     }
@@ -104,7 +104,9 @@ public class CompanyService implements ICompanyService {
         company.setWebsite(website);
         company.setSector(sector);
         company.setSiren(SIREN);
-        company.setImage_url(logoAPI + website);
+        String imageName = companyName + "-" + company.getCreatedDate() + ".png";
+        if (storageService.uploadImageFromUrl(logoAPI + website, "user-assets", "profile/images/" + imageName))
+            company.setImage_name(imageName);
 
         return company;
     }

@@ -54,7 +54,6 @@ public class InitOnStartup {
             admin.setUser_id(1L);
             admin.setRole(adminRole);
             admin.setEnabled(true);
-            admin.setImage_url("https://ax0judwwk3y8.objectstorage.eu-paris-1.oci.customer-oci.com/n/ax0judwwk3y8/b/images/o/default_profile.jpg");
             admin.setProfile(new CompanyStaffProfile());
 
             if (admins.isEmpty()) {

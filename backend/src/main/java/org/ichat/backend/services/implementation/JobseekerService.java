@@ -45,10 +45,6 @@ public class JobseekerService implements IJobseekerService {
             jobseekerToUpdate.setAddress(newJobseeker.getAddress());
         if (newJobseeker.getPhone() != null)
             jobseekerToUpdate.setPhone(newJobseeker.getPhone());
-        if (newJobseeker.getCv_url() != null)
-            jobseekerToUpdate.setCv_url(newJobseeker.getCv_url());
-        if (newJobseeker.getImage_url() != null)
-            jobseekerToUpdate.setImage_url(newJobseeker.getImage_url());
 
         return jobseekerRepo.save(jobseekerToUpdate);
     }

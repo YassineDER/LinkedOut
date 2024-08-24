@@ -50,7 +50,7 @@ public class Job {
 
     @ManyToOne
     @JoinColumn(name = "company_id", referencedColumnName = "user_id")
-    @JsonIncludeProperties({"user_id", "image_url", "company_name"})
+    @JsonIncludeProperties({"user_id", "image_name", "company_name"})
     Company company;
 
     @OneToMany(mappedBy = "job", cascade = CascadeType.ALL)

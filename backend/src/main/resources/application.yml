@@ -37,7 +37,6 @@ spring:
       max-request-size: 5MB
   jta:
     enabled: true
-
 # Two-factor authentication configuration
 totp:
   secret:
@@ -45,8 +44,13 @@ totp:
   time:
     period: 30
 
+hibernate:
+  discriminator:
+    ignore_explicit_for_joined: false
+
 google:
   cx: b1365cc6b472c4e31
+
 # admin default credentials when initializing the app (if not already present)
 admin:
   default:

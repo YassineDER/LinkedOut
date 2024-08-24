@@ -26,7 +26,7 @@ public class Post {
     @Column(nullable = false)
     String description;
 
-    String image_url;
+    String image_name;
 
     LocalDateTime created = LocalDateTime.now();
 

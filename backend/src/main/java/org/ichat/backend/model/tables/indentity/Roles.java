@@ -13,6 +13,7 @@ import org.ichat.backend.model.util.RoleType;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(of = "name")
 public class Roles {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
