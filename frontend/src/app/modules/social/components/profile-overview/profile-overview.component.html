@@ -1,5 +1,20 @@
 <div class="bg-white p-4 rounded-lg shadow text-center">
-  <img src="https://via.placeholder.com/100" alt="Profile" class="w-20 h-20 rounded-full mx-auto mb-4">
-  <h3 class="text-xl font-semibold">Dmitry Kargaev</h3>
-  <p class="text-sm text-gray-500">Freelance UX/UI designer, 80+ projects in web design, mobile apps (iOS & android) and creative projects. Open to offers.</p>
+  <img [ngSrc]="PAR + user.image_name" alt="Profile" class="rounded-full mx-auto mb-4" height="80" priority width="80">
+
+  <h3 class="text-xl font-semibold">
+    @if (users.isCompany(user)) {
+      {{ user.company_name }}
+    } @else if (users.isJobseeker(user) || users.isAdmin(user)) {
+      {{ user.first_name }} {{ user.last_name }}
+    }
+  </h3>
+  <p class="text-sm text-gray-500">
+    @if (users.isCompany(user)) {
+      {{ user.description }}
+    } @else if (users.isJobseeker(user)){
+      {{ user.title }}
+    } @else if (users.isAdmin(user)) {
+      {{ user.admin_title }}
+    }
+  </p>
 </div>

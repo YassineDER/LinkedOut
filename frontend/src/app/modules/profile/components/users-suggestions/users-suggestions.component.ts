@@ -11,6 +11,7 @@ import {UserService} from "../../../home/services/user.service";
 export class UsersSuggestionsComponent implements OnInit {
     @Input() user!: User;
     suggested_users: User[] = [];
+    PAR = localStorage.getItem('PAR') as string;
 
     constructor(protected social: SocialService, protected users: UserService) {
     }

@@ -11,7 +11,6 @@ export class ProfileComponent implements OnInit{
     user!: User;
 
     constructor(protected users: UserService){
-
     }
 
     ngOnInit() {

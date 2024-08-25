@@ -5,11 +5,14 @@ import {LoadingBarHttpClientModule} from "@ngx-loading-bar/http-client";
 import {LoadingBarRouterModule} from "@ngx-loading-bar/router";
 import {LoadingBarModule} from "@ngx-loading-bar/core";
 import {provideAnimations} from "@angular/platform-browser/animations";
-import {jwtInterceptor} from "../shared/interceptors/jwt.interceptor";
+import {jwtInterceptor} from "./interceptors/jwt.interceptor";
 import {AlertComponent} from "./components/alert/alert.component";
 import {UtilsService} from "../../services/utils.service";
-import {ipInterceptor} from "../shared/interceptors/ip.interceptor";
+import {ipInterceptor} from "./interceptors/ip.interceptor";
 
+/**
+ * Initialize the application by fetching the IP address of the client.
+ */
 export function initializeApp(utils: UtilsService) {
     return (): Promise<any> => {
         return new Promise((resolve, reject) => {

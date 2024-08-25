@@ -28,7 +28,6 @@ export class RegisterJobseekerComponent {
             password: this.pwd,
             first_name: this.first_name,
             last_name: this.last_name,
-            image_url: new FormControl(null)
         });
 
         this.isDev = !environment.production;
@@ -39,7 +38,6 @@ export class RegisterJobseekerComponent {
             this.registerJobseeker.setValue({
                 email: new FormControl(randomUser.email).value,
                 username: new FormControl(randomUser.username).value,
-                image_url: new FormControl(randomUser.image).value,
                 password: new FormControl('12345678').value,
                 first_name: new FormControl(randomUser.first_name).value,
                 last_name: new FormControl(randomUser.last_name).value
@@ -56,7 +54,6 @@ export class RegisterJobseekerComponent {
             username: data.results[0].login.username,
             first_name: data.results[0].name.first,
             last_name: data.results[0].name.last,
-            image: data.results[0].picture.large
         };
         return randomUser;
     }

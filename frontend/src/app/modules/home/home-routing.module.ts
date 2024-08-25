@@ -1,6 +1,7 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {HomeComponent} from "./home-component/home.component";
+import {PARGuard} from "../auth/guards/par.guard";
 
 const routes: Routes = [
     {

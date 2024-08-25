@@ -8,6 +8,6 @@ export interface Jobseeker extends User {
     last_name: string;
     address: string;
     phone: string;
-    cv_url: string;
+    resumee: string;
     title: string;
 }

@@ -1,11 +1,11 @@
 <div class="bg-white shadow rounded overflow-hidden">
   <div class="relative mb-2">
-    <img alt="Banner Image" class="w-full h-32 object-cover" height="396" ngSrc="assets/images/profile_banner.png"
+    <img alt="Banner Image" class="w-full h-32 object-cover" height="396" [ngSrc]="PAR + user.profile.banner_name"
          priority width="1584">
     <div class="rounded-full border-4 border-white absolute left-5 transform -bottom-16">
       <div class="w-24 h-22 bg-white rounded-full flex items-start justify-start">
-        <img [ngSrc]="user.image_url" alt="Profile Image" class="w-full h-full rounded-full" height="96"
-             priority width="96">
+        <img [ngSrc]="PAR + user.image_name" alt="Profile Image" class="w-full h-full rounded-full" height="96"
+						 priority width="96">
       </div>
     </div>
     <div class="absolute top-0 right-0 m-2">

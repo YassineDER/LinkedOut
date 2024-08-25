@@ -7,9 +7,9 @@ export interface User{
     user_id: number;
     email: string;
     username: string;
-    image_url: string;
+    image_name: string;
     using_mfa: boolean;
     authorities: any[];
     profile: Profile;
-    createdDate: string;
+    createdDate: number[];
 }

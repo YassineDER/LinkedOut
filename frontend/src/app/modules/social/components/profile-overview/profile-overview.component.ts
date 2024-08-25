@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {User} from "../../../../models/user";
+import {UserService} from "../../../home/services/user.service";
 
 @Component({
   selector: 'app-profile-overview',
@@ -6,5 +8,11 @@ import { Component } from '@angular/core';
   styleUrl: './profile-overview.component.css'
 })
 export class ProfileOverviewComponent {
+    @Input() user!: User;
+    PAR = localStorage.getItem('PAR') as string;
+
+    constructor(protected users: UserService) {
+
+    }
 
 }

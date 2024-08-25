@@ -11,6 +11,7 @@ import {Path} from "../../../shared/utils/path";
 })
 export class HeaderProfileComponent {
     @Input() user!: User;
+    PAR = localStorage.getItem('PAR');
 
     constructor(protected users: UserService, protected social: SocialService) {
     }

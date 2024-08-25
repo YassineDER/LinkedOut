@@ -47,8 +47,14 @@ export class UtilsService {
     }
 
     /**
-     * This api fetches the ip address of the user.
+     * Format the local date time (Java 8) to a human readable format.
+     * @param localDateTime The local date time to format.
      */
+    formatDate(localDateTime: number[]) {
+        const [year, month, day, hour, minute, second, nanosecond] = localDateTime;
+        const date = new Date(year, month - 1, day, hour, minute, second, nanosecond / 1000000);
+        return date.toLocaleString();
+    }
 
     /**
      * This api fetches the ip address of the user.

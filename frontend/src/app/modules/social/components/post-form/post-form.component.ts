@@ -12,14 +12,14 @@ import {NotificationType} from "../../../shared/utils/notification-type";
     styleUrl: './post-form.component.css'
 })
 export class PostFormComponent {
-    postFrom: FormGroup;
+    postForm: FormGroup;
     imagePreview?: string;
     content = new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(500), Validators.pattern(/^[a-zA-Z0-9\s]+$/)]);
     image = new FormControl(null);
 
     constructor(private utils: UtilsService, private fb: FormBuilder,
                 private forms: FormsService, private posts: PostsService) {
-        this.postFrom = this.fb.group({
+        this.postForm = this.fb.group({
             content: this.content,
             image: this.image
         });
@@ -46,7 +46,7 @@ export class PostFormComponent {
                     reader.onload = () => this.imagePreview = reader.result as string;
                     reader.readAsDataURL(image);
 
-                    this.postFrom.patchValue({image});
+                    this.postForm.patchValue({image});
                 } catch (e: any) {
                     this.utils.alert(e.message, AlertType.ERROR);
                 }
@@ -55,8 +55,8 @@ export class PostFormComponent {
     }
 
     async submitPost() {
-        if (this.forms.checkFormValidity(this.postFrom)) {
-            const success = await this.posts.createPost(this.postFrom.value)
+        if (this.forms.checkFormValidity(this.postForm)) {
+            const success = await this.posts.createPost(this.postForm.value)
                 .then(() => {
                     this.utils.alert('Post créé avec succès', AlertType.SUCCESS);
                     this.utils.playSound(NotificationType.POST);
@@ -68,7 +68,7 @@ export class PostFormComponent {
                 });
 
             if (success)
-                this.postFrom.reset();
+                this.postForm.reset();
         }
     }
 }

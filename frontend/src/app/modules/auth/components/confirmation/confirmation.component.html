@@ -1,6 +1,8 @@
 <div class="bg-slate-100 flex flex-col items-center h-screen">
-  <a class="w-1/12 mr-auto ml-4 mt-4" [routerLink]="Path.HOME.toString()"><img priority ngSrc="assets/images/slogan.png" alt="logo" height="248"
-																													width="851"/></a>
+  <a class="w-1/12 mr-auto ml-4 mt-4" [routerLink]="Path.HOME.toString()">
+    <img priority alt="logo" height="248" width="851"
+         ngSrc="https://ax0judwwk3y8.objectstorage.eu-paris-1.oci.customer-oci.com/n/ax0judwwk3y8/b/static/o/slogan.png"/>
+  </a>
 
   <form [formGroup]="confirmationForm" (ngSubmit)="submitConfirmationForm()"
         class="bg-white px-12 m-auto py-8 rounded-lg shadow-lg w-2/5">

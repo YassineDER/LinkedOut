@@ -4,11 +4,11 @@ import {NotFoundComponent} from "./components/not-found/not-found.component";
 import {AuthGuard} from "./modules/auth/guards/auth.guard";
 import {PrivacyPolicyComponent} from "./components/privacy-policy/privacy-policy.component";
 import {TermsAndConditionsComponent} from "./components/terms-and-conditions/terms-and-conditions.component";
+import {PARGuard} from "./modules/auth/guards/par.guard";
 
 const routes: Routes = [
-    // Application routes
     {
-        path: '', title: 'LinkedOut', canActivate: [AuthGuard],
+        path: '', title: 'LinkedOut', canActivate: [AuthGuard, PARGuard],
         loadChildren: () => import('./modules/home/home.module').then(m => m.HomeModule)
     },
     // Privacy policy

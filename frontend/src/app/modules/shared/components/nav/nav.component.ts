@@ -12,6 +12,7 @@ import {UserService} from "../../../home/services/user.service";
 })
 export class NavComponent{
     @Input() user!: User;
+    PAR = localStorage.getItem('PAR') as string;
 
     constructor(private auth: AuthService, private router: Router,
                 protected userServ: UserService) {
@@ -23,9 +24,4 @@ export class NavComponent{
     }
 
     protected readonly Path = Path;
-
-    hideDropdown() {
-        // return this.router.url === Path.HOME_LOGIN.toString() ||
-        //     this.router.url === Path.HOME_REGISTER.toString
-    }
 }

@@ -9,6 +9,7 @@ import {Profile} from "../../../../models/social/profile";
 })
 export class EducationProfileComponent {
     @Input() profile!: Profile;
+    PAR = localStorage.getItem('PAR') as string;
 
     constructor() {
     }
