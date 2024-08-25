@@ -12,15 +12,13 @@ import com.oracle.bmc.objectstorage.responses.ListPreauthenticatedRequestsRespon
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exception.StorageException;
-import org.ichat.backend.model.tables.User;
-import org.ichat.backend.model.util.RoleType;
 import org.ichat.backend.services.shared.IStorageService;
+import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 import java.net.URL;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.Date;
 
@@ -29,18 +27,19 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class StorageService implements IStorageService {
     private final ObjectStorageClient client;
+    private final Environment env;
 
     @Override
-    public String createPreAuthenticatedRequest(User user, String bucketName) throws StorageException {
+    public String createPreAuthenticatedRequest(String bucketName) throws StorageException {
         Date expiration = new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 4); // 2 hours
 
         // TODO: remove this line after test
-        if (user.getRole().getName().equals(RoleType.ADMIN.name()))
+        if (env.getActiveProfiles()[0].equals("dev"))
             expiration = new Date(System.currentTimeMillis() + 1000 * 60 * 5); // 5 minutes for debugging
 
         try {
             CreatePreauthenticatedRequestDetails details = CreatePreauthenticatedRequestDetails.builder()
-                    .name(user.getUser_id() + "-" + LocalDateTime.now())
+                    .name("PAR-" + expiration.getTime())
                     .accessType(CreatePreauthenticatedRequestDetails.AccessType.AnyObjectReadWrite)
                     .bucketListingAction(PreauthenticatedRequest.BucketListingAction.Deny)
                     .timeExpires(expiration)

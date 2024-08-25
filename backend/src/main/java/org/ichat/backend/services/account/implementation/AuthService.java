@@ -29,7 +29,7 @@ public class AuthService implements IAuthService {
     private final AuthenticationManager authenticationManager;
 
     @Override
-    public AuthResponseDTO authenticate(AccountCredentialsDTO credentials) {
+    public String authenticate(AccountCredentialsDTO credentials) {
         User user = userService.findBy(credentials.getEmail());
 
         if (!passwordEncoder.matches(credentials.getPassword(), user.getPassword()))
@@ -42,27 +42,23 @@ public class AuthService implements IAuthService {
                     "A new verification email has been sent to your email address, please verify your account.");
         }
 
+        Authentication auth = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        credentials.getEmail(), credentials.getPassword()));
+
         if (Boolean.TRUE.equals(user.getUsing_mfa())){
             if (credentials.getCode() != null) {
                 try {
                     verifyMFA(credentials);
-                    Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-                    SecurityContextHolder.getContext().setAuthentication(auth);
-                    var token = jwtService.generateToken(user);
-                    return new AuthResponseDTO(token);
+                    auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                 } catch (AccountException e) {
                     throw new BadCredentialsException("Invalid MFA code");
                 }
             } else throw new AccountException("MFA code is required for this user", HttpStatus.FORBIDDEN.value());
         }
 
-        Authentication auth = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        credentials.getEmail(), credentials.getPassword()));
-        var token = jwtService.generateToken(user);
         SecurityContextHolder.getContext().setAuthentication(auth);
-
-        return new AuthResponseDTO(token);
+        return jwtService.generateToken(user);
     }
 
     @Override

@@ -12,13 +12,12 @@ public interface IAuthService {
      * @param credentials The credentials of the user.
      * @return The authentication response containing the JWT token and if the user has MFA enabled.
      * @throws QrGenerationException
-     *
      * @see AuthResponseDTO
      * @see AccountCredentialsDTO
      * @see IAccountVerificationService
      * @see IUserService
      */
-    AuthResponseDTO authenticate(AccountCredentialsDTO credentials) throws QrGenerationException;
+    String authenticate(AccountCredentialsDTO credentials) throws QrGenerationException;
 
     /**
      * Verifies the MFA code provided by the user.

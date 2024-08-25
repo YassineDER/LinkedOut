@@ -69,8 +69,8 @@ public class AuthController {
      */
     @PostMapping("/authenticate")
     public ResponseEntity<AuthResponseDTO> login(@Valid @RequestBody AccountCredentialsDTO credentials) throws QrGenerationException {
-        AuthResponseDTO authResponseDTO = authService.authenticate(credentials);
-        return ResponseEntity.ok(authResponseDTO);
+        String token = authService.authenticate(credentials);
+        return ResponseEntity.ok(new AuthResponseDTO(token));
     }
 
     /**
@@ -109,13 +109,13 @@ public class AuthController {
      * A test endpoint to simulate a slow request
      */
     @GetMapping("/sleep")
-    public ResponseEntity<String> sleep(){
+    public ResponseEntity<AuthResponseDTO> sleep(){
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            // Do nothing
         }
-        return ResponseEntity.ok("Slept for 3 seconds");
+        return ResponseEntity.ok(new AuthResponseDTO("Slept for 3 seconds"));
     }
 
 }

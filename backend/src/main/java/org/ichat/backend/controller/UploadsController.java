@@ -19,7 +19,7 @@ public class UploadsController {
 
     @GetMapping("/generate-par")
     public ResponseEntity<StorageResponseDTO> getFile(User me) {
-        String PAR_URL = storageService.createPreAuthenticatedRequest(me, "user-assets");
+        String PAR_URL = storageService.createPreAuthenticatedRequest("user-assets");
         return ResponseEntity.ok(new StorageResponseDTO(PAR_URL));
     }
 

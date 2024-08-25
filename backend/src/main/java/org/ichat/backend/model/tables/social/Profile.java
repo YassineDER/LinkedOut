@@ -31,7 +31,7 @@ public abstract class Profile {
     String bio = "Bonjour, je suis nouveau sur LinkedOut!";
 
     @Column(nullable = false)
-    String banner_url = "profile/banners/default_banner.png";
+    String banner_name = "profile/banners/default_banner.png";
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
