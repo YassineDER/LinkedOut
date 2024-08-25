@@ -1,5 +1,7 @@
 package org.ichat.backend.services.shared;
 
+import org.ichat.backend.model.util.storage.StorageResponseDTO;
+
 import java.time.OffsetDateTime;
 
 public interface IStorageService {
@@ -10,7 +12,7 @@ public interface IStorageService {
      * @param bucketName the name of the bucket
      * @return the pre-authenticated request URL
      */
-    String createPreAuthenticatedRequest(String bucketName);
+    StorageResponseDTO createPreAuthenticatedRequest(String bucketName);
 
     /**
      * Upload an image from a URL to a bucket.

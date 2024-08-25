@@ -1,7 +1,6 @@
 package org.ichat.backend.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.ichat.backend.model.tables.User;
 import org.ichat.backend.model.util.storage.StorageResponseDTO;
 import org.ichat.backend.services.shared.IStorageService;
 
@@ -18,9 +17,9 @@ public class UploadsController {
     private final IStorageService storageService;
 
     @GetMapping("/generate-par")
-    public ResponseEntity<StorageResponseDTO> getFile(User me) {
-        String PAR_URL = storageService.createPreAuthenticatedRequest("user-assets");
-        return ResponseEntity.ok(new StorageResponseDTO(PAR_URL));
+    public ResponseEntity<StorageResponseDTO> getFile() {
+        StorageResponseDTO PAR = storageService.createPreAuthenticatedRequest("user-assets");
+        return ResponseEntity.ok(PAR);
     }
 
 }

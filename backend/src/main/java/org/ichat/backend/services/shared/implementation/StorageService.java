@@ -12,6 +12,7 @@ import com.oracle.bmc.objectstorage.responses.ListPreauthenticatedRequestsRespon
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exception.StorageException;
+import org.ichat.backend.model.util.storage.StorageResponseDTO;
 import org.ichat.backend.services.shared.IStorageService;
 import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
@@ -19,7 +20,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 @Service
@@ -30,7 +33,7 @@ public class StorageService implements IStorageService {
     private final Environment env;
 
     @Override
-    public String createPreAuthenticatedRequest(String bucketName) throws StorageException {
+    public StorageResponseDTO createPreAuthenticatedRequest(String bucketName) throws StorageException {
         Date expiration = new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 4); // 2 hours
 
         // TODO: remove this line after test
@@ -51,8 +54,9 @@ public class StorageService implements IStorageService {
                     .createPreauthenticatedRequestDetails(details)
                     .build();
 
-            return client.createPreauthenticatedRequest(request)
-                    .getPreauthenticatedRequest().getAccessUri();
+            PreauthenticatedRequest PAR  = client.createPreauthenticatedRequest(request).getPreauthenticatedRequest();
+            LocalDateTime expires = LocalDateTime.ofInstant(PAR.getTimeExpires().toInstant(), ZoneId.systemDefault());
+            return new StorageResponseDTO(PAR.getAccessUri(), expires);
         } catch (Exception e) {
             throw new StorageException("Failed to create pre-authenticated request", e);
         }
