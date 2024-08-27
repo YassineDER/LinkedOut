@@ -8,6 +8,7 @@ import {PostFormComponent} from './components/post-form/post-form.component';
 import {PostsFeedComponent} from './components/posts-feed/posts-feed.component';
 import {PostsService} from "./services/posts.service";
 import {FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule} from "@angular/forms";
+import {SharedModule} from "../shared/shared.module";
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import {FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule} from "@angular/form
         SocialRoutingModule,
         NgOptimizedImage,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        SharedModule
     ],
     providers: [
         PostsService,

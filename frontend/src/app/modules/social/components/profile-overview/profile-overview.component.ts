@@ -9,7 +9,6 @@ import {UserService} from "../../../home/services/user.service";
 })
 export class ProfileOverviewComponent {
     @Input() user!: User;
-    PAR = localStorage.getItem('PAR') as string;
 
     constructor(protected users: UserService) {
 

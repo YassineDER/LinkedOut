@@ -6,11 +6,13 @@ import { HomeComponent } from './home-component/home.component';
 import {SharedModule} from "../shared/shared.module";
 import {UserService} from "./services/user.service";
 import {SocialService} from "./services/social.service";
+import {NavComponent} from "./nav/nav.component";
+import {FooterComponent} from "./footer/footer.component";
 
 
 @NgModule({
   declarations: [
-    HomeComponent
+    HomeComponent, NavComponent, FooterComponent
   ],
     imports: [
         CommonModule,

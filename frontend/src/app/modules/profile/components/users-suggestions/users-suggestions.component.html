@@ -2,7 +2,7 @@
   <h1 class="font-semibold text-xl mb-6">Autres profils similaires</h1>
   @for (suggested of suggested_users; track user.user_id) {
     <div class="flex items-center my-2">
-      <img [ngSrc]="PAR + suggested.image_name" width="64" height="64" priority alt="Profile pic"
+      <img [appSrc]="suggested.image_name" width="64" height="64" alt="Profile pic"
 					 class="w-10 h-10 rounded-full mr-3">
       @if (users.isJobseeker(suggested)) {
         <div class="w-full">

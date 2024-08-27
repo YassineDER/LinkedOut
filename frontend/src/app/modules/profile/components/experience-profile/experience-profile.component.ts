@@ -8,7 +8,6 @@ import {Profile} from "../../../../models/social/profile";
 })
 export class ExperienceProfileComponent {
     @Input() profile!: Profile;
-    PAR = localStorage.getItem('PAR') as string;
 
     constructor() {
     }
