@@ -1,0 +1,1 @@
+import{Pa as s,w as n,z as o}from"./chunk-JPZ7LBG3.js";var f=(()=>{let t=class t{constructor(r){this.http=r}isConnection(r,i){return!1}triggerMsg(r){}connect(r){}};t.\u0275fac=function(i){return new(i||t)(o(s))},t.\u0275prov=n({token:t,factory:t.\u0275fac});let e=t;return e})();export{f as a};
