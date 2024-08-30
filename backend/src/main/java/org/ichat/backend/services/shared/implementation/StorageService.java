@@ -3,18 +3,14 @@ package org.ichat.backend.services.shared.implementation;
 import com.oracle.bmc.objectstorage.model.CreatePreauthenticatedRequestDetails;
 import com.oracle.bmc.objectstorage.model.PreauthenticatedRequest;
 import com.oracle.bmc.objectstorage.model.PreauthenticatedRequestSummary;
-import com.oracle.bmc.objectstorage.requests.CreatePreauthenticatedRequestRequest;
+import com.oracle.bmc.objectstorage.requests.*;
 import com.oracle.bmc.objectstorage.ObjectStorageClient;
-import com.oracle.bmc.objectstorage.requests.DeletePreauthenticatedRequestRequest;
-import com.oracle.bmc.objectstorage.requests.ListPreauthenticatedRequestsRequest;
-import com.oracle.bmc.objectstorage.requests.PutObjectRequest;
 import com.oracle.bmc.objectstorage.responses.ListPreauthenticatedRequestsResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exception.StorageException;
 import org.ichat.backend.model.util.storage.StorageResponseDTO;
 import org.ichat.backend.services.shared.IStorageService;
-import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
@@ -30,15 +26,10 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class StorageService implements IStorageService {
     private final ObjectStorageClient client;
-    private final Environment env;
 
     @Override
     public StorageResponseDTO createPreAuthenticatedRequest(String bucketName) throws StorageException {
         Date expiration = new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 4); // 2 hours
-
-        // TODO: remove this line after test
-        if (env.getActiveProfiles()[0].equals("dev"))
-            expiration = new Date(System.currentTimeMillis() + 1000 * 60 * 5); // 5 minutes for debugging
 
         try {
             CreatePreauthenticatedRequestDetails details = CreatePreauthenticatedRequestDetails.builder()
@@ -63,7 +54,7 @@ public class StorageService implements IStorageService {
     }
 
     @Override
-    public boolean uploadImageFromUrl(String url, String bucketName, String objectNamePath) throws StorageException {
+    public void uploadImageFromUrl(String url, String bucketName, String objectNamePath) throws StorageException {
         try (InputStream IS = new URL(url).openStream()) {
             PutObjectRequest objectRequest = PutObjectRequest.builder()
                     .namespaceName("ax0judwwk3y8")
@@ -73,15 +64,24 @@ public class StorageService implements IStorageService {
                     .putObjectBody(IS)
                     .build();
             client.putObject(objectRequest);
-            return true;
         } catch (Exception e) {
             throw new StorageException("Failed to store image", e);
         }
     }
 
+    @Override
+    public void deleteUnusedImages(String bucketName, String section) throws StorageException {
+//        try {
+//            ListObjectsRequest request = ListObjectsRequest.builder()
+//                    .namespaceName("ax0judwwk3y8")
+//                    .bucketName(bucketName)
+//                    .build();
+//        }
+    }
+
 
     @Override
-    public void deleteExpiredImages(OffsetDateTime threshold) throws StorageException {
+    public void deleteExpiredPARs(OffsetDateTime threshold) throws StorageException {
         try {
             ListPreauthenticatedRequestsRequest listPreauthenticatedRequestsRequest = ListPreauthenticatedRequestsRequest.builder()
                     .namespaceName("ax0judwwk3y8")

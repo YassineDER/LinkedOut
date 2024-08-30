@@ -42,7 +42,7 @@ public class ScheduledTasks {
     @Scheduled(cron = "0 0 */3 * * ?")
     public void deleteExpiredPAR() {
         OffsetDateTime threshold = OffsetDateTime.now();
-        storageService.deleteExpiredImages(threshold);
+        storageService.deleteExpiredPARs(threshold);
         log.info("Deleted expired OCI preauthenticated requests");
     }
 

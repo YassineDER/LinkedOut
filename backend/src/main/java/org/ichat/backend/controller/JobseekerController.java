@@ -37,7 +37,7 @@ public class JobseekerController {
      */
     @PutMapping("/me")
     public ResponseEntity<Jobseeker> update(User me, @Valid @RequestBody JobseekerPatchDTO patch) {
-        Jobseeker updatedUser = jobseekerService.update((Jobseeker) me, patch);
+        Jobseeker updatedUser = jobseekerService.update(me.getUser_id(), patch);
         return ResponseEntity.ok(updatedUser);
     }
 

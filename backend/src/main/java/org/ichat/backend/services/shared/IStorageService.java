@@ -1,5 +1,6 @@
 package org.ichat.backend.services.shared;
 
+import org.ichat.backend.exception.StorageException;
 import org.ichat.backend.model.util.storage.StorageResponseDTO;
 
 import java.time.OffsetDateTime;
@@ -16,16 +17,18 @@ public interface IStorageService {
 
     /**
      * Upload an image from a URL to a bucket.
-     * @param url the URL of the image
+     *
+     * @param url        the URL of the image
      * @param bucketName the name of the bucket
      * @param objectName the name of the object (or its path) in the bucket
-     * @return true if the image was uploaded successfully, false otherwise
      */
-    boolean uploadImageFromUrl(String url, String bucketName, String objectName);
+    void uploadImageFromUrl(String url, String bucketName, String objectName);
+
+    void deleteUnusedImages(String bucketName, String objectNamePath) throws StorageException;
 
     /**
      * Delete expired images from a bucket.
      * @param threshold the threshold date to delete images before
      */
-    void deleteExpiredImages(OffsetDateTime threshold);
+    void deleteExpiredPARs(OffsetDateTime threshold);
 }

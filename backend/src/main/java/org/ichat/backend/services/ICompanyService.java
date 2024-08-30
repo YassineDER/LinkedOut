@@ -38,12 +38,13 @@ public interface ICompanyService {
 
     /**
      * Updates a company
-     * @param oldCompany
+     *
+     * @param oldCompanyId
      * @param newCompany
      * @return The updated company
      * @throws AccountException if the company is not found
      */
-    Company update(Company oldCompany, CompanyPatchDTO newCompany) throws AccountException;
+    Company update(Long oldCompanyId, CompanyPatchDTO newCompany) throws AccountException;
 
     /**
      * Create a company

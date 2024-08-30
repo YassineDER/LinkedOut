@@ -5,18 +5,15 @@ import lombok.RequiredArgsConstructor;
 import org.ichat.backend.model.tables.Admin;
 import org.ichat.backend.model.patchers.AdminPatchDTO;
 import org.ichat.backend.services.IAdminService;
-import org.ichat.backend.services.shared.IStorageService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.OffsetDateTime;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/admin")
 public class AdminController {
     private final IAdminService adminService;
-    private final IStorageService storageService;
 
     /**
      * Find an admin by id

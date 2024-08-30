@@ -5,6 +5,7 @@ import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.model.tables.Jobseeker;
 import org.ichat.backend.model.patchers.JobseekerPatchDTO;
 import org.ichat.backend.repository.JobseekerRepo;
+import org.ichat.backend.repository.UserRepository;
 import org.ichat.backend.services.IJobseekerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.List;
 @Transactional
 public class JobseekerService implements IJobseekerService {
     private final JobseekerRepo jobseekerRepo;
+    private final UserRepository userRepo;
 
     @Override
     public List<Jobseeker> findAll() {
@@ -35,7 +37,8 @@ public class JobseekerService implements IJobseekerService {
     }
 
     @Override
-    public Jobseeker update(Jobseeker jobseekerToUpdate, JobseekerPatchDTO newJobseeker) throws AccountException {
+    public Jobseeker update(Long jobseekerToUpdateId, JobseekerPatchDTO newJobseeker) throws AccountException {
+        Jobseeker jobseekerToUpdate = findBy(jobseekerToUpdateId);
 
         if (newJobseeker.getFirst_name() != null)
             jobseekerToUpdate.setFirst_name(newJobseeker.getFirst_name());
@@ -51,10 +54,10 @@ public class JobseekerService implements IJobseekerService {
 
     @Override
     public Jobseeker create(Jobseeker jobseeker) {
-        boolean userExists = jobseekerRepo.findByEmail(jobseeker.getEmail()).isPresent() ||
-                jobseekerRepo.findByUsername(jobseeker.getUsername()).isPresent();
+        boolean userExists = userRepo.existsByUsername(jobseeker.getUsername()) || userRepo.existsByEmail(jobseeker.getEmail());
         if (userExists)
             throw new AccountException("Jobseeker already exists with given email or username", HttpStatus.CONFLICT.value());
+
         return jobseekerRepo.save(jobseeker);
     }
 }
