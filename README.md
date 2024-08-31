@@ -1,6 +1,6 @@
 # Getting Started
 
-![Authentication home page - LinkedOut](/frontend/src/assets/images/authPage.png)
+![Authentication home page - LinkedOut](https://ax0judwwk3y8.objectstorage.eu-paris-1.oci.customer-oci.com/n/ax0judwwk3y8/b/static/o/authPage.png)
 
 ## Part 1: Cloning each sub-directory (Optional)
 
@@ -37,7 +37,10 @@ Before creating your own start script, you need to:
 
 - Make sure JDK 17 or higher is installed and set as the default Java version.
 - Install [Maven](https://maven.apache.org/download.cgi) if not already installed.
-- Sign up for a free account on [Mailtrap](https://mailtrap.io/), enable Email Testing, get your SMTP credentials (username and password) from your created inbox and set them as `MAIL_USER` and `MAIL_PASS` environment variables. You will receive each email sent by the application in the Mailtrap inbox but won't be able to send emails to real addresses since this is just for developpement environments
+- Sign up for a free account on [Mailtrap](https://mailtrap.io/), enable Email Testing, get your SMTP credentials (username and password) from your created inbox and set them as `MAIL_USER` and `MAIL_PASS` environment variables. You will receive each email sent by the application in the Mailtrap inbox but won't be able to send emails to real addresses since this is just for developpement environments.
+
+![SMTP Credentials example - Mailtrap](https://ax0judwwk3y8.objectstorage.eu-paris-1.oci.customer-oci.com/n/ax0judwwk3y8/b/static/o/mailtrap.png)
+
 - Generate a JWT secret key with 32 characters and set it as `JWT_SECRET` environment variable. You can use a random string generator like [this one](https://jwtsecret.com/generate).
 - Create a new project on the Google Cloud Console and enable the [Custom Search API](https://console.cloud.google.com/apis/library/customsearch.googleapis.com). Then, [create a new API key]((https://support.google.com/googleapi/answer/6158862)) if not already created and set it as `GOOGLE_API_KEY` environment variable in the script.
 - The OCI API KEY is requested from the project owner, for obvious reasons.
