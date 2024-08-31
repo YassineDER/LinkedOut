@@ -6,7 +6,7 @@ import {JwtService} from "../../../services/jwt.service";
 /**
  * Navigation guard to prevent unauthorized access to routes unless logged in.
  */
-export const AuthGuard: CanActivateFn = async (route, state) => {
+export const JwtGuard: CanActivateFn = async (route, state) => {
     const router = inject(Router)
     const jwt = inject(JwtService)
 

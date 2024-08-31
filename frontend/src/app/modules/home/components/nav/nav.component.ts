@@ -1,9 +1,9 @@
 import {Component, Input} from '@angular/core';
-import {AuthService} from "../../../services/auth.service";
+import {AuthService} from "../../../../services/auth.service";
 import {Router} from "@angular/router";
-import {User} from "../../../models/user";
-import {Path} from "../../shared/utils/path";
-import {UserService} from "../services/user.service";
+import {User} from "../../../../models/user";
+import {Path} from "../../../shared/utils/path";
+import {UserService} from "../../services/user.service";
 
 @Component({
     selector: 'app-nav',
