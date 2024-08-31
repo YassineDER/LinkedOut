@@ -29,7 +29,7 @@ The credentials must be respected as they are hardcoded in the backend.
 
 ## Part 3: Running the backend
 
-The backend is a Spring Boot application. You can run it in dev profile by creating a bash script called `start`. This script is a bit treaky since it contains sensitive environment variables, thats why he's included in [.gitignore](.gitignore). 
+The backend is a Spring Boot application. You can run it in dev profile by creating a bash script called `start` in the `backend` folder. This script is a bit treaky since it contains sensitive environment variables, thats why he's included in [.gitignore](.gitignore). 
 
 ### **A ready-to-use script can be requested from the project owner to skip this part.**
 
