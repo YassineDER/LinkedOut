@@ -31,7 +31,7 @@ The credentials must be respected as they are hardcoded in the backend.
 
 The backend is a Spring Boot application. You can run it in dev profile by creating a bash script called `start`. This script is a bit treaky since it contains sensitive environment variables, thats why he's included in [.gitignore](.gitignore). 
 
-A ready-to-use script can be requested from the project owner to skip the steps below.
+**A ready-to-use script can be requested from the project owner to skip this part.**
 
 Before creating your own start script, you need to:
 
@@ -52,6 +52,10 @@ export MAIL_USER="<Mailtrap username>"
 export MAIL_PASS="<Mailtrap password>"
 export JWT_SECRET="<JWT secret>"
 export GOOGLE_API_KEY="<Google API key>"
+export OCI_USER="ocid1.user.oc1..aaaaaaaanrltas6ynxfmfobvyapd5mxktmeql6qlb6x3uz233kdb6r27extq"
+export OCI_FINGERPRINT="b2:2e:fc:6c:92:81:8f:29:7f:cd:58:96:65:d7:b1:60"
+export OCI_TENANCY="ocid1.tenancy.oc1..aaaaaaaaa4whtfd2gnpqw3fg2hcmbzchuljqk4ygzplatmtmsm5p3folyxiq"
+export OCI_KEY_B64="<OCI API KEY in base64 format" # Requested from the project own
 
 mvn clean spring-boot:run -DskipTests -Dspring.profiles.active=dev
 ```
