@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.model.tables.Company;
 import org.ichat.backend.model.patchers.CompanyPatchDTO;
-import org.ichat.backend.repository.CompanyRepo;
+import org.ichat.backend.repository.CompanyRepository;
+import org.ichat.backend.repository.UserRepository;
 import org.ichat.backend.services.ICompanyService;
+import org.ichat.backend.services.shared.IStorageService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -21,12 +23,13 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 public class CompanyService implements ICompanyService {
-    @Value("${google.cx}")
-    private static String GOOGLE_CX;
-
     private final static String GOOGLE_API_KEY = System.getenv("GOOGLE_API_KEY");
-    private final CompanyRepo companyRepo;
+    private final CompanyRepository companyRepo;
+    private final UserRepository userRepo;
+    private final IStorageService storageService;
     private final RestClient client = RestClient.create();
+    @Value("${google.cx}")
+    private String GOOGLE_CX;
 
     @Override
     public List<Company> findAll() {
@@ -36,17 +39,19 @@ public class CompanyService implements ICompanyService {
     @Override
     public Company findBy(String email) {
         return companyRepo.findByEmail(email)
-                .orElseThrow(() -> new AccountException("Company not found by email", HttpStatus.NOT_FOUND.value()));
+                .orElseThrow(() -> new AccountException("Company not found by given email", HttpStatus.NOT_FOUND.value()));
     }
 
     @Override
     public Company findBy(Long company_id) {
         return companyRepo.findById(company_id)
-                .orElseThrow(() -> new AccountException("Company not found by id", HttpStatus.NOT_FOUND.value()));
+                .orElseThrow(() -> new AccountException("Company not found by given id", HttpStatus.NOT_FOUND.value()));
     }
 
     @Override
-    public Company update(Company oldCompany, CompanyPatchDTO newCompany) throws AccountException {
+    public Company update(Long oldCompanyId, CompanyPatchDTO newCompany) throws AccountException {
+        Company oldCompany = findBy(oldCompanyId);
+
         if (newCompany.getName() != null)
             oldCompany.setCompany_name(newCompany.getName());
         if (newCompany.getDescription() != null)
@@ -57,16 +62,14 @@ public class CompanyService implements ICompanyService {
             oldCompany.setHeadquarters(newCompany.getHeadquarters());
         if (newCompany.getWebsite() != null)
             oldCompany.setWebsite(newCompany.getWebsite());
-        if (newCompany.getImage_url() != null)
-            oldCompany.setImage_url(newCompany.getImage_url());
 
         return companyRepo.save(oldCompany);
     }
 
     @Override
     public Company create(Company company) {
-        boolean exists = companyRepo.findByEmail(company.getEmail()).isPresent() ||
-                companyRepo.findByUsername(company.getUsername()).isPresent();
+        boolean exists = userRepo.existsByEmail(company.getEmail()) || companyRepo.existsBySiren(company.getSiren())
+                || userRepo.existsByUsername(company.getUsername());
         if (exists)
             throw new AccountException("Company already exists", HttpStatus.CONFLICT.value());
 
@@ -104,7 +107,11 @@ public class CompanyService implements ICompanyService {
         company.setWebsite(website);
         company.setSector(sector);
         company.setSiren(SIREN);
-        company.setImage_url(logoAPI + website);
+
+        String imageName = companyName + "-" + company.getSiren() + ".png";
+        String imagePath = "profile/images/" + imageName;
+        company.setImageName(imagePath);
+        storageService.uploadImageFromUrl(logoAPI + website, "user-assets", imagePath);
 
         return company;
     }
@@ -112,9 +119,9 @@ public class CompanyService implements ICompanyService {
     /**
      * Helper function to fetch the website of a company. It works by fetching the first result from google search and returning the display link. <br>
      * This is because the API used to fetch company info does not provide the website of the company.
+     *
      * @param companyName
      * @return the first result from google search as the website of the company
-     *
      * @apiNote Sometimes, the website fetched may not be the correct one. This is because the company name may not be relevant to the company website.
      */
     private String fetchWebsiteOfCompany(String companyName) {

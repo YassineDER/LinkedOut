@@ -1,13 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {Observable, shareReplay} from "rxjs";
-import {User} from "../../../models/user";
+import {User} from "../../../../models/user";
 import {RouterOutlet} from "@angular/router";
-import {fadeInUpAnimation} from "../../../animations";
-import {AuthService} from "../../../services/auth.service";
-import {UserService} from "../services/user.service";
+import {fadeInUpAnimation} from "../../../../animations";
+import {AuthService} from "../../../../services/auth.service";
+import {UserService} from "../../services/user.service";
 
 @Component({
-    selector: 'app-home',
+    selector: 'app-home-component',
     templateUrl: './home.component.html',
     styleUrl: './home.component.css',
     animations: [fadeInUpAnimation]

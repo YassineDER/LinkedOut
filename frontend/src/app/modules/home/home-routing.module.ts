@@ -1,10 +1,11 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {HomeComponent} from "./home/home.component";
+import {HomeComponent} from "./components/home-component/home.component";
+import {PARGuard} from "./guards/par.guard";
 
 const routes: Routes = [
     {
-        path: '', component: HomeComponent, children: [
+        path: '', component: HomeComponent, canActivate: [PARGuard], children: [
             {path: '', redirectTo: 'social', pathMatch: 'full'},
             {
                 path: 'preferences',

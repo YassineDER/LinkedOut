@@ -28,7 +28,7 @@ public class Experience {
 
     @OneToOne
     @JoinColumn(name = "company_id")
-    @JsonIncludeProperties({"company_name", "image_url"})
+    @JsonIncludeProperties({"company_name", "image_name"})
     Company company;
 
     @Column(nullable = false)

@@ -14,9 +14,4 @@ public class AuthResponseDTO {
     private final String response;
     private boolean must_verify_mfa = false;
     private String qr_image;
-
-    public AuthResponseDTO(String response, boolean must_verify_mfa) {
-        this.response = response;
-        this.must_verify_mfa = must_verify_mfa;
-    }
 }

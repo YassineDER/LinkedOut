@@ -81,24 +81,24 @@ public class UserController {
             throw new AccountException("Invalid or missing password", HttpStatus.BAD_REQUEST.value());
 
         if (action.equals("enable")) {
-            if (Boolean.TRUE.equals(me.getUsing_mfa()))
-                throw new AccountException("MFA is already enabled", HttpStatus.NO_CONTENT.value());
+            if (me.getUsing_mfa())
+                throw new AccountException("MFA is already enabled", HttpStatus.BAD_REQUEST.value());
 
             me.activateMFA(twoFactorService.generateMfaSecret());
             String qrCode = twoFactorService.generateMfaImage(me.getMfa_secret(), me.getEmail());
             userService.update(me.getUser_id(), me);
-            return ResponseEntity.ok(new AuthResponseDTO("MFA enabled", true, qrCode));
+            return ResponseEntity.ok(new AuthResponseDTO("MFA is enabled", true, qrCode));
         }
         else if (action.equals("disable")) {
-            if (Boolean.FALSE.equals(me.getUsing_mfa()))
-                throw new AccountException("MFA is already disabled", HttpStatus.NO_CONTENT.value());
+            if (!me.getUsing_mfa())
+                throw new AccountException("MFA is already disabled", HttpStatus.BAD_REQUEST.value());
 
             me.deactivateMFA();
             userService.update(me.getUser_id(), me);
-            return ResponseEntity.ok(new AuthResponseDTO("MFA disabled"));
+            return ResponseEntity.ok(new AuthResponseDTO("MFA has been disabled"));
         }
 
-        throw new AccountException("Invalid action", HttpStatus.BAD_REQUEST.value());
+        throw new AccountException("Invalid action to perform", HttpStatus.BAD_REQUEST.value());
     }
 
     /**

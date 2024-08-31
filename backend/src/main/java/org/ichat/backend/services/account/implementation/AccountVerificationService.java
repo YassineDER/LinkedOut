@@ -27,16 +27,17 @@ public class AccountVerificationService implements IAccountVerificationService {
 
     @Override
     public String verifyEmailCode(String code) {
-        var accountVerification = accountVerificationRepository.findByToken(code)
+        var existingVerif = accountVerificationRepository.findByToken(code)
                 .orElseThrow(() -> new AccountException("Account verification not found or has expired a long time ago", HttpStatus.NOT_FOUND.value()));
-        if (accountVerification.getExpiresAt().isBefore(OffsetDateTime.now()))
+
+        if (existingVerif.getExpiresAt().isBefore(OffsetDateTime.now()))
             throw new AccountException("The provided token has just expired, please try to login to send a new one", HttpStatus.GONE.value());
 
-        User user = accountVerification.getUser();
+        User user = existingVerif.getUser();
         if (user == null)
             throw new AccountException("No user found with the provided token. Please register again.", HttpStatus.NOT_FOUND.value());
-        if (Boolean.TRUE.equals(user.getEnabled()))
-            throw new AccountException("User of this account verification is already enabled", HttpStatus.CONFLICT.value());
+        if (user.getEnabled())
+            throw new AccountException("User of this account verification is already verified", HttpStatus.CONFLICT.value());
 
         user.setEnabled(true);
         accountVerificationRepository.deleteByUser(user);

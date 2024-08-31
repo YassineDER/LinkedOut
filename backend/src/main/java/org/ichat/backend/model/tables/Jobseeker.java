@@ -31,7 +31,7 @@ public class Jobseeker extends User {
 
     String phone;
 
-    String cv_url;
+    String resumee;
 
     String title;
 

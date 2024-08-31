@@ -5,7 +5,7 @@ import {Skill} from "../job/skill";
 export interface Profile {
     profile_id: number;
     bio: string;
-    banner_url: string;
+    banner_name: string;
     connections: number;
     profile_views: number;
     posts: Post[];

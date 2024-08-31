@@ -131,11 +131,8 @@ export class AuthService {
      */
     simulateLongRequest() :Promise<string>{
         return new Promise((resolve, reject) => {
-            this.http.get(this.url + '/sleep', {responseType: 'text'})
-                .subscribe({
-                    next: (res: any) => resolve(res as string),
-                    error: (err) => reject(err)
-                });
+            this.http.get(this.url + '/sleep')
+                .subscribe(this.handleResponse(resolve, reject));
         });
     }
 

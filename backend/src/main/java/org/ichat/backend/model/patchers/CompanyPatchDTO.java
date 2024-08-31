@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
  *     <li>description</li>
  *     <li>sector</li>
  *     <li>headquarters</li>
- *     <li>image_url</li>
  *     <li>website</li>
  *     </ul>
  * @see org.ichat.backend.model.tables.Company
@@ -25,6 +24,5 @@ public class CompanyPatchDTO {
     private String description;
     private String sector;
     private String headquarters;
-    private String image_url;
     private String website;
 }

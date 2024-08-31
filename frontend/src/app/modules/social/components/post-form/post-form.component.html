@@ -1,0 +1,20 @@
+<form (ngSubmit)="submitPost()" [formGroup]="postForm" class="bg-white p-4 rounded-lg shadow-md w-full mb-4">
+  <h1 class="font-semibold mb-2">Nouvelle publication</h1>
+  <hr class="mb-4" />
+
+  <textarea [formControl]="content" name="content" class="textarea w-full mb-3 focus:h-40" placeholder="Quoi de neuf ?"></textarea>
+  @if (imagePreview){
+    <img class="w-52 h-52 rounded-lg mx-auto my-2" [src]="imagePreview" alt="Uploaded Image" />
+  }
+
+  <div class="flex justify-end space-x-2 text-gray-400">
+    <label for="imageUpload" class="flex btn btn-ghost btn-circle cursor-pointer">
+      <i class="bi bi-camera text-xl"></i>
+      <input type="file" name="image" id='imageUpload' class="hidden" (change)="onImagePicked($event)" />
+    </label>
+
+    <button type="submit" class="btn btn-primary btn-circle">
+      <i class="bi bi-send-fill text-lg"></i>
+    </button>
+  </div>
+</form>

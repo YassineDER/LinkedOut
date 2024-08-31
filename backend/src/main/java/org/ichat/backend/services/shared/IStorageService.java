@@ -1,33 +1,41 @@
 package org.ichat.backend.services.shared;
 
-import org.ichat.backend.model.util.StorageFile;
-import org.springframework.web.multipart.MultipartFile;
+import org.ichat.backend.exception.StorageException;
+import org.ichat.backend.model.util.storage.StorageResponseDTO;
+import org.ichat.backend.services.account.IUserService;
 
-import java.io.IOException;
+import java.time.OffsetDateTime;
 
 public interface IStorageService {
-    /**
-     * Initialize the storage service from the config file <br>
-     * By default, the config file is located at ~/.oci/config
-     * @throws IOException if the config file cannot be read
-     */
-    void init() throws IOException;
 
     /**
-     * Store the file in the storage service
-     * @param file the file to store (MultipartFile)
-     * @return the stored file
-     * @throws IOException if the file cannot be stored
-     * @see StorageFile
+     * Create a pre-authenticated request for a user to access a bucket (Valid for 24 hours by default).
+     *
+     * @param bucketName the name of the bucket
+     * @return the pre-authenticated request URL
      */
-    StorageFile store(MultipartFile file) throws IOException;
+    StorageResponseDTO createPreAuthenticatedRequest(String bucketName);
 
     /**
-     * Get the image from the storage service
-     * @param filename the name of the file to get
-     * @return the file
-     * @throws IOException if the file cannot be retrieved
-     * @see StorageFile
+     * Upload an image from a URL to a bucket.
+     *
+     * @param url        the URL of the image
+     * @param bucketName the name of the bucket
+     * @param objectName the name of the object (or its path) in the bucket
      */
-    StorageFile getImage(String filename) throws IOException;
+    void uploadImageFromUrl(String url, String bucketName, String objectName);
+
+    /**
+     * Delete unused profile images from the user-assets bucket.
+     *
+     * @param userService the user service to check for unused images. Must be injected to avoid circular dependencies.
+     * @throws StorageException if an error occurs while deleting the images
+     */
+    void deleteUnusedImages(IUserService userService) throws StorageException;
+
+    /**
+     * Delete expired images from a bucket.
+     * @param threshold the threshold date to delete images before
+     */
+    void deleteExpiredPARs(OffsetDateTime threshold);
 }

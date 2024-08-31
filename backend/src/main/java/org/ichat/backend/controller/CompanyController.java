@@ -36,8 +36,7 @@ public class CompanyController {
      */
     @PutMapping("/me")
     public ResponseEntity<Company> update(User me, @RequestBody @Valid CompanyPatchDTO patch) {
-        Company currentCompany = (Company) me;
-        Company updatedUser = companyService.update(currentCompany, patch);
+        Company updatedUser = companyService.update(me.getUser_id(), patch);
         return ResponseEntity.ok(updatedUser);
     }
 }

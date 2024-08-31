@@ -54,7 +54,8 @@ public abstract class User implements UserDetails {
 
     String mfa_secret;
 
-    String image_url = "https://img.icons8.com/pastel-glyph/64/000000/user-male-circle.png";
+    @Column(nullable = false, name = "image_name")
+    String imageName = "profile/images/default_profile.png";
 
     @Column(nullable = false)
     Boolean enabled = false;
@@ -108,7 +109,6 @@ public abstract class User implements UserDetails {
     public boolean isEnabled() {
         return enabled;
     }
-
 
     public void activateMFA(String secret) {
         this.using_mfa = true;

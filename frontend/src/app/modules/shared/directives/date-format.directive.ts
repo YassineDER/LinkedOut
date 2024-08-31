@@ -1,4 +1,5 @@
 import {Directive, ElementRef, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {UtilsService} from "../../../services/utils.service";
 
 @Directive({
   selector: '[appDateFormat]',
@@ -6,18 +7,12 @@ import {Directive, ElementRef, Input, OnChanges, SimpleChanges} from '@angular/c
 export class DateFormatDirective implements OnChanges {
     @Input() appDateFormat!: number[];
 
-    constructor(private el: ElementRef) {}
+    constructor(private el: ElementRef, private utils: UtilsService) {}
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes['appDateFormat'])
-            this.formatDate();
+            this.el.nativeElement.textContent = this.utils.formatDate(this.appDateFormat);
     }
 
-    private formatDate(): void {
-        if (this.appDateFormat && this.appDateFormat.length === 7) {
-            const [year, month, day, hour, minute, second, nanosecond] = this.appDateFormat;
-            const date = new Date(year, month - 1, day, hour, minute, second, nanosecond / 1000000);
-            this.el.nativeElement.textContent = date.toLocaleString();
-        }
-    }
+
 }

@@ -12,8 +12,6 @@ import lombok.NoArgsConstructor;
  *     <li>last_name</li>
  *     <li>address</li>
  *     <li>phone</li>
- *     <li>cv_url</li>
- *     <li>image_url</li>
  *     </ul>
  *     @see org.ichat.backend.model.tables.Jobseeker
  */
@@ -25,6 +23,4 @@ public class JobseekerPatchDTO {
     private String last_name;
     private String address;
     private String phone;
-    private String cv_url;
-    private String image_url;
 }

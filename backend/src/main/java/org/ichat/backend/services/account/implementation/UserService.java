@@ -48,7 +48,6 @@ public class UserService implements IUserService {
         User userToUpdate = findBy(userId);
         userToUpdate.setUsing_mfa(newUser.getUsing_mfa());
         userToUpdate.setMfa_secret(newUser.getMfa_secret());
-        userToUpdate.setImage_url(newUser.getImage_url());
         return userRepo.save(userToUpdate);
     }
 
@@ -77,5 +76,10 @@ public class UserService implements IUserService {
         user.setProfile(null);
         user.setUserAccountVerifications(null);
         user.setUserAccountResets(null);
+    }
+
+    @Override
+    public boolean existsByImage(String imagePath) {
+        return userRepo.existsByImageName(imagePath);
     }
 }

@@ -58,7 +58,8 @@ export class ConfirmationComponent {
         }
 
         else if (this.verification === VerificationType.PASSWORD_RESET && this.formsSrv.checkFormValidity(this.confirmationForm)) {
-            await this.auth.resetPassword(this.confirmationForm.value).then(() => this.router.navigate([Path.LOGIN.toString()])
+            await this.auth.resetPassword(this.confirmationForm.value)
+                .then(() => this.router.navigate([Path.LOGIN.toString()])
                 .then(() => this.utils.alert('Mot de passe réinitialisé. Vous pouvez maintenant vous connecter', AlertType.SUCCESS)))
                 .catch((err) => this.utils.alert(err.error.error, AlertType.ERROR));
         }

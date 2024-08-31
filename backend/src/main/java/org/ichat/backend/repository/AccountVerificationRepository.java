@@ -22,9 +22,5 @@ public interface AccountVerificationRepository extends JpaRepository<AccountVeri
 
     void deleteByUser(User user);
 
-    @Modifying
-    @Transactional
-    @Query("delete from AccountVerification a where a.token = :token")
-
     Optional<AccountVerification> findByToken(String token);
 }

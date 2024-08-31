@@ -23,7 +23,7 @@ public class JobApplication {
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-    @JsonIncludeProperties({"user_id", "first_name", "last_name", "email", "image_url", "phone", "cv_url"})
+    @JsonIncludeProperties({"user_id", "first_name", "last_name", "email", "image_name", "phone", "resumee"})
     Jobseeker jobseeker;
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
@@ -36,5 +36,5 @@ public class JobApplication {
     @NotNull
     ApplicationStatus status;
 
-    String coverLetter_url;
+    String cover_letter;
 }
