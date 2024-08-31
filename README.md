@@ -31,7 +31,7 @@ The credentials must be respected as they are hardcoded in the backend.
 
 The backend is a Spring Boot application. You can run it in dev profile by creating a bash script called `start`. This script is a bit treaky since it contains sensitive environment variables, thats why he's included in [.gitignore](.gitignore). 
 
-**A ready-to-use script can be requested from the project owner to skip this part.**
+### **A ready-to-use script can be requested from the project owner to skip this part.**
 
 Before creating your own start script, you need to:
 
@@ -39,7 +39,8 @@ Before creating your own start script, you need to:
 - Install [Maven](https://maven.apache.org/download.cgi) if not already installed.
 - Sign up for a free account on [Mailtrap](https://mailtrap.io/), enable Email Testing, get your SMTP credentials (username and password) from your created inbox and set them as `MAIL_USER` and `MAIL_PASS` environment variables. You will receive each email sent by the application in the Mailtrap inbox but won't be able to send emails to real addresses since this is just for developpement environments
 - Generate a JWT secret key with 32 characters and set it as `JWT_SECRET` environment variable. You can use a random string generator like [this one](https://jwtsecret.com/generate).
-- Create a new project on the Google Cloud Console and enable the [Custom Search API](https://console.cloud.google.com/apis/library/customsearch.googleapis.com). Then, [create a new API key]((https://support.google.com/googleapi/answer/6158862)) if not already created and set it as `GOOGLE_API_KEY` environment variable in the script. 
+- Create a new project on the Google Cloud Console and enable the [Custom Search API](https://console.cloud.google.com/apis/library/customsearch.googleapis.com). Then, [create a new API key]((https://support.google.com/googleapi/answer/6158862)) if not already created and set it as `GOOGLE_API_KEY` environment variable in the script.
+- The OCI API KEY is requested from the project owner, for obvious reasons.
 - Create a new file called `start` (with no extension) in the `backend` directory like the following:
 
 ```bash
@@ -55,10 +56,11 @@ export GOOGLE_API_KEY="<Google API key>"
 export OCI_USER="ocid1.user.oc1..aaaaaaaanrltas6ynxfmfobvyapd5mxktmeql6qlb6x3uz233kdb6r27extq"
 export OCI_FINGERPRINT="b2:2e:fc:6c:92:81:8f:29:7f:cd:58:96:65:d7:b1:60"
 export OCI_TENANCY="ocid1.tenancy.oc1..aaaaaaaaa4whtfd2gnpqw3fg2hcmbzchuljqk4ygzplatmtmsm5p3folyxiq"
-export OCI_KEY_B64="<OCI API KEY in base64 format" # Requested from the project own
+export OCI_KEY_B64="<OCI API KEY in base64 format" # Requested from the project owner
 
 mvn clean spring-boot:run -DskipTests -Dspring.profiles.active=dev
 ```
+**All the env varaibles are mandatory.**
 
 Make sure to make the script executable, and then run it:
 
