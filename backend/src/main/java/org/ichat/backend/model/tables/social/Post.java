@@ -26,7 +26,8 @@ public class Post {
     @Column(nullable = false)
     String description;
 
-    String image_name;
+    @Column(nullable = true, name = "image_name")
+    String imageName;
 
     LocalDateTime created = LocalDateTime.now();
 
@@ -38,7 +39,7 @@ public class Post {
     Profile profile;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Comment> comments;
+    private Set<Comment> comments = Set.of();
 
     public void like() {
         this.likes++;

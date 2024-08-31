@@ -1,5 +1,6 @@
 package org.ichat.backend.model.tables.social;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
@@ -26,6 +27,7 @@ public class Comment {
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "post_id", referencedColumnName = "post_id")
+    @JsonIgnore
     Post post;
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
