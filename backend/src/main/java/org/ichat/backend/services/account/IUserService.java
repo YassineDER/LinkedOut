@@ -75,4 +75,6 @@ public interface IUserService {
      * @param user the user to compact
      */
     void compact(User user);
+
+    boolean existsByImage(String imagePath);
 }

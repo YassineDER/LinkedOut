@@ -1,15 +1,18 @@
 package org.ichat.backend.services.shared.implementation;
 
 import com.oracle.bmc.objectstorage.model.CreatePreauthenticatedRequestDetails;
+import com.oracle.bmc.objectstorage.model.ObjectSummary;
 import com.oracle.bmc.objectstorage.model.PreauthenticatedRequest;
 import com.oracle.bmc.objectstorage.model.PreauthenticatedRequestSummary;
 import com.oracle.bmc.objectstorage.requests.*;
 import com.oracle.bmc.objectstorage.ObjectStorageClient;
+import com.oracle.bmc.objectstorage.responses.ListObjectsResponse;
 import com.oracle.bmc.objectstorage.responses.ListPreauthenticatedRequestsResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exception.StorageException;
 import org.ichat.backend.model.util.storage.StorageResponseDTO;
+import org.ichat.backend.services.account.IUserService;
 import org.ichat.backend.services.shared.IStorageService;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,7 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 
 @Service
 @Transactional
@@ -70,13 +74,33 @@ public class StorageService implements IStorageService {
     }
 
     @Override
-    public void deleteUnusedImages(String bucketName, String section) throws StorageException {
-//        try {
-//            ListObjectsRequest request = ListObjectsRequest.builder()
-//                    .namespaceName("ax0judwwk3y8")
-//                    .bucketName(bucketName)
-//                    .build();
-//        }
+    public void deleteUnusedImages(IUserService userService) throws StorageException {
+        try {
+            ListObjectsRequest list_req = ListObjectsRequest.builder()
+                    .namespaceName("ax0judwwk3y8")
+                    .bucketName("user-assets")
+                    .startAfter("profile/images/")
+                    .limit(100)
+                    .build();
+
+            ListObjectsResponse response = client.listObjects(list_req);
+            var objects = response.getListObjects().getObjects();
+            List<String> unusedObjectsNames = objects.stream()
+                    .map(ObjectSummary::getName)
+                    .filter(name -> !userService.existsByImage(name))
+                    .toList();
+
+            unusedObjectsNames.forEach(objectName ->{
+                DeleteObjectRequest delete_rep = DeleteObjectRequest.builder()
+                        .namespaceName("ax0judwwk3y8")
+                        .bucketName("user-assets")
+                        .objectName(objectName)
+                        .build();
+                client.deleteObject(delete_rep);
+            });
+        } catch (Exception e) {
+            throw new StorageException("Failed to delete expired user images", e);
+        }
     }
 
 
@@ -108,7 +132,7 @@ public class StorageService implements IStorageService {
                 client.deletePreauthenticatedRequest(request);
             });
         } catch (Exception e) {
-            throw new StorageException("Failed to delete expired images", e);
+            throw new StorageException("Failed to delete expired PARs", e);
         }
     }
 

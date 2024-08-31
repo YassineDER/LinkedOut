@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.ichat.backend.repository.AccountResetRepository;
 import org.ichat.backend.repository.AccountVerificationRepository;
+import org.ichat.backend.services.account.IUserService;
 import org.ichat.backend.services.shared.IStorageService;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,6 +22,7 @@ public class ScheduledTasks {
     private final AccountVerificationRepository accountVerificationRepository;
     private final AccountResetRepository accountResetRepository;
     private final IStorageService storageService;
+    private final IUserService userService;
 
     // Delete expired account verifications tokens every day at midnight
     @Scheduled(cron = "0 0 0 * * ?")
@@ -44,6 +46,13 @@ public class ScheduledTasks {
         OffsetDateTime threshold = OffsetDateTime.now();
         storageService.deleteExpiredPARs(threshold);
         log.info("Deleted expired OCI preauthenticated requests");
+    }
+
+    // every 24 hours
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void deleteExpiredImages() {
+        storageService.deleteUnusedImages(userService);
+        log.info("Deleted expired images");
     }
 
     // Clear image cache every 3 hours (default, defined in application.yml)

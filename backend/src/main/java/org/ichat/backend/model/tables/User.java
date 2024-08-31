@@ -54,7 +54,8 @@ public abstract class User implements UserDetails {
 
     String mfa_secret;
 
-    String image_name = "profile/images/default_profile.png";
+    @Column(nullable = false, name = "image_name")
+    String imageName = "profile/images/default_profile.png";
 
     @Column(nullable = false)
     Boolean enabled = false;

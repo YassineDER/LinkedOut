@@ -77,4 +77,9 @@ public class UserService implements IUserService {
         user.setUserAccountVerifications(null);
         user.setUserAccountResets(null);
     }
+
+    @Override
+    public boolean existsByImage(String imagePath) {
+        return userRepo.existsByImageName(imagePath);
+    }
 }

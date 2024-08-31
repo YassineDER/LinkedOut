@@ -108,9 +108,9 @@ public class CompanyService implements ICompanyService {
         company.setSector(sector);
         company.setSiren(SIREN);
 
-        String imageName = companyName + "-" + company.getUser_id() + ".png";
+        String imageName = companyName + "-" + company.getSiren() + ".png";
         String imagePath = "profile/images/" + imageName;
-        company.setImage_name(imagePath);
+        company.setImageName(imagePath);
         storageService.uploadImageFromUrl(logoAPI + website, "user-assets", imagePath);
 
         return company;
