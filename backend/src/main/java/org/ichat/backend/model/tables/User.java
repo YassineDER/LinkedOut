@@ -26,8 +26,7 @@ import java.util.stream.Stream;
 
 /**
  * The User class is an abstract class that represents the user entity in the database.
- * It is an abstract class because it is the parent class of the Admin, JobSeeker, and Company classes.
- * @apiNote This class is so important. Try not to break it.
+ * It's an abstract class because it's the parent class of the Admin, JobSeeker, and Company classes.
  */
 @Entity
 @Getter

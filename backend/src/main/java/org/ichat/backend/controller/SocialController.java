@@ -40,9 +40,15 @@ public class SocialController {
         return ResponseEntity.ok(comment);
     }
 
+
     @GetMapping("/posts")
     public Page<Post> getPosts(Pageable pageable) {
         return postService.getLatestPosts(pageable);
+    }
+
+    @GetMapping("/posts/{postId}")
+    public Post getPost(@PathVariable Long postId) {
+        return postService.getPostById(postId);
     }
 
 }

@@ -29,6 +29,9 @@ public class PostService implements IPostService {
         post.setProfile(creator.getProfile());
         post.setDescription(description);
         post.setImageName(image);
+        var creator_posts = creator.getProfile().getPosts();
+        creator_posts.add(post);
+        creator.getProfile().setPosts(creator_posts);
 
         return postRepo.save(post);
     }
