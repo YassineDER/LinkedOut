@@ -22,6 +22,7 @@
     "@tailwindcss/typography": "^0.5.12",
     "jwt-decode": "^4.0.0",
     "ng-otp-input": "^1.9.3",
+    "ngx-infinite-scroll": "^17.0.0",
     "oci-sdk": "^2.92.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

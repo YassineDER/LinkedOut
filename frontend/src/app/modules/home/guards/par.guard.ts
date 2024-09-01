@@ -1,6 +1,6 @@
 import {CanActivateFn} from '@angular/router';
 import {inject} from '@angular/core';
-import {StorageService} from '../../../services/storage.service';
+import {StorageService} from '../services/storage.service';
 import {UtilsService} from "../../../services/utils.service";
 import {AlertType} from "../../shared/utils/alert-type";
 import {HttpClientError} from "../../shared/utils/http-client.error";

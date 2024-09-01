@@ -49,7 +49,7 @@
           {{ user.email }}
         </div>
       </div>
-      <p class="text-gray-600">{{ user.admin_title }}</p>
+      <p class="text-gray-600">{{ user.title }}</p>
     }
     <a [routerLink]="Path.NETWORK.toString()" class="link link-primary mt-2">{{ user.profile.connections }} connections</a>
   </div>

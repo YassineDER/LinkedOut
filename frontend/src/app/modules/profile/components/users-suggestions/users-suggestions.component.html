@@ -17,7 +17,7 @@
       } @else if (users.isAdmin(suggested)) {
         <div>
           <h5 class="text-sm">{{ suggested.first_name }} {{ suggested.last_name }}</h5>
-          <p class="text-xs text-gray-500">{{ suggested.admin_title ? suggested.admin_title : 'Nouveau sur LinkedOut' }}</p>
+          <p class="text-xs text-gray-500">{{ suggested.title ? suggested.title : 'Nouveau sur LinkedOut' }}</p>
         </div>
       }
     </div>

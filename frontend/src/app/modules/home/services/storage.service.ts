@@ -1,11 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {environment} from "../../environments/environment";
-import {StorageResponse} from "../modules/shared/utils/storage.response";
+import {environment} from "../../../../environments/environment";
+import {StorageResponse} from "../../shared/utils/storage.response";
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class StorageService {
     api = environment.hostUrl;
     OCI_API = "https://objectstorage.eu-paris-1.oraclecloud.com";

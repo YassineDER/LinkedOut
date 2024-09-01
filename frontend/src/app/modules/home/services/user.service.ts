@@ -23,7 +23,7 @@ export class UserService {
      * @return boolean true if the user is a jobseeker
      */
     isJobseeker(user: User): user is Jobseeker {
-        return (user as Jobseeker).authorities[0].authority === Role.JOBSEEKER.toString();
+        return (user as Jobseeker).role.name === Role.JOBSEEKER.toString();
     }
 
     /**
@@ -32,7 +32,7 @@ export class UserService {
      * @return boolean true if the user is a company
      */
     isCompany(user: User): user is Company {
-        return (user as Company).authorities[0].authority === Role.COMPANY.toString();
+        return (user as Company).role.name === Role.COMPANY.toString();
     }
 
     /**
@@ -41,7 +41,7 @@ export class UserService {
      * @return boolean true if the user is an admin
      */
     isAdmin(user: User): user is Admin {
-        return (user as Admin).authorities[0].authority === Role.ADMIN.toString();
+        return (user as Admin).role.name === Role.ADMIN.toString();
     }
 
     /**

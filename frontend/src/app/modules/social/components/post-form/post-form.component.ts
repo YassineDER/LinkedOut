@@ -55,20 +55,29 @@ export class PostFormComponent {
     }
 
     async submitPost() {
-        if (this.forms.checkFormValidity(this.postForm)) {
-            const success = await this.posts.createPost(this.postForm.value)
-                .then(() => {
-                    this.utils.alert('Post créé avec succès', AlertType.SUCCESS);
-                    this.utils.playSound(NotificationType.POST);
-                    return true;
-                })
-                .catch((err) => {
-                    this.utils.alert(err.error.error, AlertType.ERROR);
-                    return false;
-                });
+        // if (this.forms.checkFormValidity(this.postForm)) {
+        //     const success = await this.posts.createPost(this.postForm.value)
+        //         .then(() => {
+        //             this.utils.alert('Post créé avec succès', AlertType.SUCCESS);
+        //             this.utils.playSound(NotificationType.POST);
+        //             return true;
+        //         })
+        //         .catch((err) => {
+        //             this.utils.alert(err.error.error, AlertType.ERROR);
+        //             return false;
+        //         });
+        //
+        //     if (success)
+        //         this.postForm.reset();
+        // }
 
-            if (success)
+        // stimulate waiting for the server response
+        return new Promise((resolve) => {
+            setTimeout(() => {
                 this.postForm.reset();
-        }
+                resolve(true);
+            }, 2000);
+        });
+
     }
 }

@@ -8,6 +8,7 @@ import {UserService} from "./services/user.service";
 import {SocialService} from "./services/social.service";
 import {NavComponent} from "./components/nav/nav.component";
 import {FooterComponent} from "./components/footer/footer.component";
+import {StorageService} from "./services/storage.service";
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import {FooterComponent} from "./components/footer/footer.component";
     providers: [
         UserService,
         SocialService,
+        StorageService
     ]
 })
 export class HomeModule { }
