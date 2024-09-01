@@ -39,11 +39,11 @@ public abstract class Profile {
 
     @OneToOne(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-    @JsonIncludeProperties({"user_id", "first_name", "last_name", "username", "imageName"})
+    @JsonIncludeProperties({"user_id", "first_name", "last_name", "username", "imageName", "role"})
     User user;
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties("profile")
+    @JsonIgnoreProperties({"profile"})
     private List<Post> posts;
 
     @OneToMany(mappedBy = "profile1", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -51,7 +51,7 @@ public abstract class Profile {
     private List<Connection> connections;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties("author")
+    @JsonIgnoreProperties({"author"})
     private List<Comment> comments;
 
     @JsonProperty("connections")

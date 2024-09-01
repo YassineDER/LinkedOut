@@ -25,11 +25,11 @@ import java.util.Set;
 public class JobseekerProfile extends Profile {
 
     @OneToMany(mappedBy = "jobseekerProfile", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("jobseekerProfile")
+    @JsonIgnoreProperties({"jobseekerProfile"})
     List<Experience> experiences;
 
     @OneToMany(mappedBy = "jobseekerProfile", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("jobseekerProfile")
+    @JsonIgnoreProperties({"jobseekerProfile"})
     List<Education> studies;
 
     @OneToMany

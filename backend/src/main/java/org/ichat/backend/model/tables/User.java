@@ -79,11 +79,11 @@ public abstract class User implements UserDetails {
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "role_id", referencedColumnName = "role_id")
-    @JsonIgnoreProperties("role_id")
+    @JsonIgnoreProperties({"role_id"})
     Roles role;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties("user")
+    @JsonIgnoreProperties({"user"})
     Profile profile;
 
     @Override

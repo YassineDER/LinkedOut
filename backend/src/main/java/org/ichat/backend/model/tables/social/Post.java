@@ -36,12 +36,11 @@ public class Post {
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "profile_id", referencedColumnName = "profile_id")
-    @JsonIncludeProperties("user")
-    @JsonIgnoreProperties("posts")
+    @JsonIgnoreProperties({"posts", "connections", "comments", "profile_views", "bio", "banner_name"})
     Profile profile;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties("post")
+    @JsonIgnoreProperties({"post"})
     private List<Comment> comments;
 
     public void like() {
