@@ -60,7 +60,7 @@ public class UserController {
      * @return Set of suggested users
      */
     @GetMapping("/suggested")
-    public ResponseEntity<Set<User>> suggested(User me) {
+    public ResponseEntity<List<User>> suggested(User me) {
         var suggested = userService.findSuggested(me);
         suggested.forEach(userService::compact);
         return ResponseEntity.ok(suggested);
@@ -84,7 +84,8 @@ public class UserController {
             if (me.getUsing_mfa())
                 throw new AccountException("MFA is already enabled", HttpStatus.BAD_REQUEST.value());
 
-            me.activateMFA(twoFactorService.generateMfaSecret());
+            String secret = twoFactorService.generateMfaSecret();
+            me.activateMFA(secret);
             String qrCode = twoFactorService.generateMfaImage(me.getMfa_secret(), me.getEmail());
             userService.update(me.getUser_id(), me);
             return ResponseEntity.ok(new AuthResponseDTO("MFA is enabled", true, qrCode));

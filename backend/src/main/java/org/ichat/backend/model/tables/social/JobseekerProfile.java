@@ -1,5 +1,7 @@
 package org.ichat.backend.model.tables.social;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +10,7 @@ import org.ichat.backend.model.tables.jobs.Education;
 import org.ichat.backend.model.tables.jobs.Experience;
 import org.ichat.backend.model.tables.jobs.Skill;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -22,12 +25,14 @@ import java.util.Set;
 public class JobseekerProfile extends Profile {
 
     @OneToMany(mappedBy = "jobseekerProfile", cascade = CascadeType.ALL)
-    Set<Experience> experiences;
+    @JsonIgnoreProperties("jobseekerProfile")
+    List<Experience> experiences;
 
     @OneToMany(mappedBy = "jobseekerProfile", cascade = CascadeType.ALL)
-    Set<Education> studies;
+    @JsonIgnoreProperties("jobseekerProfile")
+    List<Education> studies;
 
     @OneToMany
-    Set<Skill> skills;
+    List<Skill> skills;
 
 }

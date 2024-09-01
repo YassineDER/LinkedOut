@@ -51,6 +51,7 @@ public class RegisterService implements IRegisterService {
         jobseeker.setRole(role);
 
         JobseekerProfile profile = new JobseekerProfile();
+        profile.setUser(jobseeker);
         jobseeker.setProfile(profile);
         jobseekerService.create(jobseeker);
 
@@ -68,6 +69,7 @@ public class RegisterService implements IRegisterService {
         company.setRole(role);
         company.setPassword(passwordEncoder.encode(request.getPassword()));
         CompanyStaffProfile profile = new CompanyStaffProfile();
+        profile.setUser(company);
         company.setProfile(profile);
         companyService.create(company);
 
@@ -89,6 +91,7 @@ public class RegisterService implements IRegisterService {
         admin.setRole(role);
 
         CompanyStaffProfile profile = new CompanyStaffProfile();
+        profile.setUser(admin);
         admin.setProfile(profile);
         adminService.create(admin);
 

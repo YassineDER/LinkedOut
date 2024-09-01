@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.ichat.backend.model.tables.Admin;
 import org.ichat.backend.model.tables.indentity.Roles;
 import org.ichat.backend.model.tables.social.CompanyStaffProfile;
+import org.ichat.backend.model.tables.social.Profile;
 import org.ichat.backend.model.util.RoleType;
 import org.ichat.backend.repository.AdminRepository;
 import org.ichat.backend.repository.RoleRepository;
@@ -54,7 +55,10 @@ public class InitOnStartup {
             admin.setUser_id(1L);
             admin.setRole(adminRole);
             admin.setEnabled(true);
-            admin.setProfile(new CompanyStaffProfile());
+
+            Profile profile = new CompanyStaffProfile();
+            profile.setUser(admin);
+            admin.setProfile(profile);
 
             if (admins.isEmpty()) {
                 admin.setEmail("admin@example.com");

@@ -4,7 +4,6 @@ import org.ichat.backend.model.tables.User;
 import org.ichat.backend.repository.UserRepository;
 
 import java.util.List;
-import java.util.Set;
 
 public interface IUserService {
     /**
@@ -56,7 +55,7 @@ public interface IUserService {
      * @param excluded user to exclude
      * @return set of suggested users
      */
-    Set<User> findSuggested(User excluded);
+    List<User> findSuggested(User excluded);
 
     /**
      * Compact user's data, by removing all the data that is not necessary. <br>

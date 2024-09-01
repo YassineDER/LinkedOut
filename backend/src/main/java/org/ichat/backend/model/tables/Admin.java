@@ -29,6 +29,6 @@ public class Admin extends User {
 
     @Column(nullable = false)
     @NotEmpty(message = "Title is required")
-    String admin_title;
+    String title;
 
 }

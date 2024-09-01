@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import org.ichat.backend.model.tables.jobs.JobApplication;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -37,6 +38,6 @@ public class Jobseeker extends User {
 
     @OneToMany(mappedBy = "jobseeker", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private Set<JobApplication> jobApplications;
+    private List<JobApplication> jobApplications;
 
 }

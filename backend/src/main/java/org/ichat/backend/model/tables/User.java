@@ -2,6 +2,7 @@ package org.ichat.backend.model.tables;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -18,8 +19,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * The User class is an abstract class that represents the user entity in the database.
@@ -69,11 +72,11 @@ public abstract class User implements UserDetails {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private Set<AccountReset> userAccountResets;
+    private List<AccountReset> userAccountResets;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private Set<AccountVerification> userAccountVerifications;
+    private List<AccountVerification> userAccountVerifications;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "role_id", referencedColumnName = "role_id")
@@ -81,13 +84,13 @@ public abstract class User implements UserDetails {
     Roles role;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("user")
     Profile profile;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return new HashSet<>(Set.of(role)).stream()
-                .map(role -> (GrantedAuthority) role::getName)
-                .collect(Collectors.toSet());
+        return Stream.of(role)
+                .map(role -> (GrantedAuthority) role::getName).toList();
     }
 
     @Override

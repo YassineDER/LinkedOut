@@ -1,5 +1,6 @@
 package org.ichat.backend.model.tables.social;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,9 +24,11 @@ public class Connection {
 
     @ManyToOne(targetEntity = Profile.class, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "profile1_id", referencedColumnName = "profile_id")
+    @JsonBackReference
     Profile profile1;
 
     @ManyToOne(targetEntity = Profile.class, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "profile2_id", referencedColumnName = "profile_id")
+    @JsonBackReference
     Profile profile2;
 }

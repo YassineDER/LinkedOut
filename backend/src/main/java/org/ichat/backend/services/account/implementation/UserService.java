@@ -52,23 +52,22 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Set<User> findSuggested(User emiter) {
+    public List<User> findSuggested(User emiter) {
         int total = (int) userRepo.count();
         if (total == 0)
-            return Set.of();
+            return List.of();
 
-        var lst = new ArrayList<>(userRepo.findAll(PageRequest.of(0, total))
+        List<User> lst = new ArrayList<>(userRepo.findAll(PageRequest.of(0, total))
                 .getContent().stream().limit(6)
                 .filter(user -> !user.equals(emiter))
                 .filter(user -> user.getRole().equals(emiter.getRole()))
                 .toList());
         Collections.shuffle(lst);
-        return new HashSet<>(lst);
+        return lst;
     }
 
     @Override
     public void compact(User user) {
-        user.setPassword(null);
         user.setUsing_mfa(null);
         user.setEnabled(null);
         user.setMfa_secret(null);

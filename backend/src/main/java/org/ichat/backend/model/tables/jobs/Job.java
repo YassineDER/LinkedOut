@@ -12,6 +12,7 @@ import org.ichat.backend.model.tables.Company;
 import org.ichat.backend.model.util.job.JobType;
 import org.ichat.backend.model.util.job.Flow;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -55,6 +56,6 @@ public class Job {
 
     @OneToMany(mappedBy = "job", cascade = CascadeType.ALL)
     @JsonIgnore
-    private Set<JobApplication> jobApplications;
+    private List<JobApplication> jobApplications;
 
 }

@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -38,7 +39,7 @@ class CascadingTest {
 
     @Test
     public void whenPostIsRemovedThenCommentsAreAlsoRemoved() {
-        post.setComments(Set.of(comment));
+        post.setComments(List.of(comment));
 
         postRepository.save(post);
         postRepository.flush();

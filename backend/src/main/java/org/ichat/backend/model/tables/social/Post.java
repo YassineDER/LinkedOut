@@ -1,6 +1,6 @@
 package org.ichat.backend.model.tables.social;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -35,11 +36,12 @@ public class Post {
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "profile_id", referencedColumnName = "profile_id")
-    @JsonIgnore
+    @JsonIncludeProperties("profile_id, user")
     Profile profile;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Comment> comments = Set.of();
+    @JsonIgnoreProperties("post")
+    private List<Comment> comments = List.of();
 
     public void like() {
         this.likes++;
