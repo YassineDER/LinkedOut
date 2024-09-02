@@ -5,16 +5,16 @@
         <img [appSrc]="post.profile.user.imageName" alt="Profile" class="w-12 h-12 rounded-full mr-4">
         <div class="w-full">
           @if (users.isJobseeker(post.profile.user) || users.isAdmin(post.profile.user)) {
-            <h3 class="text-lg font-semibold leading-none">{{ post.profile.user.first_name }} {{ post.profile.user.last_name }}</h3>
+            <h3 class="text-lg font-semibold">{{ post.profile.user.first_name }} {{ post.profile.user.last_name }}</h3>
             <span class="text-sm text-gray-500 leading-none">{{ post.profile.user.title }}</span>
           } @else if (users.isCompany(post.profile.user)) {
-            <h3 class="text-lg font-semibold leading-none">{{ post.profile.user.company_name }}</h3>
+            <h3 class="text-lg font-semibold">{{ post.profile.user.company_name }}</h3>
             <span class="text-sm text-gray-500 leading-none">{{ post.profile.user.sector }}</span>
           }
           <p class="text-sm text-gray-500 leading-none">{{ utils.formatDate(post.created, true) }}</p>
           <p class="my-4">{{ post.description }}</p>
           <div class="relative my-2">
-            <img [appSrc]="post.imageName" alt="Post image" loading="lazy" class="w-full h-full object-cover">
+            <img [appSrc]="post.imageName" alt="Post image" loading="lazy" class="h-96 mx-auto object-cover">
           </div>
         </div>
       </div>
