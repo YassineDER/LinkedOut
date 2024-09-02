@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {PostsService} from "../../services/posts.service";
 import {Post} from "../../../../models/social/post";
 import {UtilsService} from "../../../../services/utils.service";
@@ -11,15 +11,20 @@ import {UserService} from "../../../home/services/user.service";
   templateUrl: './posts-feed.component.html',
   styleUrl: './posts-feed.component.css'
 })
-export class PostsFeedComponent {
+export class PostsFeedComponent implements OnInit {
     posts: Post[] = [];
     current_page = 0;
     size = 10;
-    isLoading = false;
+    isLoading = true;
 
     constructor(private postsService: PostsService, protected utils: UtilsService,
                 protected users: UserService ) {
-        this.loadPosts();
+    }
+
+    ngOnInit() {
+        setTimeout(() => {
+            this.loadPosts();
+        }, 1500);
     }
 
     loadPosts() {

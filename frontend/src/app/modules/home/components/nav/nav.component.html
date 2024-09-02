@@ -1,4 +1,4 @@
-<nav class="navbar border bg-white p-0 shadow-sm">
+<nav class="navbar border bg-white p-0 shadow-sm" [ngClass]="{'sticky-nav': isSticky}">
   <div class="navbar-start w-full">
     <!--    Logo and Navigation-->
     <a [routerLink]="Path.HOME.toString()">

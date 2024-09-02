@@ -5,6 +5,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {FormsService} from "../../../../services/forms.service";
 import {PostsService} from "../../services/posts.service";
 import {NotificationType} from "../../../shared/utils/notification-type";
+import {EmojiEvent} from "@ctrl/ngx-emoji-mart/ngx-emoji";
 
 @Component({
     selector: 'app-post-form',
@@ -13,10 +14,13 @@ import {NotificationType} from "../../../shared/utils/notification-type";
 })
 export class PostFormComponent {
     @Output() postCreated: EventEmitter<void> = new EventEmitter<void>();
+
     postForm: FormGroup;
     imagePreview?: string;
-    content = new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(500), Validators.pattern(/^[a-zA-ZÀ-ÿ0-9\s.,;:!?'"()\-]{5,500}$/)]);
+    content = new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(500)]);
     image = new FormControl(null);
+    emojiPickerVisible = false;
+
 
     constructor(private utils: UtilsService, private fb: FormBuilder,
                 private forms: FormsService, private posts: PostsService) {
@@ -89,5 +93,20 @@ export class PostFormComponent {
                 this.postCreated.emit();
             }
         }
+    }
+
+    toggleEmojiPicker(textarea: HTMLTextAreaElement) {
+        this.emojiPickerVisible = !this.emojiPickerVisible;
+    }
+
+    addEmoji(event: EmojiEvent, textarea: HTMLTextAreaElement) {
+        const emoji = event.emoji.native || '';
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        const text = textarea.value;
+        textarea.value = text.slice(0, start) + emoji + text.slice(end);
+        textarea.setSelectionRange(start + emoji.length, start + emoji.length);
+        textarea.dispatchEvent(new Event('input'));
+        this.emojiPickerVisible = false;
     }
 }

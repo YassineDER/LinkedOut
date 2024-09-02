@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, HostListener, Input} from '@angular/core';
 import {AuthService} from "../../../../services/auth.service";
 import {Router} from "@angular/router";
 import {User} from "../../../../models/user";
@@ -12,9 +12,15 @@ import {UserService} from "../../services/user.service";
 })
 export class NavComponent{
     @Input() user!: User;
+    isSticky = false;
 
     constructor(private auth: AuthService, private router: Router,
                 protected userServ: UserService) {
+    }
+
+    @HostListener('window:scroll', [])
+    onWindowScroll() {
+        this.isSticky = window.scrollY > 0;
     }
 
     disconnect() {

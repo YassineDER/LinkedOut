@@ -3,6 +3,23 @@
     justify-content: left !important;
 }
 
+.sticky-nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  animation: slideDown 0.4s ease-in-out;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
 #search input{
     transition: width 0.4s ease-in-out !important;
     width: 30% !important;

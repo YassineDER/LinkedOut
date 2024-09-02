@@ -2,16 +2,28 @@
   <h1 class="font-semibold mb-2">Nouvelle publication</h1>
   <hr class="mb-4"/>
 
-  <textarea [formControl]="content" class="textarea w-full mb-3 h-32" name="content"
-            placeholder="Quoi de neuf ?"></textarea>
+  <textarea #textarea [formControl]="content" class="textarea w-full mb-3 h-24"
+            name="content" placeholder="Quoi de neuf ?"></textarea>
   @if (imagePreview) {
     <img class="w-48 h-48 rounded-lg mx-auto my-2 aspect-square" [src]="imagePreview" alt="Uploaded Image"/>
   }
 
   <div class="flex justify-end space-x-2 text-gray-400">
+    <button (click)="toggleEmojiPicker(textarea)" type="button">
+      @if (emojiPickerVisible) {
+        <i class="bi bi-x-lg text-xl"></i>
+        <emoji-mart (emojiSelect)="addEmoji($event, textarea)" *ngIf="emojiPickerVisible"
+                    [emojiSize]="26" [enableSearch]="false" [perLine]="7" [sheetSize]="32" [showPreview]="false"
+                    class="z-10 absolute ml-4 mt-4" set="google"/>
+      } @else {
+        <i class="bi bi-emoji-smile text-xl"></i>
+      }
+    </button>
+
     <label class="flex btn btn-ghost btn-circle cursor-pointer">
       <i class="bi bi-camera text-xl"></i>
-      <input (change)="onImagePicked($event)" accept="image/png, image/jpeg, image/jpg, image/gif" class="hidden" name="image"
+      <input (change)="onImagePicked($event)" accept="image/png, image/jpeg, image/jpg, image/gif" class="hidden"
+             name="image"
              type="file"/>
     </label>
 
