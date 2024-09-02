@@ -1,5 +1,6 @@
 package org.ichat.backend.model.util.auth;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,10 +13,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PasswordRequestDTO {
-    @NotEmpty(message = "Received code is missing")
+    @NotBlank(message = "Received code is missing")
     String received_code;
-    @NotEmpty(message = "The new password is missing")
+    @NotBlank(message = "The new password is missing")
     String password;
-    @NotEmpty(message = "The new password confirmation is missing")
+    @NotBlank(message = "The new password confirmation is missing")
     String password_confirmation;
 }

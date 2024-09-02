@@ -3,6 +3,7 @@ package org.ichat.backend.model.tables.jobs;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -27,26 +28,26 @@ public class Job {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long job_id;
 
-    @NotEmpty(message = "Title is required")
+    @NotBlank(message = "Title is required")
     @Column(nullable = false)
     String title;
 
-    @NotEmpty(message = "Description is required")
+    @NotBlank(message = "Description is required")
     @Column(nullable = false)
     String description;
 
-    @NotEmpty(message = "Location is required")
+    @NotBlank(message = "Location is required")
     @Column(nullable = false)
     String location;
 
-    @NotNull
+    @NotNull(message = "Salary is required")
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     JobType type;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    @NotNull
+    @NotNull(message = "Job workflow is required")
     Flow workflow;
 
     @ManyToOne

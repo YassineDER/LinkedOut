@@ -1,6 +1,7 @@
 package org.ichat.backend.model.tables;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
@@ -16,19 +17,19 @@ import lombok.*;
 @DiscriminatorValue("A")
 public class Admin extends User {
     @Column(nullable = false)
-    @NotEmpty(message = "First name is required")
+    @NotBlank(message = "First name is required")
     String first_name;
 
     @Column(nullable = false)
-    @NotEmpty(message = "Last name is required")
+    @NotBlank(message = "Last name is required")
     String last_name;
 
     @Column(nullable = false)
-    @NotEmpty(message = "Phone number is required")
+    @NotBlank(message = "Phone number is required")
     String phone;
 
     @Column(nullable = false)
-    @NotEmpty(message = "Title is required")
+    @NotBlank(message = "Title is required")
     String title;
 
 }

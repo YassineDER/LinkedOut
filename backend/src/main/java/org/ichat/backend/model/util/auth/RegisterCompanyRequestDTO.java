@@ -1,5 +1,6 @@
 package org.ichat.backend.model.util.auth;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -13,14 +14,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegisterCompanyRequestDTO {
-    @NotEmpty(message = "SIREN is mandatory")
+    @NotBlank(message = "SIREN is mandatory")
     @Size(min = 9, max = 9, message = "SIREN must be 9 characters")
     private String siren;
-    @NotEmpty(message = "email is mandatory")
+    @NotBlank(message = "email is mandatory")
     private String email;
-    @NotEmpty(message = "username is mandatory")
+    @NotBlank(message = "username is mandatory")
     private String username;
-    @NotEmpty(message = "password is mandatory")
+    @NotBlank(message = "password is mandatory")
     private String password;
     boolean debug = false;
 

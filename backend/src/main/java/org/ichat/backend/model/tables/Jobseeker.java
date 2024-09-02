@@ -2,6 +2,7 @@ package org.ichat.backend.model.tables;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import org.ichat.backend.model.tables.jobs.JobApplication;
@@ -21,11 +22,11 @@ import java.util.Set;
 @DiscriminatorValue("J")
 public class Jobseeker extends User {
     @Column(nullable = false)
-    @NotEmpty(message = "First name is required")
+    @NotBlank(message = "First name is required")
     String first_name;
 
     @Column(nullable = false)
-    @NotEmpty(message = "Last name is required")
+    @NotBlank(message = "Last name is required")
     String last_name;
 
     String address;

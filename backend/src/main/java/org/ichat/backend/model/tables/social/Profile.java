@@ -2,6 +2,7 @@ package org.ichat.backend.model.tables.social;
 
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,9 +30,11 @@ public abstract class Profile {
 
     @Column(nullable = false)
     @Length(min = 3, max = 150, message = "Bio must be between 3 and 350 characters")
+    @NotBlank(message = "Bio is required")
     String bio = "Bonjour, je suis nouveau sur LinkedOut!";
 
     @Column(nullable = false)
+    @NotBlank(message = "Banner is required")
     String banner_name = "profile/banners/default_banner.png";
 
     @Column(nullable = false)

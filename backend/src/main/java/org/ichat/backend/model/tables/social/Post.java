@@ -2,10 +2,13 @@ package org.ichat.backend.model.tables.social;
 
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,13 +26,15 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long post_id;
 
-    @NotEmpty(message = "Description is required")
+    @NotBlank(message = "Description is required")
     @Column(nullable = false)
     String description;
 
-    @Column(nullable = true, name = "image_name")
+    @Column(name = "image_name")
     String imageName;
 
+    @CreatedDate
+    @NotNull(message = "Created date is required")
     LocalDateTime created = LocalDateTime.now();
 
     int likes = 0;

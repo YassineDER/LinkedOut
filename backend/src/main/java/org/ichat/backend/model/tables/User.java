@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import org.ichat.backend.model.tables.indentity.AccountReset;
@@ -42,16 +43,16 @@ public abstract class User implements UserDetails {
     Long user_id;
 
     @Column(nullable = false, unique = true)
-    @Email(message = "Email is invalid")
+    @NotBlank(message = "Email is invalid")
     String email;
 
     @Column(nullable = false, unique = true)
-    @NotEmpty(message = "Username is invalid")
+    @NotBlank(message = "Username is invalid")
     String username;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false)
-    @NotEmpty(message = "Password is required")
+    @NotBlank(message = "Password is required")
     String password;
 
     String mfa_secret;

@@ -64,24 +64,28 @@ public class GlobalExceptionAdvice {
 
     /**
         * Handles exceptions related to validation errors in the passed body of a request.
-     * Precisely, it handles exceptions thrown when a field in the request body does not meet the validation criteria (e.g. @NotEmpty).
+     * <br> Precisely, it handles exceptions thrown when a field in the request body does not meet the validation criteria (e.g. @NotEmpty, @NotBlank, @NotNull).
         * @param ex The exception that occurred.
         * @return The error response as a ResponseEntity.
      **/
     @ResponseBody
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Object> handleObjectNotValidException(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ErrorDTO> handleObjectNotValidException(MethodArgumentNotValidException ex) {
         Pattern pattern = Pattern.compile("message \\[([^]]+)]");
         Matcher matcher = pattern.matcher(ex.getMessage());
+
         if (matcher.find()) {
             var res = matcher.results();
             StringBuilder sb = new StringBuilder();
             res.forEach(matchResult -> sb.append(matchResult.group(1)).append(", "));
-            String message = sb.toString();
-            return ResponseEntity.badRequest().body(message.substring(0, message.length() - 2));
+            String message = sb.substring(0, sb.length() - 2);
+            ErrorDTO error = buildErrorDTO(ex, "Validation");
+            error.setError(message);
+            return ResponseEntity.badRequest().body(error);
         }
 
-        return ResponseEntity.badRequest().body("Invalid field(s)");
+
+        return ResponseEntity.badRequest().body(buildErrorDTO(ex, "Validation"));
     }
 
     /**

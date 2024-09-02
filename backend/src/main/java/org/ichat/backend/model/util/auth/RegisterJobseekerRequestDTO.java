@@ -1,5 +1,6 @@
 package org.ichat.backend.model.util.auth;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,15 +13,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegisterJobseekerRequestDTO {
-    @NotEmpty(message = "First name is required")
+    @NotBlank(message = "First name is required")
     String first_name;
-    @NotEmpty(message = "Last name is required")
+    @NotBlank(message = "Last name is required")
     String last_name;
-    @NotEmpty(message = "email is mandatory")
+    @NotBlank(message = "email is mandatory")
     private String email;
-    @NotEmpty(message = "username is mandatory")
+    @NotBlank(message = "username is mandatory")
     private String username;
-    @NotEmpty(message = "password is mandatory")
+    @NotBlank(message = "password is mandatory")
     private String password;
     private String image;
 }

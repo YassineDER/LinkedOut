@@ -3,6 +3,7 @@ package org.ichat.backend.model.tables.jobs;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -28,33 +29,33 @@ public class Education {
     @GeneratedValue
     Long education_id;
 
-    @NotEmpty(message = "School name is required")
+    @NotBlank(message = "School name is required")
     @Column(nullable = false)
     String etablissement;
 
-    @NotEmpty(message = "Logo url is required")
+    @NotBlank(message = "Logo url is required")
     @Column(nullable = false)
     String logo_url = "https://ax0judwwk3y8.objectstorage.eu-paris-1.oci.customer-oci.com/n/ax0judwwk3y8/b/images/o/default_education_logo.png";
 
-    @NotEmpty(message = "Location is required")
+    @NotBlank(message = "Location is required")
     @Column(nullable = false)
     String location;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    @NotNull
+    @NotNull(message = "Education flow is required")
     Flow flow;
 
-    @NotEmpty(message = "Degree is required")
+    @NotBlank(message = "Degree is required")
     @Column(nullable = false)
     String diplome;
 
-    @NotEmpty(message = "Field of study is required")
+    @NotBlank(message = "Field of study is required")
     @Column(nullable = false)
     String field_of_study;
 
     @Column(nullable = false)
-    @NotEmpty(message = "Start date is required")
+    @NotNull(message = "Start date is required")
     LocalDate start_date;
 
     LocalDate end_date;

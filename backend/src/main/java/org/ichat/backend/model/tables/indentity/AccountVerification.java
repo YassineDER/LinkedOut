@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.time.OffsetDateTime;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -25,11 +26,11 @@ public class AccountVerification {
     private Long account_verification_id;
 
     @Column(nullable = false, unique = true)
-    @NotEmpty
+    @NotBlank(message = "Token cannot be empty")
     private String token;
 
     @Column(nullable = false)
-    @NotNull
+    @NotNull(message = "Expiration date cannot be null")
     private OffsetDateTime expiresAt;
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.time.OffsetDateTime;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -22,18 +23,16 @@ import org.ichat.backend.model.tables.User;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AccountReset {
-
     @Id
-    @Column(nullable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer account_reset_id;
 
     @Column(nullable = false, unique = true)
-    @NotEmpty
+    @NotBlank(message = "Token code is required")
     private String token;
 
     @Column(nullable = false)
-    @NotNull
+    @NotNull(message = "Expiration date is required")
     private OffsetDateTime expiresAt;
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})

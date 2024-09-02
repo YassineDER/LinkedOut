@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -34,16 +35,16 @@ public class Experience {
     Company company;
 
     @Column(nullable = false)
-    @NotEmpty(message = "Title is required")
+    @NotBlank(message = "Title is required")
     String title;
 
     @Column(nullable = false)
-    @NotNull
+    @NotNull(message = "Job type is required")
     @Enumerated(EnumType.STRING)
     JobType job_type;
 
     @Column(nullable = false)
-    @NotEmpty(message = "Start date is required")
+    @NotNull(message = "Start date is required")
     LocalDate start_date;
 
     LocalDate end_date;

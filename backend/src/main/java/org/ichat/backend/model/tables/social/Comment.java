@@ -4,10 +4,13 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 
@@ -20,10 +23,12 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long comment_id;
 
-    @NotEmpty(message = "Comment content is required")
+    @NotBlank(message = "Comment content is required")
     @Column(nullable = false)
     String content;
 
+    @CreatedDate
+    @NotNull(message = "Comment creation date is required")
     LocalDateTime created_at = LocalDateTime.now();
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
