@@ -3,7 +3,6 @@ package org.ichat.backend.services.social;
 import org.ichat.backend.model.tables.User;
 import org.ichat.backend.model.tables.social.Comment;
 import org.ichat.backend.model.tables.social.Post;
-import org.ichat.backend.model.util.social.Reaction;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -23,6 +22,6 @@ public interface IPostService {
 
     Comment addComment(Long postId, User commenter, String content);
 
-    void reactToPost(Long postId, Reaction reaction);
+    void reactToPost(Long postId, User reactor, String reaction);
     void deletePost(Long postId);
 }

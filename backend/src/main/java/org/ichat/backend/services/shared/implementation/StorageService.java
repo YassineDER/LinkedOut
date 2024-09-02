@@ -17,11 +17,13 @@ import org.ichat.backend.services.shared.IStorageService;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
@@ -54,6 +56,25 @@ public class StorageService implements IStorageService {
             return new StorageResponseDTO(PAR.getAccessUri(), expires);
         } catch (Exception e) {
             throw new StorageException("Failed to create pre-authenticated request", e);
+        }
+    }
+
+    @Override
+    public void uploadBase64Image(String base64, String objectNamePath) throws StorageException {
+        try {
+            byte[] bytes = Base64.getDecoder().decode(base64);
+            InputStream IS = new ByteArrayInputStream(bytes);
+            PutObjectRequest objectRequest = PutObjectRequest.builder()
+                    .namespaceName("ax0judwwk3y8")
+                    .bucketName("user-assets")
+                    .objectName(objectNamePath)
+                    .putObjectBody(IS)
+                    .contentLength((long) bytes.length)
+                    .build();
+            client.putObject(objectRequest);
+            IS.close();
+        } catch (Exception e) {
+            throw new StorageException("Failed to store image", e);
         }
     }
 

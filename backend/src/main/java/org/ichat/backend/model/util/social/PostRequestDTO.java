@@ -1,7 +1,6 @@
 package org.ichat.backend.model.util.social;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,5 +12,5 @@ import lombok.NoArgsConstructor;
 public class PostRequestDTO {
     @NotBlank(message = "Post description is required")
     private String description;
-    private String image_name;
+    private String image_b64;
 }

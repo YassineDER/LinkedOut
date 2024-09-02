@@ -7,6 +7,7 @@ import org.ichat.backend.model.tables.social.Post;
 import org.ichat.backend.model.util.social.Reaction;
 import org.ichat.backend.repository.CommentRepository;
 import org.ichat.backend.repository.PostRepository;
+import org.ichat.backend.services.shared.IStorageService;
 import org.ichat.backend.services.social.IPostService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,17 +23,21 @@ import java.util.NoSuchElementException;
 public class PostService implements IPostService {
     private final PostRepository postRepo;
     private final CommentRepository commentRepo;
+    private final IStorageService storageService;
 
     @Override
     public Post createPost(User creator, String image, String description) {
+        String image_path = "posts/post-" + creator.getUser_id() + "-" + System.currentTimeMillis();
         Post post = new Post();
+
         post.setProfile(creator.getProfile());
         post.setDescription(description);
-        post.setImageName(image);
+        post.setImageName(image_path);
         var creator_posts = creator.getProfile().getPosts();
         creator_posts.add(post);
         creator.getProfile().setPosts(creator_posts);
 
+        storageService.uploadBase64Image(image, image_path);
         return postRepo.save(post);
     }
 
@@ -64,9 +69,9 @@ public class PostService implements IPostService {
     }
 
     @Override
-    public void reactToPost(Long postId, Reaction reaction) {
+    public void reactToPost(Long postId, User reactor, String reaction) {
         var post = postRepo.findById(postId).orElseThrow(() -> new NoSuchElementException("Post not found"));
-        if (reaction == Reaction.LIKE)
+        if (reaction.equals(Reaction.LIKE.name()))
             post.like();
         else post.unlike();
 

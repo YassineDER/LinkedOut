@@ -30,7 +30,7 @@ public class SocialController {
      */
     @PostMapping("/posts")
     public ResponseEntity<Post> addPost(User me, @Valid @RequestBody PostRequestDTO req) {
-        Post post = postService.createPost(me, req.getImage_name(), req.getDescription());
+        Post post = postService.createPost(me, req.getImage_b64(), req.getDescription());
         return ResponseEntity.ok(post);
     }
 
@@ -49,6 +49,11 @@ public class SocialController {
     @GetMapping("/posts/{postId}")
     public Post getPost(@PathVariable Long postId) {
         return postService.getPostById(postId);
+    }
+
+    @PutMapping("/posts/{postId}/react")
+    public Post reactToPost(User me, @PathVariable Long postId, @RequestParam String reaction) {
+        return postService.reactToPost(postId, me, reaction);
     }
 
 }
