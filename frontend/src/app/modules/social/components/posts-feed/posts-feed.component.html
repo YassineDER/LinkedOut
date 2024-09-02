@@ -1,4 +1,4 @@
-<div (scrolled)="onScroll()" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" infiniteScroll>
+<div (scrolled)="onScroll()" [infiniteScrollDistance]="5" [infiniteScrollThrottle]="50" infiniteScroll>
   @for (post of posts; track post.post_id) {
     <div class="bg-white p-4 rounded-lg shadow mb-2">
       <div class="flex items-start mb-2">
@@ -14,7 +14,7 @@
           <p class="text-sm text-gray-500 leading-none">{{ utils.formatDate(post.created, true) }}</p>
           <p class="my-4">{{ post.description }}</p>
           <div class="relative my-2">
-            <img [appSrc]="post.imageName" alt="Post image" class="w-full h-full object-cover">
+            <img [appSrc]="post.imageName" alt="Post image" loading="lazy" class="w-full h-full object-cover">
           </div>
         </div>
       </div>

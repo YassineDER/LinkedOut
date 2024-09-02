@@ -52,8 +52,8 @@ public class SocialController {
     }
 
     @PutMapping("/posts/{postId}/react")
-    public Post reactToPost(User me, @PathVariable Long postId, @RequestParam String reaction) {
-        return postService.reactToPost(postId, me, reaction);
+    public void reactToPost(User me, @PathVariable Long postId, @RequestParam String reaction) {
+        postService.reactToPost(postId, me, reaction);
     }
 
 }

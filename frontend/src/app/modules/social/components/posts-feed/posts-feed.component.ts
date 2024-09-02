@@ -24,7 +24,7 @@ export class PostsFeedComponent {
 
     loadPosts() {
         this.isLoading = true;
-        this.postsService.getPosts(this.current_page, this.size, 'created')
+        this.postsService.getPosts(this.current_page, this.size, 'created,desc')
             .then((page) => {
                 this.posts = this.posts.concat(page.content);
                 this.current_page++;
@@ -39,6 +39,12 @@ export class PostsFeedComponent {
     onScroll() {
         if (!this.isLoading)
             this.loadPosts();
+    }
+
+    onPostCreated() {
+        this.posts = [];
+        this.current_page = 0;
+        this.loadPosts();
     }
 
 }

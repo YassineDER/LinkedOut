@@ -21,7 +21,7 @@ export class PostsService {
                 }
             }).subscribe({
                 next: (posts) => resolve(posts),
-                error: (error) => reject
+                error: (error) => reject(error)
             })
         );
     }
@@ -36,7 +36,7 @@ export class PostsService {
         });
     }
 
-    createPost(post: any): Promise<Post> {
+    createPost(post: { description: string, image_b64: string }): Promise<Post> {
         return new Promise((resolve, reject) => {
             this.http.post<Post>(this.api + '/posts', post)
                 .subscribe({
