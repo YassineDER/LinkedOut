@@ -7,9 +7,9 @@
         <app-about-profile class="p-0 mb-4" [profile]="user.profile" />
         <app-activity-profile class="p-0 mb-4" [profile]="user.profile" />
       @if (users.isJobseeker(user)) {
-        <app-experience-profile class="p-0 mb-4" [profile]="user.profile" />
-        <app-education-profile class="p-0 mb-4" [profile]="user.profile" />
-        <app-skills-profile class="p-0 mb-4" [profile]="user.profile" />
+        <app-experience-profile class="p-0 mb-4" [experiences]="user.profile.experiences" />
+        <app-education-profile class="p-0 mb-4" [studies]="user.profile.studies" />
+        <app-skills-profile class="p-0 mb-4" [skills]="user.profile.skills" />
       }
       </div>
 

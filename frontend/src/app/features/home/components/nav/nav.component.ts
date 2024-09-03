@@ -15,7 +15,7 @@ export class NavComponent{
     isSticky = false;
 
     constructor(private auth: AuthService, private router: Router,
-                protected userServ: UserService) {
+                protected users: UserService) {
     }
 
     @HostListener('window:scroll', [])

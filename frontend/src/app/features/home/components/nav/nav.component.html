@@ -48,8 +48,8 @@
           <a [routerLink]="Path.PROFILE.toString()" class="text-primary card-title font-bold">
             {{ user.username }}
           </a>
-          <p class="text-sm" *ngIf="userServ.isCompany(user)">{{ user.description }}</p>
-          <p class="text-sm" *ngIf="userServ.isJobseeker(user) || userServ.isAdmin(user)">{{ user.title }}</p>
+          <p class="text-sm" *ngIf="users.isCompany(user)">{{ user.description }}</p>
+          <p class="text-sm" *ngIf="users.isJobseeker(user) || users.isAdmin(user)">{{ user.title }}</p>
         </div>
         <hr class="mt-2">
         <ul class="menu menu-sm">

@@ -7,17 +7,21 @@
   </div>
 
   <div class="mb-6">
-    <div class="flex items-start mb-4">
-      <img [appSrc]="profile.banner_name" width="40" height="40" alt="Company Logo" class="mr-4 rounded-full">
-      <div>
-        <h3 class="text-xl font-semibold">Freelance UX/UI designer</h3>
-        <p class="text-gray-500 text-sm">Freelance • Around the world</p>
-        <p class="text-gray-500 text-sm">Jun 2016 — Present • <span class="text-blue-500">3 ans 1 mois</span></p>
-        <p class="mt-2 text-gray-700 text-sm">Work with clients and web studios as freelancer. Work in next areas: eCommerce web projects; creative landing pages; iOs and Android apps; corporate web sites and corporate identity sometimes.</p>
+  @for (experience of experiences; track experience.experience_id) {
+      <div class="flex items-start mb-4">
+        <img [appSrc]="experience.company.imageName" width="40" height="40" alt="Company Logo" class="mr-4 rounded-full">
+        <div>
+          <h3 class="text-xl font-semibold">{{ experience.title }}</h3>
+          <p class="text-gray-500 text-sm">{{ experience.company.imageName }} • {{ experience.location }}</p>
+          <p class="text-gray-500 text-sm">{{ utils.formatDate(experience.start_date) }}
+            — {{ utils.formatDate(experience.end_date) }} •
+            <span class="text-blue-500">{{ utils.totalDuration(experience.start_date, experience.end_date) }}</span></p>
+          <p class="mt-2 text-gray-700 text-sm">{{ experience.description }}</p>
+        </div>
       </div>
-    </div>
-    <div class="divider"></div>
+      <div class="divider"></div>
+  } @empty {
+      <p class="text-gray-500 text-center">Aucune experience renseignée</p>
+  }
   </div>
-
-
 </div>

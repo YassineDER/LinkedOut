@@ -52,16 +52,23 @@ export class UtilsService {
      * @param localDateTime The local date time to format.
      * @param humanReadable Whether to format the date time to a human readable format.
      */
-    formatDate(localDateTime: number[], humanReadable = false): string {
+    formatDate(localDateTime: number[]) {
         const [year, month, day, hour, minute, second, nanosecond] = localDateTime;
-        const date = new Date(year, month - 1, day, hour, minute, second, nanosecond / 1000000);
+        return new Date(year, month - 1, day, hour, minute, second, nanosecond / 1000000);
+    }
 
-        if (!humanReadable) {
-            return date.toLocaleString();
-        }
+    totalDuration(start: number[], end: number[]): string {
+        const formatedStartDate = this.formatDate(start);
+        const formatedEndDate = this.formatDate(end);
+        const diff = formatedEndDate.getTime() - formatedStartDate.getTime();
+        const formatedDate = new Date(diff);
+        return `${formatedDate.getFullYear() - 1970} ans, ${formatedDate.getMonth()} mois`;
+    }
 
+    getElapsedTime(localDateTime: number[]): string {
+        const formatedDate = this.formatDate(localDateTime);
         const now = new Date();
-        const diff = now.getTime() - date.getTime();
+        const diff = now.getTime() - formatedDate.getTime();
 
         const seconds = Math.floor(diff / 1000);
         const minutes = Math.floor(seconds / 60);

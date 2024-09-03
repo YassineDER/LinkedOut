@@ -17,6 +17,7 @@ export class PostsFeedComponent implements OnInit {
     size = 10;
     isInitialLoading = true;
     isLoadingMore = false;
+    isDescriptionExpanded: { [key: number]: boolean } = {};
 
     constructor(private postsService: PostsService, protected utils: UtilsService,
                 protected users: UserService ) {
@@ -25,7 +26,7 @@ export class PostsFeedComponent implements OnInit {
     ngOnInit() {
         setTimeout(() => {
             this.loadPosts();
-        }, 1500);
+        }, 1200);
     }
 
     loadPosts() {
@@ -50,6 +51,11 @@ export class PostsFeedComponent implements OnInit {
     onScroll() {
         if (!this.isLoadingMore && !this.isInitialLoading)
             this.loadPosts();
+    }
+
+    toggleDescription(postId: number, event: Event): void {
+        event.preventDefault();
+        this.isDescriptionExpanded[postId] = !this.isDescriptionExpanded[postId];
     }
 
     onPostCreated() {

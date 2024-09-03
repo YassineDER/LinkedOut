@@ -2,17 +2,16 @@ import {Directive, ElementRef, Input, OnChanges, SimpleChanges} from '@angular/c
 import {UtilsService} from "../../../services/utils.service";
 
 @Directive({
-  selector: '[appDateFormat]',
+  selector: '[appElapsedDate]',
 })
-export class DateFormatDirective implements OnChanges {
-    @Input() appDateFormat!: number[];
+export class ElpasedDateFormatDirective implements OnChanges {
+    @Input() appElapsedDate!: number[];
 
     constructor(private el: ElementRef, private utils: UtilsService) {}
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes['appDateFormat'])
-            this.el.nativeElement.textContent = this.utils.formatDate(this.appDateFormat);
+        if (changes['appElapsedDate'])
+            this.el.nativeElement.textContent = this.utils.getElapsedTime(this.appElapsedDate);
     }
-
 
 }

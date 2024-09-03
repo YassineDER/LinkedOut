@@ -7,8 +7,10 @@
   </div>
 
   <ul class="space-y-3">
-    @for (skill of profile.skills | slice:0:5; track skill.skill_id){
+    @for (skill of skills | slice:0:5; track skill.skill_id){
       <li>{{skill.name}}</li>
+    } @empty {
+      <li class="text-gray-500 text-center">Aucune compétence</li>
     }
   </ul>
 

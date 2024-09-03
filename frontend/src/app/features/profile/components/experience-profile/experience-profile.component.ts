@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
-import {Profile} from "../../../../models/social/profile";
+import {Experience} from "../../../../models/job/experience";
+import {UtilsService} from "../../../../services/utils.service";
 
 @Component({
   selector: 'app-experience-profile',
@@ -7,9 +8,9 @@ import {Profile} from "../../../../models/social/profile";
   styleUrl: './experience-profile.component.css'
 })
 export class ExperienceProfileComponent {
-    @Input() profile!: Profile;
+    @Input() experiences: Experience[] = [];
 
-    constructor() {
+    constructor(protected utils: UtilsService) {
     }
 
 }

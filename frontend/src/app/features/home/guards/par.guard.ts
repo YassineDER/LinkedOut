@@ -26,7 +26,7 @@ export const PARGuard: CanActivateFn = async (route, state) => {
             return false;
 
         localStorage.setItem('PAR', storage.OCI_URL + resp.par_URL);
-        localStorage.setItem('PAR_EXPIRES', utils.formatDate(resp.expires));
+        localStorage.setItem('PAR_EXPIRES', utils.formatDate(resp.expires).toLocaleString());
     }
 
     return true;

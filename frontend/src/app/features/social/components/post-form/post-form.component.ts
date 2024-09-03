@@ -17,7 +17,7 @@ export class PostFormComponent {
 
     postForm: FormGroup;
     imagePreview?: string;
-    content = new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(500)]);
+    content = new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(2048)]);
     image = new FormControl(null);
     emojiPickerVisible = false;
 
@@ -38,8 +38,8 @@ export class PostFormComponent {
         const MAX_WIDTH = 2048;
         const MAX_HEIGHT = 2048;
         const MAX_SIZE = 2000;
-        const MIN_WIDTH = 600;
-        const MIN_HEIGHT = 600;
+        const MIN_WIDTH = 400;
+        const MIN_HEIGHT = 400;
 
         const target = event.target as HTMLInputElement;
         const image = (target.files as FileList)[0];

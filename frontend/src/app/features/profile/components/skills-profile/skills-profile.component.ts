@@ -2,6 +2,7 @@ import {Component, Input} from '@angular/core';
 import { User } from '../../../../models/user';
 import {Path} from "../../../shared/utils/path";
 import {Profile} from "../../../../models/social/profile";
+import {Skill} from "../../../../models/job/skill";
 
 @Component({
   selector: 'app-skills-profile',
@@ -9,7 +10,7 @@ import {Profile} from "../../../../models/social/profile";
   styleUrl: './skills-profile.component.css'
 })
 export class SkillsProfileComponent {
-    @Input() profile!: Profile;
+    @Input() skills: Skill[] = [];
 
     constructor() {
     }

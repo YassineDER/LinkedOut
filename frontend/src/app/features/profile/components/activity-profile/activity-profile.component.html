@@ -12,8 +12,8 @@
     @if (actualTab === Tabs.POSTS) {
       @for (post of profile.posts | slice:0:2 ; track post.post_id) {
       <div>
-        <p class="mb-2"><strong>Vous</strong> avez publié ceci • <span [appDateFormat]="post.created"></span></p>
-        <p class="text-gray-600">{{post.description}}</p>
+        <p class="mb-2"><strong>Vous</strong> avez publié ceci • <span [appElapsedDate]="post.created"></span></p>
+        <p class="text-gray-600 whitespace-pre-wrap">{{post.description.slice(0, 250)}}...</p>
       </div>
       <div class="divider "></div>
       } @empty {
@@ -23,7 +23,7 @@
     @else {
       @for (comment of profile.comments | slice:0:3 ; track comment.comment_id) {
       <div>
-        <p class="mb-2"><strong>Vous</strong> avez commenté ceci • <span [appDateFormat]="comment.created_at"></span></p>
+        <p class="mb-2"><strong>Vous</strong> avez commenté ceci • <span [appElapsedDate]="comment.created_at"></span></p>
         <p class="text-gray-600">{{comment.content}}</p>
       </div>
       <div class="divider "></div>

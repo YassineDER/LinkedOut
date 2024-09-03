@@ -2,6 +2,8 @@ import {Comment} from "./comment";
 import {Skill} from "../job/skill";
 import {User} from "../user";
 import {Post} from "./post";
+import {Experience} from "../job/experience";
+import {Education} from "../job/education";
 
 export interface Profile {
     profile_id: number;
@@ -9,11 +11,10 @@ export interface Profile {
     banner_name: string;
     connections: number;
     profile_views: number;
-    user: User;
     posts: Post[];
     comments: Comment[];
-    experiences: any[];
-    studies: any[];
+    experiences: Experience[];
+    studies: Education[];
     skills: Skill[];
-
+    user: User;
 }
