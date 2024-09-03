@@ -3,18 +3,18 @@ import {BrowserModule} from '@angular/platform-browser';
 import {AppComponent} from './components/app/app.component';
 import {AppRoutingModule} from "./app.routes";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {CoreModule} from "./modules/core/core.module";
-import {AuthModule} from "./modules/auth/auth.module";
+import {CoreModule} from "./features/core/core.module";
+import {AuthModule} from "./features/auth/auth.module";
 
 @NgModule({
     declarations: [
         AppComponent,
     ],
     imports: [
-        // system app modules
+        // system app features
         BrowserModule,
         BrowserAnimationsModule,
-        // nested modules before routing
+        // nested features before routing
         CoreModule,
         AuthModule,
 

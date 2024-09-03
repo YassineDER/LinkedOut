@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
-import {AlertType} from "../modules/shared/utils/alert-type";
+import {AlertType} from "../features/shared/utils/alert-type";
 import {HttpClient} from "@angular/common/http";
-import {NotificationType} from "../modules/shared/utils/notification-type";
+import {NotificationType} from "../features/shared/utils/notification-type";
 
 @Injectable({
     providedIn: 'root'

@@ -8,8 +8,8 @@ const routes: Routes = [
         path: '', component: HomeComponent, canActivate: [PARGuard], children: [
             {path: '', redirectTo: 'social', pathMatch: 'full'},
             {
-                path: 'preferences',
-                loadChildren: () => import('../preferences/preferences.module').then(m => m.PreferencesModule)
+                path: 'settings',
+                loadChildren: () => import('../settings/preferences.module').then(m => m.PreferencesModule)
             },
             {
                 path: 'social',

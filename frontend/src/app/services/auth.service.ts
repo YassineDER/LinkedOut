@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
-import {LoginCredentials} from "../modules/auth/utils/login-credentials";
+import {LoginCredentials} from "../features/auth/utils/login-credentials";
 import {Role} from "../models/role";
 import {BehaviorSubject, catchError, Observable, of, switchMap} from "rxjs";
 import {User} from "../models/user";

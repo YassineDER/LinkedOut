@@ -4,7 +4,7 @@ import {ActivatedRoute} from "@angular/router";
 import {Path} from "../../../shared/utils/path";
 
 @Component({
-  selector: 'app-security-preferences',
+  selector: 'app-security-settings',
   templateUrl: './security-preferences.component.html',
   styleUrl: './security-preferences.component.css'
 })

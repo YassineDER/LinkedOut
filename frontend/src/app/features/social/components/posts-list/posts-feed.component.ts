@@ -7,7 +7,7 @@ import {AlertType} from "../../../shared/utils/alert-type";
 import {UserService} from "../../../home/services/user.service";
 
 @Component({
-  selector: 'app-posts-feed',
+  selector: 'app-posts-list',
   templateUrl: './posts-feed.component.html',
   styleUrl: './posts-feed.component.css'
 })
@@ -15,7 +15,8 @@ export class PostsFeedComponent implements OnInit {
     posts: Post[] = [];
     current_page = 0;
     size = 10;
-    isLoading = true;
+    isInitialLoading = true;
+    isLoadingMore = false;
 
     constructor(private postsService: PostsService, protected utils: UtilsService,
                 protected users: UserService ) {
@@ -28,27 +29,33 @@ export class PostsFeedComponent implements OnInit {
     }
 
     loadPosts() {
-        this.isLoading = true;
+        if (this.isLoadingMore)
+            return;
+
+        this.isLoadingMore = true;
         this.postsService.getPosts(this.current_page, this.size, 'created,desc')
             .then((page) => {
                 this.posts = this.posts.concat(page.content);
                 this.current_page++;
-                this.isLoading = false;
+                this.isInitialLoading = false;
+                this.isLoadingMore = false;
             })
             .catch((e: HttpClientError) => {
                 this.utils.alert('Error loading posts', AlertType.ERROR);
-                this.isLoading = false;
+                this.isInitialLoading = false;
+                this.isLoadingMore = false;
             });
     }
 
     onScroll() {
-        if (!this.isLoading)
+        if (!this.isLoadingMore && !this.isInitialLoading)
             this.loadPosts();
     }
 
     onPostCreated() {
         this.posts = [];
         this.current_page = 0;
+        this.isInitialLoading = true;
         this.loadPosts();
     }
 

@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
-import {AlertType} from '../modules/shared/utils/alert-type';
+import {AlertType} from '../features/shared/utils/alert-type';
 import {FormGroup} from "@angular/forms";
 import {AuthService} from "./auth.service";
 import {Role} from "../models/role";
 import {Router} from "@angular/router";
 import {UtilsService} from "./utils.service";
-import {Path} from "../modules/shared/utils/path";
+import {Path} from "../features/shared/utils/path";
 
 @Injectable({
     providedIn: 'root'

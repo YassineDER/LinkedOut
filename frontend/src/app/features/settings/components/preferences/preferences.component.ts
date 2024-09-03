@@ -4,7 +4,7 @@ import {UserService} from "../../../home/services/user.service";
 import {Path} from "../../../shared/utils/path";
 
 @Component({
-  selector: 'app-preferences',
+  selector: 'app-settings',
   templateUrl: './preferences.component.html',
   styleUrl: './preferences.component.css'
 })

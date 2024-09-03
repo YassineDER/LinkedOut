@@ -1,14 +1,14 @@
 import {NgModule} from "@angular/core";
 import {RouterModule, Routes} from "@angular/router";
 import {NotFoundComponent} from "./components/not-found/not-found.component";
-import {JwtGuard} from "./modules/auth/guards/jwt.guard";
+import {JwtGuard} from "./features/auth/guards/jwt.guard";
 import {PrivacyPolicyComponent} from "./components/privacy-policy/privacy-policy.component";
 import {TermsAndConditionsComponent} from "./components/terms-and-conditions/terms-and-conditions.component";
 
 const routes: Routes = [
     {
         path: '', title: 'LinkedOut', canActivate: [JwtGuard],
-        loadChildren: () => import('./modules/home/home.module').then(m => m.HomeModule)
+        loadChildren: () => import('./features/home/home.module').then(m => m.HomeModule)
     },
     // Privacy policy
     {path: 'privacy-policy', component: PrivacyPolicyComponent, title: 'Politique de confidentialité - LinkedOut'},
