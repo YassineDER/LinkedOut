@@ -27,7 +27,7 @@ public class Post {
     Long post_id;
 
     @NotBlank(message = "Description is required")
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1500)
     String description;
 
     @Column(name = "image_name")

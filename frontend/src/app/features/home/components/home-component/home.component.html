@@ -1,5 +1,6 @@
 <ng-container *ngIf="{ user: user$ | async } as auth">
   <ng-container *ngIf="auth.user as user">
+    <app-modal />
     <app-nav [user]="user" />
 
     <div [@fadeInUpAnimation]="prepareOutlet(outlet)">

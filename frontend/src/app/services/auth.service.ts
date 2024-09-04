@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
-import {LoginCredentials} from "../features/auth/utils/login-credentials";
+import {LoginCredentials} from "../features/authentication/utils/login-credentials";
 import {Role} from "../models/role";
 import {BehaviorSubject, catchError, Observable, of, switchMap} from "rxjs";
 import {User} from "../models/user";
@@ -14,7 +14,7 @@ import {User} from "../models/user";
 })
 export class AuthService {
     private userSubject = new BehaviorSubject<User | null>(null);
-    url = environment.hostUrl + '/api/auth';
+    url = environment.hostUrl + '/api/authentication';
 
     constructor(private http: HttpClient) {
     }

@@ -24,16 +24,16 @@ public class ScheduledTasks {
     private final IStorageService storageService;
     private final IUserService userService;
 
-    // Delete expired account verifications tokens every day at midnight
-    @Scheduled(cron = "0 0 0 * * ?")
+    // Delete expired account verifications tokens every hour
+    @Scheduled(cron = "0 0 */1 * * ?")
     public void deleteExpiredAccountVerification() {
         OffsetDateTime threshold = OffsetDateTime.now().minusHours(24);
         accountVerificationRepository.deleteByExpiresAtBefore(threshold);
         log.info("Deleted expired account verification tokens");
     }
 
-    // Delete expired account password reset every day at midnight
-    @Scheduled(cron = "0 0 0 * * ?")
+    // Delete expired account password reset every 12 hours
+    @Scheduled(cron = "0 0 */12 * * ?")
     public void deleteExpiredAccountReset() {
         OffsetDateTime threshold = OffsetDateTime.now().minusHours(24);
         accountResetRepository.deleteByExpiresAtBefore(threshold);

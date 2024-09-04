@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, TemplateRef} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import {AlertType} from "../features/shared/utils/alert-type";
 import {HttpClient} from "@angular/common/http";
@@ -10,10 +10,19 @@ import {NotificationType} from "../features/shared/utils/notification-type";
 export class UtilsService {
     private alertSubject = new BehaviorSubject<{ message: string, type: AlertType } | null>(null);
     alert$ = this.alertSubject.asObservable();
+    private modalSubject = new BehaviorSubject<TemplateRef<any> | null>(null);
+    modal$ = this.modalSubject.asObservable();
+
     private ip$: string | null = null;
     private audio = new Audio();
 
     constructor(private http: HttpClient) {
+    }
+
+
+    callModal(template: TemplateRef<any> | null) {
+        console.log('Modal requested');
+        this.modalSubject.next(template);
     }
 
     /**
@@ -57,6 +66,11 @@ export class UtilsService {
         return new Date(year, month - 1, day, hour, minute, second, nanosecond / 1000000);
     }
 
+    /**
+     * Calculate the total duration between two dates.
+     * @param start the local date time to start from.
+     * @param end the local date time to end at.
+     */
     totalDuration(start: number[], end: number[]): string {
         const formatedStartDate = this.formatDate(start);
         const formatedEndDate = this.formatDate(end);
@@ -65,6 +79,10 @@ export class UtilsService {
         return `${formatedDate.getFullYear() - 1970} ans, ${formatedDate.getMonth()} mois`;
     }
 
+    /**
+     * Get the elapsed time since a given date.
+     * @param localDateTime The local date time to calculate the elapsed time from.
+     */
     getElapsedTime(localDateTime: number[]): string {
         const formatedDate = this.formatDate(localDateTime);
         const now = new Date();
@@ -75,15 +93,13 @@ export class UtilsService {
         const hours = Math.floor(minutes / 60);
         const days = Math.floor(hours / 24);
 
-        if (days > 0) {
-            return `${days} day${days > 1 ? 's' : ''} ago`;
-        } else if (hours > 0) {
-            return `${hours} hour${hours > 1 ? 's' : ''} ago`;
-        } else if (minutes > 0) {
-            return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
-        } else {
-            return `${seconds} second${seconds > 1 ? 's' : ''} ago`;
-        }
+        if (days > 0)
+            return `il y a ${days} jour${days > 1 ? 's' : ''}`;
+        else if (hours > 0)
+            return `il y a ${hours} heure${hours > 1 ? 's' : ''}`;
+        else if (minutes > 0)
+            return `il y a ${minutes} minute${minutes > 1 ? 's' : ''}`;
+        else return `il y a ${seconds} seconde${seconds > 1 ? 's' : ''}`;
     }
 
     /**

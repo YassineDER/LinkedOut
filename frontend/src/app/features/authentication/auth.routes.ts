@@ -10,7 +10,7 @@ import {HomeLoginComponent} from "./components/home-login/home-login.component";
 
 const routes: Routes = [
     {
-        path: 'auth',  canActivate: [AlreadyAuthGuard],
+        path: 'authentication',  canActivate: [AlreadyAuthGuard],
         children: [
             {path: '', component: HomeLoginComponent, data: {animation: 'HomePage'}, title: 'LinkedOut'},
             {

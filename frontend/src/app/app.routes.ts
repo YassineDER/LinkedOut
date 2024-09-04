@@ -1,7 +1,7 @@
 import {NgModule} from "@angular/core";
 import {RouterModule, Routes} from "@angular/router";
 import {NotFoundComponent} from "./components/not-found/not-found.component";
-import {JwtGuard} from "./features/auth/guards/jwt.guard";
+import {JwtGuard} from "./features/authentication/guards/jwt.guard";
 import {PrivacyPolicyComponent} from "./components/privacy-policy/privacy-policy.component";
 import {TermsAndConditionsComponent} from "./components/terms-and-conditions/terms-and-conditions.component";
 

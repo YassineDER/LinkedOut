@@ -38,6 +38,13 @@ public class Experience {
     @NotBlank(message = "Title is required")
     String title;
 
+    @Column(length = 500)
+    String description;
+
+    @Column(nullable = false)
+    @NotBlank(message = "Location is required")
+    String location;
+
     @Column(nullable = false)
     @NotNull(message = "Job type is required")
     @Enumerated(EnumType.STRING)

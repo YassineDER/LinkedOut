@@ -50,9 +50,8 @@ public class Education {
     @Column(nullable = false)
     String diplome;
 
-    @NotBlank(message = "Field of study is required")
-    @Column(nullable = false)
-    String field_of_study;
+    @Column(length = 500)
+    String description;
 
     @Column(nullable = false)
     @NotNull(message = "Start date is required")
