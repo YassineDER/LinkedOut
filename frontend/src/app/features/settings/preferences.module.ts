@@ -10,6 +10,7 @@ import {
 } from './components/notifications-preferences/notifications-preferences.component';
 import {SettingsService} from "./services/settings.service";
 import {SharedModule} from "../shared/shared.module";
+import {AccountInfosComponent} from "../shared/components/modals/settings/account-infos/account-infos.component";
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import {SharedModule} from "../shared/shared.module";
     imports: [
         CommonModule,
         SharedModule,
-        PreferencesRoutingModule
+        PreferencesRoutingModule,
+        AccountInfosComponent
     ],
     providers: [SettingsService]
 })

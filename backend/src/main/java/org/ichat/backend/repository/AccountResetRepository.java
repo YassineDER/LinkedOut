@@ -19,9 +19,6 @@ public interface AccountResetRepository extends JpaRepository<AccountReset, Inte
     void deleteByExpiresAtBefore(OffsetDateTime threshold);
 
     void deleteByUser(User user);
-
-    @Modifying
-    @Transactional
-    @Query("delete from AccountReset a where a.token = :token")
+    
     Optional<AccountReset> findByToken(String token);
 }
