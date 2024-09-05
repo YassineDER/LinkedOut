@@ -10,8 +10,6 @@ import {NotificationType} from "../features/shared/utils/notification-type";
 export class UtilsService {
     private alertSubject = new BehaviorSubject<{ message: string, type: AlertType } | null>(null);
     alert$ = this.alertSubject.asObservable();
-    private modalSubject = new BehaviorSubject<TemplateRef<any> | null>(null);
-    modal$ = this.modalSubject.asObservable();
 
     private ip$: string | null = null;
     private audio = new Audio();
@@ -19,11 +17,6 @@ export class UtilsService {
     constructor(private http: HttpClient) {
     }
 
-
-    callModal(template: TemplateRef<any> | null) {
-        console.log('Modal requested');
-        this.modalSubject.next(template);
-    }
 
     /**
      * Display an alert message using the alert component in the app.

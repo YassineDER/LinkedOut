@@ -15,7 +15,7 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
 
     // Exclude the ipify.org API from the Authorization header and the authentication endpoints (except for the status one)
     if (!req.url.includes('api.ipify.org') &&
-        (!req.url.includes('authentication/status')))
+        (!req.url.includes('auth/status')))
         headers = req.headers.set('Authorization', `Bearer ${token}`);
 
     const cloned = req.clone({headers});

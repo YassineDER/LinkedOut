@@ -10,7 +10,6 @@ import {
 } from './components/notifications-preferences/notifications-preferences.component';
 import {SettingsService} from "./services/settings.service";
 import {SharedModule} from "../shared/shared.module";
-import {SettingsTemplatesComponent} from "../shared/components/settings-templates/settings-templates.component";
 
 
 @NgModule({
@@ -25,7 +24,7 @@ import {SettingsTemplatesComponent} from "../shared/components/settings-template
         SharedModule,
         PreferencesRoutingModule
     ],
-    providers: [SettingsService, SettingsTemplatesComponent]
+    providers: [SettingsService]
 })
 export class PreferencesModule {
 }

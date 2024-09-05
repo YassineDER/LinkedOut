@@ -7,7 +7,7 @@ import {ProfileOverviewComponent} from './components/profile-overview/profile-ov
 import {PostFormComponent} from './components/post-form/post-form.component';
 import {PostsFeedComponent} from './components/posts-list/posts-feed.component';
 import {PostsService} from "./services/posts.service";
-import {FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {SharedModule} from "../shared/shared.module";
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
 import {EmojiModule} from "@ctrl/ngx-emoji-mart/ngx-emoji";

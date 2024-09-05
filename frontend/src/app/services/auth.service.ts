@@ -14,7 +14,7 @@ import {User} from "../models/user";
 })
 export class AuthService {
     private userSubject = new BehaviorSubject<User | null>(null);
-    url = environment.hostUrl + '/api/authentication';
+    url = environment.hostUrl + '/api/auth';
 
     constructor(private http: HttpClient) {
     }

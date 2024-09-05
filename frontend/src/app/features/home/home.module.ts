@@ -9,6 +9,7 @@ import {SocialService} from "./services/social.service";
 import {NavComponent} from "./components/nav/nav.component";
 import {FooterComponent} from "./components/footer/footer.component";
 import {StorageService} from "./services/storage.service";
+import {CoreModule} from "../core/core.module";
 
 
 @NgModule({
