@@ -6,7 +6,7 @@ import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.model.tables.User;
 import org.ichat.backend.model.util.auth.AccountCredentialsDTO;
 import org.ichat.backend.model.util.auth.AuthResponseDTO;
-import org.ichat.backend.services.account.ITwoFactorAuthService;
+import org.ichat.backend.services.account.IAccountManagementService;
 import org.ichat.backend.services.account.IUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Controller for user related operations
@@ -28,8 +27,9 @@ import java.util.Set;
 @RequestMapping("/api/user")
 public class UserController {
     private final IUserService userService;
-    private final ITwoFactorAuthService twoFactorService;
+    private final IAccountManagementService accountService;
     private final PasswordEncoder passwordEncoder;
+
 
     /**
      * @param page Page number to start from
@@ -66,6 +66,15 @@ public class UserController {
         return ResponseEntity.ok(suggested);
     }
 
+    @PostMapping("/request-mfa")
+    public ResponseEntity<AuthResponseDTO> requestMfa(User me) {
+        if (me.getUsing_mfa())
+            throw new AccountException("MFA is already enabled", HttpStatus.BAD_REQUEST.value());
+
+        String resp = accountService.requestMfaEnabling(me);
+        return ResponseEntity.ok(new AuthResponseDTO(resp));
+    }
+
     /**
      * Enable or disable MFA for the authenticated user
      * @param me The authenticated user
@@ -80,26 +89,8 @@ public class UserController {
         if (!passwordEncoder.matches(confirmation.getPassword(), me.getPassword()))
             throw new AccountException("Invalid or missing password", HttpStatus.BAD_REQUEST.value());
 
-        if (action.equals("enable")) {
-            if (me.getUsing_mfa())
-                throw new AccountException("MFA is already enabled", HttpStatus.BAD_REQUEST.value());
-
-            String secret = twoFactorService.generateMfaSecret();
-            me.activateMFA(secret);
-            String qrCode = twoFactorService.generateMfaImage(me.getMfa_secret(), me.getEmail());
-            userService.update(me.getUser_id(), me);
-            return ResponseEntity.ok(new AuthResponseDTO("MFA is enabled", true, qrCode));
-        }
-        else if (action.equals("disable")) {
-            if (!me.getUsing_mfa())
-                throw new AccountException("MFA is already disabled", HttpStatus.BAD_REQUEST.value());
-
-            me.deactivateMFA();
-            userService.update(me.getUser_id(), me);
-            return ResponseEntity.ok(new AuthResponseDTO("MFA has been disabled"));
-        }
-
-        throw new AccountException("Invalid action to perform", HttpStatus.BAD_REQUEST.value());
+        var response = accountService.performMfaAction(me, action);
+        return ResponseEntity.ok(response);
     }
 
     /**

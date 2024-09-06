@@ -49,6 +49,7 @@ public class MailService implements IMailService {
             String templateFile = switch (type) {
                 case RESET_PASSWORD -> "reset";
                 case VERIFY_ACCOUNT -> "email";
+                case MFA -> "mfa";
             };
 
             String mailContent = templateEngine.process(templateFile, context);

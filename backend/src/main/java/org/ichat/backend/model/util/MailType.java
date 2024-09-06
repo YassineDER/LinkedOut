@@ -7,8 +7,9 @@ import lombok.Getter;
  */
 @Getter
 public enum MailType {
-    RESET_PASSWORD("Reset your password - LinkedOut"),
-    VERIFY_ACCOUNT("Verify your account - LinkedOut");
+    RESET_PASSWORD("Renitialiser votre mot de passe - LinkedOut"),
+    VERIFY_ACCOUNT("Verifier votre compte - LinkedOut"),
+    MFA("Code de vérification à deux facteurs - LinkedOut");
 
     private final String label;
 

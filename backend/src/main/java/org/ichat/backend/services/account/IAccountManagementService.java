@@ -1,6 +1,9 @@
 package org.ichat.backend.services.account;
 
+import dev.samstevens.totp.exceptions.QrGenerationException;
+import org.ichat.backend.model.tables.User;
 import org.ichat.backend.model.util.auth.AccountCredentialsDTO;
+import org.ichat.backend.model.util.auth.AuthResponseDTO;
 
 public interface IAccountManagementService {
     /**
@@ -30,6 +33,10 @@ public interface IAccountManagementService {
      * @see org.ichat.backend.services.account.IAccountResetService
      */
     String requestPasswordReset(AccountCredentialsDTO credentials);
+
+    String requestMfaEnabling(User user);
+
+    AuthResponseDTO performMfaAction(User user, String action) throws QrGenerationException;
 
     /**
      * Check if the user is using MFA

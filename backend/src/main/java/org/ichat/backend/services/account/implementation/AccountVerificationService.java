@@ -49,7 +49,7 @@ public class AccountVerificationService implements IAccountVerificationService {
         int number = random.nextInt(999999);
         String code = String.format("%06d", number);
 
-        mailService.sendMail(email, "Verify your account", code, MailType.VERIFY_ACCOUNT);
+        mailService.sendMail(email, "Verifiez votre adresse mail - LinkedOut", code, MailType.VERIFY_ACCOUNT);
         return code;
     }
 

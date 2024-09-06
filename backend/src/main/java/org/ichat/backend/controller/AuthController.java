@@ -82,6 +82,7 @@ public class AuthController {
     @PostMapping("/reset-password")
     @Transactional
     public ResponseEntity<AuthResponseDTO> requestReset(@RequestBody AccountCredentialsDTO credentials) {
+        // Validates MFA code if the user has 2FA enabled
         if (Boolean.TRUE.equals(accountService.userUsingMFA(credentials.getEmail()))) {
             if (credentials.getCode() == null)
                 throw new AccountException("MFA code is required for this user", HttpStatus.FORBIDDEN.value());

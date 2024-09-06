@@ -55,7 +55,7 @@ public class GlobalExceptionAdvice {
         // print stack trace if not in production
         String profile = env.getActiveProfiles()[0];
         if (!profile.equals("prod"))
-            ex.printStackTrace();
+            System.out.println(ex.toString());
 
         // build error response in an appropriate format (ErrorDTO) and return it as bad request
         ErrorDTO error = buildErrorDTO(ex, "Authentication");
