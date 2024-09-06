@@ -10,7 +10,9 @@ import {
 } from './components/notifications-preferences/notifications-preferences.component';
 import {SettingsService} from "./services/settings.service";
 import {SharedModule} from "../shared/shared.module";
-import {AccountInfosComponent} from "../shared/components/modals/settings/account-infos/account-infos.component";
+import {AccountFormModalComponent} from "../shared/components/modals/settings/account-infos/account-form-modal.component";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {MfaFormModalComponent} from "../shared/components/modals/settings/mfa-form-modal/mfa-form-modal.component";
 
 
 @NgModule({
@@ -19,12 +21,15 @@ import {AccountInfosComponent} from "../shared/components/modals/settings/accoun
         AccountPreferencesComponent,
         SecurityPreferencesComponent,
         NotificationsPreferencesComponent,
+        AccountFormModalComponent,
+        MfaFormModalComponent
     ],
     imports: [
         CommonModule,
         SharedModule,
         PreferencesRoutingModule,
-        AccountInfosComponent
+        FormsModule,
+        ReactiveFormsModule,
     ],
     providers: [SettingsService]
 })

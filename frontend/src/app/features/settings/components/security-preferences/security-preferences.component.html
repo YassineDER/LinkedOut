@@ -33,7 +33,7 @@
       </li>
     </a>
 
-    <a>
+    <button onclick="mfaModal.showModal()">
       <li class="flex justify-between items-center mb-3">
         <span>Verifications en deux étapes</span>
         <div class="flex items-center">
@@ -41,8 +41,8 @@
           <i class="bi bi-chevron-right"></i>
         </div>
       </li>
-    </a>
+    </button>
   </ul>
-
-
 </div>
+
+<app-mfa-form-modal [usingMfa]="user.using_mfa" />

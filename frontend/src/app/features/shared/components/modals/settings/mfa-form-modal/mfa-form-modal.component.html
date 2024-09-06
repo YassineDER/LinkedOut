@@ -1,1 +1,28 @@
-<p>mfa-form-modal works!</p>
+@if (!usingMfa) {
+  <dialog id="mfaModal" class="modal">
+    <form (ngSubmit)="submitMfaAction()" [formGroup]="mfaForm" class="modal-box w-11/12 max-w-5xl">
+      <h3 class="text-lg font-bold">Protégez votre compte LinkedOut avec la vérification en deux étapes</h3>
+      <div class="flex flex-row items-center">
+        <i class="bi bi-shield-check text-4xl text-primary"></i>
+        <p class="py-4">Pour activer la vérification en deux étapes, vous aurez besoin d'une application
+          d'authentification
+          sur votre téléphone. Une fois activée, vous devrez entrer un code de vérification à chaque connexion.</p>
+      </div>
+      <div class="modal-action">
+        <form method="dialog">
+          <!-- if there is a button in form, it will close the modal -->
+          <button class="btn">Close</button>
+        </form>
+      </div>
+    </form>
+  </dialog>
+}
+
+
+
+@else {
+  <h3 class="text-center my-auto">
+    <i class="bi bi-shield-check text-4xl text-primary"></i>
+    <p class="py-4">La vérification en deux étapes est activée pour votre compte LinkedOut.</p>
+  </h3>
+}
