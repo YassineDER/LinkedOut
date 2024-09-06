@@ -39,7 +39,7 @@ public class AuthService implements IAuthService {
             var new_verif = accountVerificationService.sendVerificationEmail(user.getEmail());
             accountVerificationService.saveVerificationRequest(user, new_verif);
             throw new AccountExpiredException("Account is not verified yet. " +
-                    "A new verification email has been sent to your email address, please verify your account.");
+                    "A new verification email has been sent to " + user.getEmail());
         }
 
         Authentication auth = authenticationManager.authenticate(

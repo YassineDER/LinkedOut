@@ -43,6 +43,7 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
+
     /**
      * Deletes a user with the given ID
      * @param id User ID
@@ -53,6 +54,7 @@ public class UserController {
         userService.deleteBy(id);
         return ResponseEntity.noContent().build();
     }
+
 
     /**
      * Find suggested users for the given user based on role
@@ -66,12 +68,10 @@ public class UserController {
         return ResponseEntity.ok(suggested);
     }
 
-    @PostMapping("/request-mfa")
-    public ResponseEntity<AuthResponseDTO> requestMfa(User me) {
-        if (me.getUsing_mfa())
-            throw new AccountException("MFA is already enabled", HttpStatus.BAD_REQUEST.value());
 
-        String resp = accountService.requestMfaEnabling(me);
+    @GetMapping("/request-mfa")
+    public ResponseEntity<AuthResponseDTO> requestMfa(User me) {
+        String resp = accountService.requestMfaOperation(me);
         return ResponseEntity.ok(new AuthResponseDTO(resp));
     }
 
@@ -93,6 +93,7 @@ public class UserController {
         var response = accountService.performMfaAction(me, action, confirmation.getCode());
         return ResponseEntity.ok(response);
     }
+
 
     /**
      * Get the status of the authenticated user (Debug purposes recommended). <br>
@@ -124,7 +125,7 @@ public class UserController {
     /**
      * Get the status of the authenticated user (v2). <br>
      * This method is little similar to {@link UserController#authenticatedUser()} but uses a {@link User} object as a parameter.
-     * It's more of a simple way to get the authenticated user.
+     * It's more of a simple way to get the authenticated user as a single object.
      */
     @GetMapping("/status/v2")
     public ResponseEntity<User> authenticatedUserV2(User me) {

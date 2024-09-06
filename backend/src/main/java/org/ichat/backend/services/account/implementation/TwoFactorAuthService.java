@@ -25,7 +25,6 @@ import org.springframework.stereotype.Service;
 @Transactional
 @RequiredArgsConstructor
 public class TwoFactorAuthService implements ITwoFactorAuthService {
-    private final IAccountVerificationService verificationService;
     private final IMailService mailService;
 
     @Value("${spring.application.name}")
@@ -40,8 +39,7 @@ public class TwoFactorAuthService implements ITwoFactorAuthService {
         int number = (int) (Math.random() * 1000000);
         String code = String.format("%06d", number);
         mailService.sendMail(user.getEmail(), "Activation du double facteur d'authentification", code, MailType.MFA);
-        verificationService.saveVerificationRequest(user, code);
-        return "Un code a été envoyé à " + user.getEmail() + ". Veuillez vérifier votre boîte de réception";
+        return code;
     }
 
     @Override

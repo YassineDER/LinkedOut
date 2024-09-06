@@ -50,13 +50,20 @@ public class AccountManagementService implements IAccountManagementService {
     }
 
     @Override
-    public String requestMfaEnabling(User user) {
-        return twoFactorService.requestMfa(user);
+    public String requestMfaOperation(User user) {
+        String codeSent = twoFactorService.requestMfa(user);
+        accountVerificationService.saveVerificationRequest(user, codeSent);
+        return "Un code a été envoyé à " + user.getEmail() + ". Veuillez vérifier votre boîte de réception";
     }
 
     @Override
     public AuthResponseDTO performMfaAction(User user, String action, String code) throws QrGenerationException {
+        accountVerificationService.verifyMfaRequest(user, code);
+
         if (action.equals("enable")) {
+            if (user.getUsing_mfa())
+                throw new AccountException("MFA is already enabled", HttpStatus.BAD_REQUEST.value());
+
             String secret = twoFactorService.generateMfaSecret();
             user.activateMFA(secret);
             String qrCode = twoFactorService.generateMfaImage(user.getMfa_secret(), user.getEmail());

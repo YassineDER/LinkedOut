@@ -23,7 +23,6 @@ public class AccountVerificationService implements IAccountVerificationService {
     private final AccountVerificationRepository accountVerificationRepository;
     private final IMailService mailService;
     private final IJwtService jwtService;
-    private final Random random = new Random();
 
     @Override
     public String verifyEmailCode(String code) {
@@ -45,8 +44,18 @@ public class AccountVerificationService implements IAccountVerificationService {
     }
 
     @Override
+    public void verifyMfaRequest(User user, String code) {
+        var existingVerif = accountVerificationRepository.findByToken(code)
+                .orElseThrow(() -> new AccountException("Account verification not found or has expired a long time ago", HttpStatus.NOT_FOUND.value()));
+        if (existingVerif.getExpiresAt().isBefore(OffsetDateTime.now()))
+            throw new AccountException("The provided token is invalid or has just expired, please retry to send a new one", HttpStatus.GONE.value());
+
+        accountVerificationRepository.deleteByUser(user);
+    }
+
+    @Override
     public String sendVerificationEmail(String email) {
-        int number = random.nextInt(999999);
+        int number = new Random().nextInt(999999);
         String code = String.format("%06d", number);
 
         mailService.sendMail(email, "Verifiez votre adresse mail - LinkedOut", code, MailType.VERIFY_ACCOUNT);

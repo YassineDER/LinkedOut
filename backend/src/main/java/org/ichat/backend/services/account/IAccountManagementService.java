@@ -34,7 +34,7 @@ public interface IAccountManagementService {
      */
     String requestPasswordReset(AccountCredentialsDTO credentials);
 
-    String requestMfaEnabling(User user);
+    String requestMfaOperation(User user);
 
     AuthResponseDTO performMfaAction(User user, String action, String code) throws QrGenerationException;
 

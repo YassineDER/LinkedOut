@@ -14,6 +14,8 @@ public interface IAccountVerificationService {
      */
     String verifyEmailCode(String code);
 
+    void verifyMfaRequest(User user, String code);
+
     /**
      * Generate a random code and send it to the user's email.
      *
