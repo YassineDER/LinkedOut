@@ -36,6 +36,13 @@ public class AccountManagementService implements IAccountManagementService {
     @Override
     public String requestPasswordReset(AccountCredentialsDTO credentials) {
         User user = userService.findBy(credentials.getEmail());
+
+        // Validates MFA code if the user has 2FA enabled
+        if (user.getUsing_mfa()) {
+            if (credentials.getCode() == null)
+                throw new AccountException("MFA code is required for this user", HttpStatus.FORBIDDEN.value());
+            twoFactorService.verifyMFA(user, credentials);
+        }
         String resetToken = accountResetService.sendPasswordResetEmail(user.getEmail());
         accountResetService.saveReset(user, resetToken);
 
@@ -48,7 +55,7 @@ public class AccountManagementService implements IAccountManagementService {
     }
 
     @Override
-    public AuthResponseDTO performMfaAction(User user, String action) throws QrGenerationException {
+    public AuthResponseDTO performMfaAction(User user, String action, String code) throws QrGenerationException {
         if (action.equals("enable")) {
             String secret = twoFactorService.generateMfaSecret();
             user.activateMFA(secret);

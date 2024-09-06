@@ -36,7 +36,7 @@ public interface IAccountManagementService {
 
     String requestMfaEnabling(User user);
 
-    AuthResponseDTO performMfaAction(User user, String action) throws QrGenerationException;
+    AuthResponseDTO performMfaAction(User user, String action, String code) throws QrGenerationException;
 
     /**
      * Check if the user is using MFA

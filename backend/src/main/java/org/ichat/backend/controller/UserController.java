@@ -85,11 +85,12 @@ public class UserController {
      */
     @PostMapping("/mfa/{action}")
     @Transactional
-    public ResponseEntity<AuthResponseDTO> enableMfa(User me, @PathVariable String action, @RequestBody AccountCredentialsDTO confirmation) throws QrGenerationException {
+    public ResponseEntity<AuthResponseDTO> triggerMFA(User me, @PathVariable String action, @RequestBody AccountCredentialsDTO confirmation)
+            throws QrGenerationException {
         if (!passwordEncoder.matches(confirmation.getPassword(), me.getPassword()))
             throw new AccountException("Invalid or missing password", HttpStatus.BAD_REQUEST.value());
 
-        var response = accountService.performMfaAction(me, action);
+        var response = accountService.performMfaAction(me, action, confirmation.getCode());
         return ResponseEntity.ok(response);
     }
 

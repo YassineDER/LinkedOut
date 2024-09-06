@@ -19,10 +19,4 @@ public interface IAuthService {
      */
     String authenticate(AccountCredentialsDTO credentials) throws QrGenerationException;
 
-    /**
-     * Verifies the MFA code provided by the user.
-     *
-     * @param credentials The credentials of the user.
-     */
-    void verifyMFA(AccountCredentialsDTO credentials);
 }

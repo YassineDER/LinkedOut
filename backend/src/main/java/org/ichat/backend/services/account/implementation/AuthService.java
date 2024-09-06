@@ -46,10 +46,10 @@ public class AuthService implements IAuthService {
                 new UsernamePasswordAuthenticationToken(
                         credentials.getEmail(), credentials.getPassword()));
 
-        if (Boolean.TRUE.equals(user.getUsing_mfa())){
+        if (user.getUsing_mfa()){
             if (credentials.getCode() != null) {
                 try {
-                    verifyMFA(credentials);
+                    twoFactorAuthService.verifyMFA(user, credentials);
                     auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                 } catch (AccountException e) {
                     throw new BadCredentialsException("Invalid MFA code");
@@ -59,14 +59,6 @@ public class AuthService implements IAuthService {
 
         SecurityContextHolder.getContext().setAuthentication(auth);
         return jwtService.generateToken(user);
-    }
-
-    @Override
-    public void verifyMFA(AccountCredentialsDTO credentials) {
-        User user = userService.findBy(credentials.getEmail());
-        boolean codeIsValid = twoFactorAuthService.codeIsValid(user.getMfa_secret(), credentials.getCode());
-        if (!codeIsValid)
-            throw new AccountException("Invalid MFA code", HttpStatus.BAD_REQUEST.value());
     }
 
 }

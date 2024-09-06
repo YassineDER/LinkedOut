@@ -26,6 +26,7 @@ public class AuthController {
     private final IAccountManagementService accountService;
     private final HttpServletRequest request;
 
+
     /**
      * Registers a jobseeker account, it gets also the client public IP address.
      * @param reqBody Request body containing jobseeker details
@@ -39,6 +40,7 @@ public class AuthController {
                 .body(new AuthResponseDTO(resp));
     }
 
+
     /**
      * Registers a company account
      * @param req Request body containing company details
@@ -50,6 +52,7 @@ public class AuthController {
         return ResponseEntity.ok(new AuthResponseDTO(resp));
     }
 
+
     /**
      * Validates the account using the code sent to the user's email
      * @param code Code sent to the user's email
@@ -60,6 +63,7 @@ public class AuthController {
         String jwt = accountService.validateAccount(code);
         return ResponseEntity.ok(new AuthResponseDTO(jwt));
     }
+
 
     /**
      * Authenticates a user
@@ -73,6 +77,7 @@ public class AuthController {
         return ResponseEntity.ok(new AuthResponseDTO(token));
     }
 
+
     /**
      * Requests a password reset for a user
      * @param credentials Request body containing user credentials
@@ -82,16 +87,10 @@ public class AuthController {
     @PostMapping("/reset-password")
     @Transactional
     public ResponseEntity<AuthResponseDTO> requestReset(@RequestBody AccountCredentialsDTO credentials) {
-        // Validates MFA code if the user has 2FA enabled
-        if (Boolean.TRUE.equals(accountService.userUsingMFA(credentials.getEmail()))) {
-            if (credentials.getCode() == null)
-                throw new AccountException("MFA code is required for this user", HttpStatus.FORBIDDEN.value());
-            authService.verifyMFA(credentials);
-        }
-
         String resp = accountService.requestPasswordReset(credentials);
         return ResponseEntity.ok(new AuthResponseDTO(resp));
     }
+
 
     /**
      * Verifies the password reset code and sets the new password
@@ -105,6 +104,7 @@ public class AuthController {
         String resp = accountService.resetPassword(req.getReceived_code(), req.getPassword());
         return ResponseEntity.ok(new AuthResponseDTO(resp));
     }
+
 
     /**
      * A test endpoint to simulate a slow request
