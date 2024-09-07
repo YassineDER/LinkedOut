@@ -14,7 +14,6 @@ import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.model.tables.User;
 import org.ichat.backend.model.util.MailType;
 import org.ichat.backend.model.util.auth.AccountCredentialsDTO;
-import org.ichat.backend.services.account.IAccountVerificationService;
 import org.ichat.backend.services.account.ITwoFactorAuthService;
 import org.ichat.backend.services.shared.IMailService;
 import org.springframework.beans.factory.annotation.Value;

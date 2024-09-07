@@ -17,6 +17,7 @@ import org.thymeleaf.TemplateEngine;
 
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -24,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 public class MailService implements IMailService {
     private final JavaMailSender mailSender;
     private final TemplateEngine templateEngine;
+    private final ConcurrentHashMap<String, Long> lastEmailSent = new ConcurrentHashMap<>();
 
     @Value("${spring.mail.timeout}")
     private int MAIL_TIMEOUT;
@@ -33,6 +35,13 @@ public class MailService implements IMailService {
     @Override
     @Async
     public void sendMail(String to, String header, String code, MailType type) {
+        long currentTime = System.currentTimeMillis();
+        long oneMinuteInMillis = 60 * 1000;
+
+        if (lastEmailSent.containsKey(to) && (currentTime - lastEmailSent.get(to)) < oneMinuteInMillis) {
+            throw new AccountException("You can only send one email per minute.", HttpStatus.TOO_MANY_REQUESTS.value());
+        }
+
         Context context = new Context();
         context.setVariables(Map.of(
                 "header", header,
@@ -58,6 +67,7 @@ public class MailService implements IMailService {
             CompletableFuture.runAsync(() -> mailSender.send(mimeMessage))
                     .get(MAIL_TIMEOUT, TimeUnit.SECONDS);
 
+            lastEmailSent.put(to, currentTime);
         } catch (MailException e) {
             throw new AccountException("Failed to send reset email. The operation timed out.", e, HttpStatus.REQUEST_TIMEOUT.value());
         } catch (Exception e) {
