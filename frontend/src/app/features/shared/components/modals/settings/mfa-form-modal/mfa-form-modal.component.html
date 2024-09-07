@@ -1,28 +1,33 @@
-@if (!usingMfa) {
-  <dialog id="mfaModal" class="modal">
-    <form (ngSubmit)="submitMfaAction()" [formGroup]="mfaForm" class="modal-box w-11/12 max-w-5xl">
-      <h3 class="text-lg font-bold">Protégez votre compte LinkedOut avec la vérification en deux étapes</h3>
-      <div class="flex flex-row items-center">
+<dialog class="modal" id="mfaModal">
+  <div class="modal-box w-11/12 max-w-5xl">
+    @if (!usingMfa) {
+      <h3 class="text-lg font-bold my-1">Protégez votre compte LinkedOut avec la vérification en deux étapes</h3>
+      <div class="mx-auto text-center my-4">
+        <ul class="steps steps-horizontal">
+          <li class="step step-primary" [ngClass]="{ 'active': step === 1 }">Informations</li>
+          <li class="step" [ngClass]="{ 'active': step === 2 }">Identité</li>
+          <li class="step" [ngClass]="{ 'active': step === 3 }">Validation</li>
+          <li class="step" [ngClass]="{ 'active': step === 4 }">Finalisation</li>
+        </ul>
+      </div>
+
+      @switch (step){
+        @case (1) { <app-step-one /> }
+        @case (2) { <app-step-two /> }
+        @case (3) { <app-step-three /> }
+        @case (4) { <app-step-four />  }
+      }
+    } @else {
+      <h3 class="text-center my-auto">
         <i class="bi bi-shield-check text-4xl text-primary"></i>
-        <p class="py-4">Pour activer la vérification en deux étapes, vous aurez besoin d'une application
-          d'authentification
-          sur votre téléphone. Une fois activée, vous devrez entrer un code de vérification à chaque connexion.</p>
-      </div>
-      <div class="modal-action">
-        <form method="dialog">
-          <!-- if there is a button in form, it will close the modal -->
-          <button class="btn">Close</button>
-        </form>
-      </div>
-    </form>
-  </dialog>
-}
-
-
-
-@else {
-  <h3 class="text-center my-auto">
-    <i class="bi bi-shield-check text-4xl text-primary"></i>
-    <p class="py-4">La vérification en deux étapes est activée pour votre compte LinkedOut.</p>
-  </h3>
-}
+        <p class="py-4">La vérification en deux étapes est activée pour votre compte LinkedOut.</p>
+      </h3>
+    }
+    <div class="modal-action">
+      <form method="dialog">
+        <button type="button" class="btn btn-primary mr-2" (click)="nextStep()" *ngIf="step < 4">Suivant</button>
+        <button class="btn ms-2">{{ step < 4 ? 'Annuler' : 'Fermer' }}</button>
+      </form>
+    </div>
+  </div>
+</dialog>

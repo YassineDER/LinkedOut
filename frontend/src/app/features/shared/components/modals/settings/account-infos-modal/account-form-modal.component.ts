@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 
 @Component({
-    selector: 'app-account-infos',
+    selector: 'app-account-infos-modal',
     templateUrl: './account-form-modal.component.html',
     styleUrl: './account-form-modal.component.css'
 })

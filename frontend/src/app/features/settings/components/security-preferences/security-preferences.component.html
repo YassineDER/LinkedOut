@@ -33,15 +33,15 @@
       </li>
     </a>
 
-    <button onclick="mfaModal.showModal()">
+    <a onclick="mfaModal.showModal()">
       <li class="flex justify-between items-center mb-3">
         <span>Verifications en deux étapes</span>
         <div class="flex items-center">
-          <span class="mr-2 text-sm text-gray-500">{{ user.using_mfa ? 'Activé' : 'Désactivé' }}</span>
+          <span class="mr-2 text-sm text-gray-500">{{ user.using_mfa ? 'Activée' : 'Désactivée' }}</span>
           <i class="bi bi-chevron-right"></i>
         </div>
       </li>
-    </button>
+    </a>
   </ul>
 </div>
 
