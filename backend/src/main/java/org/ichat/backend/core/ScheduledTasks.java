@@ -1,4 +1,4 @@
-package org.ichat.backend.config;
+package org.ichat.backend.core;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

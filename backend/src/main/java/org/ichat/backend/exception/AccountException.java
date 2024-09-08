@@ -31,7 +31,7 @@ public class AccountException extends RuntimeException {
      * @param cause   The cause of the exception.
      * @param status  The status code to be returned.
      */
-    public AccountException(String message, Exception cause, int status) {
+    public AccountException(String message, Throwable cause, int status) {
         super(message, cause);
         this.status = status;
     }

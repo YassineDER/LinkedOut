@@ -10,6 +10,7 @@ import dev.samstevens.totp.util.Utils;
 import jakarta.transaction.Transactional;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.ichat.backend.core.AsyncHelper;
 import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.model.tables.User;
 import org.ichat.backend.model.util.MailType;
@@ -37,7 +38,8 @@ public class TwoFactorAuthService implements ITwoFactorAuthService {
     public String requestMfa(User user) {
         int number = (int) (Math.random() * 1000000);
         String code = String.format("%06d", number);
-        mailService.sendMail(user.getEmail(), "Activation du double facteur d'authentification", code, MailType.MFA);
+        Runnable operation = () -> mailService.sendMail(user.getEmail(), "Activation du double facteur d'authentification", code, MailType.MFA);
+        AsyncHelper.performEmailRateLimit(operation, user.getEmail());
         return code;
     }
 

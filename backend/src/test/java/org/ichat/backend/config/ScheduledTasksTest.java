@@ -1,5 +1,6 @@
 package org.ichat.backend.config;
 
+import org.ichat.backend.core.ScheduledTasks;
 import org.ichat.backend.model.tables.indentity.AccountReset;
 import org.ichat.backend.model.tables.indentity.AccountVerification;
 import org.ichat.backend.repository.AccountResetRepository;

@@ -2,6 +2,7 @@ package org.ichat.backend.services.account.implementation;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.ichat.backend.core.AsyncHelper;
 import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.model.tables.indentity.AccountReset;
 import org.ichat.backend.model.tables.User;
@@ -27,9 +28,8 @@ public class AccountResetService implements IAccountResetService {
     public String sendPasswordResetEmail(String email) {
         int number = random.nextInt(999999);
         String code = String.format("%06d", number);
-
-        mailService.sendMail(email, "Demande de renitialisation de mot de passe",
-                code, MailType.RESET_PASSWORD);
+        Runnable operation = () -> mailService.sendMail(email, "Demande de renitialisation de mot de passe", code, MailType.RESET_PASSWORD);
+        AsyncHelper.performEmailRateLimit(operation, email);
         return code;
     }
 

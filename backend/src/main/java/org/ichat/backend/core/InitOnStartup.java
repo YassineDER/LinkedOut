@@ -1,4 +1,4 @@
-package org.ichat.backend.config;
+package org.ichat.backend.core;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;

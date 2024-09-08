@@ -1,4 +1,4 @@
-package org.ichat.backend.config;
+package org.ichat.backend.core;
 
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exception.AccountException;

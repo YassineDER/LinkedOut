@@ -2,6 +2,8 @@ package org.ichat.backend.services.shared;
 
 import org.ichat.backend.model.util.MailType;
 
+import java.util.concurrent.CompletableFuture;
+
 public interface IMailService {
     /**
      * Send an email to the given email address. The process is asynchronous to avoid blocking the main thread. <br>
@@ -11,6 +13,7 @@ public interface IMailService {
      * @param header email header
      * @param code   a code to be sent
      * @param type   type of email.
+     * @return
      * @see MailType
      */
     void sendMail(String to, String header, String code, MailType type);

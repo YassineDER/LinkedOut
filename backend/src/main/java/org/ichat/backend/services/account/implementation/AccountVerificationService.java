@@ -2,6 +2,7 @@ package org.ichat.backend.services.account.implementation;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.ichat.backend.core.AsyncHelper;
 import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.model.tables.indentity.AccountVerification;
 import org.ichat.backend.model.tables.User;
@@ -57,8 +58,8 @@ public class AccountVerificationService implements IAccountVerificationService {
     public String sendVerificationEmail(String email) {
         int number = new Random().nextInt(999999);
         String code = String.format("%06d", number);
-
-        mailService.sendMail(email, "Verifiez votre adresse mail - LinkedOut", code, MailType.VERIFY_ACCOUNT);
+        Runnable operation = () -> mailService.sendMail(email, "Verifiez votre adresse mail - LinkedOut", code, MailType.VERIFY_ACCOUNT);
+        AsyncHelper.performEmailRateLimit(operation, email);
         return code;
     }
 
