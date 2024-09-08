@@ -64,7 +64,7 @@ export class PostFormComponent {
                     };
                     reader.readAsDataURL(image);
                 } catch (e: any) {
-                    this.utils.alert(e.message, AlertType.ERROR);
+                    this.utils.alert(e.message);
                 }
             };
         }
@@ -83,7 +83,7 @@ export class PostFormComponent {
                     return true;
                 })
                 .catch((err) => {
-                    this.utils.alert(err.error.error, AlertType.ERROR);
+                    this.utils.alert(err.error.error);
                     return false;
                 });
 
@@ -95,7 +95,7 @@ export class PostFormComponent {
         }
     }
 
-    toggleEmojiPicker(textarea: HTMLTextAreaElement) {
+    toggleEmojiPicker() {
         this.emojiPickerVisible = !this.emojiPickerVisible;
     }
 

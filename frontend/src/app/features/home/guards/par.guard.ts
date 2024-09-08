@@ -19,7 +19,7 @@ export const PARGuard: CanActivateFn = async (route, state) => {
             .catch((e: HttpClientError) => {
                 if(e.status === 400)
                     auth.logout();
-                else utils.alert(e.error.error, AlertType.ERROR)
+                else utils.alert(e.error.error)
             });
 
         if (typeof resp !== 'object')

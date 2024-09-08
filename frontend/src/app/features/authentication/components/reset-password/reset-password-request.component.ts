@@ -39,14 +39,14 @@ export class ResetPasswordRequestComponent {
         if (this.forms.checkFormValidity(this.resetForm)) {
             await this.auth.requestPasswordReset(this.resetForm.value)
                 .then((res) => this.router.navigate([Path.RESET_PASSWORD.toString()])
-                    .then(() => this.utils.alert(res, AlertType.SUCCESS)))
+                    .then(() => this.utils.alert(res.response, AlertType.SUCCESS)))
                 .catch((error) => this.handleResetRequestError(error));
             this.resetForm.reset();
         }
     }
 
     handleResetRequestError(error: any) {
-        this.utils.alert(error.error.error, AlertType.ERROR);
+        this.utils.alert(error.error.error);
         // TODO: Handle error if it's a 2FA error
 
     }

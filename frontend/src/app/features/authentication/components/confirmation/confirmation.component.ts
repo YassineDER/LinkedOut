@@ -42,7 +42,7 @@ export class ConfirmationComponent {
                 this.verification = VerificationType.PASSWORD_RESET;
             else if (data['animation'] === 'EmailVerificationPage')
                 this.verification = VerificationType.EMAIL_VERIFICATION;
-            else this.utils.alert('Page de confirmation inconnue', AlertType.ERROR);
+            else this.utils.alert('Page de confirmation inconnue');
         });
     }
 
@@ -52,16 +52,16 @@ export class ConfirmationComponent {
 
         if (this.verification === VerificationType.EMAIL_VERIFICATION && code !== null) {
             await this.auth.verifyEmail(code)
-                .then((res) => this.router.navigate([Path.LOGIN.toString()], {queryParams: {token: res}})
+                .then((res) => this.router.navigate([Path.LOGIN.toString()], {queryParams: {token: res.response}})
                     .then(() => this.utils.alert('Votre adresse email a été vérifiée', AlertType.SUCCESS)))
-                    .catch((err) => this.utils.alert(err.error.error, AlertType.ERROR));
+                    .catch((err) => this.utils.alert(err.error.error));
         }
 
         else if (this.verification === VerificationType.PASSWORD_RESET && this.formsSrv.checkFormValidity(this.confirmationForm)) {
             await this.auth.resetPassword(this.confirmationForm.value)
                 .then(() => this.router.navigate([Path.LOGIN.toString()])
                 .then(() => this.utils.alert('Mot de passe réinitialisé. Vous pouvez maintenant vous connecter', AlertType.SUCCESS)))
-                .catch((err) => this.utils.alert(err.error.error, AlertType.ERROR));
+                .catch((err) => this.utils.alert(err.error.error));
         }
     }
 

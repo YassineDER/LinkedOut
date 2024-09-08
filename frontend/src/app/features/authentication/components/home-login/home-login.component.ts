@@ -16,8 +16,8 @@ export class HomeLoginComponent {
     async googleLogin() {
         // this.utils.alert('Google login is not available at the moment', AlertType.ERROR);
         await this.auth.simulateLongRequest()
-            .then((msg) => this.utils.alert(msg, AlertType.SUCCESS))
-            .catch((err) => this.utils.alert(err.error.error, AlertType.ERROR));
+            .then((res) => this.utils.alert(res.response, AlertType.SUCCESS))
+            .catch((err) => this.utils.alert(err.error.error));
     }
 
     protected readonly Path = Path;

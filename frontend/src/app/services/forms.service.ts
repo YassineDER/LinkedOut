@@ -24,7 +24,7 @@ export class FormsService {
             const errors = form.controls[i].errors;
             if (errors) {
                 form.controls[i].markAsTouched();
-                this.utils.alert('Le champ ' + i + ' est invalide: ' + Object.keys(errors)[0], AlertType.ERROR);
+                this.utils.alert('Le champ ' + i + ' est invalide: ' + Object.keys(errors)[0]);
                 return false;
             }
         }
@@ -42,8 +42,8 @@ export class FormsService {
         if (this.checkFormValidity(form)) {
             await this.auth.register(form.value, role)
                 .then((res) =>  this.router.navigate([Path.VERIFY_EMAIL.toString()])
-                    .then(() => this.utils.alert(res, AlertType.SUCCESS)))
-                .catch((err) => this.utils.alert(err.error.error, AlertType.ERROR));
+                    .then(() => this.utils.alert(res.response, AlertType.SUCCESS)))
+                .catch((err) => this.utils.alert(err.error.error));
         }
 
         form.reset();

@@ -9,7 +9,7 @@
   }
 
   <div class="flex justify-end space-x-2 text-gray-400">
-    <button (click)="toggleEmojiPicker(textarea)" type="button">
+    <button (click)="toggleEmojiPicker()" type="button">
       @if (emojiPickerVisible) {
         <i class="bi bi-x-lg text-xl"></i>
         <emoji-mart (emojiSelect)="addEmoji($event, textarea)" *ngIf="emojiPickerVisible"

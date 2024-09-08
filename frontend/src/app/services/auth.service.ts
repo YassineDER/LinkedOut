@@ -5,6 +5,8 @@ import {LoginCredentials} from "../features/authentication/utils/login-credentia
 import {Role} from "../models/role";
 import {BehaviorSubject, catchError, Observable, of, switchMap} from "rxjs";
 import {User} from "../models/user";
+import {AuthResponse} from "../features/shared/utils/auth-response";
+import {HttpClientError} from "../features/shared/utils/http-client.error";
 
 /**
  * Service to handle the authentication system of the application
@@ -45,10 +47,10 @@ export class AuthService {
      * @param credentials The credentials of the userSubject
      * @see LoginCredentials
      */
-    login(credentials: LoginCredentials): Promise<string> {
+    login(credentials: LoginCredentials): Promise<AuthResponse> {
         return new Promise((resolve, reject) => {
-            this.http.post<LoginCredentials>(this.url + '/authenticate', credentials)
-                .subscribe(this.handleResponse(resolve, reject));
+            this.http.post<AuthResponse>(this.url + '/authenticate', credentials)
+                .subscribe(this.handleAuthResponse(resolve, reject));
         });
     }
 
@@ -66,10 +68,10 @@ export class AuthService {
      * @param userObject The object containing the userSubject information
      * @param entity The role of the userSubject
      */
-    register(userObject: any, entity: Role): Promise<string> {
+    register(userObject: any, entity: Role): Promise<AuthResponse> {
         return new Promise((resolve, reject) => {
-            this.http.post(this.url + '/register/' + entity.toLowerCase(), userObject)
-                .subscribe(this.handleResponse(resolve, reject))
+            this.http.post<AuthResponse>(this.url + '/register/' + entity.toLowerCase(), userObject)
+                .subscribe(this.handleAuthResponse(resolve, reject))
         });
     }
 
@@ -77,10 +79,10 @@ export class AuthService {
      * Verify the email of the userSubject with the given code.
      * @param code The code received by email
      */
-    verifyEmail(code: number): Promise<string> {
+    verifyEmail(code: number): Promise<AuthResponse> {
         return new Promise((resolve, reject) => {
-            this.http.get(this.url + '/verify/' + code)
-                .subscribe(this.handleResponse(resolve, reject))
+            this.http.get<AuthResponse>(this.url + '/verify/' + code)
+                .subscribe(this.handleAuthResponse(resolve, reject))
         });
     }
 
@@ -89,10 +91,10 @@ export class AuthService {
      * @param objectRequest The object containing the password, its confirmation and the code received by email.
      * @return A promise containing the response of the server (success or error message)
      */
-    resetPassword(objectRequest: any): Promise<string> {
+    resetPassword(objectRequest: any): Promise<AuthResponse> {
         return new Promise((resolve, reject) => {
-            this.http.post(this.url + '/verify/password', objectRequest)
-                .subscribe(this.handleResponse(resolve, reject))
+            this.http.post<AuthResponse>(this.url + '/verify/password', objectRequest)
+                .subscribe(this.handleAuthResponse(resolve, reject))
         });
     }
 
@@ -100,10 +102,10 @@ export class AuthService {
      * Request a password reset for the userSubject with the given object.
      * @param objectRequest The object containing the email of the userSubject
      */
-    requestPasswordReset(objectRequest: any): Promise<string> {
+    requestPasswordReset(objectRequest: any): Promise<AuthResponse> {
         return new Promise((resolve, reject) => {
-            this.http.post(this.url + '/reset-password', objectRequest)
-                .subscribe(this.handleResponse(resolve, reject))
+            this.http.post<AuthResponse>(this.url + '/reset-password', objectRequest)
+                .subscribe(this.handleAuthResponse(resolve, reject))
         });
     }
 
@@ -117,22 +119,22 @@ export class AuthService {
     }
 
     /**
-     * Format the response of the server to a promise.
+     * Helper function to format the response of the server as a promise.
      */
-    private handleResponse(resolve: (value: any) => void, reject: (reason: any) => void) {
+    private handleAuthResponse(resolve: (value: AuthResponse) => void, reject: (reason: HttpClientError) => void) {
         return {
-            next: (res: any) => resolve(res.response),
-            error: (err: any) => reject(err)
+            next: (res: AuthResponse) => resolve(res),
+            error: (err: HttpClientError) => reject(err)
         }
     }
 
     /**
      * Simulate a long request to the server.
      */
-    simulateLongRequest() :Promise<string>{
+    simulateLongRequest() :Promise<AuthResponse>{
         return new Promise((resolve, reject) => {
-            this.http.get(this.url + '/sleep')
-                .subscribe(this.handleResponse(resolve, reject));
+            this.http.get<AuthResponse>(this.url + '/sleep')
+                .subscribe(this.handleAuthResponse(resolve, reject));
         });
     }
 

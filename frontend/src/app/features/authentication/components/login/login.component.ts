@@ -6,6 +6,7 @@ import {UtilsService} from "../../../../services/utils.service";
 import {AlertType} from "../../../shared/utils/alert-type";
 import {FormsService} from "../../../../services/forms.service";
 import {Path} from "../../../shared/utils/path";
+import {HttpClientError} from "../../../shared/utils/http-client.error";
 
 @Component({
     selector: 'app-login',
@@ -40,8 +41,8 @@ export class LoginComponent implements OnInit {
     async submitLogin() {
         if (this.forms.checkFormValidity(this.loginForm)) {
             await this.auth.login(this.loginForm.value)
-                .then((token) => {
-                    localStorage.setItem('token', token);
+                .then((res) => {
+                    localStorage.setItem('token', res.response);
                     window.location.reload();
                 })
                 .catch((error) => this.handleLoginError(error));
@@ -49,12 +50,12 @@ export class LoginComponent implements OnInit {
         }
     }
 
-    private handleLoginError(error: any) {
-        const msg: string = error.error.error;
+    private handleLoginError(error: HttpClientError) {
+        const msg = error.error.error;
         if (msg.startsWith("Account is not verified yet"))
             this.router.navigate([Path.VERIFY_EMAIL.toString()])
-                .then(() => this.utils.alert(msg, AlertType.ERROR));
-        else this.utils.alert(msg, AlertType.ERROR)
+                .then(() => this.utils.alert(msg, AlertType.WARNING));
+        else this.utils.alert(msg)
     }
 
     private resetForm() {

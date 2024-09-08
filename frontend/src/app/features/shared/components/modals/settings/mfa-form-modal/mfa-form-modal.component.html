@@ -12,8 +12,8 @@
       </div>
 
       @switch (step){
-        @case (1) { <app-step-one /> }
-        @case (2) { <app-step-two /> }
+        @case (1) { <app-step-one (completed)="nextStep()" /> }
+        @case (2) { <app-step-two (completed)="nextStep()" /> }
         @case (3) { <app-step-three /> }
         @case (4) { <app-step-four />  }
       }
@@ -25,7 +25,6 @@
     }
     <div class="modal-action">
       <form method="dialog">
-        <button type="button" class="btn btn-primary mr-2" (click)="nextStep()" *ngIf="step < 4">Suivant</button>
         <button class="btn ms-2">{{ step < 4 ? 'Annuler' : 'Fermer' }}</button>
       </form>
     </div>

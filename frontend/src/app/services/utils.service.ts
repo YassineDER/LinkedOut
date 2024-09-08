@@ -24,7 +24,7 @@ export class UtilsService {
      * @param type The type of alert to display.
      * @default type AlertType.DEFAULT
      */
-    alert(message: string, type: AlertType = AlertType.DEFAULT) {
+    alert(message: string, type: AlertType = AlertType.ERROR) {
         this.alertSubject.next({message, type});
     }
 

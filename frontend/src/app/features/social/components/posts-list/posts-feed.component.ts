@@ -42,7 +42,7 @@ export class PostsFeedComponent implements OnInit {
                 this.isLoadingMore = false;
             })
             .catch((e: HttpClientError) => {
-                this.utils.alert('Error loading posts', AlertType.ERROR);
+                this.utils.alert('Error loading posts');
                 this.isInitialLoading = false;
                 this.isLoadingMore = false;
             });
