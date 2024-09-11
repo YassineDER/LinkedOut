@@ -1,0 +1,3 @@
+Struggling with load times? ⏳ Optimize your image sizes and leverage lazy loading to boost site performance! ⚡ Faster websites = happier users. 😊
+
+#WebDev #PerformanceMatters #FrontendTips

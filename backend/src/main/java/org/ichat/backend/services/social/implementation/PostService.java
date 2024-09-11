@@ -82,4 +82,9 @@ public class PostService implements IPostService {
     public void deletePost(Long postId) {
         postRepo.deleteById(postId);
     }
+
+    @Override
+    public boolean existsByImage(String name) {
+        return postRepo.existsByImageName(name);
+    }
 }

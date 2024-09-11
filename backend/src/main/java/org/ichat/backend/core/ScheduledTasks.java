@@ -6,6 +6,7 @@ import org.ichat.backend.repository.AccountResetRepository;
 import org.ichat.backend.repository.AccountVerificationRepository;
 import org.ichat.backend.services.account.IUserService;
 import org.ichat.backend.services.shared.IStorageService;
+import org.ichat.backend.services.social.IPostService;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -23,6 +24,7 @@ public class ScheduledTasks {
     private final AccountResetRepository accountResetRepository;
     private final IStorageService storageService;
     private final IUserService userService;
+    private final IPostService postService;
 
     // Delete expired account verifications tokens every hour
     @Scheduled(cron = "0 0 */1 * * ?")
@@ -40,7 +42,7 @@ public class ScheduledTasks {
         log.info("Deleted expired account reset tokens");
     }
 
-    // every 3 hours
+    // Delete expired OCI preauthenticated requests every 3 hours
     @Scheduled(cron = "0 0 */3 * * ?")
     public void deleteExpiredPAR() {
         OffsetDateTime threshold = OffsetDateTime.now();
@@ -48,10 +50,11 @@ public class ScheduledTasks {
         log.info("Deleted expired OCI preauthenticated requests");
     }
 
-    // every 24 hours
+    // Delete unsued images every day at midnight
     @Scheduled(cron = "0 0 0 * * ?")
-    public void deleteExpiredImages() {
-        storageService.deleteUnusedImages(userService);
+    public void deleteUnsedImages() {
+        storageService.deleteUnusedUserImages(userService);
+        storageService.deleteUnusedPostsImages(postService);
         log.info("Deleted expired images");
     }
 

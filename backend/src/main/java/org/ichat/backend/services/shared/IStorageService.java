@@ -3,6 +3,7 @@ package org.ichat.backend.services.shared;
 import org.ichat.backend.exception.StorageException;
 import org.ichat.backend.model.util.storage.StorageResponseDTO;
 import org.ichat.backend.services.account.IUserService;
+import org.ichat.backend.services.social.IPostService;
 
 import java.time.OffsetDateTime;
 
@@ -33,7 +34,9 @@ public interface IStorageService {
      * @param userService the user service to check for unused images. Must be injected to avoid circular dependencies.
      * @throws StorageException if an error occurs while deleting the images
      */
-    void deleteUnusedImages(IUserService userService) throws StorageException;
+    void deleteUnusedUserImages(IUserService userService) throws StorageException;
+
+    void deleteUnusedPostsImages(IPostService postService);
 
     /**
      * Delete expired images from a bucket.

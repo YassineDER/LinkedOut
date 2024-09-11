@@ -14,6 +14,7 @@ import org.ichat.backend.exception.StorageException;
 import org.ichat.backend.model.util.storage.StorageResponseDTO;
 import org.ichat.backend.services.account.IUserService;
 import org.ichat.backend.services.shared.IStorageService;
+import org.ichat.backend.services.social.IPostService;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,7 @@ import java.time.ZoneId;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Predicate;
 
 @Service
 @Transactional
@@ -51,7 +53,7 @@ public class StorageService implements IStorageService {
                     .createPreauthenticatedRequestDetails(details)
                     .build();
 
-            PreauthenticatedRequest PAR  = client.createPreauthenticatedRequest(request).getPreauthenticatedRequest();
+            PreauthenticatedRequest PAR = client.createPreauthenticatedRequest(request).getPreauthenticatedRequest();
             LocalDateTime expires = LocalDateTime.ofInstant(PAR.getTimeExpires().toInstant(), ZoneId.systemDefault());
             return new StorageResponseDTO(PAR.getAccessUri(), expires);
         } catch (Exception e) {
@@ -95,35 +97,14 @@ public class StorageService implements IStorageService {
     }
 
     @Override
-    public void deleteUnusedImages(IUserService userService) throws StorageException {
-        try {
-            ListObjectsRequest list_req = ListObjectsRequest.builder()
-                    .namespaceName("ax0judwwk3y8")
-                    .bucketName("user-assets")
-                    .startAfter("profile/images/")
-                    .limit(100)
-                    .build();
-
-            ListObjectsResponse response = client.listObjects(list_req);
-            var objects = response.getListObjects().getObjects();
-            List<String> unusedObjectsNames = objects.stream()
-                    .map(ObjectSummary::getName)
-                    .filter(name -> !userService.existsByImage(name))
-                    .toList();
-
-            unusedObjectsNames.forEach(objectName ->{
-                DeleteObjectRequest delete_rep = DeleteObjectRequest.builder()
-                        .namespaceName("ax0judwwk3y8")
-                        .bucketName("user-assets")
-                        .objectName(objectName)
-                        .build();
-                client.deleteObject(delete_rep);
-            });
-        } catch (Exception e) {
-            throw new StorageException("Failed to delete expired user images", e);
-        }
+    public void deleteUnusedUserImages(IUserService userService) throws StorageException {
+        deleteUnusedImages("profile/images/", userService::existsByImage);
     }
 
+    @Override
+    public void deleteUnusedPostsImages(IPostService postService) throws StorageException {
+        deleteUnusedImages("posts/", postService::existsByImage);
+    }
 
     @Override
     public void deleteExpiredPARs(OffsetDateTime threshold) throws StorageException {
@@ -154,6 +135,42 @@ public class StorageService implements IStorageService {
             });
         } catch (Exception e) {
             throw new StorageException("Failed to delete expired PARs", e);
+        }
+    }
+
+
+    /**
+     * Helper method to delete unused images from the storage bucket
+     * @param prefix the prefix of the object names
+     * @param isUsed a predicate to check if the image is used
+     * @throws StorageException if an error occurs while deleting the images
+     */
+    private void deleteUnusedImages(String prefix, Predicate<String> isUsed) throws StorageException {
+        try {
+            ListObjectsRequest list_req = ListObjectsRequest.builder()
+                    .namespaceName("ax0judwwk3y8")
+                    .bucketName("user-assets")
+                    .startAfter(prefix)
+                    .limit(100)
+                    .build();
+
+            ListObjectsResponse response = client.listObjects(list_req);
+            var objects = response.getListObjects().getObjects();
+            List<String> unusedObjectsNames = objects.stream()
+                    .map(ObjectSummary::getName)
+                    .filter(name -> !isUsed.test(name))
+                    .toList();
+
+            unusedObjectsNames.forEach(objectName -> {
+                DeleteObjectRequest delete_rep = DeleteObjectRequest.builder()
+                        .namespaceName("ax0judwwk3y8")
+                        .bucketName("user-assets")
+                        .objectName(objectName)
+                        .build();
+                client.deleteObject(delete_rep);
+            });
+        } catch (Exception e) {
+            throw new StorageException("Failed to delete unused images", e);
         }
     }
 

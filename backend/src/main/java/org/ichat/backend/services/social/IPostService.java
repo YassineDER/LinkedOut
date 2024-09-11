@@ -24,4 +24,6 @@ public interface IPostService {
 
     void reactToPost(Long postId, User reactor, String reaction);
     void deletePost(Long postId);
+
+    boolean existsByImage(String name);
 }

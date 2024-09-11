@@ -6,15 +6,21 @@ import lombok.extern.slf4j.Slf4j;
 import org.ichat.backend.model.tables.Admin;
 import org.ichat.backend.model.tables.indentity.Roles;
 import org.ichat.backend.model.tables.social.CompanyStaffProfile;
+import org.ichat.backend.model.tables.social.Post;
 import org.ichat.backend.model.tables.social.Profile;
 import org.ichat.backend.model.util.RoleType;
 import org.ichat.backend.repository.AdminRepository;
+import org.ichat.backend.repository.PostRepository;
 import org.ichat.backend.repository.RoleRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -26,7 +32,10 @@ import java.util.List;
 public class InitOnStartup {
     private final RoleRepository roleRepo;
     private final AdminRepository adminRepo;
+    private final PostRepository postRepo;
+
     private final PasswordEncoder encoder;
+    private final ResourceLoader resourceLoader;
 
     /**
      * This method is used to create roles if they don't exist in the database.
@@ -41,6 +50,7 @@ public class InitOnStartup {
             log.info("Roles created successfully");
         }
     }
+
 
     /**
      * This method is used to create an admin if it doesn't exist in the database.
@@ -68,6 +78,29 @@ public class InitOnStartup {
                 log.info("Admin not found, created a new one with default credentials");
             }
         };
+    }
+
+
+    @Bean
+    public CommandLineRunner createPostsTemplates() {
+        return args -> {
+            if (postRepo.findAll().isEmpty()) {
+//                postRepo.saveAll(List.of(
+////                        createPostFromFile("classpath:static/posts-examples/post1.txt", "post1.jpg"),
+//                ));
+                log.info("Posts templates created successfully");
+            }
+        };
+    }
+
+
+    private Post createPostFromFile(String filePath, String imagePath) throws IOException {
+        var resource = resourceLoader.getResource(filePath);
+        String content = new String(Files.readAllBytes(Paths.get(resource.getURI())));
+        Post post = new Post();
+        post.setDescription(content);
+        post.setImageName(imagePath);
+        return post;
     }
 
 }
