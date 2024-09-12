@@ -1,4 +1,4 @@
-<div (scrolled)="onScroll()" [infiniteScrollDistance]="5" [infiniteScrollThrottle]="50" infiniteScroll>
+<div (scrolled)="onScroll()" [infiniteScrollDistance]="1.5" [infiniteScrollThrottle]="250" infiniteScroll>
   @for (post of posts; track post.post_id) {
     <div class="bg-white p-4 rounded-lg shadow mb-2">
       <div class="flex items-start mb-2">
@@ -26,9 +26,11 @@
               {{ post.description }}
             }
           </p>
-          <div class="relative my-2 z-0">
-            <img [appSrc]="post.imageName" alt="Post image" loading="lazy" class="h-96 mx-auto object-cover">
-          </div>
+          @if (post.imageName) {
+            <div class="relative my-2 z-0">
+              <img [appSrc]="post.imageName" alt="Post image" loading="lazy" class="h-96 mx-auto object-cover">
+            </div>
+          }
         </div>
       </div>
       <div class="mt-4 flex justify-between text-gray-600 text-sm">
