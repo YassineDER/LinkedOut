@@ -47,15 +47,15 @@ public abstract class Profile {
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties({"profile"})
-    private List<Post> posts;
+    List<Post> posts;
 
     @OneToMany(mappedBy = "profile1", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<Connection> connections;
+    List<Connection> connections;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties({"author"})
-    private List<Comment> comments;
+    List<Comment> comments;
 
     @JsonProperty("connections")
     public int getNumberOfConnections() {

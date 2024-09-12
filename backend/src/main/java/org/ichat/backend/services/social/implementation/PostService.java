@@ -1,5 +1,6 @@
 package org.ichat.backend.services.social.implementation;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.model.tables.User;
 import org.ichat.backend.model.tables.social.Comment;
@@ -12,7 +13,6 @@ import org.ichat.backend.services.social.IPostService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -29,15 +29,18 @@ public class PostService implements IPostService {
     public Post createPost(User creator, String image, String description) {
         String image_path = "posts/post-" + creator.getUser_id() + "-" + System.currentTimeMillis();
         Post post = new Post();
-
         post.setProfile(creator.getProfile());
         post.setDescription(description);
-        post.setImageName(image_path);
+        if (image != null) {
+            if (image.startsWith("data:image")) {
+                storageService.uploadBase64Image(image, image_path);
+                post.setImageName(image_path);
+            }
+            else post.setImageName(image);
+        }
+
         var creator_posts = creator.getProfile().getPosts();
         creator_posts.add(post);
-        creator.getProfile().setPosts(creator_posts);
-        if (image != null)
-            storageService.uploadBase64Image(image, image_path);
         return postRepo.save(post);
     }
 
