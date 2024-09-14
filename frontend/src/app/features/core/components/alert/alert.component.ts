@@ -16,7 +16,7 @@ import {UtilsService} from "../../../../services/utils.service";
             'alert-error': alert.value.type === SERVERITY.ERROR
             }"
                  @fadeIn role="alert"
-                 class="alert py-2 my-2 w-full flex items-center justify-between">
+                 class="alert z-50 py-2 my-2 w-full flex items-center justify-between">
                 <i class="bi bi-info
                 -circle"></i>
                 <span>{{ alert.value.message }}</span>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-step-three',
@@ -7,5 +7,7 @@ import { Component } from '@angular/core';
   templateUrl: './step-three.component.html'
 })
 export class StepThreeComponent {
+    @Input() QrImage!: string;
+
 
 }

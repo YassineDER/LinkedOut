@@ -11,10 +11,10 @@ public class AsyncHelper {
 
     public static void performEmailRateLimit(Runnable operation, String to) throws AccountException {
         long currentTime = System.currentTimeMillis();
-        long twoMinuteMillis = 120 * 1000; // once per 2 minutes
+        long twoMinuteMillis = 60 * 1000; // once per minute
 
         if (lastEmailSent.containsKey(to) && (currentTime - lastEmailSent.get(to)) < twoMinuteMillis)
-            throw new AccountException("You can only send one email per 2 minutes", HttpStatus.TOO_MANY_REQUESTS.value());
+            throw new AccountException("Vous ne pouvez envoyer qu'un seul e-mail toutes les minutes", HttpStatus.TOO_MANY_REQUESTS.value());
 
         operation.run();
         lastEmailSent.put(to, currentTime);

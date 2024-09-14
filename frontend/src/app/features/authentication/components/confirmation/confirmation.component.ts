@@ -7,6 +7,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../../../../services/auth.service";
 import {UtilsService} from "../../../../services/utils.service";
 import {Path} from "../../../shared/utils/path";
+import {OTP_CONFIG} from "../../../shared/constants/otp-input-config";
 
 @Component({
   selector: 'app-confirmation',
@@ -21,12 +22,6 @@ export class ConfirmationComponent {
     code = new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(6)]);
     pwd = new FormControl('', [Validators.required, Validators.minLength(8)]);
     confirmPwd = new FormControl('', [Validators.required, Validators.minLength(8)]);
-
-    otp_config = {
-        allowNumbersOnly: true,
-        length: 6,
-        disableAutoFocus: false,
-    }
 
 
     constructor(fb: FormBuilder, private utils: UtilsService, private formsSrv: FormsService, private router: Router,
@@ -66,4 +61,5 @@ export class ConfirmationComponent {
     }
 
     protected readonly Path = Path;
+    protected readonly OTP_CONFIG = OTP_CONFIG;
 }

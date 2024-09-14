@@ -13,7 +13,7 @@
         Veuillez entrer le code de vérification que nous vous avons envoyé par mail.
       </p>
       <div class="my-5 text-center">
-        <ng-otp-input [formCtrl]="code" [config]="otp_config"/>
+        <ng-otp-input [formCtrl]="code" [config]="OTP_CONFIG"/>
       </div>
 
       @if (verification === VerificationType.PASSWORD_RESET) {

@@ -1,0 +1,24 @@
+<form (ngSubmit)="submitMfaAction()" [formGroup]="mfaForm">
+  <h3 class="text-lg font-semibold text-gray-800">Nous avons envoyé un code de vérification à votre adresse e-mail</h3>
+  <div class="mt-4">
+    <label class="block text-sm mb-2 font-medium text-gray-700">Saisissez le code de verification à 6 chiffres envoyé:</label>
+    <div class="my-4 text-center">
+      <ng-otp-input [formCtrl]="codeCtrl" [config]="OTP_CONFIG" />
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <label class="block text-sm mb-2 font-medium text-gray-700">Saissisez votre mot de passe LinkedOut pour effectuer cette opertation:</label>
+    <input type="password" [formControl]="passwordCtrl" class="input input-bordered w-full"
+           [ngClass]="(passwordCtrl.touched || passwordCtrl.dirty) && passwordCtrl.invalid ? 'input-error' : 'input-primary'"
+           placeholder="Mot de passe LinkedOut" />
+    <p *ngIf="mfaForm.get('password')!.invalid && mfaForm.get('password')!.touched" class="text-red-500 text-sm mt-1">Le mot de passe est requis</p>
+  </div>
+
+  <div class="my-4 text-center">
+    <button type="submit" class="btn btn-primary" [disabled]="!mfaForm.valid">Valider</button>
+  </div>
+
+  <p class="mt-4 text-center font-bold text-sm text-gray-600">Si vous n'avez pas reçu le code, verifiez dans les courriers indésirables de votre messagerie.</p>
+  <p class="mt-4 text-center text-sm text-gray-600">Toujours pas reçu le code ? Fermez cette fenêtre et réessayez.</p>
+</form>

@@ -4,28 +4,30 @@
       <h3 class="text-lg font-bold my-1">Protégez votre compte LinkedOut avec la vérification en deux étapes</h3>
       <div class="mx-auto text-center my-4">
         <ul class="steps steps-horizontal">
-          <li class="step step-primary" [ngClass]="{ 'active': step === 1 }">Informations</li>
-          <li class="step" [ngClass]="{ 'active': step === 2 }">Identité</li>
-          <li class="step" [ngClass]="{ 'active': step === 3 }">Validation</li>
-          <li class="step" [ngClass]="{ 'active': step === 4 }">Finalisation</li>
+          <li class="step step-primary">Informations</li>
+          <li class="step" [ngClass]="{ 'step-primary': step >= 2 }">Identité</li>
+          <li class="step" [ngClass]="{ 'step-primary': step == 3 }">Finalisation</li>
         </ul>
       </div>
 
       @switch (step){
         @case (1) { <app-step-one (completed)="nextStep()" /> }
-        @case (2) { <app-step-two (completed)="nextStep()" /> }
-        @case (3) { <app-step-three /> }
-        @case (4) { <app-step-four />  }
+        @case (2) { <app-step-two (completed)="nextStep($event)" /> }
+        @case (3) { <app-step-three [QrImage]="qrCode" /> }
       }
-    } @else {
+    }
+
+    @else {
       <h3 class="text-center my-auto">
         <i class="bi bi-shield-check text-4xl text-primary"></i>
         <p class="py-4">La vérification en deux étapes est activée pour votre compte LinkedOut.</p>
       </h3>
     }
+
     <div class="modal-action">
-      <form method="dialog">
-        <button class="btn ms-2">{{ step < 4 ? 'Annuler' : 'Fermer' }}</button>
+      <form method="dialog" class="text-center w-full">
+        <button (click)="finalizeMFA()" [ngClass]="{ 'btn-primary': step === 3 }"
+                class="btn mx-auto">{{ step < 3 ? 'Annuler' : 'Fermer' }}</button>
       </form>
     </div>
   </div>

@@ -10,13 +10,12 @@ import {
 } from './components/notifications-preferences/notifications-preferences.component';
 import {SettingsService} from "./services/settings.service";
 import {SharedModule} from "../shared/shared.module";
-import {AccountFormModalComponent} from "../shared/components/modals/settings/account-infos-modal/account-form-modal.component";
+import {AccountFormModalComponent} from "./components/account-preferences/account-infos-modal/account-form-modal.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {MfaFormModalComponent} from "../shared/components/modals/settings/mfa-form-modal/mfa-form-modal.component";
-import {StepOneComponent} from "../shared/components/modals/settings/mfa-form-modal/step-one/step-one.component";
-import {StepTwoComponent} from "../shared/components/modals/settings/mfa-form-modal/step-two/step-two.component";
-import {StepThreeComponent} from "../shared/components/modals/settings/mfa-form-modal/step-three/step-three.component";
-import {StepFourComponent} from "../shared/components/modals/settings/mfa-form-modal/step-four/step-four.component";
+import {MfaFormModalComponent} from "./components/security-preferences/mfa-modal/mfa-form-modal.component";
+import {StepOneComponent} from "./components/security-preferences/mfa-modal/steps/step-one/step-one.component";
+import {StepTwoComponent} from "./components/security-preferences/mfa-modal/steps/step-two/step-two.component";
+import {StepThreeComponent} from "./components/security-preferences/mfa-modal/steps/step-three/step-three.component";
 
 
 @NgModule({
@@ -37,7 +36,6 @@ import {StepFourComponent} from "../shared/components/modals/settings/mfa-form-m
         StepOneComponent,
         StepTwoComponent,
         StepThreeComponent,
-        StepFourComponent,
     ],
     providers: [SettingsService]
 })
