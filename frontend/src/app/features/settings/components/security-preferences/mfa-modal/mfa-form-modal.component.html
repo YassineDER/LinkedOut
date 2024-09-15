@@ -1,33 +1,30 @@
 <dialog class="modal" id="mfaModal">
   <div class="modal-box w-11/12 max-w-5xl">
     @if (!usingMfa) {
-      <h3 class="text-lg font-bold my-1">Protégez votre compte LinkedOut avec la vérification en deux étapes</h3>
-      <div class="mx-auto text-center my-4">
-        <ul class="steps steps-horizontal">
-          <li class="step step-primary">Informations</li>
-          <li class="step" [ngClass]="{ 'step-primary': step >= 2 }">Identité</li>
-          <li class="step" [ngClass]="{ 'step-primary': step == 3 }">Finalisation</li>
-        </ul>
-      </div>
+      <h3 class="text-lg font-bold my-2">Activation de la vérification en deux étapes</h3>
+    } @else {
+      <h3 class="text-lg font-bold my-2">Désactivation de la vérification en deux étapes</h3>
+    }
+    <div class="mx-auto text-center my-4">
+      <ul class="steps steps-horizontal">
+        <li class="step step-primary">Initialisation</li>
+        <li [ngClass]="{ 'step-primary': step >= 2 }" class="step">Validation</li>
+        <li [ngClass]="{ 'step-primary': step == 3 }" class="step">Finalisation</li>
+      </ul>
+    </div>
 
-      @switch (step){
-        @case (1) { <app-step-one (completed)="nextStep()" /> }
-        @case (2) { <app-step-two (completed)="nextStep($event)" /> }
-        @case (3) { <app-step-three [QrImage]="qrCode" /> }
-      }
+    @switch (step) {
+      @case (1) {<app-step-one [usingMFA]="usingMfa" (completed)="nextStep()"/>}
+      @case (2) {<app-step-two [usingMfa]="usingMfa" (completed)="nextStep($event)"/>}
+      @case (3) {<app-step-three [usingMfa]="usingMfa" [QrImage]="qrCode"/>}
     }
 
-    @else {
-      <h3 class="text-center my-auto">
-        <i class="bi bi-shield-check text-4xl text-primary"></i>
-        <p class="py-4">La vérification en deux étapes est activée pour votre compte LinkedOut.</p>
-      </h3>
-    }
 
     <div class="modal-action">
-      <form method="dialog" class="text-center w-full">
+      <form class="text-center w-full" method="dialog">
         <button (click)="finalizeMFA()" [ngClass]="{ 'btn-primary': step === 3 }"
-                class="btn mx-auto">{{ step < 3 ? 'Annuler' : 'Fermer' }}</button>
+                class="btn mx-auto">{{ step < 3 ? 'Annuler' : 'Fermer' }}
+        </button>
       </form>
     </div>
   </div>

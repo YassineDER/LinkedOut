@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {FormsService} from "../../../../../../../services/forms.service";
 import {SettingsService} from "../../../../../services/settings.service";
@@ -19,7 +19,8 @@ import {NgClass, NgIf} from "@angular/common";
     templateUrl: './step-two.component.html'
 })
 export class StepTwoComponent {
-    @Output() completed = new EventEmitter<string>();
+    @Input() usingMfa!: boolean;
+    @Output() completed = new EventEmitter<string | null>();
     mfaForm: FormGroup;
     codeCtrl = new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(6), Validators.pattern('^[0-9]*$')]);
     passwordCtrl = new FormControl('', [Validators.required, Validators.minLength(8)]);
@@ -34,9 +35,10 @@ export class StepTwoComponent {
 
 
     async submitMfaAction() {
+        const action = this.usingMfa ? "disable" : "enable";
         if (this.forms.checkFormValidity(this.mfaForm)) {
-            await this.settings.mfa("enable", this.mfaForm.value)
-                .then((res) => this.completed.emit(res.qr_image))
+            await this.settings.mfa(action, this.mfaForm.value)
+                .then((res) => action === "enable" ? this.completed.emit(res.qr_image) : this.completed.emit(null))
                 .catch((error) => this.utils.alert(error.error.error));
             this.mfaForm.reset();
         }

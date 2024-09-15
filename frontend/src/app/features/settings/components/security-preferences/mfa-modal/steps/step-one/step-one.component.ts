@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {HttpClientError} from "../../../../../../shared/utils/http-client.error";
 import {AlertType} from "../../../../../../shared/utils/alert-type";
 import {SettingsService} from "../../../../../services/settings.service";
@@ -8,23 +8,11 @@ import {NgIf} from "@angular/common";
 @Component({
     selector: 'app-step-one',
     standalone: true,
-    template: `
-        <div class="flex flex-row items-center my-2">
-            <i class="bi bi-shield-check text-4xl text-primary"></i>
-            <p class="p-4">Pour activer la vérification en deux étapes, vous aurez besoin d'une application
-                d'authentification sur votre téléphone. Une fois activée, vous devrez entrer un code de vérification à chaque connexion.
-            </p>
-        </div>
-        <div class="text-center">
-            <button (click)="requestMfa()" class="btn btn-primary text-lg mx-auto" [disabled]="isTimerActive">
-                {{ isTimerActive ? 'Veuillez patienter...' : 'Continuer' }}
-            </button>
-        </div>
-        <p class="text-center text-gray-500 mt-4" *ngIf="isTimerActive">Vous pouvez réessayer dans {{ timeLeft }} secondes.</p>
-    `,
+    templateUrl: './step-one.component.html',
     imports: [NgIf],
 })
 export class StepOneComponent {
+    @Input() usingMFA!: boolean;
     @Output() completed = new EventEmitter<void>();
     isTimerActive = false;
     timeLeft = 60;

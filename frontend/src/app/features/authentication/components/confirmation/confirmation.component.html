@@ -4,7 +4,7 @@
          ngSrc="https://ax0judwwk3y8.objectstorage.eu-paris-1.oci.customer-oci.com/n/ax0judwwk3y8/b/static/o/slogan.png"/>
   </a>
 
-  <form [formGroup]="confirmationForm" (ngSubmit)="submitConfirmationForm()"
+  <form [formGroup]="confirmationForm" autocomplete="off" (ngSubmit)="submitConfirmationForm()"
         class="bg-white px-12 m-auto py-8 rounded-lg shadow-lg w-2/5">
     <h2 class="text-3xl font-bold mb-2">{{ verification }} </h2><br>
 

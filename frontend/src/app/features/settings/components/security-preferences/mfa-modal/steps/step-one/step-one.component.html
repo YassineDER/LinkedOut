@@ -1,0 +1,21 @@
+@if (!usingMFA) {
+  <div class="flex flex-row items-center my-2">
+    <i class="bi bi-shield-check text-4xl text-primary"></i>
+    <p class="p-4">Pour activer la vérification en deux étapes, vous aurez besoin d'une application
+      d'authentification sur votre téléphone. Une fois activée, vous devrez entrer un code de vérification à chaque
+      connexion.
+    </p>
+  </div>
+} @else {
+  <div class="flex flex-row items-center my-2">
+    <i class="bi bi-shield-check text-4xl text-primary"></i>
+    <p class="p-4">Pour désactiver la vérification en deux étapes, vous devrez confirmer votre identité en entrant un
+      code de vérification et votre mot de passe.
+  </div>
+}
+<div class="text-center">
+  <button (click)="requestMfa()" class="btn btn-primary text-lg mx-auto" [disabled]="isTimerActive">
+    {{ isTimerActive ? 'Veuillez patienter...' : 'Continuer' }}
+  </button>
+</div>
+<p class="text-center text-gray-500 mt-4" *ngIf="isTimerActive">Vous pouvez réessayer dans {{ timeLeft }} secondes.</p>

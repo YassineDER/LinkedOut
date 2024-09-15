@@ -1,23 +1,29 @@
-<h3 class="text-lg font-semibold text-gray-800 mb-2">Configurer une application d'authentification</h3>
+@if (!usingMfa) {
+  <h3 class="text-lg font-semibold text-gray-800 mb-2">Configurer une application d'authentification</h3>
+  <div class="flex items-start space-x-4">
+    <ul class="list-decimal pl-5 space-y-4 flex-1">
+      <li class="text-gray-700">Téléchargez une application d'authentification. Nous recommandons
+        <a class="text-primary font-bold"
+           href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&pcampaignid=web_share"
+           target="_blank">Google Authenticator pour Android</a> ou <a class="text-primary font-bold"
+           href="https://apps.apple.com/us/app/google-authenticator/id388497605" target="_blank">Google Authenticator pour iOS</a>.
+      </li>
+      <li class="text-gray-700">Ouvrez l'application et appuyez sur l'icône "<strong class="text-lg">+</strong>"</li>
+      <li class="text-gray-700">Scannez le code QR affiché ci-dessous.</li>
+    </ul>
 
-<div class="flex items-start space-x-4">
-  <ul class="list-decimal pl-5 space-y-2 flex-1">
-    <li class="text-gray-700">Téléchargez une application d'authentification. Nous recommandons
-      <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&pcampaignid=web_share"
-         target="_blank" class="text-primary">Google Authenticator pour Android</a> ou
-      <a href="https://apps.apple.com/us/app/google-authenticator/id388497605" target="_blank" class="text-primary">Google Authenticator pour iOS</a>.
-    </li>
-    <li class="text-gray-700">Ouvrez l'application et appuyez sur l'icône "<strong>+</strong>".</li>
-    <li class="text-gray-700">Scannez le code QR affiché ci-dessous.</li>
-  </ul>
-
-  <div class="my-4 text-center">
-    <img [src]="QrImage" alt="QR Code" class="w-60 h-60" />
+    <div class="my-4 text-center">
+      <img [src]="QrImage" alt="QR Code" class="w-60 h-60"/>
+    </div>
   </div>
-</div>
 
-<p class="text-warning text-center font-bold text-lg border border-warning rounded-lg p-2">
-  <i class="bi bi-exclamation-triangle text-warning"></i>
-  <span class="ms-4">Ce code QR est visible une seule fois. Assurez-vous de le scanner avant de continuer.</span>
-</p>
-
+  <p class="text-warning text-center font-bold text-lg border border-warning rounded-lg p-2">
+    <i class="bi bi-exclamation-triangle text-warning"></i>
+    <span class="ms-4">Ce code QR est visible une seule fois. Assurez-vous de le scanner avant de continuer.</span>
+  </p>
+} @else {
+  <h3 class="text-center my-auto">
+    <i class="bi bi-shield-check text-4xl text-primary"></i>
+    <p class="py-4">La vérification en deux étapes est desormais desactivée pour votre compte LinkedOut.</p>
+  </h3>
+}

@@ -8,6 +8,6 @@ import {Component, Input} from '@angular/core';
 })
 export class StepThreeComponent {
     @Input() QrImage!: string;
-
+    @Input() usingMfa!: boolean;
 
 }

@@ -5,12 +5,12 @@ import {Component, Input} from '@angular/core';
     templateUrl: './mfa-form-modal.component.html',
     styleUrl: './mfa-form-modal.component.css'
 })
-export class MfaFormModalComponent {
+export class MfaFormModalComponent{
     @Input("usingMfa") usingMfa!: boolean;
     step = 1;
     qrCode!: string;
 
-    nextStep(qrImage?: string) {
+    nextStep(qrImage?: string | null) {
         if (qrImage)
             this.qrCode = qrImage;
         this.step++;
