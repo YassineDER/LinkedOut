@@ -3,8 +3,6 @@ import {PostsService} from "../../services/posts.service";
 import {Post} from "../../../../models/social/post";
 import {UtilsService} from "../../../../services/utils.service";
 import {HttpClientError} from "../../../shared/utils/http-client.error";
-import {AlertType} from "../../../shared/utils/alert-type";
-import {UserService} from "../../../home/services/user.service";
 
 @Component({
   selector: 'app-posts-list',
@@ -19,8 +17,7 @@ export class PostsFeedComponent implements OnInit {
     isLoadingMore = false;
     isDescriptionExpanded: { [key: number]: boolean } = {};
 
-    constructor(private postsService: PostsService, protected utils: UtilsService,
-                protected users: UserService ) {
+    constructor(private postsService: PostsService, private utils: UtilsService) {
     }
 
     ngOnInit() {
@@ -51,11 +48,6 @@ export class PostsFeedComponent implements OnInit {
     onScroll() {
         if (!this.isLoadingMore && !this.isInitialLoading)
             this.loadPosts();
-    }
-
-    toggleDescription(postId: number, event: Event): void {
-        event.preventDefault();
-        this.isDescriptionExpanded[postId] = !this.isDescriptionExpanded[postId];
     }
 
     onPostCreated() {

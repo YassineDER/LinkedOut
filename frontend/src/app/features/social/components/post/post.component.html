@@ -1,0 +1,50 @@
+<div class="bg-white p-4 rounded-lg shadow mb-2">
+  <div class="flex items-start mb-2">
+    <img [appSrc]="postInstance.profile.user.imageName" alt="Profile" class="w-12 h-12 rounded-full mr-4">
+    <div class="w-full">
+      @if (users.isJobseeker(postInstance.profile.user) || users.isAdmin(postInstance.profile.user)) {
+        <h3
+          class="text-lg font-semibold">{{ postInstance.profile.user.first_name }} {{ postInstance.profile.user.last_name }}</h3>
+        <span class="text-sm text-gray-500">{{ postInstance.profile.user.title }}</span>
+      } @else if (users.isCompany(postInstance.profile.user)) {
+        <h3 class="text-lg font-semibold">{{ postInstance.profile.user.company_name }}</h3>
+        <span class="text-sm text-gray-500">{{ postInstance.profile.user.sector }}</span>
+      }
+
+      <p [appElapsedDate]="postInstance.created" class="text-sm text-gray-500"></p>
+      <p class="my-4 whitespace-pre-wrap">
+        @if (postInstance.description.length > 200) {
+          @if (isDescriptionExpanded[postInstance.post_id]) {
+            {{ postInstance.description }} <br>
+            <a href="#" class="ml-auto mr-0 link-primary font-bold"
+               (click)="toggleDescription(postInstance.post_id, $event)">Lire moins</a>
+          } @else {
+            {{ postInstance.description | slice:0:200 }}... <br>
+            <a href="#" class="ml-auto mr-0 link-primary font-bold"
+               (click)="toggleDescription(postInstance.post_id, $event)">Lire plus</a>
+          }
+        } @else {
+          {{ postInstance.description }}
+        }
+      </p>
+
+      @if (postInstance.imageName) {
+        <div class="relative my-2 z-0">
+          <img [appSrc]="postInstance.imageName" alt="Post image" loading="lazy" class="h-96 mx-auto object-cover">
+        </div>
+      }
+    </div>
+  </div>
+  <div class="mt-4 flex justify-between">
+    <div class="flex space-x-2 w-full cursor-pointer">
+      <button (click)="reactPost(postInstance.post_id)" class="rounded flex-1 p-2 hover:bg-gray-200">
+        <i class="bi bi-hand-thumbs-up-fill"></i>
+        <span class="ml-1">J'aime</span>
+      </button>
+      <button (click)="commentPost(postInstance.post_id)" class="rounded flex-1 p-2 hover:bg-gray-200">
+        <i class="bi bi-chat"></i>
+        <span class="ml-1">Commenter</span>
+      </button>
+    </div>
+  </div>
+</div>

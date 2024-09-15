@@ -12,10 +12,11 @@ import {SharedModule} from "../shared/shared.module";
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
 import {EmojiModule} from "@ctrl/ngx-emoji-mart/ngx-emoji";
 import {PickerComponent} from "@ctrl/ngx-emoji-mart";
+import { PostComponent } from './components/post/post.component';
 
 
 @NgModule({
-    declarations: [FeedComponent, ProfileOverviewComponent, PostFormComponent, PostsFeedComponent],
+    declarations: [FeedComponent, ProfileOverviewComponent, PostFormComponent, PostsFeedComponent, PostComponent],
     imports: [
         CommonModule,
         SocialRoutingModule,
