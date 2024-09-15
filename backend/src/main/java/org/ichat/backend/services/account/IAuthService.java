@@ -17,6 +17,6 @@ public interface IAuthService {
      * @see IAccountVerificationService
      * @see IUserService
      */
-    String authenticate(AccountCredentialsDTO credentials) throws QrGenerationException;
+    AuthResponseDTO authenticate(AccountCredentialsDTO credentials) throws QrGenerationException;
 
 }

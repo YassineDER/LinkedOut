@@ -31,10 +31,8 @@ const routes: Routes = [
                 ]
             },
             {
-                path: 'password/reset/request',
-                component: ResetPasswordRequestComponent,
-                data: {animation: 'ResetPasswordRequestPage'},
-                title: 'Mot de passe oublié - LinkedOut'
+                path: 'password/reset/request', component: ResetPasswordRequestComponent,
+                data: {animation: 'ResetPasswordRequestPage'}, title: 'Mot de passe oublié - LinkedOut'
             },
             {
                 path: 'password/reset', component: ConfirmationComponent,
@@ -44,6 +42,10 @@ const routes: Routes = [
                 path: 'email/verify', component: ConfirmationComponent,
                 data: {animation: 'EmailVerificationPage'}, title: 'Vérification de l\'adresse email - LinkedOut'
             },
+            {
+                path: 'mfa/verify', component: ConfirmationComponent,
+                data: {animation: 'MFAVerificationPage'}, title: 'Vérification à deux facteurs - LinkedOut'
+            }
         ]
     },
 ];

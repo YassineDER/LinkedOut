@@ -73,8 +73,8 @@ public class AuthController {
      */
     @PostMapping("/authenticate")
     public ResponseEntity<AuthResponseDTO> login(@Valid @RequestBody AccountCredentialsDTO credentials) throws QrGenerationException {
-        String token = authService.authenticate(credentials);
-        return ResponseEntity.ok(new AuthResponseDTO(token));
+        var response = authService.authenticate(credentials);
+        return ResponseEntity.ok(response);
     }
 
 

@@ -29,7 +29,7 @@ public class AuthService implements IAuthService {
     private final AuthenticationManager authenticationManager;
 
     @Override
-    public String authenticate(AccountCredentialsDTO credentials) {
+    public AuthResponseDTO authenticate(AccountCredentialsDTO credentials) {
         User user = userService.findBy(credentials.getEmail());
 
         if (!passwordEncoder.matches(credentials.getPassword(), user.getPassword()))
@@ -54,11 +54,11 @@ public class AuthService implements IAuthService {
                 } catch (AccountException e) {
                     throw new BadCredentialsException("Invalid MFA code");
                 }
-            } else throw new AccountException("MFA code is required for this user", HttpStatus.FORBIDDEN.value());
+            } else return new AuthResponseDTO("MFA required", true, null);
         }
 
         SecurityContextHolder.getContext().setAuthentication(auth);
-        return jwtService.generateToken(user);
+        return new AuthResponseDTO(jwtService.generateToken(user));
     }
 
 }

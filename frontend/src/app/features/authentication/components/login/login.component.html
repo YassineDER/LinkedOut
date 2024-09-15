@@ -5,25 +5,31 @@
 
     <h2 class="text-3xl text-center font-bold mb-6">S’identifier</h2>
 
-    <div class="space-y-4 mb-2">
+    <div class="space-y-4 mb-2" [ngClass]="{ 'hidden': requiresMFA }">
       <input [formControl]="email" class="input input-bordered input-primary w-full" name="email" placeholder="Email"
              type="email"/>
       <label class="input input-bordered input-primary flex items-center gap-2 mb-2">
-        <input [formControl]="password" [type]="passVisible ? 'text' : 'password'" class="grow" name="password"
+        <input [formControl]="password" [type]="showPwd ? 'text' : 'password'" class="grow" name="password"
                placeholder="Mot de passe"/>
-        <button (click)="passVisible = !passVisible" type="button">
+        <button (click)="showPwd = !showPwd" type="button">
           <i class="bi bi-eye"></i></button>
       </label>
-    </div>
-    <span class="text-base">
+
+      <span class="text-base">
           <a class="text-blue-500" [routerLink]="Path.REQUEST_PASSWORD_RESET.toString()">Mot de passe oublié ? </a>
       </span>
+    </div>
+
+    <div class="space-y-4 mb-2" [ngClass]="{ 'hidden': !requiresMFA }">
+      <p class="text-gray-500 mb-6">Veuillez entrer le code généré par votre application d’authentification.</p>
+      <ng-otp-input [config]="OTP_CONFIG" [formCtrl]="mfa_code" class="w-full" />
+    </div>
 
     <button class="btn btn-primary text-white text-lg w-full my-3" type="submit">S’identifier</button>
 
-    <button class="btn text-lg w-full mb-4" type="button">
-      <i class="bi bi-google"></i> Continuer avec Google
-    </button>
+<!--    <button class="btn text-lg w-full mb-4" type="button">-->
+<!--      <i class="bi bi-google"></i> Continuer avec Google-->
+<!--    </button>-->
 
     <h5 class="font-semibold text-center">
       Nouveau sur Linkedout ? <a class="text-blue-500" [routerLink]="Path.REGISTER.toString()">Inscrivez-vous</a>

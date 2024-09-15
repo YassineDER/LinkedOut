@@ -44,7 +44,7 @@ public class TwoFactorAuthService implements ITwoFactorAuthService {
     }
 
     @Override
-    public void verifyMFA(User requester, AccountCredentialsDTO credentials) {
+    public void verifyMFA(User requester, AccountCredentialsDTO credentials) throws AccountException {
         boolean codeIsValid = codeIsValid(requester.getMfa_secret(), credentials.getCode());
         if (!codeIsValid)
             throw new AccountException("Invalid MFA code", HttpStatus.BAD_REQUEST.value());
