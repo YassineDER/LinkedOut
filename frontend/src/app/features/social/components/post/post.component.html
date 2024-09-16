@@ -37,7 +37,8 @@
   </div>
   <div class="mt-4 flex justify-between">
     <div class="flex space-x-2 w-full cursor-pointer">
-      <button (click)="reactPost(postInstance.post_id)" class="rounded flex-1 p-2 hover:bg-gray-200">
+      <button (click)="reactPost(postInstance.post_id)" class="rounded flex-1 p-2 hover:bg-gray-200"
+              [ngClass]="{'font-bold link-primary' : postIsLiked}">
         <i class="bi bi-hand-thumbs-up-fill"></i>
         <span class="ml-1">J'aime</span>
       </button>

@@ -10,6 +10,7 @@ import {Post} from "../../../../models/social/post";
 export class PostComponent {
     @Input() postInstance!: Post;
     @Input() isDescriptionExpanded: any;
+    postIsLiked: boolean = false;
 
     constructor(protected users: UserService) {
     }
