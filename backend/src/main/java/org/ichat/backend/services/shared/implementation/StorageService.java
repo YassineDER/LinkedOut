@@ -24,7 +24,6 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
-import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
@@ -62,16 +61,15 @@ public class StorageService implements IStorageService {
     }
 
     @Override
-    public void uploadBase64Image(String base64, String objectNamePath) throws StorageException {
+    public void uploadBase64Image(byte[] image_bytes, String objectNamePath) throws StorageException {
         try {
-            byte[] bytes = Base64.getDecoder().decode(base64);
-            InputStream IS = new ByteArrayInputStream(bytes);
+            InputStream IS = new ByteArrayInputStream(image_bytes);
             PutObjectRequest objectRequest = PutObjectRequest.builder()
                     .namespaceName("ax0judwwk3y8")
                     .bucketName("user-assets")
                     .objectName(objectNamePath)
                     .putObjectBody(IS)
-                    .contentLength((long) bytes.length)
+                    .contentLength((long) image_bytes.length)
                     .build();
             client.putObject(objectRequest);
             IS.close();

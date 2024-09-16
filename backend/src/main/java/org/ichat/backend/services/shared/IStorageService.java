@@ -17,7 +17,7 @@ public interface IStorageService {
      */
     StorageResponseDTO createPreAuthenticatedRequest(String bucketName);
 
-    void uploadBase64Image(String base64, String objectNamePath) throws StorageException;
+    void uploadBase64Image(byte[] image_bytes, String objectNamePath) throws StorageException;
 
     /**
      * Upload an image from a URL to a bucket.

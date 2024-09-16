@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -32,11 +33,13 @@ public class PostService implements IPostService {
         post.setProfile(creator.getProfile());
         post.setDescription(description);
         if (image != null) {
-            if (image.startsWith("data:image")) {
-                storageService.uploadBase64Image(image, image_path);
+            try {
+                byte[] decoded_image = Base64.getDecoder().decode(image);
+                storageService.uploadBase64Image(decoded_image, image_path);
                 post.setImageName(image_path);
+            } catch (IllegalArgumentException e) {
+                post.setImageName(image);
             }
-            else post.setImageName(image);
         }
 
         var creator_posts = creator.getProfile().getPosts();
