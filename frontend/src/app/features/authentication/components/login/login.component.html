@@ -1,5 +1,5 @@
 <div class="gradient-bg flex items-center justify-items-center h-screen w-screen">
-  <form (ngSubmit)="submitLogin()" [formGroup]="loginForm" class="bg-white px-12 py-8 rounded-lg m-auto shadow-lg w-1/3">
+  <form (ngSubmit)="submitLogin()" [formGroup]="loginForm" class="bg-white px-8 py-4 rounded-lg m-auto shadow-lg w-1/3">
     <img alt="logo" class="w-2/3 mx-auto mb-4" height="248" priority width="851"
          ngSrc="https://ax0judwwk3y8.objectstorage.eu-paris-1.oci.customer-oci.com/n/ax0judwwk3y8/b/static/o/slogan.png"/>
 
@@ -34,6 +34,11 @@
     <h5 class="font-semibold text-center">
       Nouveau sur Linkedout ? <a class="text-blue-500" [routerLink]="Path.REGISTER.toString()">Inscrivez-vous</a>
     </h5>
+
+
+    <p class=" text-center text-xs font-bold my-2 p-2 border rounded-lg border-warning text-warning">
+      Pour économiser les frais d’hébergement, votre 1ère connexion prendra quelques secondes pendant que les serveurs se mettent en marche. Cela ne se reproduira plus par la suite.
+    </p>
   </form>
 </div>
 
