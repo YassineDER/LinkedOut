@@ -49,6 +49,8 @@ hibernate:
     ignore_explicit_for_joined: false
 
 google:
+  api:
+    key: ${GOOGLE_API_KEY}
   cx: b1365cc6b472c4e31
 
 # admin default credentials when initializing the app (if not already present)

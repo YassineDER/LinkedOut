@@ -26,13 +26,20 @@ public class PostService implements IPostService {
     private final CommentRepository commentRepo;
     private final IStorageService storageService;
 
+    private static final String ALLOWED_IMAGE_EXTENSIONS = "jpeg|png|jpg";
+
     @Override
     public Post createPost(User creator, String image, String description) {
-        String image_path = "posts/post-" + creator.getUser_id() + "-" + System.currentTimeMillis();
         Post post = new Post();
         post.setProfile(creator.getProfile());
         post.setDescription(description);
+
         if (image != null) {
+            String image_extension = image.substring(image.indexOf("/") + 1, image.indexOf(";"));
+            if (!image_extension.matches(ALLOWED_IMAGE_EXTENSIONS))
+                image_extension = ".jpg";
+            String image_path = "posts/post-" + creator.getUser_id() + "-" + System.currentTimeMillis() + image_extension;
+
             try {
                 byte[] decoded_image = Base64.getDecoder().decode(image);
                 storageService.uploadBase64Image(decoded_image, image_path);

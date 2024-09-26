@@ -23,11 +23,12 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 public class CompanyService implements ICompanyService {
-    private final static String GOOGLE_API_KEY = System.getenv("GOOGLE_API_KEY");
     private final CompanyRepository companyRepo;
     private final UserRepository userRepo;
     private final IStorageService storageService;
     private final RestClient client = RestClient.create();
+    @Value("${google.api_key}")
+    private String GOOGLE_API_KEY;
     @Value("${google.cx}")
     private String GOOGLE_CX;
 
