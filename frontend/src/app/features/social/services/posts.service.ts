@@ -6,7 +6,7 @@ import {Page} from '../../shared/utils/page';
 
 @Injectable()
 export class PostsService {
-    api = environment.hostUrl + '/api/social';
+    api = environment.hostUrl + '/api/post';
 
     constructor(private http: HttpClient) {
     }
@@ -28,13 +28,14 @@ export class PostsService {
 
     getPost(id: string): Promise<Post> {
         return new Promise<Post>((resolve, reject) => {
-            this.http.get<Post>(this.api + '/posts/' + id)
+            this.http.get<Post>(this.api + '/' + id)
                 .subscribe({
                     next: (post) => resolve(post),
                     error: (error) => reject(error)
                 });
         });
     }
+
 
     createPost(post: { description: string, image_b64: string }): Promise<Post> {
         return new Promise((resolve, reject) => {

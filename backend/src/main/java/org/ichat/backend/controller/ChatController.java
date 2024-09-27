@@ -1,4 +1,4 @@
 package org.ichat.backend.controller;
 
-public class SocialController {
+public class ChatController {
 }
