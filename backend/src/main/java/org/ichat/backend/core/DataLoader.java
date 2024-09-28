@@ -83,6 +83,7 @@ public class DataLoader implements ApplicationRunner {
 
             // First Jobseeker
             Jobseeker jobseeker1 = new Jobseeker();
+            jobseeker1.setUser_id(152L);
             jobseeker1.setRole(jobseekerRole);
             jobseeker1.setEnabled(true);
             JobseekerProfile profile1 = new JobseekerProfile();
@@ -96,6 +97,7 @@ public class DataLoader implements ApplicationRunner {
 
             // Second Jobseeker
             Jobseeker jobseeker2 = new Jobseeker();
+            jobseeker2.setUser_id(153L);
             jobseeker2.setRole(jobseekerRole);
             jobseeker2.setEnabled(true);
             JobseekerProfile profile2 = new JobseekerProfile();

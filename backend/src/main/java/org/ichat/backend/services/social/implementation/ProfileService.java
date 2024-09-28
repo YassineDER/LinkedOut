@@ -9,6 +9,7 @@ import org.ichat.backend.repository.social.ConnectionRepository;
 import org.ichat.backend.repository.social.ProfileRepository;
 import org.ichat.backend.services.social.IProfileService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +34,8 @@ public class ProfileService implements IProfileService {
     @Override
     public Page<Profile> getConnectedProfiles(Profile profile, Pageable pageable) {
 //        return connectionRepo.findConnectedProfiles(profile.getProfileId(), pageable);
-        return null;
+        return profileRepo.findAllConnectedProfiles(profile.getProfileId(), pageable);
+//        return null;
     }
 
     @Override
