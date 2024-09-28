@@ -1,7 +1,7 @@
-package org.ichat.backend.repository;
+package org.ichat.backend.repository.account;
 
 import org.ichat.backend.model.tables.indentity.Roles;
-import org.ichat.backend.model.util.RoleType;
+import org.ichat.backend.model.util.auth.RoleType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

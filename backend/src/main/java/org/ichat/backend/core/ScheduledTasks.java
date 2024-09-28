@@ -2,8 +2,8 @@ package org.ichat.backend.core;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.ichat.backend.repository.AccountResetRepository;
-import org.ichat.backend.repository.AccountVerificationRepository;
+import org.ichat.backend.repository.account.AccountResetRepository;
+import org.ichat.backend.repository.account.AccountVerificationRepository;
 import org.ichat.backend.services.account.IUserService;
 import org.ichat.backend.services.shared.IStorageService;
 import org.ichat.backend.services.social.IPostService;

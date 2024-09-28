@@ -1,4 +1,4 @@
-package org.ichat.backend.repository;
+package org.ichat.backend.repository.account;
 
 
 import jakarta.transaction.Transactional;

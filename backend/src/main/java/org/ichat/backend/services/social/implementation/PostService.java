@@ -5,9 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.ichat.backend.model.tables.User;
 import org.ichat.backend.model.tables.social.Comment;
 import org.ichat.backend.model.tables.social.Post;
-import org.ichat.backend.model.util.social.Reaction;
-import org.ichat.backend.repository.CommentRepository;
-import org.ichat.backend.repository.PostRepository;
+import org.ichat.backend.model.util.social.posts.Reaction;
+import org.ichat.backend.repository.social.CommentRepository;
+import org.ichat.backend.repository.social.PostRepository;
 import org.ichat.backend.services.shared.IStorageService;
 import org.ichat.backend.services.social.IPostService;
 import org.springframework.data.domain.Page;
@@ -35,9 +35,7 @@ public class PostService implements IPostService {
         post.setDescription(description);
 
         if (image != null) {
-            String image_extension = image.substring(image.indexOf("/") + 1, image.indexOf(";"));
-            if (!image_extension.matches(ALLOWED_IMAGE_EXTENSIONS))
-                image_extension = ".jpg";
+            String image_extension = ".jpg";
             String image_path = "posts/post-" + creator.getUser_id() + "-" + System.currentTimeMillis() + image_extension;
 
             try {

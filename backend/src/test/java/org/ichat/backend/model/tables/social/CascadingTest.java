@@ -1,15 +1,14 @@
 package org.ichat.backend.model.tables.social;
 
 import jakarta.persistence.EntityManager;
-import org.ichat.backend.repository.CommentRepository;
-import org.ichat.backend.repository.PostRepository;
+import org.ichat.backend.repository.social.CommentRepository;
+import org.ichat.backend.repository.social.PostRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

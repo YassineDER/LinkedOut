@@ -3,7 +3,7 @@ package org.ichat.backend.core;
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.model.tables.User;
-import org.ichat.backend.repository.UserRepository;
+import org.ichat.backend.repository.account.UserRepository;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;

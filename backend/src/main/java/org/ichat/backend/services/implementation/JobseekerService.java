@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.model.tables.Jobseeker;
 import org.ichat.backend.model.patchers.JobseekerPatchDTO;
-import org.ichat.backend.repository.JobseekerRepo;
-import org.ichat.backend.repository.UserRepository;
+import org.ichat.backend.repository.account.JobseekerRepository;
+import org.ichat.backend.repository.account.UserRepository;
 import org.ichat.backend.services.IJobseekerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 public class JobseekerService implements IJobseekerService {
-    private final JobseekerRepo jobseekerRepo;
+    private final JobseekerRepository jobseekerRepo;
     private final UserRepository userRepo;
 
     @Override

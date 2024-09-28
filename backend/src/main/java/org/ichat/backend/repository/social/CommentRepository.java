@@ -1,4 +1,4 @@
-package org.ichat.backend.repository;
+package org.ichat.backend.repository.social;
 
 import org.ichat.backend.model.tables.social.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;

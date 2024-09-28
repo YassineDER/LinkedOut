@@ -7,7 +7,7 @@ import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.model.tables.indentity.AccountReset;
 import org.ichat.backend.model.tables.User;
 import org.ichat.backend.model.util.MailType;
-import org.ichat.backend.repository.AccountResetRepository;
+import org.ichat.backend.repository.account.AccountResetRepository;
 import org.ichat.backend.services.shared.IMailService;
 import org.ichat.backend.services.account.IAccountResetService;
 import org.springframework.http.HttpStatus;

@@ -10,7 +10,6 @@ import org.hibernate.validator.constraints.Length;
 import org.ichat.backend.model.tables.User;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Profile class is an abstract class that represents a profile of a user in the social network.
@@ -26,7 +25,8 @@ import java.util.Set;
 public abstract class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Long profile_id;
+    @Column(name = "profile_id")
+    Long profileId;
 
     @Column(nullable = false)
     @Length(min = 3, max = 150, message = "Bio must be between 3 and 350 characters")
@@ -49,7 +49,7 @@ public abstract class Profile {
     @JsonIgnoreProperties({"profile"})
     List<Post> posts;
 
-    @OneToMany(mappedBy = "profile1", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     List<Connection> connections;
 

@@ -1,4 +1,4 @@
-package org.ichat.backend.repository;
+package org.ichat.backend.repository.account;
 
 import org.ichat.backend.model.tables.User;
 import org.springframework.data.jpa.repository.JpaRepository;

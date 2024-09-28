@@ -1,4 +1,4 @@
-package org.ichat.backend.model.util;
+package org.ichat.backend.model.util.auth;
 
 /**
  * RoleType is an enum that represents the different types of roles that a user can have.

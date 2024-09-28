@@ -27,21 +27,44 @@ public class GlobalExceptionAdvice {
     private final Environment env;
 
     /**
+        * This method handles exceptions related to social interactions.
+        * @param ex The exception that occurred.
+        * @return The error response as a ResponseEntity.
+     **/
+    @ResponseBody
+    @ExceptionHandler(SocialException.class)
+    public ResponseEntity<ErrorDTO> handleSocialErrors(SocialException ex) {
+        // print stack trace if not in production
+        String profile = env.getActiveProfiles()[0];
+        if (!profile.equals("prod"))
+            log.error(ex.getMessage(), ex);
+
+        int status = ex.getStatus();
+
+        // build error response in an appropriate format (ErrorDTO) and return it as bad request
+        ErrorDTO error = buildErrorDTO(ex, "Social");
+        return ResponseEntity.status(status).body(error);
+    }
+
+    /**
         * This method handles exceptions related to accounts.
         * @param ex The exception that occurred.
         * @return The error response as a ResponseEntity.
      **/
     @ResponseBody
-    @ExceptionHandler({AccountException.class, AccessDeniedException.class, BadCredentialsException.class, AccountExpiredException.class})
+    @ExceptionHandler({AccountException.class, AccessDeniedException.class, AccountExpiredException.class})
     public ResponseEntity<ErrorDTO> accountErrorHandler(Exception ex) {
         // print stack trace if not in production
         String profile = env.getActiveProfiles()[0];
         if (!profile.equals("prod"))
-            ex.printStackTrace();
+            log.error(ex.getMessage(), ex);
 
-        // build error response in an appropriate format (ErrorDTO) and return it as bad request
+        var status = HttpStatus.BAD_REQUEST;
+        if (ex instanceof AccountException accException)
+            status = HttpStatus.valueOf(accException.getStatus());
+
         ErrorDTO error = buildErrorDTO(ex, "Account");
-        return ResponseEntity.badRequest().body(error);
+        return ResponseEntity.status(status).body(error);
     }
 
     /**
@@ -50,16 +73,19 @@ public class GlobalExceptionAdvice {
         * @return The error response as a ResponseEntity.
      **/
     @ResponseBody
-    @ExceptionHandler(AuthenticationException.class)
+    @ExceptionHandler({AuthenticationException.class, BadCredentialsException.class})
     public ResponseEntity<ErrorDTO> handleAuthenticationErrors(AuthenticationException ex) {
-        // print stack trace if not in production
         String profile = env.getActiveProfiles()[0];
         if (!profile.equals("prod"))
-            System.out.println(ex.toString());
+            log.error(ex.getMessage(), ex);
+
+        int status = HttpStatus.UNAUTHORIZED.value();
+        if (ex instanceof BadCredentialsException)
+            status = HttpStatus.BAD_REQUEST.value();
 
         // build error response in an appropriate format (ErrorDTO) and return it as bad request
         ErrorDTO error = buildErrorDTO(ex, "Authentication");
-        return ResponseEntity.badRequest().body(error);
+        return ResponseEntity.status(status).body(error);
     }
 
     /**
@@ -117,7 +143,7 @@ public class GlobalExceptionAdvice {
         // print stack trace if not in production
         String profile = env.getActiveProfiles()[0];
         if (!profile.equals("prod"))
-            ex.printStackTrace();
+            log.error(ex.getMessage(), ex);
 
         // build error response in an appropriate format (ErrorDTO) and return it as internal server error
         ErrorDTO error = buildErrorDTO(ex, "Storage");

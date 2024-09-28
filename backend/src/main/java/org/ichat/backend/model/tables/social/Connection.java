@@ -1,6 +1,7 @@
 package org.ichat.backend.model.tables.social;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,15 +21,21 @@ public class Connection {
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long connection_id;
 
+    @Column(nullable = false)
     LocalDateTime connection_date = LocalDateTime.now();
 
-    @ManyToOne(targetEntity = Profile.class, optional = false, cascade = CascadeType.ALL)
-    @JoinColumn(name = "profile1_id", referencedColumnName = "profile_id")
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "sender_id", referencedColumnName = "profile_id")
     @JsonBackReference
-    Profile profile1;
+    Profile sender;
 
-    @ManyToOne(targetEntity = Profile.class, optional = false, cascade = CascadeType.ALL)
-    @JoinColumn(name = "profile2_id", referencedColumnName = "profile_id")
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "receiver_id", referencedColumnName = "profile_id")
     @JsonBackReference
-    Profile profile2;
+    Profile receiver;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JsonBackReference
+    @JsonIgnoreProperties({"messages"})
+    private Converstation conversation;
 }

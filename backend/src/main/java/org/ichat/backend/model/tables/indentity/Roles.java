@@ -1,9 +1,8 @@
 package org.ichat.backend.model.tables.indentity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
-import org.ichat.backend.model.util.RoleType;
+import org.ichat.backend.model.util.auth.RoleType;
 
 /**
  * Roles table, which determines the access level of the user.

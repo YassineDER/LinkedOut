@@ -1,7 +1,6 @@
-package org.ichat.backend.model.util.social;
+package org.ichat.backend.model.util.social.posts;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;

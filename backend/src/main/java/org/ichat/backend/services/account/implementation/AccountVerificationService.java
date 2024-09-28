@@ -7,7 +7,7 @@ import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.model.tables.indentity.AccountVerification;
 import org.ichat.backend.model.tables.User;
 import org.ichat.backend.model.util.MailType;
-import org.ichat.backend.repository.AccountVerificationRepository;
+import org.ichat.backend.repository.account.AccountVerificationRepository;
 import org.ichat.backend.services.shared.IMailService;
 import org.ichat.backend.services.account.IAccountVerificationService;
 import org.ichat.backend.services.account.IJwtService;
