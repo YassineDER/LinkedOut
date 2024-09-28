@@ -9,7 +9,6 @@ import org.ichat.backend.repository.social.ConnectionRepository;
 import org.ichat.backend.repository.social.ProfileRepository;
 import org.ichat.backend.services.social.IProfileService;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +21,7 @@ public class ProfileService implements IProfileService {
 
     @Override
     public Connection connect(Profile source, Long other_profile_id) {
-        Profile other = profileRepo.findByProfileId(other_profile_id)
+        Profile other = profileRepo.findById(other_profile_id)
                 .orElseThrow(() -> new SocialException("La connexion a échoué car le profil n'existe pas."));
 
         Connection connection = new Connection();
@@ -33,9 +32,7 @@ public class ProfileService implements IProfileService {
 
     @Override
     public Page<Profile> getConnectedProfiles(Profile profile, Pageable pageable) {
-//        return connectionRepo.findConnectedProfiles(profile.getProfileId(), pageable);
         return profileRepo.findAllConnectedProfiles(profile.getProfileId(), pageable);
-//        return null;
     }
 
     @Override

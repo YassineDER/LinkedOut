@@ -51,7 +51,11 @@ public abstract class Profile {
 
     @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    List<Connection> connections;
+    List<Connection> sentConnections;
+
+    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    List<Connection> receivedConnections;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties({"author"})
@@ -59,6 +63,6 @@ public abstract class Profile {
 
     @JsonProperty("connections")
     public int getNumberOfConnections() {
-        return connections.size();
+        return sentConnections.size() + receivedConnections.size();
     }
 }

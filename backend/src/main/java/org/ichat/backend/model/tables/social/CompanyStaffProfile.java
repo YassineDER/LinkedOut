@@ -2,6 +2,7 @@ package org.ichat.backend.model.tables.social;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +16,5 @@ import lombok.Setter;
 @NoArgsConstructor
 @DiscriminatorValue("COMPANY_STAFF")
 public class CompanyStaffProfile extends Profile {
-    
 
 }

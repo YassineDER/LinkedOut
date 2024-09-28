@@ -12,10 +12,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ConnectionRepository extends JpaRepository<Connection, Long> {
 
-//    @Query("SELECT CASE WHEN c.sender.profileId = :profileId THEN c.receiver ELSE c.sender END " +
-//       "FROM Connection c WHERE c.sender.profileId = :profileId OR c.receiver.profileId = :profileId")
-//    Page<Profile> findConnectedProfiles(@Param("profileId") Long profileId, Pageable pageable);
-
-//    Page<Profile> findDistinctBySenderOrReceiver(Profile sender, Profile receiver, Pageable pageable);
-
 }

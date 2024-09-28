@@ -14,10 +14,8 @@ import java.util.Optional;
 
 @Repository
 public interface ProfileRepository extends JpaRepository<Profile, Long> {
-    Optional<Profile> findByProfileId(Long id);
 
-    @Query("SELECT DISTINCT p FROM Profile p " +
-            "WHERE p.profileId IN " +
+    @Query("SELECT DISTINCT p FROM Profile p WHERE p.profileId IN " +
             "(SELECT c.sender.profileId FROM Connection c WHERE c.receiver.profileId = :profileId " +
             "UNION " +
             "SELECT c.receiver.profileId FROM Connection c WHERE c.sender.profileId = :profileId)")

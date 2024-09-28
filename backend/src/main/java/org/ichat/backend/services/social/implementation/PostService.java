@@ -31,12 +31,13 @@ public class PostService implements IPostService {
     @Override
     public Post createPost(User creator, String image, String description) {
         Post post = new Post();
-        post.setProfile(creator.getProfile());
+        var profile = creator.getProfile();
+        post.setProfile(profile);
         post.setDescription(description);
 
         if (image != null) {
             String image_extension = ".jpg";
-            String image_path = "posts/post-" + creator.getUser_id() + "-" + System.currentTimeMillis() + image_extension;
+            String image_path = "posts/post-" + profile.getProfileId() + "-" + System.currentTimeMillis() + image_extension;
 
             try {
                 byte[] decoded_image = Base64.getDecoder().decode(image);
@@ -49,7 +50,9 @@ public class PostService implements IPostService {
 
         var creator_posts = creator.getProfile().getPosts();
         creator_posts.add(post);
-        return postRepo.save(post);
+        var created_post = postRepo.save(post);
+        postRepo.flush();
+        return created_post;
     }
 
     @Override
