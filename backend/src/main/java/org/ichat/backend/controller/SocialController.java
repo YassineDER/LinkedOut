@@ -29,6 +29,12 @@ public class SocialController {
         return profileService.getConnectedProfiles(myprofile, pageable);
     }
 
+    @GetMapping("/profiles/connected/check")
+    public ResponseEntity<Boolean> isConnected(User me, @RequestParam("profile_id") Long other_profile_id) {
+        var isConnected = profileService.isConnected(me.getProfile(), other_profile_id);
+        return ResponseEntity.ok(isConnected);
+    }
+
     @GetMapping("/connections")
     public Page<Connection> connections(Pageable pageable) {
         return profileService.getConnections(pageable);

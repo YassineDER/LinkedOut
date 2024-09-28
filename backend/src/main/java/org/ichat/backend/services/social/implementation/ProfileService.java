@@ -31,6 +31,11 @@ public class ProfileService implements IProfileService {
     }
 
     @Override
+    public boolean isConnected(Profile source, Long other_profile_id) {
+        return connectionRepo.existsBySenderProfileIdAndReceiverProfileId(source.getProfileId(), other_profile_id);
+    }
+
+    @Override
     public Page<Profile> getConnectedProfiles(Profile profile, Pageable pageable) {
         return profileRepo.findAllConnectedProfiles(profile.getProfileId(), pageable);
     }

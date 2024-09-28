@@ -48,8 +48,8 @@ public class UsersLoader {
     @Bean
     @Order(2)
     public void createAdminIfNotExists() {
-        List<Admin> admins = adminRepo.findAll();
-        if (admins.isEmpty()) {
+        var haveNoAdmins = adminRepo.count() == 0;
+        if (haveNoAdmins) {
             Roles adminRole = roleRepo.findByName(RoleType.ADMIN).orElseThrow();
             Admin admin = new Admin("Yassine", "Dergaoui", "0605897043", "Owner");
             admin.setUser_id(1L);
@@ -70,7 +70,7 @@ public class UsersLoader {
     @Bean
     @Order(3)
     public void createJobseekers() {
-        boolean haveNoJobseekers = jobseekerRepo.findAll().isEmpty();
+        boolean haveNoJobseekers = jobseekerRepo.count() < 2;
         if (haveNoJobseekers) {
             Roles jobseekerRole = roleRepo.findByName(RoleType.JOBSEEKER).orElseThrow();
 
