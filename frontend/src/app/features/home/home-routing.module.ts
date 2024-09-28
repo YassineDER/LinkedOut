@@ -18,6 +18,10 @@ const routes: Routes = [
             {
                 path: 'out',
                 loadChildren: () => import('../profile/profile.module').then(m => m.ProfileModule),
+            },
+            {
+                path: 'messaging',
+                loadChildren: () => import('../messaging/messaging.module').then(m => m.MessagingModule),
             }
         ]
     }

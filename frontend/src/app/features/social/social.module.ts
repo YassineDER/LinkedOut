@@ -30,11 +30,6 @@ import { PostComponent } from './components/post/post.component';
     ],
     providers: [
         PostsService,
-        // {
-        //     provide: NG_VALUE_ACCESSOR,
-        //     useExisting: forwardRef(() =>),
-        //     multi: true,
-        // }
     ]
 })
 export class SocialModule {

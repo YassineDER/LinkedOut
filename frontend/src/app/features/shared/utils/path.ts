@@ -15,9 +15,10 @@ export enum Path {
     //Social
     SOCIAL = '/social',
     FEED = SOCIAL + '/feed',
-    MESSAGES = SOCIAL + '/messages',
     NETWORK = SOCIAL + '/network',
     NOTIFICATIONS = SOCIAL + '/notifications',
+    // Messaging
+    MESSAGING = '/messaging',
     // Jobs
     JOBS = '/jobs',
     //Preferences
