@@ -70,7 +70,7 @@ public class UsersLoader {
     @Bean
     @Order(3)
     public void createJobseekers() {
-        boolean haveNoJobseekers = jobseekerRepo.count() < 2;
+        boolean haveNoJobseekers = jobseekerRepo.count() == 0;
         if (haveNoJobseekers) {
             Roles jobseekerRole = roleRepo.findByName(RoleType.JOBSEEKER).orElseThrow();
 
@@ -85,24 +85,10 @@ public class UsersLoader {
             jobseeker1.setFirst_name("John");
             jobseeker1.setLast_name("Doe");
             jobseeker1.setEmail("sender@example.com");
-            jobseeker1.setUsername("jobseeker1");
+            jobseeker1.setUsername("jobseeker");
             jobseeker1.setPassword(encoder.encode("12345678"));
 
-            // Second Jobseeker
-            Jobseeker jobseeker2 = new Jobseeker();
-            jobseeker2.setUser_id(153L);
-            jobseeker2.setRole(jobseekerRole);
-            jobseeker2.setEnabled(true);
-            JobseekerProfile profile2 = new JobseekerProfile();
-            jobseeker2.setProfile(profile2);
-            profile2.setUser(jobseeker2);
-            jobseeker2.setFirst_name("Jane");
-            jobseeker2.setLast_name("Doe");
-            jobseeker2.setEmail("receiver@example.com");
-            jobseeker2.setUsername("jobseeker2");
-            jobseeker2.setPassword(encoder.encode("12345678"));
-
-            jobseekerRepo.saveAll(List.of(jobseeker1, jobseeker2));
+            jobseekerRepo.save(jobseeker1);
             log.info("No jobseekers found, created some.");
         }
     }

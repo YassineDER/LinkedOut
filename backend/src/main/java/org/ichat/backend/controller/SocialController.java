@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.*;
 public class SocialController {
     private final IProfileService profileService;
 
-    @PostMapping("/connect/{other_profile_id}")
-    public ResponseEntity<ConnectResponse> connect(User me, @PathVariable Long other_profile_id) {
+    @PostMapping("/connect")
+    public ResponseEntity<ConnectResponse> connect(User me, @RequestParam("profile_id") Long other_profile_id) {
         var connection = profileService.connect(me.getProfile(), other_profile_id);
         return ResponseEntity.ok(new ConnectResponse(connection, true));
     }
