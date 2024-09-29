@@ -6,7 +6,9 @@ import {Company} from "../../../models/company";
 import {Admin} from "../../../models/admin";
 import {BehaviorSubject, map, Observable} from "rxjs";
 import {Role} from "../../../models/role";
-import { HttpClient } from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
+import {Page} from "../../shared/utils/page";
+import {HttpClientError} from "../../shared/utils/http-client.error";
 
 @Injectable()
 export class UserService {
@@ -56,10 +58,16 @@ export class UserService {
      * Get a list of users with the same role
      * @return Observable<User[]> list of users
      */
-    suggestJobseekers(): Observable<User[]> {
-        return this.http.get(this.api + '/suggested').pipe(
-            map((res: any) => res as User[])
-        );
+    suggestUsers() {
+        return new Promise<User[]>((resolve, reject) => {
+            this.http.get<Page<User>>(this.api + '/suggested', {
+                params: {page: '0', size: '6'}
+            })
+                .subscribe({
+                    next: (res) => resolve(res.content),
+                    error: (err: HttpClientError) => reject(err.error.error)
+                })
+        });
     }
 
 }

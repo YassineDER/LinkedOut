@@ -22,8 +22,8 @@
       }
     </div>
     <div class="w-full text-end mb-4">
-      @if (!social.isConnection(user, suggested)) {
-        <button type="button" class="btn btn-outline btn-primary btn-sm">Se connecter</button>
+      @if (!checkConnection(suggested)) {
+        <button (click)="connect(suggested)" type="button" class="btn btn-outline btn-primary btn-sm">Se connecter</button>
       } @else {
         <button type="button" class="btn btn-primary btn-sm">Message</button>
       }

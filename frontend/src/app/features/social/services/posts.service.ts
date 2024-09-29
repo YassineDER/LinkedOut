@@ -10,6 +10,7 @@ export class PostsService {
 
     constructor(private http: HttpClient) {
     }
+    
 
     getPosts(page: number, size: number, sort: string) {
         return new Promise<Page<Post>>((resolve, reject) =>
