@@ -2,8 +2,8 @@ package org.ichat.backend.services.account;
 
 import org.ichat.backend.model.tables.User;
 import org.ichat.backend.repository.account.UserRepository;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface IUserService {
     /**
@@ -27,14 +27,6 @@ public interface IUserService {
     User findBy(String email);
 
     /**
-     * Find all users
-     * @param page page number
-     * @param size size of page
-     * @return list of users
-     */
-    List<User> findAll(int page, int size);
-
-    /**
      * Get user repository (used by {@link org.ichat.backend.config.security.MvcConfiguration})
      * @return user repository
      */
@@ -53,9 +45,10 @@ public interface IUserService {
      * The result is limited to 6 users and randomly selected.
      *
      * @param excluded user to exclude
+     * @param pageable
      * @return set of suggested users
      */
-    List<User> findSuggested(User excluded);
+    Page<User> findSuggested(User excluded, Pageable pageable);
 
     /**
      * Compact user's data, by removing all the data that is not necessary. <br>

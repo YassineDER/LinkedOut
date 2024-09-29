@@ -32,7 +32,7 @@ public class PostsLoader implements ApplicationRunner {
     }
 
     private void createTemplatePosts() throws IOException {
-        boolean haveNoPosts = postService.getLatestPosts(Pageable.ofSize(1)).isEmpty();
+        boolean haveNoPosts = postService.getLatestPosts(Pageable.unpaged()).isEmpty();
         if (haveNoPosts) {
             Admin admin = adminRepo.findByUsername("admin").orElseThrow();
             createPostFromFile("classpath:static/posts-examples/post1.txt", "posts/reusability.jpg", admin);

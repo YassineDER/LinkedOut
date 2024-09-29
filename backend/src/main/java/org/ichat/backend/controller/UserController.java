@@ -8,6 +8,8 @@ import org.ichat.backend.model.util.auth.AccountCredentialsDTO;
 import org.ichat.backend.model.util.auth.AuthResponseDTO;
 import org.ichat.backend.services.account.IAccountManagementService;
 import org.ichat.backend.services.account.IUserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,20 +30,6 @@ public class UserController {
     private final IUserService userService;
     private final IAccountManagementService accountService;
     private final PasswordEncoder passwordEncoder;
-
-
-    /**
-     * @param page Page number to start from
-     * @param size Number of users to return
-     * @return List of users
-     */
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping("/all?page={page}&size={size}")
-    public ResponseEntity<List<User>> all(@PathVariable int page, @PathVariable int size) {
-        List<User> users = userService.findAll(page, size);
-        return ResponseEntity.ok(users);
-    }
-
 
     /**
      * Deletes a user with the given ID
@@ -62,13 +49,17 @@ public class UserController {
      * @return Set of suggested users
      */
     @GetMapping("/suggested")
-    public ResponseEntity<List<User>> suggested(User me) {
-        var suggested = userService.findSuggested(me);
-        suggested.forEach(userService::compact);
-        return ResponseEntity.ok(suggested);
+    public Page<User> suggested(User me, Pageable pageable) {
+        var suggested = userService.findSuggested(me, pageable);
+//        suggested.forEach(userService::compact);
+        return suggested;
     }
 
-
+    /**
+     * Request MFA operation for the authenticated user (Enable or disable)
+     * @param me The authenticated user
+     * @return Response entity with the result
+     */
     @GetMapping("/request-mfa")
     public ResponseEntity<AuthResponseDTO> requestMfa(User me) {
         String resp = accountService.requestMfaOperation(me);

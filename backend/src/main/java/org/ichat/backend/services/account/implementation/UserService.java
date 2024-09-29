@@ -1,7 +1,10 @@
 package org.ichat.backend.services.account.implementation;
 
 import org.ichat.backend.services.account.IUserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -29,11 +32,6 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public List<User> findAll(int page, int size) {
-        return userRepo.findAll();
-    }
-
-    @Override
     public UserRepository getUserRepo() {
         return userRepo;
     }
@@ -52,19 +50,21 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public List<User> findSuggested(User emiter) {
+    public Page<User> findSuggested(User emitter, Pageable pageable) {
         int total = (int) userRepo.count();
         if (total == 0)
-            return List.of();
+            return Page.empty();
 
-        List<User> lst = new ArrayList<>(userRepo.findAll(PageRequest.of(0, total))
-                .getContent().stream().limit(6)
-                .filter(user -> !user.equals(emiter))
-                .filter(user -> user.getRole().equals(emiter.getRole()))
-                .toList());
-        Collections.shuffle(lst);
-        return lst;
+        Page<User> usersPage = userRepo.findAll(pageable);
+
+        // Filter out the emitter from the results
+        List<User> filteredUsers = usersPage.getContent().stream()
+                .filter(user -> !user.equals(emitter))
+                .toList();
+        Collections.shuffle(filteredUsers);
+        return new PageImpl<>(filteredUsers, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()), total);
     }
+
 
     @Override
     public void compact(User user) {
@@ -72,9 +72,8 @@ public class UserService implements IUserService {
         user.setEnabled(null);
         user.setMfa_secret(null);
         user.setCreatedDate(null);
-        user.setProfile(null);
-        user.setUserAccountVerifications(null);
-        user.setUserAccountResets(null);
+        user.getProfile().setComments(null);
+        user.getProfile().setPosts(null);
     }
 
     @Override

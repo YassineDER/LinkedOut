@@ -50,7 +50,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .setAllowedOrigins(properties.getAllowedOrigins().toArray(new String[0]));
     }
 
-    @Bean
+    @Bean(name = "taskScheduler")
     public TaskScheduler heartBeatScheduler(){
         return new ThreadPoolTaskScheduler();
     }
