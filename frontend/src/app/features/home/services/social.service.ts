@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {User} from "../../../models/user";
 import {environment} from "../../../../environments/environment";
 import {Profile} from "../../../models/social/profile";
 
@@ -18,12 +17,9 @@ export class SocialService {
         const otherProfileId = profileToCheck.profileId;
         return new Promise<boolean>((resolve, reject) => {
                 this.http.get<boolean>(this.url + '/profiles/connected/check', {
-                    params: {profile_id: otherProfileId},
-                    headers: {'Content-Type': 'application/json'}
+                    params: {profile_id: otherProfileId}
                 }).subscribe({
-                        next: (res) => {
-                            resolve(res)
-                        },
+                        next: (res) => resolve(res),
                         error: (err) => reject(err)
                 });
             }

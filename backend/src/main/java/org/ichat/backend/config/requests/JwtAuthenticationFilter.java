@@ -5,7 +5,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.services.account.IJwtService;
 import org.ichat.backend.model.tables.User;
 import org.ichat.backend.services.account.IUserService;
@@ -55,7 +54,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 }
             }
-        } catch (AccountException ex) {
+        } catch (RuntimeException ex) {
             // If the token is invalid, the user will be redirected to the entrypoint
             entryPoint.commence(req, res, new AuthenticationException(ex.getMessage(), ex) {});
             return;

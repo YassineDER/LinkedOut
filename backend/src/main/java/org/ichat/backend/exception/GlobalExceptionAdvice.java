@@ -95,7 +95,7 @@ public class GlobalExceptionAdvice {
         * @return The error response as a ResponseEntity.
      **/
     @ResponseBody
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler({MethodArgumentNotValidException.class})
     public ResponseEntity<ErrorDTO> handleObjectNotValidException(MethodArgumentNotValidException ex) {
         Pattern pattern = Pattern.compile("message \\[([^]]+)]");
         Matcher matcher = pattern.matcher(ex.getMessage());
@@ -120,7 +120,7 @@ public class GlobalExceptionAdvice {
         * @return The error response as a ResponseEntity.
      **/
     @ResponseBody
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler({Exception.class})
     public ResponseEntity<ErrorDTO> handleGlobalErrors(Exception ex) {
         // print stack trace if not in production
         String profile = env.getActiveProfiles()[0];

@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"sender_id", "receiver_id"}))
 public class Connection {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
