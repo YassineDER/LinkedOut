@@ -1,29 +1,29 @@
 <div class="rounded-lg bg-white shadow p-4">
   <h1 class="font-semibold text-xl mb-6">Autres profils similaires</h1>
-  @for (suggested of suggested_users; track user.user_id) {
+  @for (suggestedUser of suggestedUsers; track suggestedUser.user.user_id) {
     <div class="flex items-center my-2">
-      <img [appSrc]="suggested.imageName" width="64" height="64" alt="Profile pic"
-					 class="w-10 h-10 rounded-full mr-3">
-      @if (users.isJobseeker(suggested)) {
+      <img [appSrc]="suggestedUser.user.imageName" width="64" height="64" alt="Profile pic"
+           class="w-10 h-10 rounded-full mr-3">
+      @if (users.isJobseeker(suggestedUser.user)) {
         <div class="w-full">
-          <h5 class="text-sm">{{ suggested.first_name }} {{ suggested.last_name }}</h5>
-          <p class="text-xs text-gray-500">{{ suggested.title ? suggested.title : 'Nouveau sur LinkedOut' }}</p>
+          <h5 class="text-sm">{{ suggestedUser.user.first_name }} {{ suggestedUser.user.last_name }}</h5>
+          <p class="text-xs text-gray-500">{{ suggestedUser.user.title ? suggestedUser.user.title : 'Nouveau sur LinkedOut' }}</p>
         </div>
-      } @else if (users.isCompany(suggested)) {
+      } @else if (users.isCompany(suggestedUser.user)) {
         <div class="w-full">
-          <h5 class="text-sm">{{ suggested.company_name }}</h5>
-          <p class="text-xs text-gray-500">{{ suggested.sector }}</p>
+          <h5 class="text-sm">{{ suggestedUser.user.company_name }}</h5>
+          <p class="text-xs text-gray-500">{{ suggestedUser.user.sector }}</p>
         </div>
-      } @else if (users.isAdmin(suggested)) {
+      } @else if (users.isAdmin(suggestedUser.user)) {
         <div>
-          <h5 class="text-sm">{{ suggested.first_name }} {{ suggested.last_name }}</h5>
-          <p class="text-xs text-gray-500">{{ suggested.title ? suggested.title : 'Nouveau sur LinkedOut' }}</p>
+          <h5 class="text-sm">{{ suggestedUser.user.first_name }} {{ suggestedUser.user.last_name }}</h5>
+          <p class="text-xs text-gray-500">{{ suggestedUser.user.title ? suggestedUser.user.title : 'Nouveau sur LinkedOut' }}</p>
         </div>
       }
     </div>
     <div class="w-full text-end mb-4">
-      @if (!checkConnection(suggested)) {
-        <button (click)="connect(suggested)" type="button" class="btn btn-outline btn-primary btn-sm">Se connecter</button>
+      @if (!suggestedUser.connected) {
+        <button (click)="connect(suggestedUser.user.profile)" type="button" class="btn btn-outline btn-primary btn-sm">Se connecter</button>
       } @else {
         <button type="button" class="btn btn-primary btn-sm">Message</button>
       }

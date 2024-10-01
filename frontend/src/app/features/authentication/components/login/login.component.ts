@@ -18,8 +18,8 @@ export class LoginComponent implements OnInit {
     showPwd = false;
     requiresMFA = false;
     loginForm: FormGroup;
-    email = new FormControl('', [Validators.required, Validators.email]);
-    password = new FormControl('', [Validators.required]);
+    email = new FormControl('admin@example.com', [Validators.required, Validators.email]);
+    password = new FormControl('12345678', [Validators.required]);
     mfa_code = new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(6)]);
 
     constructor(private fb: FormBuilder, private auth: AuthService, protected forms:FormsService,

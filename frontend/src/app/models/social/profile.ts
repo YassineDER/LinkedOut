@@ -6,7 +6,7 @@ import {Experience} from "../job/experience";
 import {Education} from "../job/education";
 
 export interface Profile {
-    profile_id: number;
+    profileId: number;
     bio: string;
     banner_name: string;
     connections: number;
