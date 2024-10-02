@@ -156,7 +156,7 @@ public class StorageService implements IStorageService {
             var objects = response.getListObjects().getObjects();
             List<String> unusedObjectsNames = objects.stream()
                     .map(ObjectSummary::getName)
-                    .filter(name -> !isUsed.test(name))
+                    .filter(name -> !isUsed.test(name) && !name.startsWith(prefix + "default"))
                     .toList();
 
             unusedObjectsNames.forEach(objectName -> {
