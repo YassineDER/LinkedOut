@@ -5,8 +5,8 @@ import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.model.tables.Jobseeker;
 import org.ichat.backend.model.patchers.JobseekerPatchDTO;
 import org.ichat.backend.repository.account.JobseekerRepository;
-import org.ichat.backend.repository.account.UserRepository;
 import org.ichat.backend.services.IJobseekerService;
+import org.ichat.backend.services.account.IUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +17,7 @@ import java.util.List;
 @Transactional
 public class JobseekerService implements IJobseekerService {
     private final JobseekerRepository jobseekerRepo;
-    private final UserRepository userRepo;
+    private final IUserService userService;
 
     @Override
     public List<Jobseeker> findAll() {
@@ -25,20 +25,8 @@ public class JobseekerService implements IJobseekerService {
     }
 
     @Override
-    public Jobseeker findBy(String email) {
-        return jobseekerRepo.findByEmail(email)
-                .orElseThrow(() -> new AccountException("Jobseeker not found by email", HttpStatus.NOT_FOUND.value()));
-    }
-
-    @Override
-    public Jobseeker findBy(Long jobseekerId) {
-        return jobseekerRepo.findById(jobseekerId)
-                .orElseThrow(() -> new AccountException("Jobseeker not found by id", HttpStatus.NOT_FOUND.value()));
-    }
-
-    @Override
     public Jobseeker update(Long jobseekerToUpdateId, JobseekerPatchDTO newJobseeker) throws AccountException {
-        Jobseeker jobseekerToUpdate = findBy(jobseekerToUpdateId);
+        Jobseeker jobseekerToUpdate = (Jobseeker) userService.findBy(jobseekerToUpdateId);
 
         if (newJobseeker.getFirst_name() != null)
             jobseekerToUpdate.setFirst_name(newJobseeker.getFirst_name());
@@ -54,7 +42,7 @@ public class JobseekerService implements IJobseekerService {
 
     @Override
     public Jobseeker create(Jobseeker jobseeker) {
-        boolean userExists = userRepo.existsByUsername(jobseeker.getUsername()) || userRepo.existsByEmail(jobseeker.getEmail());
+        boolean userExists = userService.exists(jobseeker.getEmail(), jobseeker.getUsername());
         if (userExists)
             throw new AccountException("Jobseeker already exists with given email or username", HttpStatus.CONFLICT.value());
 

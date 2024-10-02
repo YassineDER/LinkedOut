@@ -14,20 +14,6 @@ public interface IAdminService {
     List<Admin> findAll();
 
     /**
-     * Find admin by email
-     * @param email Email of the admin
-     * @return Admin with the given email
-     */
-    Admin findBy(String email);
-
-    /**
-     * Find admin by id
-     * @param admin_id ID of the admin
-     * @return Admin with the given id
-     */
-    Admin findBy(Long admin_id);
-
-    /**
      * Update an admin
      * @param oldUserID ID of the admin to update
      * @param newAdmin New admin data

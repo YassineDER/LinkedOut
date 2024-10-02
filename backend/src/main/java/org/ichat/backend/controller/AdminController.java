@@ -16,17 +16,6 @@ public class AdminController {
     private final IAdminService adminService;
 
     /**
-     * Find an admin by id
-     * @param id the id of the admin
-     * @return the admin as a response entity
-     */
-    @GetMapping("/id/{id}")
-    public ResponseEntity<Admin> one(@PathVariable Long id) {
-        Admin admin = adminService.findBy(id);
-        return ResponseEntity.ok(admin);
-    }
-
-    /**
      * Update an admin by id
      * @param id the id of the admin
      * @param admin the admin to update

@@ -16,6 +16,7 @@ export enum Path {
     SOCIAL = '/social',
     FEED = SOCIAL + '/feed',
     NETWORK = SOCIAL + '/network',
+    POSTS = SOCIAL + '/posts',
     NOTIFICATIONS = SOCIAL + '/notifications',
     // Messaging
     MESSAGING = '/messaging',
@@ -27,6 +28,5 @@ export enum Path {
     PREFERENCES_SECURITY = PREFERENCES + '/security',
     PREFERENCES_NOTIFICATIONS = PREFERENCES + '/notifications',
     //Profile
-    PROFILE = '/out',
-    PROFILE_POSTS = PROFILE + '/posts',
+    PROFILE = '/out'
 }

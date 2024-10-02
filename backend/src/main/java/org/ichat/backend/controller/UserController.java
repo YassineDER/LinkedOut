@@ -42,6 +42,28 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * Get a user by ID
+     * @param id User ID
+     * @return User with the given ID
+     */
+    @GetMapping("/id/{id}")
+    public ResponseEntity<User> one(@PathVariable Long id) {
+        var user = userService.findBy(id);
+        return ResponseEntity.ok(user);
+    }
+
+    /**
+     * Get a user by username
+     * @param username Username
+     * @return User with the given username
+     */
+    @GetMapping("/{username}")
+    public ResponseEntity<User> byUsername(@PathVariable String username) {
+        var user = userService.findByUsername(username);
+        return ResponseEntity.ok(user);
+    }
+
 
     /**
      * Find suggested users for the given user based on role
@@ -50,9 +72,8 @@ public class UserController {
      */
     @GetMapping("/suggested")
     public Page<User> suggested(User me, Pageable pageable) {
-        var suggested = userService.findSuggested(me, pageable);
-//        suggested.forEach(userService::compact);
-        return suggested;
+        //        suggested.forEach(userService::compact);
+        return userService.findSuggested(me, pageable);
     }
 
     /**

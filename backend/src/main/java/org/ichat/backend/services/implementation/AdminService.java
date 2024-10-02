@@ -2,6 +2,7 @@ package org.ichat.backend.services.implementation;
 
 import org.ichat.backend.model.patchers.AdminPatchDTO;
 import org.ichat.backend.repository.account.UserRepository;
+import org.ichat.backend.services.account.IUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminService implements IAdminService {
     private final AdminRepository adminRepository;
-    private final UserRepository userRepository;
+    private final IUserService userService;
 
     @Override
     public List<Admin> findAll() {
@@ -26,20 +27,8 @@ public class AdminService implements IAdminService {
     }
 
     @Override
-    public Admin findBy(String email) {
-        return adminRepository.findByEmail(email)
-                .orElseThrow(() -> new AccountException("Admin not found with given email", HttpStatus.NOT_FOUND.value()));
-    }
-
-    @Override
-    public Admin findBy(Long admin_id) {
-        return adminRepository.findById(admin_id)
-                .orElseThrow(() -> new AccountException("Admin not found with given id", HttpStatus.NOT_FOUND.value()));
-    }
-
-    @Override
     public Admin update(Long oldUserID, AdminPatchDTO newAdmin) throws AccountException {
-        Admin adminToUpdate = findBy(oldUserID);
+        Admin adminToUpdate = (Admin) userService.findBy(oldUserID);
 
         if (adminToUpdate.getFirst_name() != null)
             adminToUpdate.setFirst_name(newAdmin.getFirst_name());
@@ -55,8 +44,7 @@ public class AdminService implements IAdminService {
 
     @Override
     public Admin create(Admin admin) {
-        boolean userExists = userRepository.existsByEmail(admin.getEmail()) ||
-                userRepository.existsByUsername(admin.getUsername());
+        boolean userExists = userService.exists(admin.getEmail(), admin.getUsername());
         if (userExists)
             throw new AccountException("Admin already exists with given email or username", HttpStatus.CONFLICT.value());
 

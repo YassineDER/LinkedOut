@@ -67,7 +67,7 @@ class JwtAuthenticationFilterTest {
         when(user.getEmail()).thenReturn(email);
         when(user.getUsername()).thenReturn("test");
         when(user.getPassword()).thenReturn("password");
-        when(userService.findBy(email)).thenReturn(user);
+        when(userService.findByEmail(email)).thenReturn(user);
 
         filter.doFilterInternal(request, response, filterChain);
         UsernamePasswordAuthenticationToken expectedAuthToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
@@ -85,7 +85,7 @@ class JwtAuthenticationFilterTest {
         request.addHeader("Authorization", "Bearer validToken");
         String email = "test@example.com";
         when(jwtService.getEmailFromToken("validToken")).thenReturn(email);
-        when(userService.findBy(email)).thenThrow(new AccountException("User not found", HttpStatus.NOT_FOUND.value()));
+        when(userService.findByEmail(email)).thenThrow(new AccountException("User not found", HttpStatus.NOT_FOUND.value()));
 
         filter.doFilterInternal(request, response, filterChain);
 

@@ -19,17 +19,6 @@ public class CompanyController {
     private final ICompanyService companyService;
 
     /**
-     * Get company by id
-     * @param id company id
-     * @return company
-     */
-    @GetMapping("/id/{id}")
-    public ResponseEntity<Company> one(@PathVariable Long id) {
-        Company user = companyService.findBy(id);
-        return ResponseEntity.ok(user);
-    }
-
-    /**
      * Update company by id
      * @param me current authenticated company
      * @RequestBody patch company patch

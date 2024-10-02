@@ -23,12 +23,20 @@ public class UserService implements IUserService {
 
     @Override
     public User findBy(Long id) {
-        return userRepo.findById(id).orElseThrow(() -> new AccountException("User not found by id", HttpStatus.NOT_FOUND.value()));
+        return userRepo.findById(id)
+                .orElseThrow(() -> new AccountException("User not found by id", HttpStatus.NOT_FOUND.value()));
     }
 
     @Override
-    public User findBy(String email) {
-        return userRepo.findByEmail(email).orElseThrow(() -> new AccountException("User not found by email", HttpStatus.NOT_FOUND.value()));
+    public User findByUsername(String username) {
+        return userRepo.findByUsername(username)
+                .orElseThrow(() -> new AccountException("User not found by username", HttpStatus.NOT_FOUND.value()));
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepo.findByEmail(email)
+                .orElseThrow(() -> new AccountException("User not found by email", HttpStatus.NOT_FOUND.value()));
     }
 
     @Override
@@ -47,6 +55,11 @@ public class UserService implements IUserService {
         userToUpdate.setUsing_mfa(newUser.getUsing_mfa());
         userToUpdate.setMfa_secret(newUser.getMfa_secret());
         return userRepo.save(userToUpdate);
+    }
+
+    @Override
+    public boolean exists(String username, String email) {
+        return userRepo.existsByUsername(username) || userRepo.existsByEmail(email);
     }
 
     @Override

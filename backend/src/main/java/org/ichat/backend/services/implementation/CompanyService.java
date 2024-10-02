@@ -5,8 +5,8 @@ import org.ichat.backend.exception.AccountException;
 import org.ichat.backend.model.tables.Company;
 import org.ichat.backend.model.patchers.CompanyPatchDTO;
 import org.ichat.backend.repository.account.CompanyRepository;
-import org.ichat.backend.repository.account.UserRepository;
 import org.ichat.backend.services.ICompanyService;
+import org.ichat.backend.services.account.IUserService;
 import org.ichat.backend.services.shared.IStorageService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,13 +24,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CompanyService implements ICompanyService {
     private final CompanyRepository companyRepo;
-    private final UserRepository userRepo;
+    private final IUserService userService;
     private final IStorageService storageService;
-    private final RestClient client = RestClient.create();
-    @Value("${google.api_key}")
+    @Value("${google.api.key}")
     private String GOOGLE_API_KEY;
     @Value("${google.cx}")
     private String GOOGLE_CX;
+    private final RestClient client = RestClient.create();
 
     @Override
     public List<Company> findAll() {
@@ -38,20 +38,8 @@ public class CompanyService implements ICompanyService {
     }
 
     @Override
-    public Company findBy(String email) {
-        return companyRepo.findByEmail(email)
-                .orElseThrow(() -> new AccountException("Company not found by given email", HttpStatus.NOT_FOUND.value()));
-    }
-
-    @Override
-    public Company findBy(Long company_id) {
-        return companyRepo.findById(company_id)
-                .orElseThrow(() -> new AccountException("Company not found by given id", HttpStatus.NOT_FOUND.value()));
-    }
-
-    @Override
     public Company update(Long oldCompanyId, CompanyPatchDTO newCompany) throws AccountException {
-        Company oldCompany = findBy(oldCompanyId);
+        Company oldCompany = (Company) userService.findBy(oldCompanyId);
 
         if (newCompany.getName() != null)
             oldCompany.setCompany_name(newCompany.getName());
@@ -69,8 +57,8 @@ public class CompanyService implements ICompanyService {
 
     @Override
     public Company create(Company company) {
-        boolean exists = userRepo.existsByEmail(company.getEmail()) || companyRepo.existsBySiren(company.getSiren())
-                || userRepo.existsByUsername(company.getUsername());
+        boolean exists = userService.exists(company.getCompany_name(), company.getEmail())
+                || companyRepo.existsBySiren(company.getSiren());
         if (exists)
             throw new AccountException("Company already exists", HttpStatus.CONFLICT.value());
 

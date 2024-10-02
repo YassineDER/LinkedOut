@@ -24,7 +24,7 @@ public class AuthService implements IAuthService {
 
     @Override
     public AuthResponseDTO authenticate(AccountCredentialsDTO credentials) {
-        User user = userService.findBy(credentials.getEmail());
+        User user = userService.findByEmail(credentials.getEmail());
 
         if (!passwordEncoder.matches(credentials.getPassword(), user.getPassword()))
             throw new AccountException("Invalid email or password", HttpStatus.BAD_REQUEST.value());

@@ -14,20 +14,6 @@ public interface IJobseekerService{
     List<Jobseeker> findAll();
 
     /**
-     * Find jobseeker by email
-     * @param email
-     * @return Jobseeker
-     */
-    Jobseeker findBy(String email);
-
-    /**
-     * Find jobseeker by id
-     * @param jobseeker_id
-     * @return Jobseeker
-     */
-    Jobseeker findBy(Long jobseeker_id);
-
-    /**
      * Updates a jobseeker
      *
      * @param oldJobseekerId

@@ -48,7 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 String email = jwtService.getEmailFromToken(token);
                 // Check if its the case, then create the authentication and set it in the context
                 if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                    User user = userService.findBy(email);
+                    User user = userService.findByEmail(email);
                     var authenticationToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                     authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);

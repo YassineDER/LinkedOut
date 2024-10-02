@@ -35,7 +35,7 @@ public class AccountManagementService implements IAccountManagementService {
 
     @Override
     public String requestPasswordReset(AccountCredentialsDTO credentials) {
-        User user = userService.findBy(credentials.getEmail());
+        User user = userService.findByEmail(credentials.getEmail());
 
         // Validates MFA code if the user has 2FA enabled
         if (user.getUsing_mfa()) {
@@ -84,6 +84,6 @@ public class AccountManagementService implements IAccountManagementService {
 
     @Override
     public boolean userUsingMFA(String email) {
-        return userService.findBy(email).getUsing_mfa();
+        return userService.findByEmail(email).getUsing_mfa();
     }
 }

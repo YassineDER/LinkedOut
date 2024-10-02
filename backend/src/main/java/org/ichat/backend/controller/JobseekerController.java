@@ -18,16 +18,6 @@ import org.springframework.web.bind.annotation.*;
 public class JobseekerController {
     private final IJobseekerService jobseekerService;
 
-    /**
-     * Get Jobseeker by id.
-     * @param id Id of the Jobseeker.
-     * @return Jobseeker with the given id.
-     */
-    @GetMapping("/id/{id}")
-    public ResponseEntity<Jobseeker> one(@PathVariable Long id) {
-        Jobseeker user = jobseekerService.findBy(id);
-        return ResponseEntity.ok(user);
-    }
 
     /**
      * Update the current Jobseeker.

@@ -66,7 +66,7 @@ class JwtAuthenticationFilterTest {
         String email = "user@example.com";
         User mockUser = mock(User.class);
         when(jwtService.getEmailFromToken(token)).thenReturn(email);
-        when(userService.findBy(email)).thenReturn(mockUser);
+        when(userService.findByEmail(email)).thenReturn(mockUser);
         request.addHeader("Authorization", "Bearer " + token);
 
         jwtFilter.doFilterInternal(request, response, (req, res) -> {

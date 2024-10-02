@@ -19,12 +19,14 @@ public interface IUserService {
      */
     User findBy(Long id);
 
+    User findByUsername(String username);
+
     /**
      * Find user by email
      * @param email email of user
      * @return user
      */
-    User findBy(String email);
+    User findByEmail(String email);
 
     /**
      * Get user repository (used by {@link org.ichat.backend.config.security.MvcConfiguration})
@@ -39,6 +41,8 @@ public interface IUserService {
      * @return updated user
      */
     User update(Long userId, User newUser);
+
+    boolean exists(String username, String email);
 
     /**
      * Find suggested users based on their roles. <br>
