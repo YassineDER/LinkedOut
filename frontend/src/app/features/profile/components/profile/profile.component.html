@@ -18,6 +18,11 @@
         <app-stats-profile [profile]="user.profile" class="p-0 mb-4"/>
         <app-users-suggestions [user]="user" class="p-0 mb-4"/>
       </div>
+    } @else  {
+      <div class="col-span-4 text-center">
+        <h2 class="text-xl font-semibold">Utilisateur non trouvé</h2>
+        <p class="text-gray-600">L'utilisateur que vous recherchez n'existe pas ou a été supprimé.</p>
+      </div>
     }
   </div>
 

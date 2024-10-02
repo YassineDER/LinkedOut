@@ -1,11 +1,13 @@
 <ng-container *ngIf="{ user: user$ | async } as auth">
   <ng-container *ngIf="auth.user as user">
-    <app-nav [user]="user" />
+    <div class="flex flex-col min-h-dvh home-container">
+      <app-nav [user]="user" />
 
-    <div [@fadeInUpAnimation]="prepareOutlet(outlet)">
-      <router-outlet #outlet="outlet" />
+      <div [@fadeInUpAnimation]="prepareOutlet(outlet)">
+        <router-outlet #outlet="outlet"></router-outlet>
+      </div>
+
+      <app-footer class="flex-shrink-0" />
     </div>
-
-    <app-footer />
   </ng-container>
 </ng-container>

@@ -1,0 +1,7 @@
+.home-container > * {
+    flex-shrink: 0;
+}
+
+.home-container > div {
+    flex-grow: 1;
+}

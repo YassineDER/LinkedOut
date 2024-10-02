@@ -70,4 +70,13 @@ export class UserService {
         });
     }
 
+    getUserByUsername(param: string) {
+        return new Promise<User>((resolve, reject) => {
+            this.http.get<User>(this.api + '/' + param)
+                .subscribe({
+                    next: (user) => resolve(user),
+                    error: (err: HttpClientError) => reject(err.error.error)
+                });
+        });
+    }
 }
