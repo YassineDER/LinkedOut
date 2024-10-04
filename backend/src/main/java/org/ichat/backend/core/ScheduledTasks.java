@@ -51,12 +51,12 @@ public class ScheduledTasks {
     }
 
     // Delete unsued images every day at midnight
-    @Scheduled(cron = "0 0 0 * * ?")
-    public void deleteUnsedImages() {
-        storageService.deleteUnusedUserImages(userService);
-        storageService.deleteUnusedPostsImages(postService);
-        log.info("Deleted expired images");
-    }
+//    @Scheduled(cron = "0 0 0 * * ?")
+//    public void deleteUnsedImages() {
+//        storageService.deleteUnusedUserImages(userService);
+//        storageService.deleteUnusedPostsImages(postService);
+//        log.info("Deleted expired images");
+//    }
 
     // Clear image cache every 3 hours (default, defined in application.yml)
     @Scheduled(fixedRateString = "${spring.caching.user.images}")
