@@ -1,9 +1,9 @@
-name: CI/CD Pipeline
+name: Alternate CI/CD (Cloud Run)
 
 on:
   push:
     branches:
-      - main
+      - cloudrun
 
 jobs:
   deploy:
@@ -13,57 +13,74 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4.1.7
 
-    - name: Set up Java 19
+    - name: Set up Java 17
       uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
-        java-version: '19'
+        java-version: '17'
 
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '20'
+
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v2'
+      with:
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        credentials_json: ${{ secrets.GCP_SA_KEY }}
+        service_account: 'owner-318@tinypet-404519.iam.gserviceaccount.com'
+
+    - name: Setup Google Cloud SDK
+      uses: google-github-actions/setup-gcloud@v2
+      with:
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        install_components: 'cloud-build-local'
+
+    - name: Test the gcloud CLI and auth
+      run: gcloud version && gcloud auth list
+
+    - name: Remove existing Cloud Run services
+      run: |
+        existing_services=$(gcloud run services list --platform managed --region europe-west1 --filter="metadata.name=hello-world" --format="value(metadata.name)")
+        if [ -n "$existing_services" ]; then
+          gcloud run services delete hello-world --platform managed --region europe-west1 --quiet
+        fi
     
-    - name: Install frontend dependencies
+    - name: Run Hello World container in cloudrun
       run: |
-        cd frontend
-        npm install -g @angular/cli
-        npm install -g angular-cli-ghpages
-        npm install
+        gcloud run deploy hello-world --image gcr.io/cloudrun/hello --platform managed --region europe-west1 --allow-unauthenticated --service-account=owner-318@tinypet-404519.iam.gserviceaccount.com
+    # - name: Install frontend dependencies
+    #   run: |
+    #     cd frontend
+    #     npm install -g @angular/cli
+    #     npm install -g angular-cli-ghpages
+    #     npm install
 
-    - name: Copy docker-compose.yml to VM
-      uses: garygrossgarten/github-action-scp@release
-      with:
-        host: ${{ secrets.VM_HOST }}
-        local: 'docker/docker-compose.yml'
-        username: ${{ secrets.VM_USER }}
-        remote: '/home/${{ secrets.VM_USER }}/linkedout/docker-compose.yml'
-        privateKey: ${{ secrets.SSH_PRIVATE }}
+    # - name: Copy docker-compose.yml to VM
+    #   uses: garygrossgarten/github-action-scp@release
+    #   with:
+    #     host: ${{ secrets.VM_HOST }}
+    #     local: 'docker-compose.yml'
+    #     username: ${{ secrets.VM_USER }}
+    #     remote: '/home/${{ secrets.VM_USER }}/linkedout/docker-compose.yml'
+    #     privateKey: ${{ secrets.SSH_PRIVATE }}
 
-    - name: Deploying Postgres database container
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.VM_HOST }}
-        username: ${{ secrets.VM_USER }}
-        key: ${{ secrets.SSH_PRIVATE }}
-        script: |
-          cd ~/linkedout
-          sudo docker compose -f docker-compose.yml down
-          sudo docker compose -f docker-compose.yml up -d
+    # - name: Deploying Postgres database container
+    #   uses: appleboy/ssh-action@v1.0.3
+    #   with:
+    #     host: ${{ secrets.VM_HOST }}
+    #     username: ${{ secrets.VM_USER }}
+    #     key: ${{ secrets.SSH_PRIVATE }}
+    #     script: |
+    #       cd ~/linkedout
+    #       sudo docker compose -f docker-compose.yml down
+    #       sudo docker compose -f docker-compose.yml up -d
 
-    - name: Build and deploy the backend
-      uses: akhileshns/heroku-deploy@v3.13.15
-      with:
-        heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-        heroku_app_name: "linkedout"
-        heroku_email: ${{secrets.HEROKU_EMAIL}}
-        appdir: "backend"
-        stack: "heroku-22"
-
-    - name: Build and deploy the frontend
-      env:
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-      run: |
-        cd frontend
-        ng build --base-href /LinkedOut/ --configuration production
-        ngh --dir=dist/browser --no-silent
+    # - name: Build and deploy the frontend
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+    #   run: |
+    #     cd frontend
+    #     ng build --base-href /LinkedOut/ --configuration production
+    #     ngh --dir=dist/browser --no-silent

@@ -1,0 +1,13 @@
+steps:
+- name: 'gcr.io/cloud-builders/mvn'
+  args: ['clean', 'package', '-f', 'backend/pom.xml', '-DskipTests']
+
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/spring-backend', '.']
+  dir: 'backend'
+
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/$PROJECT_ID/spring-backend']
+
+images:
+- 'gcr.io/$PROJECT_ID/spring-backend'
