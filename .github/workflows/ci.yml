@@ -42,10 +42,7 @@ jobs:
 
     - name: Remove existing Cloud Run services
       run: |
-        existing_services=$(gcloud run services list --platform managed --region europe-west1 --filter="metadata.name=hello-world" --format="value(metadata.name)")
-        if [ -n "$existing_services" ]; then
-          gcloud run services delete hello-world --platform managed --region europe-west1 --quiet
-        fi
+        $(gcloud run services list --platform managed --region europe-west1 --format="value(status.url)" | xargs -n1 gcloud run services delete --platform managed --region europe-west1 --quiet)
     
     - name: Run Hello World container in cloudrun
       run: |
