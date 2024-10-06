@@ -30,5 +30,10 @@ steps:
 
 timeout: '1200s'
 
+options:
+  logging: CLOUD_LOGGING_ONLY
+  serviceAccount: owner-318@tinypet-404519.iam.gserviceaccount.com
+  logsBucket: linkedout_cloudrun
+
 images:
 - 'europe-west1-docker.pkg.dev/tinypet-404519/linkedout-repo/linkedout'
