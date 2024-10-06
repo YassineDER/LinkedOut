@@ -35,10 +35,11 @@ jobs:
       uses: google-github-actions/setup-gcloud@v2
       with:
         project_id: ${{ secrets.GCP_PROJECT_ID }}
-        install_components: 'cloud-build-local'
 
-    - name: Test the gcloud CLI and auth
-      run: gcloud version && gcloud auth list
+    - name: Build and push the container image
+      run: |
+        gcloud builds submit --pack image=gcr.io/$PROJECT_ID/linkedout-repo/backend --tag gcr.io/$PROJECT_ID/linkedout-repo/backend ./backend
+      
 
     # - name: Install frontend dependencies
     #   run: |
