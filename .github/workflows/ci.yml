@@ -36,6 +36,7 @@ jobs:
 
   
   deploy-frontend:
+    needs: database
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
@@ -54,8 +55,6 @@ jobs:
         npm install
 
     - name: Build and deploy the frontend
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         cd frontend
         ng build --base-href /LinkedOut/ --configuration production
