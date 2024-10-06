@@ -36,9 +36,9 @@ jobs:
       with:
         project_id: ${{ secrets.GCP_PROJECT_ID }}
 
-    # - name: Perform the build and deploy to Cloud Run
-    #   run: |
-    #     gcloud builds submit --config backend/cloudbuild.yaml backend
+    - name: Perform the build and deploy to Cloud Run
+      run: |
+        gcloud builds submit --config backend/cloudbuild.yaml backend
       
     # - name: Install frontend dependencies
     #   run: |
