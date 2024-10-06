@@ -54,17 +54,17 @@ jobs:
         npm install -g angular-cli-ghpages
         npm install
 
-    - name: Build and deploy the frontend
-      run: |
-        cd frontend
-        ng build --base-href /LinkedOut/ --configuration production
-        ngh --dir=dist/browser --no-silent
+    # - name: Build and deploy the frontend
+    #   run: |
+    #     cd frontend
+    #     ng build --base-href /LinkedOut/ --configuration production
+    #     ngh --dir=dist/browser --no-silent
 
-    # - name: Angular Deploy gh-pages Actions
-    #   uses: AhsanAyaz/angular-deploy-gh-pages-actions@v1.4.0
-    #   with:
-    #     angular_project_dir: "./frontend"
-    #     github_access_token: ${{ secrets.GH_TOKEN }}
-    #     build_configuration: production
-    #     base_href: "/LinkedOut/"
-    #     angular_dist_build_folder: "frontend/dist/browser"
+    - name: Angular Deploy gh-pages Actions
+      uses: AhsanAyaz/angular-deploy-gh-pages-actions@v1.4.0
+      with:
+        angular_project_dir: "./frontend"
+        github_access_token: ${{ secrets.GH_TOKEN }}
+        build_configuration: production
+        base_href: "/LinkedOut/"
+        angular_dist_build_folder: "frontend/dist/browser"
