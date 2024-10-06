@@ -40,6 +40,8 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4.1.7
+      with:
+        ref: main
 
     - name: Set up Node.js
       uses: actions/setup-node@v4
@@ -55,7 +57,7 @@ jobs:
 
     - name: Build and deploy the frontend
       env:
-        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
         cd frontend
         ng build --base-href /LinkedOut/ --configuration production
