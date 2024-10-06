@@ -38,8 +38,7 @@ jobs:
 
     - name: Build and push the container image
       run: |
-        gcloud builds submit --service-account=owner-318@tinypet-404519.iam.gserviceaccount.com \
-        --config backend/cloudbuild.yaml \
+        gcloud builds submit --config backend/cloudbuild.yaml
       
 
     # - name: Install frontend dependencies
