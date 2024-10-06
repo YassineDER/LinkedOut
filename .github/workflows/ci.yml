@@ -22,7 +22,7 @@ jobs:
         remote: '/home/${{ secrets.VM_USER }}/linkedout/docker-compose.yml'
         privateKey: ${{ secrets.SSH_PRIVATE }}
 
-    - name: Deploying Postgres database container
+    - name: Deploying Postgres database container on VM
       uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ secrets.VM_HOST }}
