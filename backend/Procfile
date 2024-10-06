@@ -1,1 +1,0 @@
-web: java $JAVA_OPTS -Xmx512M -Dserver.port=$PORT -jar target/backend-1.jar
