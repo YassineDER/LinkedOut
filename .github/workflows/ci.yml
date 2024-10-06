@@ -38,7 +38,7 @@ jobs:
 
     - name: Build and push the container image
       run: |
-        gcloud builds submit --config backend/cloudbuild.yaml
+        
       
 
     # - name: Install frontend dependencies
