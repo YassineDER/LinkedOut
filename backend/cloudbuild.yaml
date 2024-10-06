@@ -16,6 +16,7 @@ steps:
       - '--image=europe-west1-docker.pkg.dev/tinypet-404519/linkedout-repo/linkedout'
       - '--region=europe-west1'
       - '--platform=managed'
+      - '--service-account=owner-318@tinypet-404519.iam.gserviceaccount.com'
       - '--memory=1Gi'
       - '--allow-unauthenticated'
       - '--set-secrets=DB_PASS=DB_PASS:latest'
@@ -26,7 +27,6 @@ steps:
       - '--set-secrets=OCI_FINGERPRINT=OCI_FINGERPRINT:latest'
       - '--set-secrets=OCI_KEY_B64=OCI_KEY_B64:latest'
       - '--update-env-vars=DB_USER=linkedout,MAIL_USER=yassineyassine333@gmail.com,OCI_TENANCY=ocid1.tenancy.oc1..aaaaaaaaa4whtfd2gnpqw3fg2hcmbzchuljqk4ygzplatmtmsm5p3folyxiq,OCI_USER=ocid1.user.oc1..aaaaaaaanrltas6ynxfmfobvyapd5mxktmeql6qlb6x3uz233kdb6r27extq'
-    serviceAccount: 'owner-318@tinypet-404519.iam.gserviceaccount.com'
 
 timeout: '1200s'
 
