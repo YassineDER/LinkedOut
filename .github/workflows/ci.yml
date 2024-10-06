@@ -45,13 +45,11 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '20'
-
-    - id: 'auth'
-      uses: 'google-github-actions/auth@v2'
+    
+    - name: Setup git credentials
+      uses: de-vri-es/setup-git-credentials@v2
       with:
-        project_id: tinypet-404519
-        credentials_json: ${{ secrets.GCP_SA_KEY }}
-        service_account: 'owner-318@tinypet-404519.iam.gserviceaccount.com'
+        credentials: ${{secrets.GIT_CREDENTIALS}}
 
     - name: Install frontend dependencies
       run: |
@@ -62,8 +60,17 @@ jobs:
 
     - name: Build and deploy the frontend
       env:
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         cd frontend
         ng build --base-href /LinkedOut/ --configuration production
         ngh --dir=dist/browser --no-silent
+
+    # - name: Angular Deploy gh-pages Actions
+    #   uses: AhsanAyaz/angular-deploy-gh-pages-actions@v1.4.0
+    #   with:
+    #     github_access_token: ${{ secrets.GH_TOKEN }}
+    #     build_configuration: staging # The build environment for the app. please look configurations in your angular.json
+    #     base_href: /my-project/   # make sure this corresponds to https://<your_username>.github.io/<base_href>/
+    #     deploy_branch: gh-pages # The branch the action should deploy to.
+    #     angular_dist_build_folder: dist/my-project # The folder where your project is supposed to be after running ng build by the action.
