@@ -1,7 +1,7 @@
 steps:
   # Step 1: Build the Docker image using the Containerfile
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'europe-west1-docker.pkg.dev/tinypet-404519/linkedout-repo/linkedout', '.']
+    args: ['build', '-t', 'europe-west1-docker.pkg.dev/tinypet-404519/linkedout-repo/linkedout', 'backend/']
 
   # Step 2: Push the image to Google Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
