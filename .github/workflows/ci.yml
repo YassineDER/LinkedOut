@@ -54,17 +54,16 @@ jobs:
         npm install -g angular-cli-ghpages
         npm install
 
-    - name: Build and deploy the frontend
-      run: |
-        cd frontend
-        ng build --base-href /LinkedOut/ --configuration production
-        ngh --dir=dist/browser --no-silent
+    # - name: Build and deploy the frontend
+    #   run: |
+    #     cd frontend
+    #     ng build --base-href /LinkedOut/ --configuration production
+    #     ngh --dir=dist/browser --no-silent
 
-    # - name: Angular Deploy gh-pages Actions
-    #   uses: AhsanAyaz/angular-deploy-gh-pages-actions@v1.4.0
-    #   with:
-    #     github_access_token: ${{ secrets.GH_TOKEN }}
-    #     build_configuration: staging # The build environment for the app. please look configurations in your angular.json
-    #     base_href: /my-project/   # make sure this corresponds to https://<your_username>.github.io/<base_href>/
-    #     deploy_branch: gh-pages # The branch the action should deploy to.
-    #     angular_dist_build_folder: dist/my-project # The folder where your project is supposed to be after running ng build by the action.
+    - name: Angular Deploy gh-pages Actions
+      uses: AhsanAyaz/angular-deploy-gh-pages-actions@v1.4.0
+      with:
+        github_access_token: ${{ secrets.GITHUB_TOKEN }}
+        build_configuration: production
+        base_href: /LinkedOut/
+        angular_dist_build_folder: frontend/dist/browser
