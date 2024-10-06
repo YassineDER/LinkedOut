@@ -38,7 +38,7 @@ jobs:
 
     - name: Build and push the container image
       run: |
-        gcloud builds submit --pack image=gcr.io/$PROJECT_ID/linkedout-repo/backend --tag gcr.io/$PROJECT_ID/linkedout-repo/backend ./backend
+        gcloud builds submit --pack image=gcr.io/$PROJECT_ID/linkedout-repo/backend ./backend
       
 
     # - name: Install frontend dependencies
