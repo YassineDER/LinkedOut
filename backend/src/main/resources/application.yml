@@ -4,6 +4,10 @@ spring:
   application:
     name: LinkedOut
   datasource:
+    hikari:
+      idle-timeout: 900000
+      max-lifetime: 1800000
+      maximum-pool-size: 10
     driverClassName: org.postgresql.Driver
     url: ${DB_URL}
     username: ${DB_USER}
