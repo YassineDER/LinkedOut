@@ -16,7 +16,6 @@ steps:
       - '--image=europe-west1-docker.pkg.dev/tinypet-404519/linkedout-repo/linkedout'
       - '--region=europe-west1'
       - '--platform=managed'
-      - '--service-account=owner-318@tinypet-404519.iam.gserviceaccount.com'
       - '--allow-unauthenticated'
       - '--set-secrets=DB_PASS=projects/tinypet-404519/secrets/DB_PASS:latest'
       - '--set-secrets=MAIL_PASS=projects/tinypet-404519/secrets/MAIL_PASS:latest'
