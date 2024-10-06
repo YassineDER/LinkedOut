@@ -1,0 +1,20 @@
+steps:
+- name: 'gcr.io/cloud-builders/mvn'
+  args: ['clean', 'package', '-DskipTests', '-Dspring.profiles.active=prod']
+  dir: 'backend'
+
+- name: 'gcr.io/buildpacks/builder'
+  args: ['pack', 'build', 'gcr.io/tinypet-404519/linkedout-repo', '--path', './backend']
+
+# - name: 'gcr.io/cloud-builders/gcloud'
+#   args: ['run', 'deploy', 'linkedout', '--image', 'gcr.io/tinypet-404519/linkedout-repo', '--region', 'europe-west1', '--platform', 'managed', '--allow-unauthenticated']
+#   env:
+#   - 'PORT=8080'
+#   - 'DB_USER=linkedout'
+#   - 'MAIL_USER=yassineyassine333@gmail.com'
+#   - 'OCI_USER=ocid1.user.oc1..aaaaaaaanrltas6ynxfmfobvyapd5mxktmeql6qlb6x3uz233kdb6r27extq'
+#   - 'OCI_TENANCY=ocid1.tenancy.oc1..aaaaaaaaa4whtfd2gnpqw3fg2hcmbzchuljqk4ygzplatmtmsm5p3folyxiq'
+
+timeout: '1200s'
+# images:
+# - 'gcr.io/tinypet-404519/linkedout-repo'

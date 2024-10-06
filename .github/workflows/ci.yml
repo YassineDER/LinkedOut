@@ -38,7 +38,8 @@ jobs:
 
     - name: Build and push the container image
       run: |
-        gcloud builds submit --pack image=gcr.io/$PROJECT_ID/linkedout-repo/backend ./backend
+        gcloud builds submit --service-account=owner-318@tinypet-404519.iam.gserviceaccount.com \
+        --config backend/cloudbuild.yaml \
       
 
     # - name: Install frontend dependencies
