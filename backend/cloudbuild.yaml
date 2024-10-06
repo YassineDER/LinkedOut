@@ -1,0 +1,42 @@
+steps:
+  # Step 1: Build the Docker image using the Containerfile
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'europe-west1-docker.pkg.dev/tinypet-404519/linkedout-repo/linkedout', 'backend/']
+
+  # Step 2: Push the image to Google Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'europe-west1-docker.pkg.dev/tinypet-404519/linkedout-repo/linkedout']
+
+  # Step 3: Deploy the image to Cloud Run
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'linkedout'
+      - '--image=europe-west1-docker.pkg.dev/tinypet-404519/linkedout-repo/linkedout'
+      - '--region=europe-west1'
+      - '--platform=managed'
+      - '--memory=1Gi'
+      - '--allow-unauthenticated'
+      - '--min-instances=1'
+      - '--max-instances=5'
+      - '--concurrency=50'
+      - '--set-secrets=DB_PASS=DB_PASS:latest'
+      - '--set-secrets=MAIL_PASS=MAIL_PASS:latest'
+      - '--set-secrets=DB_URL=DB_URL:latest'
+      - '--set-secrets=GOOGLE_API_KEY=GOOGLE_API_KEY:latest'
+      - '--set-secrets=JWT_SECRET=JWT_SECRET:latest'
+      - '--set-secrets=OCI_FINGERPRINT=OCI_FINGERPRINT:latest'
+      - '--set-secrets=OCI_KEY_B64=OCI_KEY_B64:latest'
+      - '--update-env-vars=DB_USER=linkedout,MAIL_USER=yassineyassine333@gmail.com,OCI_TENANCY=ocid1.tenancy.oc1..aaaaaaaaa4whtfd2gnpqw3fg2hcmbzchuljqk4ygzplatmtmsm5p3folyxiq,OCI_USER=ocid1.user.oc1..aaaaaaaanrltas6ynxfmfobvyapd5mxktmeql6qlb6x3uz233kdb6r27extq'
+
+timeout: '1200s'
+serviceAccount: 'projects/tinypet-404519/serviceAccounts/owner-318@tinypet-404519.iam.gserviceaccount.com'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+  logStreamingOption: STREAM_ON
+  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
+
+images:
+- 'europe-west1-docker.pkg.dev/tinypet-404519/linkedout-repo/linkedout'

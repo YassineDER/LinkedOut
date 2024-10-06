@@ -1,12 +1,14 @@
-# Stage 1: Build the application
-FROM maven:3.9.6-eclipse-temurin-17-alpine AS build
+FROM maven:3.9.6-eclipse-temurin-17-alpine as builder
 WORKDIR /app
+
 COPY pom.xml .
+RUN mvn dependency:go-offline -B
 COPY src ./src
 RUN mvn clean package -DskipTests -Dspring.profiles.active=prod
 
-# Stage 2: Run the application
-FROM openjdk:19-jdk-alpine3.16
-COPY --from=build /app/target/*.jar app.jar
+FROM eclipse-temurin:17-jre-alpine
+WORKDIR /app
+COPY --from=builder /app/target/*.jar app.jar
+
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
