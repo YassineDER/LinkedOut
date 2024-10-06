@@ -36,9 +36,8 @@ jobs:
       with:
         project_id: ${{ secrets.GCP_PROJECT_ID }}
 
-    - name: Build and push the container image
+    - name: Perform the build and deploy to Cloud Run
       run: |
-        pwd && ls -la && \
         gcloud builds submit --config backend/cloudbuild.yaml backend
       
     # - name: Install frontend dependencies
