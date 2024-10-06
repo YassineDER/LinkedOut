@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - cloudrun
+      - main
 
 jobs:
   database:
@@ -51,15 +52,14 @@ jobs:
 
     - name: Wait for Cloud Build to finish
       run: |
-        PROJECT_ID="tinypet-404519"
-        BUILD_ID=$(gcloud builds list --project=${PROJECT_ID} --format="value(id)" --limit=1)
+        BUILD_ID=$(gcloud builds list --format="value(id)" --limit=1 --filter="status=WORKING OR status=QUEUED")
         echo "Polling for Cloud Build trigger completion for build ID: $BUILD_ID"
         TIMEOUT=600
-        INTERVAL=20
+        INTERVAL=30
         ELAPSED=0
     
         while [ $ELAPSED -lt $TIMEOUT ]; do
-          STATUS=$(gcloud builds describe $BUILD_ID --project=${PROJECT_ID} --format="value(status)")
+          STATUS=$(gcloud builds describe $BUILD_ID --format="value(status)")
           echo "Current status: $STATUS"
           if [ "$STATUS" == "SUCCESS" ]; then
             echo "Cloud Build completed successfully."
@@ -76,7 +76,7 @@ jobs:
           echo "Timeout reached. Cloud Build did not complete within the expected time."
           exit 1
         fi
-        
+
   deploy-frontend:
     runs-on: ubuntu-latest
     needs: wait-cloud-build
