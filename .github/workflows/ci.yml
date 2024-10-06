@@ -40,22 +40,6 @@ jobs:
     - name: Test the gcloud CLI and auth
       run: gcloud version && gcloud auth list
 
-    - name: Remove existing Cloud Run services
-      run: |
-        services=$(gcloud run services list --platform managed --region europe-west1 --format="value(metadata.name)")
-        if [ -n "$services" ]; then
-          echo "$services" | xargs -I {} gcloud run services delete {} --platform managed --region europe-west1 --quiet
-        fi
-    
-    - name: Run Hello World container in cloudrun
-      id: deploy_hello_world
-      run: |
-          gcloud run deploy hello-world --image gcr.io/cloudrun/hello --platform managed --region europe-west1 --allow-unauthenticated --service-account=owner-318@tinypet-404519.iam.gserviceaccount.com --format="value(status.url)"
-
-    - name: Get Service URL
-      id: get_service_url
-      run: echo "SERVICE_URL=$(gcloud run services describe hello-world --platform managed --region europe-west1 --format='value(status.url)')" >> $GITHUB_ENV
-
     # - name: Install frontend dependencies
     #   run: |
     #     cd frontend
