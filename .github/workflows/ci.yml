@@ -45,11 +45,6 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '20'
-    
-    - name: Setup git credentials
-      uses: de-vri-es/setup-git-credentials@v2
-      with:
-        credentials: ${{secrets.GIT_CREDENTIALS}}
 
     - name: Install frontend dependencies
       run: |
