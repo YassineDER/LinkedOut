@@ -33,7 +33,8 @@ jobs:
           sudo docker compose -f docker-compose.yml down
           sudo docker compose -f docker-compose.yml up -d
 
-  
+
+
   deploy-frontend:
     needs: database
     runs-on: ubuntu-latest
@@ -62,3 +63,14 @@ jobs:
         cd frontend
         ng build --base-href /LinkedOut/ --configuration production
         ngh --dir=dist/browser --no-silent
+
+
+  deploy-backend:
+    needs: deploy-frontend
+    runs-on: ubuntu-latest
+    steps:
+    - name: Trigger Cloud Build for backend deployment
+      run: |
+        curl -X POST -H "Content-type: application/json" 
+        "https://cloudbuild.googleapis.com/v1/projects/tinypet-404519/locations/europe-west1/triggers/deploy-cloud-run:webhook?key=${{secrets.GOOGLE_API_KEY}}&secret=${{secrets.CLOUD_BUILD_WEBHOOK}}&trigger=deploy-cloud-run&projectId=tinypet-404519" -d "{}"
+
