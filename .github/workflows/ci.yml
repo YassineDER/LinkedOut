@@ -71,6 +71,6 @@ jobs:
     steps:
     - name: Trigger Cloud Build for backend deployment
       run: |
-        curl -X POST -H "Content-type: application/json" 
+        curl -X POST -H "Content-type: application/json" \
         "https://cloudbuild.googleapis.com/v1/projects/tinypet-404519/locations/europe-west1/triggers/deploy-cloud-run:webhook?key=${{secrets.GOOGLE_API_KEY}}&secret=${{secrets.CLOUD_BUILD_WEBHOOK}}&trigger=deploy-cloud-run&projectId=tinypet-404519" -d "{}"
 
