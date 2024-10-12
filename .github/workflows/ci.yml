@@ -17,7 +17,7 @@ jobs:
       uses: garygrossgarten/github-action-scp@release
       with:
         host: ${{ secrets.VM_HOST }}
-        local: 'docker-compose.yml'
+        local: 'infra/docker-compose.yml'
         username: ${{ secrets.VM_USER }}
         remote: '/home/${{ secrets.VM_USER }}/linkedout/docker-compose.yml'
         privateKey: ${{ secrets.SSH_PRIVATE }}

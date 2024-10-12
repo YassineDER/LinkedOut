@@ -25,3 +25,13 @@ spring:
       ddl-auto: create-drop
 security:
   allowed-origins: https://yassineder.github.io
+
+logging:
+  level:
+    root: INFO
+    org.ichat: ERROR  # Adjust package to your app
+  google:
+    cloud:
+      logging:
+        enabled: true  # Enable Google Cloud Logging in production
+        flushIntervalSeconds: 1  # Optional: flush logs quickly for debugging

@@ -1,0 +1,17 @@
+{
+  "name": "infra",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@google-cloud/run": "^1.4.0",
+    "express": "^4.21.0"
+  }
+}
