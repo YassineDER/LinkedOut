@@ -6,6 +6,7 @@ import com.oracle.bmc.auth.SimpleAuthenticationDetailsProvider;
 import com.oracle.bmc.auth.StringPrivateKeySupplier;
 import com.oracle.bmc.objectstorage.ObjectStorageClient;
 import jakarta.annotation.PreDestroy;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,10 +15,14 @@ import java.util.Base64;
 
 @Configuration
 public class OCIConfig {
-    private static final String user = System.getenv("OCI_USER");
-    private static final String fingerprint = System.getenv("OCI_FINGERPRINT");
-    private static final String tenancy = System.getenv("OCI_TENANCY");
-    private static final String key = System.getenv("OCI_KEY_B64");
+    @Value("${oci.user}")
+    private String user;
+    @Value("${oci.fingerprint}")
+    private String fingerprint;
+    @Value("${oci.tenancy}")
+    private String tenancy;
+    @Value("${oci.key}")
+    private String key;
 
     private ObjectStorageClient client;
 

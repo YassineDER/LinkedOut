@@ -57,6 +57,12 @@ google:
     key: ${GOOGLE_API_KEY}
   cx: b1365cc6b472c4e31
 
+oci:
+  user: ${OCI_USER}
+  fingerprint: ${OCI_FINGERPRINT}
+  key: ${OCI_KEY_B64}
+  tenancy: ${OCI_TENANCY}
+
 # admin default credentials when initializing the app (if not already present)
 admin:
   default:

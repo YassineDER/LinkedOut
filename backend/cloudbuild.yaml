@@ -18,7 +18,7 @@ steps:
       - '--platform=managed'
       - '--memory=1Gi'
       - '--allow-unauthenticated'
-      - '--min-instances=1'
+      - '--min-instances=0'
       - '--max-instances=1'
       - '--concurrency=50'
       - '--set-secrets=DB_PASS=DB_PASS:latest'

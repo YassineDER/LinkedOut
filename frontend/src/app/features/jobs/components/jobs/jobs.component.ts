@@ -2,14 +2,15 @@ import { Component } from '@angular/core';
 import {environment} from "../../../../../environments/environment";
 
 @Component({
-  selector: 'app-messaging',
-  templateUrl: './messaging.component.html',
-  styleUrl: './messaging.component.css'
+  selector: 'app-jobs',
+  templateUrl: './jobs.component.html',
+  styleUrl: './jobs.component.css'
 })
-export class MessagingComponent {
+export class JobsComponent {
     isDev = false;
 
     constructor() {
         this.isDev = !environment.production;
     }
+
 }

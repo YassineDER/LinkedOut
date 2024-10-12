@@ -33,10 +33,28 @@ jobs:
           sudo docker compose -f docker-compose.yml down
           sudo docker compose -f docker-compose.yml up -d
 
+  deploy-backend:
+    needs: database
+    runs-on: ubuntu-latest
 
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        ref: main
+
+    - name: Auth to GCP
+      uses: 'google-github-actions/auth@v2'
+      with:
+        project_id: tinypet-404519
+        credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+    - name: Run the backend deployment script
+      run: |
+        gcloud builds triggers run deploy-cloud-run --region=europe-west1 --branch=main
 
   deploy-frontend:
-    needs: database
+    needs: deploy-backend
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
@@ -63,25 +81,4 @@ jobs:
         cd frontend
         ng build --base-href /LinkedOut/ --configuration production
         ngh --dir=dist/browser --no-silent
-
-
-  deploy-backend:
-    needs: deploy-frontend
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      with:
-        ref: main
-
-    - name: Auth to GCP
-      uses: 'google-github-actions/auth@v2'
-      with:
-        project_id: tinypet-404519
-        credentials_json: ${{ secrets.GCP_SA_KEY }}
-
-    - name: Run the backend deployment script
-      run: |
-        gcloud builds triggers run deploy-cloud-run --region=europe-west1 --branch=main
 

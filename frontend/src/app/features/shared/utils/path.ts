@@ -17,7 +17,6 @@ export enum Path {
     FEED = SOCIAL + '/feed',
     NETWORK = SOCIAL + '/network',
     POSTS = SOCIAL + '/posts',
-    NOTIFICATIONS = SOCIAL + '/notifications',
     // Messaging
     MESSAGING = '/messaging',
     // Jobs

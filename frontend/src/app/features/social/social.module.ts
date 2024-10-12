@@ -13,10 +13,11 @@ import {InfiniteScrollModule} from "ngx-infinite-scroll";
 import {EmojiModule} from "@ctrl/ngx-emoji-mart/ngx-emoji";
 import {PickerComponent} from "@ctrl/ngx-emoji-mart";
 import { PostComponent } from './components/post/post.component';
+import { NetworkComponent } from './components/network/network.component';
 
 
 @NgModule({
-    declarations: [FeedComponent, ProfileOverviewComponent, PostFormComponent, PostsFeedComponent, PostComponent],
+    declarations: [FeedComponent, ProfileOverviewComponent, PostFormComponent, PostsFeedComponent, PostComponent, NetworkComponent],
     imports: [
         CommonModule,
         SocialRoutingModule,

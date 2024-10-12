@@ -71,9 +71,9 @@ public class UserService implements IUserService {
         Page<User> usersPage = userRepo.findAll(pageable);
 
         // Filter out the emitter from the results
-        List<User> filteredUsers = usersPage.getContent().stream()
+        List<User> filteredUsers = new ArrayList<>(usersPage.getContent().stream()
                 .filter(user -> !user.equals(emitter))
-                .toList();
+                .toList());
         Collections.shuffle(filteredUsers);
         return new PageImpl<>(filteredUsers, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()), total);
     }
