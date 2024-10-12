@@ -68,9 +68,20 @@ jobs:
   deploy-backend:
     needs: deploy-frontend
     runs-on: ubuntu-latest
+
     steps:
-    - name: Trigger Cloud Build for backend deployment
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        ref: main
+
+    - name: Auth to GCP
+      uses: 'google-github-actions/auth@v2'
+      with:
+        project_id: tinypet-404519
+        credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+    - name: Run the backend deployment script
       run: |
-        curl -X POST -H "Content-type: application/json" \
-        "https://cloudbuild.googleapis.com/v1/projects/tinypet-404519/locations/europe-west1/triggers/deploy-cloud-run:webhook?key=${{secrets.GOOGLE_API_KEY}}&secret=${{secrets.CLOUD_BUILD_WEBHOOK}}&trigger=deploy-cloud-run&projectId=tinypet-404519" -d "{}"
+        gcloud builds triggers run deploy-cloud-run --region=europe-west1 --branch=main
 

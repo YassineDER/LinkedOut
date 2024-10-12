@@ -5,3 +5,4 @@ db.json
 *.iml
 .vscode
 node_modules
+gha-creds-*.json
