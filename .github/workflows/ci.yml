@@ -77,7 +77,7 @@ jobs:
 
     - name: Build and deploy the frontend
       env:
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         cd frontend
         ng build --base-href /LinkedOut/ --configuration production
