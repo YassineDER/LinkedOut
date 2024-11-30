@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    hostUrl: 'https://linkedout-527092413767.europe-west1.run.app'
+    hostUrl: 'https://linkedout-1093643228819.us-central1.run.app'
 };
