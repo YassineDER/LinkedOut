@@ -51,7 +51,7 @@ jobs:
 
     - name: Run the backend deployment script
       run: |
-        gcloud builds triggers run deploy-cloud-run --region=us-east1 --branch=main
+        gcloud builds triggers run deploy-cloud-run --region=us-central1 --branch=main
 
   deploy-frontend:
     needs: deploy-backend

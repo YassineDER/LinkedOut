@@ -1,11 +1,11 @@
 steps:
   # Step 1: Build the Docker image using the Containerfile
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'us-east1-docker.pkg.dev/linkedout-10/linkedout-repo/linkedout', 'backend/']
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/linkedout-10/linkedout-repo/linkedout', 'backend/']
 
   # Step 2: Push the image to Google Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-east1-docker.pkg.dev/linkedout-10/linkedout-repo/linkedout']
+    args: ['push', 'us-central1-docker.pkg.dev/linkedout-10/linkedout-repo/linkedout']
 
   # Step 3: Deploy the image to Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
@@ -13,8 +13,8 @@ steps:
       - 'run'
       - 'deploy'
       - 'linkedout'
-      - '--image=us-east1-docker.pkg.dev/linkedout-10/linkedout-repo/linkedout'
-      - '--region=us-east1'
+      - '--image=us-central1-docker.pkg.dev/linkedout-10/linkedout-repo/linkedout'
+      - '--region=us-central1'
       - '--platform=managed'
       - '--memory=1Gi'
       - '--allow-unauthenticated'
@@ -42,4 +42,4 @@ options:
   defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
 
 images:
-- 'us-east1-docker.pkg.dev/linkedout-10/linkedout-repo/linkedout'
+- 'us-central1-docker.pkg.dev/linkedout-10/linkedout-repo/linkedout'
