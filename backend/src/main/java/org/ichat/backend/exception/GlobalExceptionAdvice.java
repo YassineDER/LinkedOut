@@ -14,6 +14,10 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.NoHandlerFoundException;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,13 +38,7 @@ public class GlobalExceptionAdvice {
     @ResponseBody
     @ExceptionHandler(SocialException.class)
     public ResponseEntity<ErrorDTO> handleSocialErrors(SocialException ex) {
-        // print stack trace if not in production
-        String profile = env.getActiveProfiles()[0];
-        if (!profile.equals("prod"))
-            log.error(ex.getMessage(), ex);
-
         int status = ex.getStatus();
-
         // build error response in an appropriate format (ErrorDTO) and return it as bad request
         ErrorDTO error = buildErrorDTO(ex, "Social");
         return ResponseEntity.status(status).body(error);
@@ -54,11 +52,6 @@ public class GlobalExceptionAdvice {
     @ResponseBody
     @ExceptionHandler({AccountException.class, AccessDeniedException.class, AccountExpiredException.class})
     public ResponseEntity<ErrorDTO> accountErrorHandler(Exception ex) {
-        // print stack trace if not in production
-        String profile = env.getActiveProfiles()[0];
-        if (!profile.equals("prod"))
-            log.error(ex.getMessage(), ex);
-
         var status = HttpStatus.BAD_REQUEST;
         if (ex instanceof AccountException accException)
             status = HttpStatus.valueOf(accException.getStatus());
@@ -75,10 +68,6 @@ public class GlobalExceptionAdvice {
     @ResponseBody
     @ExceptionHandler({AuthenticationException.class, BadCredentialsException.class})
     public ResponseEntity<ErrorDTO> handleAuthenticationErrors(AuthenticationException ex) {
-        String profile = env.getActiveProfiles()[0];
-        if (!profile.equals("prod"))
-            log.error(ex.getMessage(), ex);
-
         int status = HttpStatus.UNAUTHORIZED.value();
         if (ex instanceof BadCredentialsException)
             status = HttpStatus.BAD_REQUEST.value();
@@ -125,7 +114,7 @@ public class GlobalExceptionAdvice {
         // print stack trace if not in production
         String profile = env.getActiveProfiles()[0];
         if (!profile.equals("prod"))
-            ex.printStackTrace();
+            log.error(ex.getMessage(), ex);
 
         // build error response in an appropriate format (ErrorDTO) and return it as internal server error
         ErrorDTO error = buildErrorDTO(ex, "Global");
@@ -140,14 +129,21 @@ public class GlobalExceptionAdvice {
     @ResponseBody
     @ExceptionHandler(StorageException.class)
     public ResponseEntity<Object> handleStorageErrors(StorageException ex) {
-        // print stack trace if not in production
-        String profile = env.getActiveProfiles()[0];
-        if (!profile.equals("prod"))
-            log.error(ex.getMessage(), ex);
-
         // build error response in an appropriate format (ErrorDTO) and return it as internal server error
         ErrorDTO error = buildErrorDTO(ex, "Storage");
         return ResponseEntity.internalServerError().body(error);
+    }
+
+    /**
+        * Handles exceptions related to the case when a requested resource is not found.
+        * @return The error response as a ResponseEntity.
+     **/
+    @ResponseBody
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ResponseEntity<Map<String, String>> handleNotFound() {
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Welcome to the LinkedOut API. Please refer to the documentation at /api/docs for more details.");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
     /**

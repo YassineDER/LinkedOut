@@ -1,6 +1,6 @@
 package org.ichat.backend.services.social;
 
-import org.ichat.backend.model.tables.social.ChatMessage;
+import org.ichat.backend.model.tables.messaging.ChatMessage;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 
 public interface IChatService {

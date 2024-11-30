@@ -2,6 +2,7 @@ package org.ichat.backend.config.security;
 
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.config.requests.JwtAuthenticationFilter;
+import org.ichat.backend.model.util.auth.RoleType;
 import org.ichat.backend.services.account.IJwtService;
 import org.ichat.backend.services.account.IUserService;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -45,10 +46,9 @@ public class SecurityConfiguration {
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class) // Custom JWT filter defined above
                 .exceptionHandling(e -> e.authenticationEntryPoint(entryPoint)) // Custom entry point for formating error messages
                 .authorizeHttpRequests(authorize -> authorize // Authorize requests based on roles
-                        .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
-                        .requestMatchers("/api/jobseeker/**").hasAuthority("JOBSEEKER")
-                        .requestMatchers("/api/company/**").hasAuthority("COMPANY")
-                        .requestMatchers("/api/auth/**").permitAll() // Allow all requests to the auth endpoint
+                        .requestMatchers("/api/admin/**").hasAuthority(RoleType.ADMIN.name())
+                        .requestMatchers("/api/jobseeker/**").hasAuthority(RoleType.JOBSEEKER.name())
+                        .requestMatchers("/api/company/**").hasAuthority(RoleType.COMPANY.name())
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Not sure about this one
@@ -59,11 +59,12 @@ public class SecurityConfiguration {
 
     /**
      * Customizes the web security configuration to ignore requests to the auth endpoint.
-     * <p> requestMatchers.permitAll() is also used but it is not enough to ignore the requests to the auth endpoint.
      */
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/api/auth/**");
+        // Allow all requests to the root and auth endpoint
+        return (web) -> web.ignoring()
+                .requestMatchers("/api/auth/**");
     }
 
 }

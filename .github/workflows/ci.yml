@@ -46,12 +46,12 @@ jobs:
     - name: Auth to GCP
       uses: 'google-github-actions/auth@v2'
       with:
-        project_id: tinypet-404519
+        project_id: linkedout-10
         credentials_json: ${{ secrets.GCP_SA_KEY }}
 
     - name: Run the backend deployment script
       run: |
-        gcloud builds triggers run deploy-cloud-run --region=europe-west1 --branch=main
+        gcloud builds triggers run deploy-cloud-run --region=us-east1 --branch=main
 
   deploy-frontend:
     needs: deploy-backend
@@ -77,7 +77,7 @@ jobs:
 
     - name: Build and deploy the frontend
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
         cd frontend
         ng build --base-href /LinkedOut/ --configuration production

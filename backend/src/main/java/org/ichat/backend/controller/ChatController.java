@@ -2,7 +2,7 @@ package org.ichat.backend.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.ichat.backend.model.tables.social.ChatMessage;
+import org.ichat.backend.model.tables.messaging.ChatMessage;
 import org.ichat.backend.services.social.IChatService;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;

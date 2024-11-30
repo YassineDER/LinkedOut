@@ -2,8 +2,7 @@ package org.ichat.backend.services.social.implementation;
 
 import lombok.RequiredArgsConstructor;
 import org.ichat.backend.model.tables.User;
-import org.ichat.backend.model.tables.social.ChatMessage;
-import org.ichat.backend.model.tables.social.Converstation;
+import org.ichat.backend.model.tables.messaging.ChatMessage;
 import org.ichat.backend.services.social.IChatService;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
