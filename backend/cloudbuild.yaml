@@ -19,7 +19,7 @@ steps:
       - '--memory=1Gi'
       - '--allow-unauthenticated'
       - '--min-instances=0'
-      - '--max-instances=0'
+      - '--max-instances=1'
       - '--concurrency=50'
       - '--set-secrets=DB_PASS=DB_PASS:latest'
       - '--set-secrets=MAIL_PASS=MAIL_PASS:latest'
