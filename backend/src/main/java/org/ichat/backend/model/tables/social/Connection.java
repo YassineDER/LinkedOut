@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.ichat.backend.model.tables.messaging.Converstation;
 
 import java.time.LocalDateTime;
 
