@@ -81,5 +81,5 @@ jobs:
       run: |
         cd frontend
         ng build --base-href /LinkedOut/ --configuration production
-        ngh --dir=dist/browser --no-silent
+        ng deploy --base-href=/LinkedOut/ --dir=dist/browser --no-build --repo=https://github.com/YassineDER/LinkedOut.git
 
