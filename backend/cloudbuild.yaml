@@ -22,7 +22,7 @@ steps:
       - '--max-instances=1'
       - '--concurrency=50'
       - '--service-account=linkedout-backend@linkedout-10.iam.gserviceaccount.com'
-      - '--env-vars-file=env.yaml'
+      - '--env-vars-file=backend/env.yaml'
       - '--set-secrets=DB_PASS=DB_PASS:latest'
       - '--set-secrets=MAIL_PASS=MAIL_PASS:latest'
       - '--set-secrets=DB_URL=DB_URL:latest'
