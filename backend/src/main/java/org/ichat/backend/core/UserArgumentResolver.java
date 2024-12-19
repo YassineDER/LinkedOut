@@ -14,7 +14,8 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 /**
  * Resolves the User object from the current authenticated user. <p>
- * Basically, this class is used to inject the authenticated user object into the controller methods. This is done by adding a User object as a parameter to a controller method.
+ * Basically, this class is used to inject the authenticated user object into the controller methods. 
+ * This is done by adding a User object as a parameter to a controller method.
  */
 @RequiredArgsConstructor
 public class UserArgumentResolver implements HandlerMethodArgumentResolver {

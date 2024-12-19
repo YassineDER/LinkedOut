@@ -8,7 +8,6 @@ import org.ichat.backend.services.account.IUserService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,7 +27,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity // Enables Spring Security beans
 @EnableMethodSecurity // Enables all methods to have security annotations like @PreAuthorize
 public class SecurityConfiguration {
-    private final AuthenticationProvider authProvider;
     private final IJwtService jwtService;
     private final IUserService userService;
     @Qualifier("customAuthenticationEntryPoint")
@@ -51,8 +49,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/company/**").hasAuthority(RoleType.COMPANY.name())
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Not sure about this one
-                .authenticationProvider(authProvider);
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
     }
